@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
 using System;
+using TankGame.Src.Data;
 using TankGame.Src.Events;
 
 namespace TankGame.Src
@@ -19,11 +20,9 @@ namespace TankGame.Src
             GameTitle = "Tank Game";
             ShouldQuit = false;
 
-            Window = new RenderWindow(new VideoMode(Width, Height), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
-            Window.SetVerticalSyncEnabled(true);
-            Window.Closed += (_, __) => Window.Close();
-
+            InitializeManagers();
             RegisterEvents();
+            InitializeWindow();
         }
 
         public void Loop()
@@ -61,6 +60,18 @@ namespace TankGame.Src
         private void RegisterEvents()
         {
             MessageBus.Instance.Register(MessageType.Quit, OnQuit);
+        }
+
+        private void InitializeManagers()
+        {
+            TextureManager.Initialize();
+        }
+
+        private void InitializeWindow()
+        {
+            Window = new RenderWindow(new VideoMode(Width, Height), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
+            Window.SetVerticalSyncEnabled(true);
+            Window.Closed += (_, __) => Window.Close();
         }
     }
 }
