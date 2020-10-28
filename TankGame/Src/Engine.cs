@@ -1,6 +1,8 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
 using System;
+using System.Collections.Generic;
+using TankGame.Src.Actors;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 
@@ -14,11 +16,13 @@ namespace TankGame.Src
         private uint Width { get; set; }
         private uint Height { get; set; }
         private RenderWindow Window { get; set; }
+        private HashSet<ITickable> Tickables { get; }
 
         public Engine()
         {
             GameTitle = "Tank Game";
             ShouldQuit = false;
+            Tickables = new HashSet<ITickable>();
 
             InitializeManagers();
             InitializeWindow();
@@ -44,7 +48,10 @@ namespace TankGame.Src
 
         private void Tick(float deltaTime)
         {
-
+            foreach (ITickable tickable in Tickables)
+            {
+                tickable.Tick(deltaTime);
+            }
         }
 
         private void Render(float deltaTime)
@@ -54,14 +61,31 @@ namespace TankGame.Src
             Window.Display();
         }
 
+        private void RegisterEvents()
+        {
+            MessageBus.Instance.Register(MessageType.Quit, OnQuit);
+            MessageBus.Instance.Register(MessageType.RegisterTickable, OnRegisterTickable);
+            MessageBus.Instance.Register(MessageType.UnregisterTickable, OnUnregisterTickable);
+        }
         private void OnQuit(object sender, EventArgs eventArgs)
         {
             ShouldQuit = true;
         }
 
-        private void RegisterEvents()
+        private void OnRegisterTickable(object sender, EventArgs eventArgs)
         {
-            MessageBus.Instance.Register(MessageType.Quit, OnQuit);
+            if (sender is ITickable)
+            {
+                Tickables.Add((ITickable)sender);
+            }
+        }
+
+        private void OnUnregisterTickable(object sender, EventArgs eventArgs)
+        {
+            if (sender is ITickable && Tickables.Contains((ITickable)sender))
+            {
+                Tickables.Remove((ITickable)sender);
+            }
         }
 
         private void InitializeManagers()

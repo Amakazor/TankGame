@@ -2,6 +2,8 @@
 {
     public enum MessageType
     {
-        Quit
+        Quit,
+        RegisterTickable,
+        UnregisterTickable
     }
 }
