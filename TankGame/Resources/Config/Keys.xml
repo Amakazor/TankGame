@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<keys>
+  <keymoveup>73</keymoveup>
+  <keymovedown>74</keymovedown>
+  <keymoveleft>71</keymoveleft>
+  <keymoveright>72</keymoveright>
+  <keyshoot>57</keyshoot>
+</keys>

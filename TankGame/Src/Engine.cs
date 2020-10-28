@@ -21,8 +21,8 @@ namespace TankGame.Src
             ShouldQuit = false;
 
             InitializeManagers();
-            RegisterEvents();
             InitializeWindow();
+            RegisterEvents();
         }
 
         public void Loop()
@@ -68,6 +68,7 @@ namespace TankGame.Src
         {
             TextureManager.Initialize();
             SoundManager.Initialize();
+            KeyManager.Initialize();
         }
 
         private void InitializeWindow()
