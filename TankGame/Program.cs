@@ -1,4 +1,5 @@
 ﻿using System;
+using TankGame.Src;
 
 namespace TankGame
 {
@@ -6,6 +7,8 @@ namespace TankGame
     {
         static void Main(string[] args)
         {
+            Engine engine = new Engine();
+            engine.Loop();
         }
     }
 }
