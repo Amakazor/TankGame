@@ -45,6 +45,19 @@ namespace TankGame.Src.Data
             else throw new ArgumentException("There is no key for this action", "keyActionType");
         }
 
+        public Tuple<string, string> GetAction(Keyboard.Key key)
+        {
+            foreach (KeyValuePair<Tuple<string, string>, Keyboard.Key> keyActionKeyPair in KeysDictionary)
+            {
+                if (keyActionKeyPair.Value == key)
+                {
+                    return keyActionKeyPair.Key;
+                }
+            }
+
+            return null;
+        }
+
         private void LoadKeys()
         {
             KeysDictionary = new Dictionary<Tuple<string, string>, Keyboard.Key>();

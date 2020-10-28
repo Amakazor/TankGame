@@ -6,6 +6,6 @@ namespace TankGame.Src.Gui.RenderComponents
     public interface IRenderComponent
     {
         public IRenderable GetActor();
-        public Transformable GetShape();
+        public Drawable GetShape();
     }
 }

@@ -1,10 +1,12 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
+using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src
 {
@@ -17,6 +19,12 @@ namespace TankGame.Src
         private uint Height { get; set; }
         private RenderWindow Window { get; set; }
 
+        private uint ViewWidth { get; set; }
+        private uint ViewHeight { get; set; }
+        private View GameView { get; set; }
+
+        private InputHandler InputHandler { get; }
+
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
 
@@ -25,9 +33,16 @@ namespace TankGame.Src
             GameTitle = "Tank Game";
             ShouldQuit = false;
             Tickables = new HashSet<ITickable>();
+            Renderables = new HashSet<IRenderable>();
 
             InitializeManagers();
+
             InitializeWindow();
+            InitializeView();
+
+            InputHandler = new InputHandler();
+            SetInputHandlers();
+
             RegisterEvents();
         }
 
@@ -59,6 +74,17 @@ namespace TankGame.Src
         private void Render(float deltaTime)
         {
             Window.DispatchEvents();
+
+            Window.SetView(GameView);
+
+            foreach (IRenderable renderable in Renderables)
+            {
+                foreach (IRenderComponent renderComponent in renderable.GetRenderComponents())
+                {
+                    Window.Draw(renderComponent.GetShape());
+                }
+            }
+
             Window.Clear(Color.White);
             Window.Display();
         }
@@ -78,6 +104,22 @@ namespace TankGame.Src
             Window = new RenderWindow(new VideoMode(Width, Height), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
             Window.SetVerticalSyncEnabled(true);
             Window.Closed += (_, __) => Window.Close();
+        }
+
+        private void InitializeView()
+        {
+            ViewWidth = 600;
+            ViewHeight = 600;
+
+            GameView = new View(new Vector2f(Width / 2, Height / 2), new Vector2f(Width, Height));
+        }
+
+        private void SetInputHandlers()
+        {
+            if (Window != null && InputHandler != null)
+            {
+                Window.KeyPressed += InputHandler.OnKeyPress;
+            }
         }
 
         private void RegisterEvents()

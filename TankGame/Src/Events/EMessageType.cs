@@ -7,5 +7,7 @@
         UnregisterTickable,
         RegisterRenderable,
         UnregisterRenderable,
+        KeyAction,
+        KeyPressed
     }
 }

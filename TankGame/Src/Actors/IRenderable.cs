@@ -5,7 +5,7 @@ namespace TankGame.Src.Actors
 {
     public interface IRenderable
     {
-        List<IRenderComponent> GetRenderObjects();
+        HashSet<IRenderComponent> GetRenderComponents();
         public void RegisterRenderable(IRenderable renderable);
         public void UnregisterRenderable(IRenderable renderable);
     }
