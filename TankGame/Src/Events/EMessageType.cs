@@ -4,6 +4,8 @@
     {
         Quit,
         RegisterTickable,
-        UnregisterTickable
+        UnregisterTickable,
+        RegisterRenderable,
+        UnregisterRenderable,
     }
 }

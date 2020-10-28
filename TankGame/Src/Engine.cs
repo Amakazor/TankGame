@@ -16,7 +16,9 @@ namespace TankGame.Src
         private uint Width { get; set; }
         private uint Height { get; set; }
         private RenderWindow Window { get; set; }
+
         private HashSet<ITickable> Tickables { get; }
+        private HashSet<IRenderable> Renderables { get; }
 
         public Engine()
         {
@@ -63,9 +65,13 @@ namespace TankGame.Src
 
         private void RegisterEvents()
         {
-            MessageBus.Instance.Register(MessageType.Quit, OnQuit);
-            MessageBus.Instance.Register(MessageType.RegisterTickable, OnRegisterTickable);
-            MessageBus.Instance.Register(MessageType.UnregisterTickable, OnUnregisterTickable);
+            MessageBus messageBus = MessageBus.Instance;
+
+            messageBus.Register(MessageType.Quit                , OnQuit                );
+            messageBus.Register(MessageType.RegisterTickable    , OnRegisterTickable    );
+            messageBus.Register(MessageType.UnregisterTickable  , OnUnregisterTickable  );
+            messageBus.Register(MessageType.RegisterRenderable  , OnRegisterRenderable  );
+            messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
         }
         private void OnQuit(object sender, EventArgs eventArgs)
         {
@@ -85,6 +91,22 @@ namespace TankGame.Src
             if (sender is ITickable && Tickables.Contains((ITickable)sender))
             {
                 Tickables.Remove((ITickable)sender);
+            }
+        }
+        
+        private void OnRegisterRenderable(object sender, EventArgs eventArgs)
+        {
+            if (sender is IRenderable)
+            {
+                Renderables.Add((IRenderable)sender);
+            }
+        }
+
+        private void OnUnregisterRenderable(object sender, EventArgs eventArgs)
+        {
+            if (sender is IRenderable && Renderables.Contains((IRenderable)sender))
+            {
+                Renderables.Remove((IRenderable)sender);
             }
         }
 
