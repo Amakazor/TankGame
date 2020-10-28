@@ -63,53 +63,6 @@ namespace TankGame.Src
             Window.Display();
         }
 
-        private void RegisterEvents()
-        {
-            MessageBus messageBus = MessageBus.Instance;
-
-            messageBus.Register(MessageType.Quit                , OnQuit                );
-            messageBus.Register(MessageType.RegisterTickable    , OnRegisterTickable    );
-            messageBus.Register(MessageType.UnregisterTickable  , OnUnregisterTickable  );
-            messageBus.Register(MessageType.RegisterRenderable  , OnRegisterRenderable  );
-            messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
-        }
-        private void OnQuit(object sender, EventArgs eventArgs)
-        {
-            ShouldQuit = true;
-        }
-
-        private void OnRegisterTickable(object sender, EventArgs eventArgs)
-        {
-            if (sender is ITickable)
-            {
-                Tickables.Add((ITickable)sender);
-            }
-        }
-
-        private void OnUnregisterTickable(object sender, EventArgs eventArgs)
-        {
-            if (sender is ITickable && Tickables.Contains((ITickable)sender))
-            {
-                Tickables.Remove((ITickable)sender);
-            }
-        }
-        
-        private void OnRegisterRenderable(object sender, EventArgs eventArgs)
-        {
-            if (sender is IRenderable)
-            {
-                Renderables.Add((IRenderable)sender);
-            }
-        }
-
-        private void OnUnregisterRenderable(object sender, EventArgs eventArgs)
-        {
-            if (sender is IRenderable && Renderables.Contains((IRenderable)sender))
-            {
-                Renderables.Remove((IRenderable)sender);
-            }
-        }
-
         private void InitializeManagers()
         {
             TextureManager.Initialize();
@@ -125,6 +78,49 @@ namespace TankGame.Src
             Window = new RenderWindow(new VideoMode(Width, Height), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
             Window.SetVerticalSyncEnabled(true);
             Window.Closed += (_, __) => Window.Close();
+        }
+
+        private void RegisterEvents()
+        {
+            MessageBus messageBus = MessageBus.Instance;
+
+            messageBus.Register(MessageType.Quit, OnQuit);
+            messageBus.Register(MessageType.RegisterTickable, OnRegisterTickable);
+            messageBus.Register(MessageType.UnregisterTickable, OnUnregisterTickable);
+            messageBus.Register(MessageType.RegisterRenderable, OnRegisterRenderable);
+            messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
+        }
+        private void OnQuit(object sender, EventArgs eventArgs)
+        {
+            ShouldQuit = true;
+        }
+        private void OnRegisterTickable(object sender, EventArgs eventArgs)
+        {
+            if (sender is ITickable)
+            {
+                Tickables.Add((ITickable)sender);
+            }
+        }
+        private void OnUnregisterTickable(object sender, EventArgs eventArgs)
+        {
+            if (sender is ITickable && Tickables.Contains((ITickable)sender))
+            {
+                Tickables.Remove((ITickable)sender);
+            }
+        }
+        private void OnRegisterRenderable(object sender, EventArgs eventArgs)
+        {
+            if (sender is IRenderable)
+            {
+                Renderables.Add((IRenderable)sender);
+            }
+        }
+        private void OnUnregisterRenderable(object sender, EventArgs eventArgs)
+        {
+            if (sender is IRenderable && Renderables.Contains((IRenderable)sender))
+            {
+                Renderables.Remove((IRenderable)sender);
+            }
         }
     }
 }
