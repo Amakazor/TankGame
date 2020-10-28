@@ -63,11 +63,11 @@ namespace TankGame.Src.Data
 
             try
             {
-                textureConfig = XDocument.Load("Resources/Config/textures.xml");
+                textureConfig = XDocument.Load("Resources/Config/Textures.xml");
             }
             catch (Exception)
             {
-                throw new Exception("File textures.xml couldn't be loaded");
+                throw new Exception("File Textures.xml couldn't be loaded");
             }
 
             foreach (FieldInfo fieldInfo in typeof(TextureType).GetFields(BindingFlags.Static | BindingFlags.Public))
