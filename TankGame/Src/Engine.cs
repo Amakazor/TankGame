@@ -67,6 +67,7 @@ namespace TankGame.Src
         private void InitializeManagers()
         {
             TextureManager.Initialize();
+            SoundManager.Initialize();
         }
 
         private void InitializeWindow()
