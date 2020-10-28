@@ -36,7 +36,7 @@ namespace TankGame.Src
                 float deltaTime = (time2.Ticks - time1.Ticks) / 10000000f;
 
                 Tick(deltaTime);
-                Render();
+                Render(deltaTime);
 
                 time1 = time2;
             }
@@ -47,9 +47,11 @@ namespace TankGame.Src
 
         }
 
-        private void Render()
+        private void Render(float deltaTime)
         {
-
+            Window.DispatchEvents();
+            Window.Clear(Color.White);
+            Window.Display();
         }
 
         private void OnQuit(object sender, EventArgs eventArgs)
@@ -69,6 +71,9 @@ namespace TankGame.Src
 
         private void InitializeWindow()
         {
+            Width = 600;
+            Height = 600;
+
             Window = new RenderWindow(new VideoMode(Width, Height), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
             Window.SetVerticalSyncEnabled(true);
             Window.Closed += (_, __) => Window.Close();
