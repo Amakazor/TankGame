@@ -6,6 +6,6 @@ namespace TankGame.Resources.Config
 {
     class Class1
     {
-
+        //dsadasdsadasdsadasd
     }
 }
