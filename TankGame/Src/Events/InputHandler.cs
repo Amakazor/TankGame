@@ -1,8 +1,10 @@
-﻿using SFML.Window;
+﻿using SFML.System;
+using SFML.Window;
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors;
 using TankGame.Src.Data;
+using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Events
 {
@@ -12,6 +14,7 @@ namespace TankGame.Src.Events
 
         public InputHandler()
         {
+            Clickables = new HashSet<IClickable>();
             RegisterEvents();
         }
 
@@ -23,6 +26,20 @@ namespace TankGame.Src.Events
                 MessageBus.Instance.PostEvent(MessageType.KeyAction, sender, new KeyActionEventArgs(keyActionType));
             }
             MessageBus.Instance.PostEvent(MessageType.KeyPressed, sender, eventArgs);
+        }
+
+        public void OnClick(object sender, MouseButtonEventArgs eventArgs)
+        {
+            foreach (IClickable clickable in Clickables)
+            {
+                foreach(IRenderComponent component in clickable.GetRenderComponents())
+                {
+                    if (component.IsPointInside(new Vector2f(eventArgs.X, eventArgs.Y)))
+                    {
+                        clickable.OnClick(eventArgs);
+                    }
+                }
+            }
         }
 
         private void RegisterEvents()

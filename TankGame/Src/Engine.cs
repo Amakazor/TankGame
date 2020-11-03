@@ -119,6 +119,7 @@ namespace TankGame.Src
             if (Window != null && InputHandler != null)
             {
                 Window.KeyPressed += InputHandler.OnKeyPress;
+                Window.MouseButtonPressed += InputHandler.OnClick;
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace TankGame.Src.Actors
 {
-    internal interface IClickable
+    internal interface IClickable : IRenderable
     {
         public bool OnClick(MouseButtonEventArgs args);
         public void RegisterClickable(IClickable clickable);
