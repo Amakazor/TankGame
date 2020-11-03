@@ -1,13 +1,18 @@
 ﻿using SFML.Window;
 using System;
+using System.Collections.Generic;
+using TankGame.Src.Actors;
 using TankGame.Src.Data;
 
 namespace TankGame.Src.Events
 {
     internal class InputHandler
     {
+        private HashSet<IClickable> Clickables { get; }
+
         public InputHandler()
         {
+            RegisterEvents();
         }
 
         public void OnKeyPress(object sender, KeyEventArgs eventArgs)
@@ -18,6 +23,29 @@ namespace TankGame.Src.Events
                 MessageBus.Instance.PostEvent(MessageType.KeyAction, sender, new KeyActionEventArgs(keyActionType));
             }
             MessageBus.Instance.PostEvent(MessageType.KeyPressed, sender, eventArgs);
+        }
+
+        private void RegisterEvents()
+        {
+            MessageBus messageBus = MessageBus.Instance;
+
+            messageBus.Register(MessageType.RegisterClickable, OnRegisterClickable);
+            messageBus.Register(MessageType.UnregisterClickable, OnUnregisterClickable);
+        }
+
+        private void OnRegisterClickable(object sender, EventArgs eventArgs)
+        {
+            if (sender is IClickable)
+            {
+                Clickables.Add((IClickable)sender);
+            }
+        }
+        private void OnUnregisterClickable(object sender, EventArgs eventArgs)
+        {
+            if (sender is IClickable && Clickables.Contains((IClickable)sender))
+            {
+                Clickables.Remove((IClickable)sender);
+            }
         }
     }
 }
