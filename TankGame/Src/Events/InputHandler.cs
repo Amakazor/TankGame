@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,13 @@ namespace TankGame.Src.Events
     internal class InputHandler
     {
         private HashSet<IClickable> Clickables { get; }
+        private RenderWindow Window { get; set; }
 
-        public InputHandler()
+        public InputHandler(RenderWindow window)
         {
             Clickables = new HashSet<IClickable>();
+            Window = window;
+
             RegisterEvents();
         }
 
@@ -30,11 +34,13 @@ namespace TankGame.Src.Events
 
         public void OnClick(object sender, MouseButtonEventArgs eventArgs)
         {
+            Vector2f point = Window.MapPixelToCoords(new Vector2i(eventArgs.X, eventArgs.Y));
+
             foreach (IClickable clickable in Clickables)
             {
                 foreach(IRenderComponent component in clickable.GetRenderComponents())
                 {
-                    if (component.IsPointInside(new Vector2f(eventArgs.X, eventArgs.Y)))
+                    if (component.IsPointInside(point))
                     {
                         clickable.OnClick(eventArgs);
                     }

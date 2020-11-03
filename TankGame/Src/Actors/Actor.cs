@@ -9,30 +9,32 @@ namespace TankGame.Src.Actors
 {
     internal abstract class Actor : IRenderable, IDisposable
     {
-        private Vector2f Position { get; }
-        private Vector2f Size { get; }
+        protected Vector2f Position { get; set; }
+        protected Vector2f Size { get; set; }
 
         public Actor(Vector2f position, Vector2f size)
         {
             Position = position;
             Size = size;
+
+            RegisterRenderable();
         }
 
         public abstract HashSet<IRenderComponent> GetRenderComponents();
 
-        public void RegisterRenderable(IRenderable renderable)
+        public void RegisterRenderable()
         {
             MessageBus.Instance.PostEvent(MessageType.RegisterRenderable, this, new EventArgs());
         }
 
-        public void UnregisterRenderable(IRenderable renderable)
+        public void UnregisterRenderable()
         {
             MessageBus.Instance.PostEvent(MessageType.UnregisterRenderable, this, new EventArgs());
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            UnregisterRenderable(this);
+            UnregisterRenderable();
         }
     }
 }

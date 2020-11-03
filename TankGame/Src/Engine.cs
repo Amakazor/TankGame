@@ -4,6 +4,7 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors;
+using TankGame.Src.Actors.Buttons;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
@@ -27,7 +28,6 @@ namespace TankGame.Src
 
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
-
         public Engine()
         {
             GameTitle = "Tank Game";
@@ -40,7 +40,7 @@ namespace TankGame.Src
             InitializeWindow();
             InitializeView();
 
-            InputHandler = new InputHandler();
+            InputHandler = new InputHandler(Window);
             SetInputHandlers();
 
             RegisterEvents();
@@ -74,8 +74,8 @@ namespace TankGame.Src
         private void Render(float deltaTime)
         {
             Window.DispatchEvents();
-
             Window.SetView(GameView);
+            Window.Clear(Color.Black);
 
             foreach (IRenderable renderable in Renderables)
             {
@@ -85,7 +85,6 @@ namespace TankGame.Src
                 }
             }
 
-            Window.Clear(Color.White);
             Window.Display();
         }
 
