@@ -4,14 +4,13 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors;
-using TankGame.Src.Actors.Buttons;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src
 {
-    class Engine
+    internal class Engine
     {
         public string GameTitle { get; private set; }
         private bool ShouldQuit { get; set; }
@@ -28,6 +27,7 @@ namespace TankGame.Src
 
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
+
         public Engine()
         {
             GameTitle = "Tank Game";
@@ -132,10 +132,12 @@ namespace TankGame.Src
             messageBus.Register(MessageType.RegisterRenderable, OnRegisterRenderable);
             messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
         }
+
         private void OnQuit(object sender, EventArgs eventArgs)
         {
             ShouldQuit = true;
         }
+
         private void OnRegisterTickable(object sender, EventArgs eventArgs)
         {
             if (sender is ITickable)
@@ -143,6 +145,7 @@ namespace TankGame.Src
                 Tickables.Add((ITickable)sender);
             }
         }
+
         private void OnUnregisterTickable(object sender, EventArgs eventArgs)
         {
             if (sender is ITickable && Tickables.Contains((ITickable)sender))
@@ -150,6 +153,7 @@ namespace TankGame.Src
                 Tickables.Remove((ITickable)sender);
             }
         }
+
         private void OnRegisterRenderable(object sender, EventArgs eventArgs)
         {
             if (sender is IRenderable)
@@ -157,6 +161,7 @@ namespace TankGame.Src
                 Renderables.Add((IRenderable)sender);
             }
         }
+
         private void OnUnregisterRenderable(object sender, EventArgs eventArgs)
         {
             if (sender is IRenderable && Renderables.Contains((IRenderable)sender))

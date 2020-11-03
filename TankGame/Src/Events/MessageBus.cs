@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TankGame.Src.Events
 {
-    class MessageBus
+    internal class MessageBus
     {
         private static MessageBus instance;
         private readonly Dictionary<MessageType, List<Action<object, EventArgs>>> Listeners = new Dictionary<MessageType, List<Action<object, EventArgs>>>();

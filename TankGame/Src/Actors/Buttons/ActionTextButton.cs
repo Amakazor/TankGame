@@ -1,8 +1,6 @@
 ﻿using SFML.System;
 using SFML.Window;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TankGame.Src.Actors.Buttons
 {

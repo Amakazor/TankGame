@@ -38,7 +38,7 @@ namespace TankGame.Src.Events
 
             foreach (IClickable clickable in Clickables)
             {
-                foreach(IRenderComponent component in clickable.GetRenderComponents())
+                foreach (IRenderComponent component in clickable.GetRenderComponents())
                 {
                     if (component.IsPointInside(point))
                     {
@@ -63,6 +63,7 @@ namespace TankGame.Src.Events
                 Clickables.Add((IClickable)sender);
             }
         }
+
         private void OnUnregisterClickable(object sender, EventArgs eventArgs)
         {
             if (sender is IClickable && Clickables.Contains((IClickable)sender))

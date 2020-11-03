@@ -4,7 +4,7 @@ using TankGame.Src.Actors;
 
 namespace TankGame.Src.Gui.RenderComponents
 {
-    class RectangleComponent : IRenderComponent
+    internal class RectangleComponent : IRenderComponent
     {
         private IRenderable Actor { get; }
         private RectangleShape Rectangle { get; }

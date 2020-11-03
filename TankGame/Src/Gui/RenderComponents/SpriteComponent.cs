@@ -4,7 +4,7 @@ using TankGame.Src.Actors;
 
 namespace TankGame.Src.Gui.RenderComponents
 {
-    class SpriteComponent : IRenderComponent
+    internal class SpriteComponent : IRenderComponent
     {
         protected IRenderable Actor { get; set; }
         private Sprite Sprite { get; }
@@ -29,7 +29,6 @@ namespace TankGame.Src.Gui.RenderComponents
         {
             Sprite.Scale = size.X != 0 && size.Y != 0 ? new Vector2f(size.X / 64, size.Y / 64) : new Vector2f(1, 1);
         }
-
 
         public bool IsPointInside(Vector2f point)
         {

@@ -2,7 +2,6 @@
 using SFML.Window;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 

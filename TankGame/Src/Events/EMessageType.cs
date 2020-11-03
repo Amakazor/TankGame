@@ -1,6 +1,6 @@
 ﻿namespace TankGame.Src.Events
 {
-    public enum MessageType
+    internal enum MessageType
     {
         Quit,
         RegisterTickable,
