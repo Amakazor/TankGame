@@ -87,7 +87,7 @@ namespace TankGame.Src.Gui.RenderComponents
             CalculatePosition();
         }
 
-        public bool IsPointInside(int x, int y)
+        public bool IsPointInside(Vector2f point)
         {
             return false;
         }
