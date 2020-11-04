@@ -16,6 +16,36 @@
     <location>Resources/Textures/HP/serce_hp_64x64.png</location>
   </texture>
   <texture>
+    <type>pawn</type>
+    <name>player1</name>
+    <location>Resources/Textures/Player/gracz_1lvl.png</location>
+  </texture>
+  <texture>
+    <type>pawn</type>
+    <name>player2</name>
+    <location>Resources/Textures/Player/gracz_2lvl.png</location>
+  </texture>
+  <texture>
+    <type>pawn</type>
+    <name>player3</name>
+    <location>Resources/Textures/Player/gracz_3lvl.png</location>
+  </texture>
+  <texture>
+    <type>pawn</type>
+    <name>enemy1</name>
+    <location>Resources/Textures/Enemy/enemy_1lvl.png</location>
+  </texture>
+  <texture>
+    <type>pawn</type>
+    <name>enemy2</name>
+    <location>Resources/Textures/Enemy/enemy_2lvl.png</location>
+  </texture>
+  <texture>
+    <type>pawn</type>
+    <name>enemy3</name>
+    <location>Resources/Textures/Enemy/enemy_3lvl.png</location>
+  </texture>
+  <texture>
     <type>typ z pliku TextureType.cs</type>
     <name>nazwa_bez_spacji</name>
     <location>polozenie</location>
