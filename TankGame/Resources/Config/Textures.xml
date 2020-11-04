@@ -46,6 +46,16 @@
     <location>Resources/Textures/Enemy/enemy_3lvl.png</location>
   </texture>
   <texture>
+    <type>weather</type>
+    <name>snow</name>
+    <location>Resources/Textures/Snow/Snow.png</location>
+  </texture>
+  <texture>
+    <type>weather</type>
+    <name>rain</name>
+    <location>Resources/Textures/Rain/Rain.png</location>
+  </texture>
+  <texture>
     <type>typ z pliku TextureType.cs</type>
     <name>nazwa_bez_spacji</name>
     <location>polozenie</location>
