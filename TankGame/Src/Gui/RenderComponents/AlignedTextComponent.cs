@@ -12,7 +12,7 @@ namespace TankGame.Src.Gui.RenderComponents
         End
     }
 
-    class AlignedTextComponent : IRenderComponent
+    internal class AlignedTextComponent : IRenderComponent
     {
         private Vector2f ContainerPosition { get; set; }
         private Vector2f ContainerSize { get; set; }
@@ -87,7 +87,7 @@ namespace TankGame.Src.Gui.RenderComponents
             CalculatePosition();
         }
 
-        public bool IsPointInside(int x, int y)
+        public bool IsPointInside(Vector2f point)
         {
             return false;
         }

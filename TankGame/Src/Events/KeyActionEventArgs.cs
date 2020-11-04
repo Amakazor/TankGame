@@ -2,7 +2,7 @@
 
 namespace TankGame.Src.Events
 {
-    class KeyActionEventArgs : EventArgs
+    internal class KeyActionEventArgs : EventArgs
     {
         public Tuple<string, string> KeyActionType;
 

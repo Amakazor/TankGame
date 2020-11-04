@@ -69,12 +69,12 @@ namespace TankGame.Src.Data
                 {
                     string soundType = fieldInfo.GetValue(null).ToString();
                     SoundsDictionary[soundType] = (from sound in soundConfig.Descendants("sound")
-                                                       where sound.Element("type").Value == soundType
-                                                       select new
-                                                       {
-                                                           symbol = sound.Element("name").Value,
-                                                           location = sound.Element("location").Value
-                                                       }).ToDictionary(result => result.symbol, result => new SoundBuffer(result.location));
+                                                   where sound.Element("type").Value == soundType
+                                                   select new
+                                                   {
+                                                       symbol = sound.Element("name").Value,
+                                                       location = sound.Element("location").Value
+                                                   }).ToDictionary(result => result.symbol, result => new SoundBuffer(result.location));
                 }
                 catch (Exception)
                 {

@@ -4,7 +4,7 @@ using TankGame.Src.Actors;
 
 namespace TankGame.Src.Gui.RenderComponents
 {
-    class RectangleComponent : IRenderComponent
+    internal class RectangleComponent : IRenderComponent
     {
         private IRenderable Actor { get; }
         private RectangleShape Rectangle { get; }
@@ -40,14 +40,14 @@ namespace TankGame.Src.Gui.RenderComponents
             return Actor;
         }
 
-        public bool IsPointInside(int x, int y)
+        public bool IsPointInside(Vector2f point)
         {
             if (Rectangle != null)
             {
                 Vector2f position = Rectangle.Position;
                 Vector2f size = Rectangle.Size;
 
-                return (position.X <= x) && (position.X + size.X >= x) && (position.Y <= y) && (position.Y + size.Y >= y);
+                return (position.X <= point.X) && (position.X + size.X >= point.X) && (position.Y <= point.Y) && (position.Y + size.Y >= point.Y);
             }
             return false;
         }

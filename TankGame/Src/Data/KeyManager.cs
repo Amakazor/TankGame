@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace TankGame.Src.Data
 {
-    class KeyManager
+    internal class KeyManager
     {
         private static KeyManager instance;
 

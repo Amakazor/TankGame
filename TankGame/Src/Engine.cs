@@ -10,7 +10,7 @@ using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src
 {
-    class Engine
+    internal class Engine
     {
         public string GameTitle { get; private set; }
         private bool ShouldQuit { get; set; }
@@ -40,7 +40,7 @@ namespace TankGame.Src
             InitializeWindow();
             InitializeView();
 
-            InputHandler = new InputHandler();
+            InputHandler = new InputHandler(Window);
             SetInputHandlers();
 
             RegisterEvents();
@@ -74,8 +74,8 @@ namespace TankGame.Src
         private void Render(float deltaTime)
         {
             Window.DispatchEvents();
-
             Window.SetView(GameView);
+            Window.Clear(Color.Black);
 
             foreach (IRenderable renderable in Renderables)
             {
@@ -85,7 +85,6 @@ namespace TankGame.Src
                 }
             }
 
-            Window.Clear(Color.White);
             Window.Display();
         }
 
@@ -119,6 +118,7 @@ namespace TankGame.Src
             if (Window != null && InputHandler != null)
             {
                 Window.KeyPressed += InputHandler.OnKeyPress;
+                Window.MouseButtonPressed += InputHandler.OnClick;
             }
         }
 
@@ -132,10 +132,12 @@ namespace TankGame.Src
             messageBus.Register(MessageType.RegisterRenderable, OnRegisterRenderable);
             messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
         }
+
         private void OnQuit(object sender, EventArgs eventArgs)
         {
             ShouldQuit = true;
         }
+
         private void OnRegisterTickable(object sender, EventArgs eventArgs)
         {
             if (sender is ITickable)
@@ -143,6 +145,7 @@ namespace TankGame.Src
                 Tickables.Add((ITickable)sender);
             }
         }
+
         private void OnUnregisterTickable(object sender, EventArgs eventArgs)
         {
             if (sender is ITickable && Tickables.Contains((ITickable)sender))
@@ -150,6 +153,7 @@ namespace TankGame.Src
                 Tickables.Remove((ITickable)sender);
             }
         }
+
         private void OnRegisterRenderable(object sender, EventArgs eventArgs)
         {
             if (sender is IRenderable)
@@ -157,6 +161,7 @@ namespace TankGame.Src
                 Renderables.Add((IRenderable)sender);
             }
         }
+
         private void OnUnregisterRenderable(object sender, EventArgs eventArgs)
         {
             if (sender is IRenderable && Renderables.Contains((IRenderable)sender))

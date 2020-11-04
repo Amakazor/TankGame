@@ -1,6 +1,6 @@
 ﻿namespace TankGame.Src.Data
 {
-    class GamestateManager
+    internal class GamestateManager
     {
         private static GamestateManager instance;
 
