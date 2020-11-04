@@ -1,6 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <textures>
   <texture>
+    <type>projectile</type>
+    <name>pocisk1</name>
+    <location>Resources/Textures/Pociski/Pocisk_1_64x64.png</location>
+  </texture>
+  <texture>
+    <type>projectile</type>
+    <name>pocisk2</name>
+    <location>Resources/Textures/Pociski/Pocisk_2_64x64.png</location>
+  </texture>
+  <texture>
+    <type>hp</type>
+    <name>hp</name>
+    <location>Resources/Textures/HP/serce_hp_64x64.png</location>
+  </texture>
+  <texture>
     <type>typ z pliku TextureType.cs</type>
     <name>nazwa_bez_spacji</name>
     <location>polozenie</location>
