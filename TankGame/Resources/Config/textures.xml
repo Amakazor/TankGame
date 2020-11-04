@@ -60,4 +60,29 @@
     <name>nazwa_bez_spacji</name>
     <location>polozenie</location>
   </texture>
+	<texture>
+		<type>gameobject</type>
+		<name>bigbuilding</name>
+		<location>Resources/Textures/Buildings/BigBuilding.png</location>
+	</texture>
+	<texture>
+		<type>gameobject</type>
+		<name>fence1</name>
+		<location>Resources/Textures/Buildings/fence1.png</location>
+	</texture>
+	<texture>
+		<type>gameobject</type>
+		<name>fence2</name>
+		<location>Resources/Textures/Buildings/fence2.png</location>
+	</texture>
+	<texture>
+		<type>gameobject</type>
+		<name>house</name>
+		<location>Resources/Textures/Buildings/house.png</location>
+	</texture>
+	<texture>
+		<type>gameobject</type>
+		<name>tree</name>
+		<location>Resources/Textures/Buildings/tree.png</location>
+	</texture>
 </textures>
