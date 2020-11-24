@@ -85,4 +85,9 @@
 		<name>tree</name>
 		<location>Resources/Textures/Buildings/tree.png</location>
 	</texture>
+  <texture>
+		<type>field</type>
+		<name>empty</name>
+		<location>Resources/Textures/Fields/empty.png</location>
+	</texture>
 </textures>
