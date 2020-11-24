@@ -8,8 +8,8 @@ namespace TankGame.Src.Actors
 {
     internal abstract class Actor : IRenderable, IDisposable
     {
-        protected Vector2f Position { get; set; }
-        protected Vector2f Size { get; set; }
+        public Vector2f Position { get; protected set; }
+        public Vector2f Size { get; protected set; }
 
         public Actor(Vector2f position, Vector2f size)
         {
