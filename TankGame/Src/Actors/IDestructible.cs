@@ -3,7 +3,7 @@
     internal interface IDestructible
     {
         public void OnHit(Actor other);
-
         public void OnDestroy(Actor other);
+        public bool IsAlive();
     }
 }
