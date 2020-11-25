@@ -20,7 +20,7 @@ namespace TankGame.Src.Actors.Fields
             Coords = coords;
             FieldData = fieldData;
             Texture = texture;
-            Surface = new SpriteComponent(Position, Size, this, texture, new Color());
+            Surface = new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
