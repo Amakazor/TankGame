@@ -4,7 +4,9 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors;
+using TankGame.Src.Actors.Pawn.Player;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Map;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -28,6 +30,8 @@ namespace TankGame.Src
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
 
+        private GameMap Map { get; set; }
+
         public Engine()
         {
             GameTitle = "Tank Game";
@@ -44,6 +48,8 @@ namespace TankGame.Src
             SetInputHandlers();
 
             RegisterEvents();
+
+            StartGame(false);
         }
 
         public void Loop()
@@ -88,6 +94,12 @@ namespace TankGame.Src
             Window.Display();
         }
 
+        private void StartGame(bool isNewGame)
+        {
+            Map = new GameMap(isNewGame);
+            GamestateManager.Instance.Map = Map;
+        }
+
         private void InitializeManagers()
         {
             TextureManager.Initialize();
@@ -122,6 +134,14 @@ namespace TankGame.Src
             }
         }
 
+        private void RecenterView(Vector2f position)
+        {
+            if (GameView != null)
+            {
+                GameView.Center = position;
+            }
+        }
+
         private void RegisterEvents()
         {
             MessageBus messageBus = MessageBus.Instance;
@@ -131,6 +151,7 @@ namespace TankGame.Src
             messageBus.Register(MessageType.UnregisterTickable, OnUnregisterTickable);
             messageBus.Register(MessageType.RegisterRenderable, OnRegisterRenderable);
             messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
+            messageBus.Register(MessageType.PlayerMoved, OnPlayerMoved);
         }
 
         private void OnQuit(object sender, EventArgs eventArgs)
@@ -167,6 +188,14 @@ namespace TankGame.Src
             if (sender is IRenderable && Renderables.Contains((IRenderable)sender))
             {
                 Renderables.Remove((IRenderable)sender);
+            }
+        }
+        
+        private void OnPlayerMoved(object sender, EventArgs eventArgs)
+        {
+            if (sender is Player senderPlayer)
+            {
+                RecenterView(senderPlayer.Position + (senderPlayer.Size / 2));
             }
         }
     }

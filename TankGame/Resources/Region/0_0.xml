@@ -1603,6 +1603,9 @@
     </field>
   </fields>
   <spawns>
-    <player></player>
+    <player>
+      <x>10</x>
+      <y>5</y>
+    </player>
   </spawns>
 </region>

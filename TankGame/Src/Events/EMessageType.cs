@@ -9,6 +9,7 @@
         UnregisterRenderable,
         RegisterClickable,
         UnregisterClickable,
+        PlayerMoved,
         KeyAction,
         KeyPressed
     }
