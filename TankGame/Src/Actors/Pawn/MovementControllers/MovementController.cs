@@ -107,7 +107,7 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
 
         public virtual bool CanDoAction()
         {
-            return Cooldown == 0 && NextAction != null && Owner.IsAlive();
+            return Cooldown == 0 && Owner.IsAlive();
         }
 
         public void ClearAction()

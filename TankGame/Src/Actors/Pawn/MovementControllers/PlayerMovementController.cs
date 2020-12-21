@@ -11,6 +11,11 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
             MessageBus.Instance.Register(MessageType.KeyAction, SetNextAction);
         }
 
+        public override bool CanDoAction()
+        {
+            return NextAction != null ? base.CanDoAction() : false;
+        }
+
         private void SetNextAction(object sender, EventArgs eventArgs)
         {
             Console.WriteLine("Player movement controller received action");
