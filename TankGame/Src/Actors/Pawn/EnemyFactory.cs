@@ -36,9 +36,13 @@ namespace TankGame.Src.Actors.Pawn
 
         public static Enemy CreateEnemy(Vector2f coords, string enemyType, string AIMCType, int Hp)
         {
-            Enemy newEnemy = CreateEnemy(coords, enemyType, AIMCType);
-            newEnemy.HP = Hp;
-            return newEnemy;
+            if (Hp != 0)
+            {
+                Enemy newEnemy = CreateEnemy(coords, enemyType, AIMCType);
+                newEnemy.HP = Hp;
+                return newEnemy;
+            }
+            else return CreateEnemy(coords, enemyType, AIMCType);
         }
     }
 }
