@@ -109,8 +109,8 @@ namespace TankGame.Src
 
         private void InitializeWindow()
         {
-            Width = 600;
-            Height = 600;
+            Width = 800;
+            Height = 800;
 
             Window = new RenderWindow(new VideoMode(Width, Height), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
             Window.SetVerticalSyncEnabled(true);
@@ -119,8 +119,8 @@ namespace TankGame.Src
 
         private void InitializeView()
         {
-            ViewWidth = 600;
-            ViewHeight = 600;
+            ViewWidth = 800;
+            ViewHeight = 800;
 
             GameView = new View(new Vector2f(Width / 2, Height / 2), new Vector2f(Width, Height));
         }
