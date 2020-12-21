@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace TankGame.Src.Actors.Pawn.Enemy
+namespace TankGame.Src.Actors.Pawn.Enemies
 {
     abstract internal class Enemy : Pawn
     {

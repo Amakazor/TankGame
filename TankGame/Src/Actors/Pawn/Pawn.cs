@@ -11,8 +11,8 @@ namespace TankGame.Src.Actors.Pawn
     internal abstract class Pawn : TickableActor, IDestructible
     {
         public Direction Direction { get; protected set; }
-        public int HP { get; protected set; }
-        public MovementController MovementController { get; protected set; }
+        public int HP { get; set; }
+        public MovementController MovementController { get; set; }
         private Texture Texture { get; }
         private SpriteComponent PawnSprite { get; }
         public Vector2i Coords

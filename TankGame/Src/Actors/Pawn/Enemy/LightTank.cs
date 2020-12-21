@@ -2,13 +2,12 @@
 using TankGame.Src.Actors.Pawn.MovementControllers;
 using TankGame.Src.Data;
 
-namespace TankGame.Src.Actors.Pawn.Enemy
+namespace TankGame.Src.Actors.Pawn.Enemies
 {
     internal class LightTank : Enemy
     {
-        public LightTank(Vector2f position, Vector2f size, AIMovementController aIMovementController) : base(position, size, TextureManager.Instance.GetTexture(TextureType.Pawn, "enemy1"))
+        public LightTank(Vector2f position, Vector2f size) : base(position, size, TextureManager.Instance.GetTexture(TextureType.Pawn, "enemy1"))
         {
-            MovementController = aIMovementController;
             SetHealth(1);
         }
     }
