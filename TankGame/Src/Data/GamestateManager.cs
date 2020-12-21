@@ -10,6 +10,7 @@ namespace TankGame.Src.Data
 
         public long Points { get; private set; }
         public GameMap Map { private get; set; }
+        public Player Player { get; set; }
         public static GamestateManager Instance { get { return instance ?? (instance = new GamestateManager()); } }
 
         public void AddPoints(long points)

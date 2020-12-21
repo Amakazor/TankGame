@@ -110,7 +110,9 @@ namespace TankGame.Src.Data.Map
 
             Player = new Player(new Vector2f(((Coords.X * FieldsInLine) + float.Parse(playerData.Element("x").Value)) * 64.0F, ((Coords.Y * FieldsInLine) + float.Parse(playerData.Element("y").Value)) * 64.0F), new Vector2f(64.0F, 64.0F));
             Player.SetHealth((playerData.Element("hp") is null) ? Player.DefaultPlayerHP : int.Parse(playerData.Element("hp").Value));
-            
+
+            GamestateManager.Instance.Player = Player;
+
             Console.WriteLine("Loaded player in region at " + Coords.X + " " + Coords.Y);
         }
 
