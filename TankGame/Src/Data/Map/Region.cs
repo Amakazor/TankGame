@@ -7,6 +7,8 @@ using TankGame.Src.Actors.Fields;
 using System.IO;
 using System.Linq;
 using TankGame.Src.Actors.Pawn.Player;
+using TankGame.Src.Actors.Pawn.Enemies;
+using TankGame.Src.Actors.Pawn;
 
 namespace TankGame.Src.Data.Map
 {
@@ -55,6 +57,7 @@ namespace TankGame.Src.Data.Map
         public Vector2i Coords { get; }
         public int FieldsInLine { get; }
         private HashSet<Field> Fields { get; set; }
+        private HashSet<Enemy> Enemies { get; set; }
         private Player Player { get; set; }
         public bool Loaded { get; private set; }
 
@@ -76,6 +79,8 @@ namespace TankGame.Src.Data.Map
             if (!Loaded)
             {
                 LoadFields();
+                LoadEnemies();
+
                 if (ContainsPlayer())
                 {
                     LoadPlayer();
@@ -114,6 +119,19 @@ namespace TankGame.Src.Data.Map
             GamestateManager.Instance.Player = Player;
 
             Console.WriteLine("Loaded player in region at " + Coords.X + " " + Coords.Y);
+        }
+
+        private void LoadEnemies()
+        {
+            Console.WriteLine("Loading enemies in region at " + Coords.X + " " + Coords.Y + "...");
+            XDocument regionFile = XDocument.Load(RegionPathGenerator.GetRegionPath(Coords));
+
+            if (regionFile.Root.Element("spawns") != null && regionFile.Root.Element("spawns").Descendants("enemy") != null)
+            {
+                Enemies = new HashSet<Enemy>(from enemy in regionFile.Root.Element("spawns").Descendants("enemy") select EnemyFactory.CreateEnemy(new Vector2f((Coords.X * FieldsInLine) + int.Parse(enemy.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(enemy.Element("y").Value)), enemy.Element("type").Value, enemy.Element("aimc").Value));
+            } else Enemies = new HashSet<Enemy>();
+
+            Console.WriteLine("Loaded " + Enemies.Count + " enemies in region at " + Coords.X + " " + Coords.Y);
         }
 
         private XmlElement SerializeFields(XmlDocument xmlDocument)
