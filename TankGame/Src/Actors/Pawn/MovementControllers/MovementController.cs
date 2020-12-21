@@ -21,6 +21,8 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
 
         public virtual Direction DoAction(Direction currentDirection)
         {
+            Console.WriteLine("Trying to do action as " + Owner.GetType().ToString());
+
             if (CanDoAction())
             {
                 Direction newDirection = currentDirection;

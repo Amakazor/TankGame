@@ -1604,8 +1604,8 @@
   </fields>
   <spawns>
     <player>
-      <x>10</x>
-      <y>5</y>
+      <x>2</x>
+      <y>4</y>
     </player>
   </spawns>
 </region>

@@ -76,5 +76,15 @@ namespace TankGame.Src.Actors.Pawn
         {
             throw new NotImplementedException();
         }
+
+        public int GetHelth()
+        {
+            return HP;
+        }
+
+        public void SetHealth(int amount)
+        {
+            HP = amount;
+        }
     }
 }

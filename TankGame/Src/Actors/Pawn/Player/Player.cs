@@ -11,6 +11,8 @@ namespace TankGame.Src.Actors.Pawn.Player
 {
     internal class Player : Pawn
     {
+        public const int DefaultPlayerHP = 3;
+
         public Player(Vector2f position, Vector2f size) : base(position, size, TextureManager.Instance.GetTexture(TextureType.Pawn, "player1"))
         {
             MovementController = new PlayerMovementController(0.3F, this);
