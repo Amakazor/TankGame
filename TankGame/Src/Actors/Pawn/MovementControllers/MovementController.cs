@@ -8,10 +8,10 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
 {
     internal abstract class MovementController : ITickable
     {
-        private float Delay { get; }
-        private float Cooldown { get; set; }
+        protected float Delay { get; }
+        protected float Cooldown { get; set; }
         protected Tuple<string, string> NextAction { get; set; }
-        private Pawn Owner { get; }
+        protected Pawn Owner { get; }
 
         public MovementController(float delay, Pawn owner)
         {
