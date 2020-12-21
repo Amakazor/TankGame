@@ -1,6 +1,7 @@
 ﻿using SFML.System;
 using System;
 using TankGame.Src.Actors.Fields;
+using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 
@@ -27,7 +28,7 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
             {
                 Direction newDirection = currentDirection;
 
-                if (NextAction == KeyActionType.Shoot)
+                if (NextAction.Equals(KeyActionType.Shoot))
                 {
                     Shoot(currentDirection);
                 }
@@ -102,7 +103,8 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
 
         public void Shoot(Direction direction)
         {
-            throw new NotImplementedException();
+            if (this is AIMovementController) new EnemyProjectile(Owner.Position, direction);
+            else new PlayerProjectile(Owner.Position, direction);
         }
 
         public virtual bool CanDoAction()
