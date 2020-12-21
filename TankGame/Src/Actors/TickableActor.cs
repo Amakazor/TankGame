@@ -8,6 +8,7 @@ namespace TankGame.Src.Actors
     {
         public TickableActor(Vector2f position, Vector2f size) : base(position, size)
         {
+            RegisterTickable();
         }
 
         public void RegisterTickable()
@@ -21,5 +22,11 @@ namespace TankGame.Src.Actors
         }
 
         public abstract void Tick(float deltaTime);
+
+        public override void Dispose()
+        {
+            UnregisterTickable();
+            base.Dispose();
+        }
     }
 }

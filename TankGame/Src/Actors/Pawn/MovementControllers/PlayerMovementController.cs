@@ -1,4 +1,5 @@
 ﻿using System;
+using TankGame.Src.Data;
 using TankGame.Src.Events;
 
 namespace TankGame.Src.Actors.Pawn.MovementControllers
@@ -12,8 +13,11 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
 
         private void SetNextAction(object sender, EventArgs eventArgs)
         {
+            Console.WriteLine("Player movement controller received action");
+
             if (eventArgs is KeyActionEventArgs && ((KeyActionEventArgs)eventArgs).KeyActionType != null)
             {
+                Console.WriteLine("\tAction type: " + ((KeyActionEventArgs)eventArgs).KeyActionType.Item2);
                 NextAction = ((KeyActionEventArgs)eventArgs).KeyActionType;
             }
         }

@@ -34,7 +34,7 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
                     newDirection = Move(currentDirection);
                 }
 
-                NextAction = null;
+                ClearAction();
 
                 if (Cooldown == 0)
                 {
@@ -53,36 +53,46 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
 
             Direction nextDirection;
 
-            if (NextAction == KeyActionType.MoveDown)
+            Console.WriteLine("Trying to move " + Owner.GetType().ToString());
+
+            if (NextAction.Equals(KeyActionType.MoveDown))
             {
                 nextCoords = currentCoords + new Vector2i(0, 1);
                 nextDirection = Direction.Down;
             }
-            else if (NextAction == KeyActionType.MoveUp)
+            else if (NextAction.Equals(KeyActionType.MoveUp))
             {
                 nextCoords = currentCoords + new Vector2i(0, -1);
                 nextDirection = Direction.Up;
             }
-            else if (NextAction == KeyActionType.MoveLeft)
+            else if (NextAction.Equals(KeyActionType.MoveLeft))
             {
                 nextCoords = currentCoords + new Vector2i(-1, 0);
                 nextDirection = Direction.Left;
             }
-            else if (NextAction == KeyActionType.MoveRight)
+            else if (NextAction.Equals(KeyActionType.MoveRight))
             {
                 nextCoords = currentCoords + new Vector2i(1, 0);
                 nextDirection = Direction.Right;
             }
             else return currentDirection;
 
+            Console.WriteLine("\tCan move, valid action");
+
             if (nextCoords.X > -1 && nextCoords.Y > -1)
             {
+                Console.WriteLine("\tCan move, valid coords");
                 FieldData fieldData = GamestateManager.Instance.GetMap().GetFieldDataFromRegion(nextCoords);
 
                 if (fieldData.IsTraversible)
                 {
+                    Console.WriteLine("\tCan move, field traversible");
+                    Console.WriteLine("\tMoving");
+
                     Owner.Coords = nextCoords;
                     SetCooldown(fieldData.SpeedModifier);
+
+                    Console.WriteLine("\tOwner " + Owner.GetType().ToString() + " was moved to: " + Owner.Coords.X + " " + Owner.Coords.Y);
                 }
             }
             return nextDirection;
@@ -96,6 +106,11 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
         public virtual bool CanDoAction()
         {
             return Cooldown == 0 && NextAction != null && Owner.IsAlive();
+        }
+
+        public void ClearAction()
+        {
+            NextAction = null;
         }
 
         protected void SetCooldown(float multiplier)

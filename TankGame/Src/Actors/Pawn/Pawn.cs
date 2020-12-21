@@ -14,7 +14,7 @@ namespace TankGame.Src.Actors.Pawn
         public int HP { get; protected set; }
         public MovementController MovementController { get; protected set; }
         private Texture Texture { get; }
-        private SpriteComponent Surface { get; }
+        private SpriteComponent PawnSprite { get; }
         public Vector2i Coords
         {
             get
@@ -31,24 +31,50 @@ namespace TankGame.Src.Actors.Pawn
         public Pawn(Vector2f position, Vector2f size, Texture texture) : base(position, size)
         {
             Texture = texture;
-            Surface = new SpriteComponent(Position, Size, this, Texture, new Color(255, 255, 255, 255));
+            PawnSprite = new SpriteComponent(Position, Size, this, Texture, new Color(255, 255, 255, 255));
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
         {
-            return new HashSet<IRenderComponent> { Surface };
+            return new HashSet<IRenderComponent> { PawnSprite };
         }
 
         public override void Tick(float deltaTime)
         {
-            if (MovementController != null && MovementController.CanDoAction())
+            if (MovementController != null)
             {
-                MovementController.DoAction(Direction);
+                if (MovementController.CanDoAction())
+                {
+                    Direction = MovementController.DoAction(Direction);
+                    UpdatePosition();
+                }
+                else
+                {
+                    MovementController.ClearAction();
+                }
+
+                MovementController.Tick(deltaTime);
             }
         }
 
-        public abstract bool IsAlive();
-        public abstract void OnDestroy(Actor other);
-        public abstract void OnHit(Actor other);
+        protected virtual void UpdatePosition()
+        {
+            PawnSprite.SetPosition(Position);
+        }
+
+        public bool IsAlive()
+        {
+            return HP > 0;
+        }
+
+        public void OnDestroy(Actor other)
+        {
+            Dispose();
+        }
+
+        public void OnHit(Actor other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

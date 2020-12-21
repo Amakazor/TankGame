@@ -24,9 +24,12 @@ namespace TankGame.Src.Events
 
         public void OnKeyPress(object sender, KeyEventArgs eventArgs)
         {
+            Console.WriteLine("Key pressed: " + eventArgs.Code);
+
             Tuple<string, string> keyActionType = KeyManager.Instance.GetAction(eventArgs.Code);
             if (keyActionType != null)
             {
+                Console.WriteLine("Action done: " + keyActionType.Item2);
                 MessageBus.Instance.PostEvent(MessageType.KeyAction, sender, new KeyActionEventArgs(keyActionType));
             }
             MessageBus.Instance.PostEvent(MessageType.KeyPressed, sender, eventArgs);
@@ -35,6 +38,10 @@ namespace TankGame.Src.Events
         public void OnClick(object sender, MouseButtonEventArgs eventArgs)
         {
             Vector2f point = Window.MapPixelToCoords(new Vector2i(eventArgs.X, eventArgs.Y));
+
+            Console.WriteLine("Mouse clicked at:");
+            Console.WriteLine("\tScreen coordinates: " + eventArgs.X + " " + eventArgs.Y);
+            Console.WriteLine("\tGlobal coordinates: " + point.X + " " + point.Y);
 
             foreach (IClickable clickable in Clickables)
             {
