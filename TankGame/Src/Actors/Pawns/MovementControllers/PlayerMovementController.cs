@@ -1,4 +1,5 @@
 ﻿using System;
+using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 
@@ -25,6 +26,12 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 Console.WriteLine("\tAction type: " + ((KeyActionEventArgs)eventArgs).KeyActionType.Item2);
                 NextAction = ((KeyActionEventArgs)eventArgs).KeyActionType;
             }
+        }
+
+        public override void Shoot(Direction direction)
+        {
+            base.Shoot(direction);
+            new PlayerProjectile(Owner.Position, direction);
         }
     }
 }

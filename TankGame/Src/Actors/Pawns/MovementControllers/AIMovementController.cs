@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography.X509Certificates;
+using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
@@ -55,5 +56,11 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         }
 
         protected abstract void DecideOnNextAction();
+
+        public override void Shoot(Direction direction)
+        {
+            base.Shoot(direction);
+            new EnemyProjectile(Owner.Position, direction);
+        }
     }
 }

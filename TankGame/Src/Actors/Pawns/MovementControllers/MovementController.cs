@@ -119,11 +119,8 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             return nextDirection;
         }
 
-        public void Shoot(Direction direction)
+        public virtual void Shoot(Direction direction)
         {
-            if (this is AIMovementController) new EnemyProjectile(Owner.Position, direction);
-            else new PlayerProjectile(Owner.Position, direction);
-
             if (Cooldown == 0)
             {
                 Cooldown = Delay;
@@ -162,12 +159,12 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         public void RegisterTickable()
         {
-            MessageBus.Instance.PostEvent(MessageType.RegisterTickable, this, new EventArgs());
+            
         }
 
         public void UnregisterTickable()
         {
-            MessageBus.Instance.PostEvent(MessageType.UnregisterTickable, this, new EventArgs());
+            
         }
     }
 }
