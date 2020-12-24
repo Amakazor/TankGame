@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using TankGame.Src.Actors;
+using TankGame.Src.Actors.Pawn;
 
 namespace TankGame.Src.Gui.RenderComponents
 {
@@ -23,6 +24,8 @@ namespace TankGame.Src.Gui.RenderComponents
             Size = size;
 
             SetScaleFromSize(size);
+
+            Sprite.Origin = size / 2;
         }
 
         private void SetScaleFromSize(Vector2f size)
@@ -47,6 +50,18 @@ namespace TankGame.Src.Gui.RenderComponents
         public void SetPosition(Vector2f position)
         {
             Sprite.Position = position;
+        }
+
+        public void SetDirection(Direction direction)
+        {
+            Sprite.Rotation = direction switch
+            {
+                Direction.Up => 180,
+                Direction.Down => 0,
+                Direction.Left => 90,
+                Direction.Right => 270,
+                _ => 0
+            };
         }
 
         public IRenderable GetActor()

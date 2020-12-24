@@ -11,6 +11,7 @@ namespace TankGame.Src.Actors.Projectiles
         public EnemyProjectile(Vector2f position, Direction direction) : base(position, direction)
         {
             ProjectileComponent = new SpriteComponent(Position, Size, this, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk1"), new Color(255, 255, 255, 255));
+            ProjectileComponent.SetDirection(Direction);
         }
     }
 }

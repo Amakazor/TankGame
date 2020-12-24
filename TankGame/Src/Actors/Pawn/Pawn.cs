@@ -60,6 +60,7 @@ namespace TankGame.Src.Actors.Pawn
         protected virtual void UpdatePosition()
         {
             PawnSprite.SetPosition(Position);
+            PawnSprite.SetDirection(Direction);
         }
 
         public bool IsAlive()
