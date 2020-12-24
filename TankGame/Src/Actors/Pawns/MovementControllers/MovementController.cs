@@ -99,12 +99,6 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                         Console.WriteLine("\tOwner " + Owner.GetType().ToString() + " was moved to: " + Owner.Coords.X + " " + Owner.Coords.Y);
                     }
                 }
-
-                if (Cooldown == 0)
-                {
-                    Cooldown = Delay;
-                }
-
                 ClearAction();
             }
             else
