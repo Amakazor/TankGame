@@ -1605,25 +1605,7 @@
   <spawns>
     <player>
       <x>2</x>
-      <y>2</y>
+      <y>19</y>
     </player>
-    <enemy>
-      <type>light</type>
-      <aimc>random</aimc>
-      <x>4</x>
-      <y>4</y>
-    </enemy>
-    <enemy>
-      <type>medium</type>
-      <aimc>random</aimc>
-      <x>4</x>
-      <y>5</y>
-    </enemy>
-      <enemy>
-      <type>heavy</type>
-      <aimc>random</aimc>
-      <x>4</x>
-      <y>6</y>
-    </enemy>
   </spawns>
 </region>

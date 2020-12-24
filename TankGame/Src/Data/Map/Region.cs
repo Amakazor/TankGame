@@ -168,7 +168,7 @@ namespace TankGame.Src.Data.Map
 
         public bool HasField(Vector2i mapFieldCoords)
         {
-            return Coords.X * FieldsInLine <= mapFieldCoords.X && Coords.Y * FieldsInLine <= mapFieldCoords.Y && Coords.X + 1 * FieldsInLine > mapFieldCoords.X && Coords.Y + 1 * FieldsInLine > mapFieldCoords.Y;
+            return Coords.X * FieldsInLine <= mapFieldCoords.X && Coords.Y * FieldsInLine <= mapFieldCoords.Y && (Coords.X + 1) * FieldsInLine > mapFieldCoords.X && (Coords.Y + 1) * FieldsInLine > mapFieldCoords.Y;
         }
 
         public Field GetFieldAtMapCoords(Vector2i mapFieldCoords)

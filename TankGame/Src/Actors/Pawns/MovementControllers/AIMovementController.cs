@@ -12,7 +12,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         public override Direction DoAction(Direction currentDirection)
         {
-            if (NextAction == null)
+            if (NextAction == null || CanSeePlayerInLine())
             {
                 DecideOnNextAction();
             }
