@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using TankGame.Src.Actors;
-using TankGame.Src.Actors.Pawn;
+using TankGame.Src.Actors.Pawns;
 
 namespace TankGame.Src.Gui.RenderComponents
 {

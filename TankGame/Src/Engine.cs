@@ -4,7 +4,7 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors;
-using TankGame.Src.Actors.Pawn.Player;
+using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
 using TankGame.Src.Events;

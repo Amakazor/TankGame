@@ -2,11 +2,10 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using TankGame.Src.Actors.Pawn.MovementControllers;
+using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.Pawn
+namespace TankGame.Src.Actors.Pawns
 {
     internal abstract class Pawn : TickableActor, IDestructible
     {

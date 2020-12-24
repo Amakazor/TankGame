@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TankGame.Src.Actors.Pawn.Enemies;
-using TankGame.Src.Actors.Pawn.MovementControllers;
+using TankGame.Src.Actors.Pawns.Enemies;
+using TankGame.Src.Actors.Pawns.MovementControllers;
 
-namespace TankGame.Src.Actors.Pawn
+namespace TankGame.Src.Actors.Pawns
 {
     internal static class EnemyFactory
     {

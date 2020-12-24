@@ -1,6 +1,6 @@
 ﻿using TankGame.Src.Data;
 
-namespace TankGame.Src.Actors.Pawn.MovementControllers
+namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     class RandomAIMovementController : AIMovementController
     {

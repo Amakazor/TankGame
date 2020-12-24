@@ -1,6 +1,6 @@
 ﻿using SFML.System;
 using System.Collections.Generic;
-using TankGame.Src.Actors.Pawn;
+using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Actors.Projectiles

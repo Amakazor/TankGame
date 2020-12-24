@@ -5,7 +5,7 @@ using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 
-namespace TankGame.Src.Actors.Pawn.MovementControllers
+namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     internal abstract class MovementController : ITickable
     {
@@ -85,15 +85,19 @@ namespace TankGame.Src.Actors.Pawn.MovementControllers
             if (nextCoords.X > -1 && nextCoords.Y > -1)
             {
                 Console.WriteLine("\tCan move, valid coords");
-                FieldData fieldData = GamestateManager.Instance.GetMap().GetFieldDataFromRegion(nextCoords);
+                Field nextField = GamestateManager.Instance.GetMap().GetFieldFromRegion(nextCoords);
+                Field prevField = GamestateManager.Instance.GetMap().GetFieldFromRegion(currentCoords);
 
-                if (fieldData.IsTraversible)
+                if (nextField.IsTraversible())
                 {
                     Console.WriteLine("\tCan move, field traversible");
                     Console.WriteLine("\tMoving");
 
                     Owner.Coords = nextCoords;
-                    SetCooldown(fieldData.SpeedModifier);
+                    nextField.PawnOnField = Owner;
+                    prevField.PawnOnField = null;
+
+                    SetCooldown(nextField.FieldData.SpeedModifier);
 
                     Console.WriteLine("\tOwner " + Owner.GetType().ToString() + " was moved to: " + Owner.Coords.X + " " + Owner.Coords.Y);
                 }

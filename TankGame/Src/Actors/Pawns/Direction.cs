@@ -1,4 +1,4 @@
-﻿namespace TankGame.Src.Actors.Pawn
+﻿namespace TankGame.Src.Actors.Pawns
 {
     internal enum Direction
     {

@@ -6,9 +6,9 @@ using System.Xml.Linq;
 using TankGame.Src.Actors.Fields;
 using System.IO;
 using System.Linq;
-using TankGame.Src.Actors.Pawn.Player;
-using TankGame.Src.Actors.Pawn.Enemies;
-using TankGame.Src.Actors.Pawn;
+using TankGame.Src.Actors.Pawns.Player;
+using TankGame.Src.Actors.Pawns.Enemies;
+using TankGame.Src.Actors.Pawns;
 
 namespace TankGame.Src.Data.Map
 {
@@ -56,7 +56,7 @@ namespace TankGame.Src.Data.Map
     {
         public Vector2i Coords { get; }
         public int FieldsInLine { get; }
-        private HashSet<Field> Fields { get; set; }
+        private List<Field> Fields { get; set; }
         private HashSet<Enemy> Enemies { get; set; }
         private Player Player { get; set; }
         public bool Loaded { get; private set; }
@@ -103,7 +103,7 @@ namespace TankGame.Src.Data.Map
             XDocument regionFile = XDocument.Load(RegionPathGenerator.GetRegionPath(Coords));
             int i = 0;
 
-            Fields = new HashSet<Field>(from field in regionFile.Root.Element("fields").Descendants("field") select new Field(new Vector2i((Coords.X * FieldsInLine) + (i % FieldsInLine), (Coords.Y * FieldsInLine) + (i++ / FieldsInLine)), FieldType.FieldTypes[field.Element("type").Value], TextureManager.Instance.GetTexture(TextureType.Field, field.Element("texture").Value)));
+            Fields = new List<Field>(from field in regionFile.Root.Element("fields").Descendants("field") select new Field(new Vector2i((Coords.X * FieldsInLine) + (i % FieldsInLine), (Coords.Y * FieldsInLine) + (i++ / FieldsInLine)), FieldType.FieldTypes[field.Element("type").Value], TextureManager.Instance.GetTexture(TextureType.Field, field.Element("texture").Value)));
             Console.WriteLine("Loaded "+ i + " fields in region at " + Coords.X + " " + Coords.Y);
         }
 
@@ -162,23 +162,33 @@ namespace TankGame.Src.Data.Map
             }
         }
 
-        public FieldData GetFieldData(Vector2i fieldCoords)
+        public bool HasField(Vector2i mapFieldCoords)
         {
-            for (int i = 0; i < FieldsInLine * FieldsInLine; i++)
-            {
-                Field field = Fields.ElementAt(i);
-
-                if (field.Coords == fieldCoords)
-                {
-                    return field.FieldData;
-                }
-            }
-            throw new ArgumentException("No field at those coordinates", "fieldCoords");
+            return Coords.X * FieldsInLine <= mapFieldCoords.X && Coords.Y * FieldsInLine <= mapFieldCoords.Y && Coords.X + 1 * FieldsInLine > mapFieldCoords.X && Coords.Y + 1 * FieldsInLine > mapFieldCoords.Y;
         }
 
-        public bool HasField(Vector2i fieldCoords)
+        public Field GetFieldAtMapCoords(Vector2i mapFieldCoords)
         {
-            return Coords.X * FieldsInLine <= fieldCoords.X && Coords.Y * FieldsInLine <= fieldCoords.Y && Coords.X + 1 * FieldsInLine > fieldCoords.X && Coords.Y + 1 * FieldsInLine > fieldCoords.Y;
+            if (HasField(mapFieldCoords))
+            {
+                return GetFieldAtIndex(ConvertRegionFieldCoordsToFieldIndex(ConvertMapCoordsToRegionFieldCoords(mapFieldCoords)));
+            }
+            else return null;
+        }
+
+        private Field GetFieldAtIndex(int index)
+        {
+            return Fields[index];
+        }
+
+        private Vector2i ConvertMapCoordsToRegionFieldCoords(Vector2i mapFieldCoords)
+        {
+            return new Vector2i(mapFieldCoords.X % FieldsInLine, mapFieldCoords.Y % FieldsInLine);
+        }
+
+        private int ConvertRegionFieldCoordsToFieldIndex(Vector2i regionFieldCoords)
+        {
+            return regionFieldCoords.X * FieldsInLine + regionFieldCoords.Y;
         }
     }
 }

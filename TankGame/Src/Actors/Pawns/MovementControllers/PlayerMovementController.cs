@@ -2,7 +2,7 @@
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 
-namespace TankGame.Src.Actors.Pawn.MovementControllers
+namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     class PlayerMovementController : MovementController
     {

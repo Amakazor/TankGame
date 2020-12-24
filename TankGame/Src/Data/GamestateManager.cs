@@ -1,5 +1,5 @@
 ﻿using System;
-using TankGame.Src.Actors.Pawn.Player;
+using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Data.Map;
 
 namespace TankGame.Src.Data

@@ -1,8 +1,8 @@
 ﻿using SFML.System;
-using TankGame.Src.Actors.Pawn.MovementControllers;
+using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Data;
 
-namespace TankGame.Src.Actors.Pawn.Enemies
+namespace TankGame.Src.Actors.Pawns.Enemies
 {
     internal class HeavyTank : Enemy
     {

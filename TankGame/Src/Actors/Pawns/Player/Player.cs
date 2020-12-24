@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TankGame.Src.Actors.Pawn.MovementControllers;
+using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.Pawn.Player
+namespace TankGame.Src.Actors.Pawns.Player
 {
     internal class Player : Pawn
     {

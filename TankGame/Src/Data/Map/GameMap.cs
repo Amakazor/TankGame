@@ -39,7 +39,7 @@ namespace TankGame.Src.Data.Map
             }
         }
 
-        public FieldData GetFieldDataFromRegion(Vector2i fieldCoords)
+        public Field GetFieldFromRegion(Vector2i fieldCoords)
         {
             for (int i = 0; i < Regions.Count; i++)
             {
@@ -47,7 +47,7 @@ namespace TankGame.Src.Data.Map
 
                 if (region.HasField(fieldCoords))
                 {
-                    return region.GetFieldData(fieldCoords);
+                    return region.GetFieldAtMapCoords(fieldCoords);
                 }
             }
 

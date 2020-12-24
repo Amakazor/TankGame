@@ -3,6 +3,7 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Data;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -14,6 +15,7 @@ namespace TankGame.Src.Actors.Fields
         public FieldData FieldData { get; }
         private Texture Texture { get; }
         private SpriteComponent Surface { get; }
+        public Pawn PawnOnField { get; set; }
 
         public Field(Vector2i coords, FieldData fieldData, Texture texture) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
         {
@@ -26,6 +28,11 @@ namespace TankGame.Src.Actors.Fields
         public override HashSet<IRenderComponent> GetRenderComponents()
         {
             return new HashSet<IRenderComponent> { Surface };
+        }
+
+        public bool IsTraversible()
+        {
+            return FieldData.IsTraversible && PawnOnField == null;
         }
 
         internal XmlElement SerializeToXML(XmlDocument xmlDocument)

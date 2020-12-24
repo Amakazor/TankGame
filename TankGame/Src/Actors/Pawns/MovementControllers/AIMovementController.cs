@@ -2,7 +2,7 @@
 using System.Security.Cryptography.X509Certificates;
 using TankGame.Src.Data;
 
-namespace TankGame.Src.Actors.Pawn.MovementControllers
+namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     internal abstract class AIMovementController : MovementController
     {
