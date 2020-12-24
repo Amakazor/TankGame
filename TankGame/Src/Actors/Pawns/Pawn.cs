@@ -49,7 +49,10 @@ namespace TankGame.Src.Actors.Pawns
                 }
                 else
                 {
-                    MovementController.ClearAction();
+                    if (MovementController is PlayerMovementController)
+                    {
+                        MovementController.ClearAction();
+                    }
                 }
 
                 MovementController.Tick(deltaTime);

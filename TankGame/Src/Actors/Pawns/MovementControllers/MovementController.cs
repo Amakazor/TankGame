@@ -37,13 +37,6 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                     newDirection = Move(currentDirection);
                 }
 
-                ClearAction();
-
-                if (Cooldown == 0)
-                {
-                    Cooldown = Delay;
-                }
-
                 return newDirection;
             }
             else return currentDirection;
@@ -82,26 +75,47 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
             Console.WriteLine("\tCan move, valid action");
 
-            if (nextCoords.X > -1 && nextCoords.Y > -1)
+            if (nextDirection == currentDirection)
             {
-                Console.WriteLine("\tCan move, valid coords");
-                Field nextField = GamestateManager.Instance.GetMap().GetFieldFromRegion(nextCoords);
-                Field prevField = GamestateManager.Instance.GetMap().GetFieldFromRegion(currentCoords);
+                Console.WriteLine("\tCorrect direction, moving");
 
-                if (nextField.IsTraversible())
+                if (nextCoords.X > -1 && nextCoords.Y > -1)
                 {
-                    Console.WriteLine("\tCan move, field traversible");
-                    Console.WriteLine("\tMoving");
+                    Console.WriteLine("\tCan move, valid coords");
+                    Field nextField = GamestateManager.Instance.GetMap().GetFieldFromRegion(nextCoords);
+                    Field prevField = GamestateManager.Instance.GetMap().GetFieldFromRegion(currentCoords);
 
-                    Owner.Coords = nextCoords;
-                    nextField.PawnOnField = Owner;
-                    prevField.PawnOnField = null;
+                    if (nextField.IsTraversible())
+                    {
+                        Console.WriteLine("\tCan move, field traversible");
+                        Console.WriteLine("\tMoving");
 
-                    SetCooldown(nextField.FieldData.SpeedModifier);
+                        Owner.Coords = nextCoords;
+                        nextField.PawnOnField = Owner;
+                        prevField.PawnOnField = null;
 
-                    Console.WriteLine("\tOwner " + Owner.GetType().ToString() + " was moved to: " + Owner.Coords.X + " " + Owner.Coords.Y);
+                        SetCooldown(nextField.FieldData.SpeedModifier);
+
+                        Console.WriteLine("\tOwner " + Owner.GetType().ToString() + " was moved to: " + Owner.Coords.X + " " + Owner.Coords.Y);
+                    }
+                }
+
+                if (Cooldown == 0)
+                {
+                    Cooldown = Delay;
+                }
+
+                ClearAction();
+            }
+            else
+            {
+                Console.WriteLine("\tIncorrect direction, rotating");
+                if (Cooldown == 0)
+                {
+                    Cooldown = Delay / 4;
                 }
             }
+
             return nextDirection;
         }
 
@@ -109,6 +123,13 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (this is AIMovementController) new EnemyProjectile(Owner.Position, direction);
             else new PlayerProjectile(Owner.Position, direction);
+
+            if (Cooldown == 0)
+            {
+                Cooldown = Delay;
+            }
+
+            ClearAction();
         }
 
         public virtual bool CanDoAction()
