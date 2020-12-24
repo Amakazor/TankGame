@@ -3,8 +3,12 @@ using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TankGame.Src.Actors;
+using TankGame.Src.Actors.Fields;
+using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Player;
+using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
 using TankGame.Src.Events;
@@ -100,15 +104,42 @@ namespace TankGame.Src
 
             Renderables.AddDeleteRange(RenderablesToAdd, RenderablesToDelete);
 
-            foreach (IRenderable renderable in Renderables)
-            {
-                foreach (IRenderComponent renderComponent in renderable.GetRenderComponents())
-                {
-                    Window.Draw(renderComponent.GetShape());
-                }
-            }
+            PrepareRenderQueue().ForEach((List<IRenderable> RenderLayer) 
+                => RenderLayer.ForEach((IRenderable renderable) 
+                    => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent) 
+                        => Window.Draw(renderComponent.GetShape()))));
 
             Window.Display();
+        }
+
+        private List<List<IRenderable>> PrepareRenderQueue()
+        {
+            List<List<IRenderable>> RenderQueue = new List<List<IRenderable>>
+            {
+                new List<IRenderable>(),
+                new List<IRenderable>(),
+                new List<IRenderable>()
+            };
+
+            Renderables.ToList().ForEach((IRenderable renderable) =>
+            {
+                switch (renderable)
+                {
+                    case Projectile _:
+                        RenderQueue[2].Add(renderable);
+                        break;
+                    case Pawn _:
+                        RenderQueue[1].Add(renderable);
+                        break;
+                    case Field _:
+                        RenderQueue[0].Add(renderable);
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            return RenderQueue;
         }
 
         private void StartGame(bool isNewGame)
