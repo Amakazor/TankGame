@@ -94,7 +94,20 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                         nextField.PawnOnField = Owner;
                         prevField.PawnOnField = null;
 
-                        SetCooldown(nextField.FieldData.SpeedModifier);
+                        if (nextField.GameObject != null && nextField.GameObject.TraversibilityData.IsTraversible)
+                        {
+                            SetCooldown(nextField.TraversabilityData.SpeedModifier, nextField.GameObject.TraversibilityData.SpeedModifier);
+
+                            if (nextField.GameObject.DestructabilityData.DestroyOnEntry)
+                            {
+                                nextField.GameObject.Dispose();
+                                nextField.GameObject = null;
+                            }
+                        }
+                        else
+                        {
+                            SetCooldown(nextField.TraversabilityData.SpeedModifier);
+                        }
 
                         Console.WriteLine("\tOwner " + Owner.GetType().ToString() + " was moved to: " + Owner.Coords.X + " " + Owner.Coords.Y);
                     }
@@ -136,6 +149,11 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         protected void SetCooldown(float multiplier)
         {
             Cooldown = Delay * multiplier;
+        }
+        
+        protected void SetCooldown(float multiplier, float multiplier2)
+        {
+            Cooldown = Delay * multiplier * multiplier2;
         }
 
         public void Tick(float deltaTime)

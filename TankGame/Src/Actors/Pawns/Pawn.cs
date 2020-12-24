@@ -80,7 +80,7 @@ namespace TankGame.Src.Actors.Pawns
             throw new NotImplementedException();
         }
 
-        public int GetHelth()
+        public int GetHealth()
         {
             return HP;
         }
@@ -88,6 +88,11 @@ namespace TankGame.Src.Actors.Pawns
         public void SetHealth(int amount)
         {
             HP = amount;
+        }
+
+        public bool IsDestructible()
+        {
+            return true;
         }
     }
 }

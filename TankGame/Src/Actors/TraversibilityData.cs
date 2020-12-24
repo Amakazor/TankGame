@@ -1,11 +1,11 @@
-﻿namespace TankGame.Src.Actors.Fields
+﻿namespace TankGame.Src.Actors
 {
-    internal struct FieldData
+    internal struct TraversibilityData
     {
         public float SpeedModifier { get; }
         public bool IsTraversible { get; }
 
-        public FieldData(float speedModifier, bool isTraversible)
+        public TraversibilityData(float speedModifier, bool isTraversible)
         {
             SpeedModifier = speedModifier;
             IsTraversible = isTraversible;

@@ -9,6 +9,8 @@ using System.Linq;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns;
+using TankGame.Src.Actors.GameObjects;
+using SFML.Graphics;
 
 namespace TankGame.Src.Data.Map
 {
@@ -101,10 +103,40 @@ namespace TankGame.Src.Data.Map
         {
             Console.WriteLine("Loading fields in region at " + Coords.X + " " + Coords.Y + "...");
             XDocument regionFile = XDocument.Load(RegionPathGenerator.GetRegionPath(Coords));
-            int i = 0;
+            int x = 0;
+            int y = 0;
 
-            Fields = new List<Field>(from field in regionFile.Root.Element("fields").Descendants("field") select new Field(new Vector2i((Coords.X * FieldsInLine) + (i % FieldsInLine), (Coords.Y * FieldsInLine) + (i++ / FieldsInLine)), FieldType.FieldTypes[field.Element("type").Value], TextureManager.Instance.GetTexture(TextureType.Field, field.Element("texture").Value)));
-            Console.WriteLine("Loaded "+ i + " fields in region at " + Coords.X + " " + Coords.Y);
+            Fields = new List<Field>();
+
+            regionFile.Root.Element("fields").Descendants("field").ToList().ForEach((XElement fieldElement) => {
+                Fields.Add(new Field(
+                    new Vector2i((Coords.X * FieldsInLine) + x, (Coords.Y * FieldsInLine) + y),
+                    FieldType.FieldTypes[fieldElement.Element("type").Value],
+                    TextureManager.Instance.GetTexture(TextureType.Field, fieldElement.Element("texture").Value),
+                    fieldElement.Element("type").Value,
+                    (fieldElement.Element("object") != null && fieldElement.Element("object").Value != null) 
+                        ? new GameObject(
+                            new Vector2i((Coords.X * FieldsInLine) + x, (Coords.Y * FieldsInLine) + y),
+                            GameObjectType.GameObjectTypes[fieldElement.Element("object").Element("type").Value],
+                            TextureManager.Instance.GetTexture(TextureType.GameObject, fieldElement.Element("object").Element("type").Value),
+                            fieldElement.Element("object").Element("type").Value,
+                            (fieldElement.Element("object").Element("hp") != null && fieldElement.Element("object").Element("hp").Value != null)
+                                ? int.Parse(fieldElement.Element("object").Element("hp").Value)
+                                : 0)
+                        : null));
+
+                if (y == 19)
+                {
+                    y = 0;
+                    x++;
+                }
+                else
+                {
+                    y++;
+                }
+            });
+
+            Console.WriteLine("Loaded "+ x * y + " fields in region at " + Coords.X + " " + Coords.Y);
         }
 
         private void LoadPlayer()

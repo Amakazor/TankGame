@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TankGame.Src.Actors;
 using TankGame.Src.Actors.Fields;
+using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Projectiles;
@@ -118,6 +119,7 @@ namespace TankGame.Src
             {
                 new List<IRenderable>(),
                 new List<IRenderable>(),
+                new List<IRenderable>(),
                 new List<IRenderable>()
             };
 
@@ -126,9 +128,12 @@ namespace TankGame.Src
                 switch (renderable)
                 {
                     case Projectile _:
-                        RenderQueue[2].Add(renderable);
+                        RenderQueue[3].Add(renderable);
                         break;
                     case Pawn _:
+                        RenderQueue[2].Add(renderable);
+                        break;
+                    case GameObject _:
                         RenderQueue[1].Add(renderable);
                         break;
                     case Field _:

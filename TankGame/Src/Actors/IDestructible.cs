@@ -5,7 +5,8 @@
         public void OnHit(Actor other);
         public void OnDestroy(Actor other);
         public bool IsAlive();
-        public int GetHelth();
+        public int GetHealth();
         public void SetHealth(int amount);
+        bool IsDestructible();
     }
 }
