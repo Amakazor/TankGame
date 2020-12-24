@@ -118,6 +118,8 @@ namespace TankGame.Src.Data.Map
 
             GamestateManager.Instance.Player = Player;
 
+            GetFieldAtMapCoords(Player.Coords).PawnOnField = Player;
+
             Console.WriteLine("Loaded player in region at " + Coords.X + " " + Coords.Y);
         }
 
@@ -130,6 +132,8 @@ namespace TankGame.Src.Data.Map
             {
                 Enemies = new HashSet<Enemy>(from enemy in regionFile.Root.Element("spawns").Descendants("enemy") select EnemyFactory.CreateEnemy(new Vector2f((Coords.X * FieldsInLine) + int.Parse(enemy.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(enemy.Element("y").Value)), enemy.Element("type").Value, enemy.Element("aimc").Value));
             } else Enemies = new HashSet<Enemy>();
+
+            Enemies.ToList().ForEach((Enemy enemy) => { GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy; });
 
             Console.WriteLine("Loaded " + Enemies.Count + " enemies in region at " + Coords.X + " " + Coords.Y);
         }
