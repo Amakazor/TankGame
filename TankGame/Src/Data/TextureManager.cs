@@ -20,19 +20,13 @@ namespace TankGame.Src.Data
 
         public static TextureManager Instance { get { return instance ?? (instance = new TextureManager()); } }
 
-        public static void Initialize()
-        {
-            _ = Instance;
-        }
+        public static void Initialize() => _ = Instance;
 
         public Texture GetTexture(string textureType, string name)
         {
             if (TexturesDictionary.ContainsKey(textureType))
             {
-                if (TexturesDictionary[textureType].ContainsKey(name))
-                {
-                    return TexturesDictionary[textureType][name];
-                }
+                if (TexturesDictionary[textureType].ContainsKey(name)) return TexturesDictionary[textureType][name];
                 else throw new ArgumentException("Couldn not find texture with this name", "name");
             }
             else throw new ArgumentException("There are no textures of this type", "textureType");
@@ -44,10 +38,7 @@ namespace TankGame.Src.Data
             {
                 foreach (KeyValuePair<string, Texture> StringTexturePair in TexturesDictionary[textureType])
                 {
-                    if (StringTexturePair.Value == texture)
-                    {
-                        return StringTexturePair.Key;
-                    }
+                    if (StringTexturePair.Value == texture) return StringTexturePair.Key;
                 }
 
                 throw new ArgumentException("Could not find given texture", "texture");

@@ -13,41 +13,26 @@ namespace TankGame.Src.Actors.GameObjects
         public DestructabilityData DestructabilityData { get; private set; }
         private SpriteComponent ObjectSprite { get; set; }
         private string Type { get; }
+        public int Health { get => DestructabilityData.Health; set => DestructabilityData = new DestructabilityData(value, DestructabilityData.IsDestructible, DestructabilityData.DestroyOnEntry); }
+        public bool IsTraversible => TraversibilityData.IsTraversible;
+        public bool IsDestructible => DestructabilityData.IsDestructible;
+        public bool IsDestructibleOrTraversible => IsDestructible || IsTraversible;
+        public bool IsAlive => Health > 0;
 
         public GameObject(Vector2i coords, Tuple<TraversibilityData, DestructabilityData> gameObjectType, Texture texture, string type, int hp) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
         {
             TraversibilityData = gameObjectType.Item1;
             DestructabilityData = gameObjectType.Item2;
-
             Type = type;
 
+            if (hp > 0) Health = hp;
+
             ObjectSprite = new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
-
-            if (hp > 0)
-            {
-                SetHealth(hp);
-            }
-        }
-
-
-        public int GetHealth()
-        {
-            return DestructabilityData.HP;
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
         {
             return new HashSet<IRenderComponent> { ObjectSprite };
-        }
-
-        public bool IsDestructible()
-        {
-            return DestructabilityData.IsDestructible;
-        }
-
-        public bool IsAlive()
-        {
-            return DestructabilityData.HP > 0;
         }
 
         public void OnDestroy(Actor other)
@@ -60,16 +45,6 @@ namespace TankGame.Src.Actors.GameObjects
             throw new NotImplementedException();
         }
 
-        public void SetHealth(int amount)
-        {
-            DestructabilityData = new DestructabilityData(amount, DestructabilityData.IsDestructible, DestructabilityData.DestroyOnEntry);
-        }
-
-        public bool IsDestructibleOrTraversible()
-        {
-            return IsDestructible() || TraversibilityData.IsTraversible;
-        }
-
         internal XmlElement SerializeToXML(XmlDocument xmlDocument)
         {
             XmlElement objectElement = xmlDocument.CreateElement("object");
@@ -77,7 +52,7 @@ namespace TankGame.Src.Actors.GameObjects
             XmlElement hpElement = xmlDocument.CreateElement("hp");
 
             typeElement.InnerText = Type;
-            hpElement.InnerText = DestructabilityData.HP.ToString();
+            hpElement.InnerText = DestructabilityData.Health.ToString();
 
             objectElement.AppendChild(typeElement);
             objectElement.AppendChild(hpElement);

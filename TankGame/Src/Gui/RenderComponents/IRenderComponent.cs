@@ -6,9 +6,9 @@ namespace TankGame.Src.Gui.RenderComponents
 {
     internal interface IRenderComponent
     {
-        public IRenderable GetActor();
+        public IRenderable Actor { get; }
 
-        public Drawable GetShape();
+        public Drawable Shape { get; }
 
         public bool IsPointInside(Vector2f point);
 

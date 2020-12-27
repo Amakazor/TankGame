@@ -108,7 +108,7 @@ namespace TankGame.Src
             PrepareRenderQueue().ForEach((List<IRenderable> RenderLayer) 
                 => RenderLayer.ForEach((IRenderable renderable) 
                     => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent) 
-                        => Window.Draw(renderComponent.GetShape()))));
+                        => Window.Draw(renderComponent.Shape))));
 
             Window.Display();
         }
@@ -123,7 +123,7 @@ namespace TankGame.Src
                 new List<IRenderable>()
             };
 
-            Renderables.ToList().ForEach((IRenderable renderable) =>
+            Renderables.ToList().ForEach(renderable =>
             {
                 switch (renderable)
                 {
@@ -175,7 +175,7 @@ namespace TankGame.Src
             ViewWidth = 800;
             ViewHeight = 800;
 
-            GameView = new View(new Vector2f(Width / 2, Height / 2), new Vector2f(Width, Height));
+            GameView = new View(new Vector2f(ViewWidth / 2, ViewHeight / 2), new Vector2f(ViewWidth, ViewHeight));
         }
 
         private void SetInputHandlers()
@@ -189,10 +189,7 @@ namespace TankGame.Src
 
         private void RecenterView(Vector2f position)
         {
-            if (GameView != null)
-            {
-                GameView.Center = position;
-            }
+            if (GameView != null) GameView.Center = position;
         }
 
         private void RegisterEvents()
@@ -207,10 +204,7 @@ namespace TankGame.Src
             messageBus.Register(MessageType.PlayerMoved, OnPlayerMoved);
         }
 
-        private void OnQuit(object sender, EventArgs eventArgs)
-        {
-            ShouldQuit = true;
-        }
+        private void OnQuit(object sender, EventArgs eventArgs) => ShouldQuit = true;
 
         private void OnRegisterTickable(object sender, EventArgs eventArgs)
         {

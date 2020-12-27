@@ -7,11 +7,11 @@ namespace TankGame.Src.Gui.RenderComponents
 {
     internal class SpriteComponent : IRenderComponent
     {
-        protected IRenderable Actor { get; set; }
+        public IRenderable Actor { get;}
         private Sprite Sprite { get; }
         private Vector2f Size { get; set; }
 
-        public SpriteComponent(Vector2f position, Vector2f size, IRenderable actor, Texture texture, Color color)
+        public SpriteComponent(Vector2f position, Vector2f size, IRenderable actor, Texture texture, Color color, Direction direction = Direction.Down)
         {
             Actor = actor;
 
@@ -24,6 +24,7 @@ namespace TankGame.Src.Gui.RenderComponents
             Size = size;
 
             SetScaleFromSize(size);
+            SetDirection(direction);
 
             Sprite.Origin = size / 2;
         }
@@ -47,10 +48,7 @@ namespace TankGame.Src.Gui.RenderComponents
             SetScaleFromSize(size);
         }
 
-        public void SetPosition(Vector2f position)
-        {
-            Sprite.Position = position;
-        }
+        public void SetPosition(Vector2f position) => Sprite.Position = position;
 
         public void SetDirection(Direction direction)
         {
@@ -64,14 +62,6 @@ namespace TankGame.Src.Gui.RenderComponents
             };
         }
 
-        public IRenderable GetActor()
-        {
-            return Actor;
-        }
-
-        Drawable IRenderComponent.GetShape()
-        {
-            return Sprite;
-        }
+        Drawable IRenderComponent.Shape => Sprite;
     }
 }

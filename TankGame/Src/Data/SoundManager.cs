@@ -20,10 +20,7 @@ namespace TankGame.Src.Data
 
         public static SoundManager Instance { get { return instance ?? (instance = new SoundManager()); } }
 
-        public static void Initialize()
-        {
-            _ = Instance;
-        }
+        public static void Initialize() => _ = Instance;
 
         public SoundBuffer GetSound(string soundType, string name)
         {

@@ -39,9 +39,9 @@ namespace TankGame.Src.Actors.Fields
 
         public bool IsTraversible(bool excludePlayer = false, bool orObjectDestructible = false)
         {
-            return TraversabilityData.IsTraversible && 
-                (PawnOnField == null || (excludePlayer && PawnOnField is Player)) &&
-                (GameObject != null ? (orObjectDestructible ? GameObject.IsDestructibleOrTraversible() : GameObject.TraversibilityData.IsTraversible) : true);
+            return TraversabilityData.IsTraversible
+                   && (PawnOnField == null || (excludePlayer && PawnOnField is Player))
+                   && (GameObject != null ? (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.TraversibilityData.IsTraversible) : true);
         }
 
         internal XmlElement SerializeToXML(XmlDocument xmlDocument)
@@ -56,10 +56,7 @@ namespace TankGame.Src.Actors.Fields
             fieldElement.AppendChild(typeElement);
             fieldElement.AppendChild(textureElement);
 
-            if (GameObject != null)
-            {
-                fieldElement.AppendChild(GameObject.SerializeToXML(xmlDocument));
-            }
+            if (GameObject != null) fieldElement.AppendChild(GameObject.SerializeToXML(xmlDocument));
 
             return fieldElement;
         }

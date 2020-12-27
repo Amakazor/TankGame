@@ -2,13 +2,13 @@
 {
     internal struct DestructabilityData
     {
-        public int HP { get; }
+        public int Health { get; }
         public bool IsDestructible { get; }
         public bool DestroyOnEntry { get; }
 
-        public DestructabilityData(int hp, bool isDestructible, bool destroyOnEntry)
+        public DestructabilityData(int health, bool isDestructible, bool destroyOnEntry)
         {
-            HP = hp;
+            Health = health;
             IsDestructible = isDestructible;
             DestroyOnEntry = destroyOnEntry;
         }

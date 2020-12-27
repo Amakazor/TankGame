@@ -9,18 +9,18 @@ namespace TankGame.Src.Actors.Pawns
 {
     internal static class EnemyFactory
     {
-        private static Dictionary<string, Func<float, Enemy, AIMovementController>> AIMCTypes = new Dictionary<string, Func<float, Enemy, AIMovementController>>
+        private static readonly Dictionary<string, Func<float, Enemy, AIMovementController>> AIMCTypes = new Dictionary<string, Func<float, Enemy, AIMovementController>>
         {
-            {"random", (delay, owner) =>  new RandomAIMovementController(delay, owner) },
-            {"chase", (delay, owner) =>  new ChaseAIMovementController(delay, owner) },
-            {"stand", (delay, owner) =>  new StandGroundAIMovementController(delay, owner) }
+            {"random", (delay, owner) =>  new RandomAIMovementController(delay, owner)},
+            {"chase",  (delay, owner) =>  new ChaseAIMovementController(delay, owner)},
+            {"stand",  (delay, owner) =>  new StandGroundAIMovementController(delay, owner)}
         };
 
-        private static Dictionary<string, Func<Vector2f, Enemy>> EnemyTypes = new Dictionary<string, Func<Vector2f, Enemy>>
+        private static readonly Dictionary<string, Func<Vector2f, Enemy>> EnemyTypes = new Dictionary<string, Func<Vector2f, Enemy>>
         {
-            { "light", (Coords) => new LightTank(Coords*64, new Vector2f(64, 64)) },
-            { "medium", (Coords) => new MediumTank(Coords*64, new Vector2f(64, 64)) },
-            { "heavy", (Coords) => new HeavyTank(Coords*64, new Vector2f(64, 64)) }
+            { "light",  (Coords) => new LightTank (Coords*64, new Vector2f(64, 64))},
+            { "medium", (Coords) => new MediumTank(Coords*64, new Vector2f(64, 64))},
+            { "heavy",  (Coords) => new HeavyTank (Coords*64, new Vector2f(64, 64))}
         };
 
         public static Enemy CreateEnemy(Vector2f coords, string enemyType, string AIMCType)
@@ -38,13 +38,7 @@ namespace TankGame.Src.Actors.Pawns
 
         public static Enemy CreateEnemy(Vector2f coords, string enemyType, string AIMCType, int Hp)
         {
-            if (Hp != 0)
-            {
-                Enemy newEnemy = CreateEnemy(coords, enemyType, AIMCType);
-                newEnemy.HP = Hp;
-                return newEnemy;
-            }
-            else return CreateEnemy(coords, enemyType, AIMCType);
+            return Hp != 0 ? CreateEnemy(coords, enemyType, AIMCType, Hp) : CreateEnemy(coords, enemyType, AIMCType);
         }
     }
 }

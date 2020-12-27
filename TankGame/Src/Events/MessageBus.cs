@@ -19,10 +19,9 @@ namespace TankGame.Src.Events
         {
             if (!Listeners.ContainsKey(messageType))
             {
-                Listeners[messageType] = new List<Action<object, EventArgs>>();
+                Listeners[messageType] = new List<Action<object, EventArgs>> { listener };
             }
-
-            Listeners[messageType].Add(listener);
+            else Listeners[messageType].Add(listener);
         }
 
         public void Unregister(MessageType messageType, Action<object, EventArgs> listener)
@@ -38,10 +37,6 @@ namespace TankGame.Src.Events
                 {
                     Listeners[dataToUnregister.Item1].Remove(dataToUnregister.Item2);
                 }
-                if (Listeners.ContainsKey(dataToUnregister.Item1) && Listeners[dataToUnregister.Item1].Contains(dataToUnregister.Item2))
-                {
-                    Listeners[dataToUnregister.Item1].Remove(dataToUnregister.Item2);
-                }
             }
 
             ToUnregister.Clear();
@@ -51,13 +46,7 @@ namespace TankGame.Src.Events
         {
             FinalizeUnregistering();
 
-            if (Listeners.ContainsKey(messageType))
-            {
-                Listeners[messageType].ForEach((Action<object, EventArgs> listener) =>
-                {
-                    listener.Invoke(sender, eventArgs);
-                });
-            }
+            if (Listeners.ContainsKey(messageType)) Listeners[messageType].ForEach(listener => listener.Invoke(sender, eventArgs));
         }
     }
 }

@@ -10,27 +10,22 @@ namespace TankGame.Src.Actors.Pawns
     internal abstract class Pawn : TickableActor, IDestructible
     {
         public Direction Direction { get; protected set; }
-        public int HP { get; set; }
+        public int Health { get; set; }
         public MovementController MovementController { get; set; }
         private Texture Texture { get; }
         private SpriteComponent PawnSprite { get; }
         public Vector2i Coords
         {
-            get
-            {
-                return new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
-            }
-
-            set
-            {
-                Position = new Vector2f(value.X * Size.X, value.Y * Size.Y);
-            }
+            get => new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
+            set => Position = new Vector2f(value.X * Size.X, value.Y * Size.Y);
         }
+        public bool IsAlive => Health > 0;
+        public bool IsDestructible => true;
 
-        public Pawn(Vector2f position, Vector2f size, Texture texture) : base(position, size)
+        public Pawn(Vector2f position, Vector2f size, Texture texture, int health) : base(position, size)
         {
-            Texture = texture;
-            PawnSprite = new SpriteComponent(Position, Size, this, Texture, new Color(255, 255, 255, 255));
+            Health = health;
+            PawnSprite = new SpriteComponent(Position, Size, this, Texture = texture, new Color(255, 255, 255, 255));
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
@@ -47,13 +42,7 @@ namespace TankGame.Src.Actors.Pawns
                     Direction = MovementController.DoAction(Direction);
                     UpdatePosition();
                 }
-                else
-                {
-                    if (MovementController is PlayerMovementController)
-                    {
-                        MovementController.ClearAction();
-                    }
-                }
+                else if (MovementController is PlayerMovementController) MovementController.ClearAction();
 
                 MovementController.Tick(deltaTime);
             }
@@ -65,11 +54,6 @@ namespace TankGame.Src.Actors.Pawns
             PawnSprite.SetDirection(Direction);
         }
 
-        public bool IsAlive()
-        {
-            return HP > 0;
-        }
-
         public void OnDestroy(Actor other)
         {
             Dispose();
@@ -78,21 +62,6 @@ namespace TankGame.Src.Actors.Pawns
         public void OnHit(Actor other)
         {
             throw new NotImplementedException();
-        }
-
-        public int GetHealth()
-        {
-            return HP;
-        }
-
-        public void SetHealth(int amount)
-        {
-            HP = amount;
-        }
-
-        public bool IsDestructible()
-        {
-            return true;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace TankGame.Src.Events
     internal class InputHandler
     {
         private HashSet<IClickable> Clickables { get; }
-        private RenderWindow Window { get; set; }
+        private RenderWindow Window { get; }
 
         public InputHandler(RenderWindow window)
         {
@@ -24,14 +24,8 @@ namespace TankGame.Src.Events
 
         public void OnKeyPress(object sender, KeyEventArgs eventArgs)
         {
-            Console.WriteLine("Key pressed: " + eventArgs.Code);
-
             Tuple<string, string> keyActionType = KeyManager.Instance.GetAction(eventArgs.Code);
-            if (keyActionType != null)
-            {
-                Console.WriteLine("Action done: " + keyActionType.Item2);
-                MessageBus.Instance.PostEvent(MessageType.KeyAction, sender, new KeyActionEventArgs(keyActionType));
-            }
+            if (keyActionType != null) MessageBus.Instance.PostEvent(MessageType.KeyAction, sender, new KeyActionEventArgs(keyActionType));
             MessageBus.Instance.PostEvent(MessageType.KeyPressed, sender, eventArgs);
         }
 
@@ -65,18 +59,12 @@ namespace TankGame.Src.Events
 
         private void OnRegisterClickable(object sender, EventArgs eventArgs)
         {
-            if (sender is IClickable)
-            {
-                Clickables.Add((IClickable)sender);
-            }
+            if (sender is IClickable) Clickables.Add((IClickable)sender);
         }
 
         private void OnUnregisterClickable(object sender, EventArgs eventArgs)
         {
-            if (sender is IClickable && Clickables.Contains((IClickable)sender))
-            {
-                Clickables.Remove((IClickable)sender);
-            }
+            if (sender is IClickable && Clickables.Contains((IClickable)sender)) Clickables.Remove((IClickable)sender);
         }
     }
 }

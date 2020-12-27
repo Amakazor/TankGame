@@ -6,9 +6,8 @@ namespace TankGame.Src.Actors.Pawns.Enemies
 {
     internal class MediumTank : Enemy
     {
-        public MediumTank(Vector2f position, Vector2f size) : base(position, size, TextureManager.Instance.GetTexture(TextureType.Pawn, "enemy2"))
+        public MediumTank(Vector2f position, Vector2f size, int health = 2) : base(position, size, TextureManager.Instance.GetTexture(TextureType.Pawn, "enemy2"), health)
         {
-            SetHealth(2);
         }
     }
 }

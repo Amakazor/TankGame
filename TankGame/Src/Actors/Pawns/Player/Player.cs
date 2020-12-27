@@ -1,22 +1,16 @@
 ﻿using SFML.System;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
-using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Actors.Pawns.Player
 {
     internal class Player : Pawn
     {
-        public const int DefaultPlayerHP = 3;
-
-        public Player(Vector2f position, Vector2f size) : base(position, size, TextureManager.Instance.GetTexture(TextureType.Pawn, "player1"))
+        public Player(Vector2f position, Vector2f size, int health = 3) : base(position, size, TextureManager.Instance.GetTexture(TextureType.Pawn, "player1"), health)
         {
             MovementController = new PlayerMovementController(0.3F, this);
-
             MessageBus.Instance.PostEvent(MessageType.PlayerMoved, this, new EventArgs());
         }
 

@@ -20,10 +20,7 @@ namespace TankGame.Src.Data
 
         public static KeyManager Instance { get { return instance ?? (instance = new KeyManager()); } }
 
-        public static void Initialize()
-        {
-            _ = Instance;
-        }
+        public static void Initialize() => _ = Instance;
 
         public void ChangeAndSaveKey(Tuple<string, string> keyActionType, Keyboard.Key keyCode)
         {

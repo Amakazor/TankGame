@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TankGame.Src.Actors.Fields;
+using TankGame.Src.Extensions;
 using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Data.Map
@@ -28,7 +29,7 @@ namespace TankGame.Src.Data.Map
 
             Vector2i playersRegionCoords = SearchForPlayerRegion();
 
-            if (playersRegionCoords.X > -1 && playersRegionCoords.Y > -1)
+            if (playersRegionCoords.IsValid())
             {
                 Console.WriteLine("Players region found");
                 LoadNineRegions(playersRegionCoords);
@@ -46,10 +47,7 @@ namespace TankGame.Src.Data.Map
             {
                 Region region = Regions.ElementAt(i);
 
-                if (region.HasField(fieldCoords))
-                {
-                    return region.GetFieldAtMapCoords(fieldCoords);
-                }
+                if (region.HasField(fieldCoords)) return region.GetFieldAtMapCoords(fieldCoords);
             }
 
             return null;
@@ -59,13 +57,12 @@ namespace TankGame.Src.Data.Map
         {
             Field field = GetFieldFromRegion(fieldCoords);
 
-            if (field is null) return false;
-            return field.IsTraversible(excludePlayer, orObjectDestructible);
+            return field is null ? false : field.IsTraversible(excludePlayer, orObjectDestructible);
         }
 
         private void LoadNineRegions(Vector2i coords)
         {
-            if (coords.X > -1 && coords.Y > -1)
+            if (coords.IsValid())
             {
                 for (int columnModifier = -1; columnModifier <= 1; columnModifier++)
                 {
@@ -96,12 +93,9 @@ namespace TankGame.Src.Data.Map
                 {
                     Vector2i regionCoords = new Vector2i(column, row);
 
-                    if (RegionPathGenerator.GetRegionPath(regionCoords) != null)
+                    if (RegionPathGenerator.GetRegionPath(regionCoords) != null && new Region(regionCoords, FieldsInLine, false).ContainsPlayer())
                     {
-                        if (new Region(regionCoords, FieldsInLine, false).ContainsPlayer())
-                        {
-                            return regionCoords;
-                        }
+                        return regionCoords;
                     }
                 }
             }
@@ -113,7 +107,7 @@ namespace TankGame.Src.Data.Map
         {
             var directory = Directory.GetParent(RegionPathGenerator.SavedRegionDirectory);
 
-            directory.EnumerateFiles().ToList().ForEach(file => file.Delete());
+            //directory.EnumerateFiles().ToList().ForEach(file => file.Delete());
         }
 
         public List<List<Node>> GetNodesInRadius(Vector2i center, int radius)

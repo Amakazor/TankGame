@@ -126,11 +126,5 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         }
 
         protected abstract void DecideOnNextAction();
-
-        public override Direction Shoot(Direction direction)
-        {
-            new EnemyProjectile(Owner.Position, direction);
-            return base.Shoot(direction);
-        }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Actors.Pawns.Enemies;
+using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
 
@@ -88,20 +89,21 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             };
         }
 
-        public virtual Direction Shoot(Direction direction)
+        public Direction Shoot(Direction direction)
         {
-            if (Cooldown == 0) SetCooldown();
+            SetCooldown();
             ClearAction();
+            new Projectile(Owner.Position, direction, Owner);
             return direction;
         }
 
         public Direction Rotate(Direction direction)
         {
-            if (Cooldown == 0) SetCooldown(0.25F);
+            SetCooldown(0.25F);
             return direction;
         }
 
-        public virtual bool CanDoAction() => Cooldown == 0 && Owner.IsAlive();
+        public virtual bool CanDoAction() => Cooldown == 0 && Owner.IsAlive;
 
         public void ClearAction() => NextAction = null;
 

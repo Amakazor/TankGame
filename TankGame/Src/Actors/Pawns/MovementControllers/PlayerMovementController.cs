@@ -27,11 +27,5 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 NextAction = ((KeyActionEventArgs)eventArgs).KeyActionType;
             }
         }
-
-        public override Direction Shoot(Direction direction)
-        {
-            new PlayerProjectile(Owner.Position, direction);
-            return base.Shoot(direction);
-        }
     }
 }
