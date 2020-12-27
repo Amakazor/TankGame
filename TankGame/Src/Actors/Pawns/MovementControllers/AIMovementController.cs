@@ -12,7 +12,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     internal abstract class AIMovementController : MovementController
     {
-        protected const int SightDistance = 7;
+        protected const int SightDistance = 6;
 
         public AIMovementController(float delay, Pawn owner) : base(delay, owner)
         {
@@ -70,14 +70,20 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             return positions;
         }
 
-        protected Vector2i GetClosestValidShootingPosition()
+        protected List<Vector2i> GetValidShootingPositions()
         {
-            List<Vector2i> positions = GetAllShootingPositions();
-            positions = positions.OrderBy(position => position.ManhattanDistance(Owner.Coords)).ToList();
-            positions = positions.FindAll(position => GamestateManager.Instance.Map.IsFieldTraversible(position));
-            positions = positions.FindAll(position => IsLineUnobstructed(GamestateManager.Instance.Player.Coords.GetAllVectorsBeetween(position)));
+            return GetAllShootingPositions()
+                   .OrderBy(position => position.ManhattanDistance(Owner.Coords))
+                   .ToList()
+                   .FindAll(position => 
+                        GamestateManager.Instance.Map.IsFieldTraversible(position) && 
+                        IsLineUnobstructed(GamestateManager.Instance.Player.Coords.GetAllVectorsBeetween(position)));
+        }
 
-            return positions.Count > 0 ? positions.First() : new Vector2i(-1, -1);
+        protected Vector2i GetClosestValidShootingPosition(List<Vector2i> ValidShootingPositions = null)
+        {
+            ValidShootingPositions ??= GetValidShootingPositions();
+            return ValidShootingPositions.Count > 0 ? ValidShootingPositions.First() : new Vector2i(-1, -1);
         }
 
         protected bool IsLineUnobstructed(List<Vector2i> Line)

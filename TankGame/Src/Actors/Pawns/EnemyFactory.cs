@@ -12,7 +12,8 @@ namespace TankGame.Src.Actors.Pawns
         private static Dictionary<string, Func<float, Enemy, AIMovementController>> AIMCTypes = new Dictionary<string, Func<float, Enemy, AIMovementController>>
         {
             {"random", (delay, owner) =>  new RandomAIMovementController(delay, owner) },
-            {"chase", (delay, owner) =>  new ChaseAIMovementController(delay, owner) }
+            {"chase", (delay, owner) =>  new ChaseAIMovementController(delay, owner) },
+            {"stand", (delay, owner) =>  new StandGroundAIMovementController(delay, owner) }
         };
 
         private static Dictionary<string, Func<Vector2f, Enemy>> EnemyTypes = new Dictionary<string, Func<Vector2f, Enemy>>

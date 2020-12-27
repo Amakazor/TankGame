@@ -2064,20 +2064,14 @@
   </fields>
   <spawns>
     <player>
-      <x>1</x>
-      <y>0</y>
+      <x>4</x>
+      <y>4</y>
     </player>
     <enemy>
-      <type>medium</type>
-      <aimc>chase</aimc>
-      <x>5</x>
-      <y>5</y>
-    </enemy>
-    <enemy>
       <type>light</type>
-      <aimc>chase</aimc>
-      <x>6</x>
-      <y>6</y>
+      <aimc>stand</aimc>
+      <x>10</x>
+      <y>10</y>
     </enemy>
   </spawns>
 </region>

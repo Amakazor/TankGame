@@ -1,18 +1,18 @@
 ﻿using SFML.System;
-using System;
 using System.Collections.Generic;
 using TankGame.Src.Data;
+using TankGame.Src.Extensions;
 using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
-    internal class ChaseAIMovementController : AIMovementController
+    class StandGroundAIMovementController : ChaseAIMovementController
     {
-        protected Vector2i LastPlayerPosition { get; set; }
-        protected Vector2i TargetPosition { get; set; }
-        protected Stack<Node> Path { get; set; }
-        public ChaseAIMovementController(float delay, Pawn owner) : base(delay, owner)
+        private Vector2i HomePosition { get; }
+        private const int StandGroundRadius = 2;
+        public StandGroundAIMovementController(float delay, Pawn owner) : base(delay, owner)
         {
+            HomePosition = Owner.Coords;
         }
 
         protected override void DecideOnNextAction()
@@ -27,25 +27,25 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                     if (LastPlayerPosition == null || LastPlayerPosition != currentPlayerPosition)
                     {
                         LastPlayerPosition = currentPlayerPosition;
-                        TargetPosition = GetClosestValidShootingPosition();
+                        TargetPosition = new Vector2i(-1, -1);
                         Path = null;
                     }
 
-                    if (!TargetPosition.Equals(new Vector2i(-1, -1)) && !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
+                    if (TargetPosition.Equals(new Vector2i(-1, -1)) || !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
                     {
-                        TargetPosition = GetClosestValidShootingPosition();
+                        TargetPosition = GetValidStandGroundPosition();
                         Path = null;
                     }
 
-                    if (!TargetPosition.Equals(new Vector2i(-1, -1)))
+                    if (!TargetPosition.Equals(new Vector2i(-1, -1)) && GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
                     {
-                        if ((Path == null || Path.Count == 0) && IsPlayerWithinChaseRadius())
+                        if ((Path == null || Path.Count == 0) && (IsPlayerWithinChaseRadius() || TargetPosition.Equals(HomePosition)))
                         {
                             AStar aStar = new AStar(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, SightDistance));
                             Path = aStar.FindPath(new Vector2i(SightDistance, SightDistance), new Vector2i(SightDistance, SightDistance) + TargetPosition - Owner.Coords);
                         }
 
-                        if (IsPlayerWithinChaseRadius() && Path != null)
+                        if ((IsPlayerWithinChaseRadius() || TargetPosition.Equals(HomePosition)) && Path != null)
                         {
                             Node node = Path.Pop();
 
@@ -65,12 +65,10 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             else NextAction = null;
         }
 
-        protected bool IsPlayerWithinChaseRadius()
+        private Vector2i GetValidStandGroundPosition()
         {
-            Vector2i PlayerCoords = GamestateManager.Instance.Player.Coords;
-            Vector2i OwnerCoords = Owner.Coords;
-
-            return Math.Abs(PlayerCoords.X - OwnerCoords.X) <= SightDistance && Math.Abs(PlayerCoords.Y - OwnerCoords.Y) <= SightDistance;
+            Vector2i targetPosition = GetClosestValidShootingPosition(GetValidShootingPositions().FindAll(position => position.ManhattanDistance(HomePosition) <= StandGroundRadius));
+            return targetPosition.Equals(new Vector2i(-1, -1)) ? HomePosition : targetPosition;
         }
     }
 }
