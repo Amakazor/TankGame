@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TankGame.Src.Actors.Fields;
+using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Data.Map
 {
@@ -51,7 +52,15 @@ namespace TankGame.Src.Data.Map
                 }
             }
 
-            throw new ArgumentException("There is no region that contains field of these coordinates", "fieldCoords");
+            return null;
+        }
+
+        public bool IsFieldTraversible(Vector2i fieldCoords, bool excludePlayer = false, bool orObjectDestructible = false)
+        {
+            Field field = GetFieldFromRegion(fieldCoords);
+
+            if (field is null) return false;
+            return field.IsTraversible(excludePlayer, orObjectDestructible);
         }
 
         private void LoadNineRegions(Vector2i coords)
@@ -105,6 +114,26 @@ namespace TankGame.Src.Data.Map
             var directory = Directory.GetParent(RegionPathGenerator.SavedRegionDirectory);
 
             directory.EnumerateFiles().ToList().ForEach(file => file.Delete());
+        }
+
+        public List<List<Node>> GetNodesInRadius(Vector2i center, int radius)
+        {
+            List<List<Node>> nodes = new List<List<Node>>();
+
+            for (int x = center.X - radius; x <= center.X + radius; x++)
+            {
+                List<Node> column = new List<Node>();
+                for (int y = center.Y - radius; y <= center.Y + radius; y++)
+                {
+                    Field field = GetFieldFromRegion(new Vector2i(x, y));
+
+                    if (field != null) column.Add(new Node(new Vector2i(x - center.X + radius, y - center.Y + radius), field.IsTraversible(true)));
+                    else column.Add(new Node(new Vector2i(x - center.X + radius, y - center.Y + radius), false));
+                }
+                nodes.Add(column);
+            }
+
+            return nodes;
         }
     }
 }

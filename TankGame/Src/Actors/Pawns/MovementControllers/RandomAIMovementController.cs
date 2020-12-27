@@ -2,7 +2,7 @@
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
-    class RandomAIMovementController : AIMovementController
+    internal class RandomAIMovementController : AIMovementController
     {
         public RandomAIMovementController(float delay, Pawn owner) : base(delay, owner)
         {
@@ -12,26 +12,20 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (CanDoAction())
             {
-                if (CanSeePlayerInLine())
-                {
-                    NextAction = KeyActionType.Shoot;
-                }
+                if (CanSeePlayerInUnobstructedLine) NextAction = KeyActionType.Shoot;
                 else
                 {
-                    switch (Utility.GetRandomInt(1, 5))
+                    NextAction = (GamestateManager.Instance.Random.Next(1, 5)) switch
                     {
-                        case 1:  NextAction = KeyActionType.MoveUp;    break;
-                        case 2:  NextAction = KeyActionType.MoveDown;  break;
-                        case 3:  NextAction = KeyActionType.MoveLeft;  break;
-                        case 4:  NextAction = KeyActionType.MoveRight; break;
-                        default: NextAction = null; break;
-                    }
+                        1 => KeyActionType.MoveUp,
+                        2 => KeyActionType.MoveDown,
+                        3 => KeyActionType.MoveLeft,
+                        4 => KeyActionType.MoveRight,
+                        _ => null,
+                    };
                 }
             }
-            else
-            {
-                NextAction = null;
-            }
+            else NextAction = null;
         }
     }
 }

@@ -65,6 +65,11 @@ namespace TankGame.Src.Actors.GameObjects
             DestructabilityData = new DestructabilityData(amount, DestructabilityData.IsDestructible, DestructabilityData.DestroyOnEntry);
         }
 
+        public bool IsDestructibleOrTraversible()
+        {
+            return IsDestructible() || TraversibilityData.IsTraversible;
+        }
+
         internal XmlElement SerializeToXML(XmlDocument xmlDocument)
         {
             XmlElement objectElement = xmlDocument.CreateElement("object");

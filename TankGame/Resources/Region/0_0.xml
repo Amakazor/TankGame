@@ -110,6 +110,9 @@
       <!--1x1-->
       <type>empty</type>
       <texture>empty</texture>
+      <object>
+        <type>bigbuilding</type>
+      </object>
     </field>
     <field>
       <!--1x2-->
@@ -205,6 +208,9 @@
       <!--2x0-->
       <type>empty</type>
       <texture>empty</texture>
+      <object>
+        <type>bigbuilding</type>
+      </object>
     </field>
     <field>
       <!--2x1-->
@@ -2062,22 +2068,16 @@
       <y>0</y>
     </player>
     <enemy>
-      <type>light</type>
-      <aimc>random</aimc>
-      <x>3</x>
-      <y>3</y>
+      <type>medium</type>
+      <aimc>chase</aimc>
+      <x>5</x>
+      <y>5</y>
     </enemy>
     <enemy>
-      <type>medium</type>
-      <aimc>random</aimc>
-      <x>4</x>
-      <y>4</y>
-    </enemy>
-      <enemy>
-      <type>heavy</type>
-      <aimc>random</aimc>
-      <x>5</x>
-      <y>4</y>
+      <type>light</type>
+      <aimc>chase</aimc>
+      <x>6</x>
+      <y>6</y>
     </enemy>
   </spawns>
 </region>

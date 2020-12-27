@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml;
 using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.Pawns;
+using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Data;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -36,9 +37,11 @@ namespace TankGame.Src.Actors.Fields
             return new HashSet<IRenderComponent> { Surface };
         }
 
-        public bool IsTraversible()
+        public bool IsTraversible(bool excludePlayer = false, bool orObjectDestructible = false)
         {
-            return TraversabilityData.IsTraversible && PawnOnField == null && (GameObject != null ? GameObject.TraversibilityData.IsTraversible : true);
+            return TraversabilityData.IsTraversible && 
+                (PawnOnField == null || (excludePlayer && PawnOnField is Player)) &&
+                (GameObject != null ? (orObjectDestructible ? GameObject.IsDestructibleOrTraversible() : GameObject.TraversibilityData.IsTraversible) : true);
         }
 
         internal XmlElement SerializeToXML(XmlDocument xmlDocument)

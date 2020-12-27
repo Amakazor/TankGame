@@ -5,7 +5,7 @@ using TankGame.Src.Events;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
-    class PlayerMovementController : MovementController
+    internal class PlayerMovementController : MovementController
     {
         public PlayerMovementController(float delay, Pawn owner) : base(delay, owner)
         {
@@ -28,10 +28,10 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             }
         }
 
-        public override void Shoot(Direction direction)
+        public override Direction Shoot(Direction direction)
         {
-            base.Shoot(direction);
             new PlayerProjectile(Owner.Position, direction);
+            return base.Shoot(direction);
         }
     }
 }

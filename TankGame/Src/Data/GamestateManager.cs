@@ -9,27 +9,17 @@ namespace TankGame.Src.Data
         private static GamestateManager instance;
 
         public long Points { get; private set; }
-        public GameMap Map { private get; set; }
+        public GameMap Map { get; set; }
         public Player Player { get; set; }
-        public static GamestateManager Instance { get { return instance ?? (instance = new GamestateManager()); } }
-
-        public void AddPoints(long points)
-        {
-            Points += points;
-        }
-
-        public GameMap GetMap()
-        {
-            if (Map != null)
-            {
-                return Map;
-            }
-            else throw new Exception("Map is null");
-        }
+        public Random Random { get; }
+        public static GamestateManager Instance => instance ?? (instance = new GamestateManager());
 
         private GamestateManager()
         {
             Points = 0;
+            Random = new Random();
         }
+
+        public void AddPoints(long points) => Points += points;
     }
 }

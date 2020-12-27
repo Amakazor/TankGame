@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TankGame.Src.Extensions;
 
 namespace TankGame.Src.Pathfinding
 {
     internal class AStar
     {
-        List<List<Node>> Grid;
-        int GridRows { get { return Grid[0].Count; } }
-        int GridColumns { get { return Grid.Count; } }
+        private readonly List<List<Node>> Grid;
+        private int GridRows => Grid[0].Count;
+        private int GridColumns => Grid.Count;
 
         public AStar(List<List<Node>> grid)
         {
@@ -18,83 +19,64 @@ namespace TankGame.Src.Pathfinding
 
         public Stack<Node> FindPath(Vector2i Start, Vector2i End)
         {
+            Console.WriteLine("Pathfinding");
             Node start = new Node(Start);
             Node end = new Node(End);
 
-            Stack<Node> Path = new Stack<Node>();
-            List<Node> OpenList = new List<Node>();
-            List<Node> ClosedList = new List<Node>();
-            List<Node> adjacencies;
-            Node current = start;
+            Stack<Node> path = new Stack<Node>();
+            List<Node> openList = new List<Node>();
+            List<Node> closedList = new List<Node>();
+            List<Node> adjacentNodes;
+            Node currentNode = start;
 
-            OpenList.Add(start);
+            openList.Add(start);
 
-            while (OpenList.Count != 0 && !ClosedList.Exists(x => x.Position == end.Position))
+            while (openList.Count != 0 && !closedList.Exists(x => x.Position == end.Position))
             {
-                current = OpenList[0];
-                OpenList.Remove(current);
-                ClosedList.Add(current);
-                adjacencies = GetAdjacentNodes(current);
+                currentNode = openList[0];
+                openList.Remove(currentNode);
+                closedList.Add(currentNode);
+                adjacentNodes = GetAdjacentNodes(currentNode);
 
-
-                foreach (Node n in adjacencies)
+                foreach (Node adjacentNode in adjacentNodes)
                 {
-                    if (!ClosedList.Contains(n) && n.Walkable)
+                    if (!closedList.Contains(adjacentNode) && adjacentNode.Walkable)
                     {
-                        if (!OpenList.Contains(n))
+                        if (!openList.Contains(adjacentNode))
                         {
-                            n.Parent = current;
-                            n.DistanceToTarget = Math.Abs(n.Position.X - end.Position.X) + Math.Abs(n.Position.Y - end.Position.Y);
-                            n.Cost = n.Weight + n.Parent.Cost;
-                            OpenList.Add(n);
-                            OpenList = OpenList.OrderBy(node => node.F).ToList<Node>();
+                            adjacentNode.Parent = currentNode;
+                            adjacentNode.DistanceToTarget = adjacentNode.Position.ManhattanDistance(end.Position);
+                            adjacentNode.Cost = adjacentNode.Weight + adjacentNode.Parent.Cost;
+                            openList.Add(adjacentNode);
+                            openList = openList.OrderBy(node => node.F).ToList();
                         }
                     }
                 }
             }
 
-            if (!ClosedList.Exists(x => x.Position == end.Position)) return null;
+            if (!closedList.Exists(x => x.Position == end.Position)) return null;
 
-            Node temp = ClosedList[ClosedList.IndexOf(current)];
-            if (temp == null) return null;
             do
             {
-                Path.Push(temp);
-                temp = temp.Parent;
-            } while (temp != start && temp != null);
-            return Path;
+                path.Push(currentNode);
+                currentNode = currentNode.Parent;
+            } while (currentNode != start && currentNode != null);
+            return path;
         }
 
-        public Node GetFirstNodeInPath(Vector2i Start, Vector2i End)
+        private List<Node> GetAdjacentNodes(Node node)
         {
-            return FindPath(Start, End)?.Peek();
-        }
+            List<Node> adjacentNodes = new List<Node>();
 
-        private List<Node> GetAdjacentNodes(Node n)
-        {
-            List<Node> temp = new List<Node>();
+            int row = node.Position.Y;
+            int col = node.Position.X;
 
-            int row = n.Position.Y;
-            int col = n.Position.X;
+            if (row + 1 < GridRows)    adjacentNodes.Add(Grid[col][row + 1]);
+            if (row - 1 >= 0)          adjacentNodes.Add(Grid[col][row - 1]);
+            if (col - 1 >= 0)          adjacentNodes.Add(Grid[col - 1][row]);
+            if (col + 1 < GridColumns) adjacentNodes.Add(Grid[col + 1][row]);
 
-            if (row + 1 < GridRows)
-            {
-                temp.Add(Grid[col][row + 1]);
-            }
-            if (row - 1 >= 0)
-            {
-                temp.Add(Grid[col][row - 1]);
-            }
-            if (col - 1 >= 0)
-            {
-                temp.Add(Grid[col - 1][row]);
-            }
-            if (col + 1 < GridColumns)
-            {
-                temp.Add(Grid[col + 1][row]);
-            }
-
-            return temp;
+            return adjacentNodes;
         }
     }
 }
