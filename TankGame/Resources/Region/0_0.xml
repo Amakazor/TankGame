@@ -1005,11 +1005,17 @@
       <!--9x8-->
       <type>empty</type>
       <texture>empty</texture>
+      <object>
+        <type>bigbuilding</type>
+      </object>
     </field>
     <field>
       <!--9x9-->
       <type>empty</type>
       <texture>empty</texture>
+      <object>
+        <type>bigbuilding</type>
+      </object>
     </field>
     <field>
       <!--9x10-->
@@ -2069,9 +2075,27 @@
     </player>
     <enemy>
       <type>light</type>
-      <aimc>stand</aimc>
+      <aimc>patrol</aimc>
       <x>10</x>
       <y>10</y>
+      <path>
+        <point>
+          <x>10</x>
+          <y>10</y>
+        </point>
+        <point>
+          <x>10</x>
+          <y>8</y>
+        </point>
+        <point>
+          <x>8</x>
+          <y>8</y>
+        </point>
+        <point>
+          <x>8</x>
+          <y>10</y>
+        </point>
+      </path>
     </enemy>
   </spawns>
 </region>

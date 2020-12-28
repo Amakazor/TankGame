@@ -162,7 +162,16 @@ namespace TankGame.Src.Data.Map
 
             if (regionFile.Root.Element("spawns") != null && regionFile.Root.Element("spawns").Descendants("enemy") != null)
             {
-                Enemies = new HashSet<Enemy>(from enemy in regionFile.Root.Element("spawns").Descendants("enemy") select EnemyFactory.CreateEnemy(new Vector2f((Coords.X * FieldsInLine) + int.Parse(enemy.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(enemy.Element("y").Value)), enemy.Element("type").Value, enemy.Element("aimc").Value));
+                Enemies = new HashSet<Enemy>(from enemy in regionFile.Root.Element("spawns").Descendants("enemy") select EnemyFactory.CreateEnemy(
+                    new Vector2f((Coords.X * FieldsInLine) + int.Parse(enemy.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(enemy.Element("y").Value)),
+                    enemy.Element("type").Value,
+                    enemy.Element("aimc").Value,
+                    enemy.Element("path") != null && enemy.Element("path").Descendants("point") != null
+                        ? new List<Vector2i>(from point in enemy.Element("path").Descendants("point") select new Vector2i(int.Parse(point.Element("x").Value), int.Parse(point.Element("y").Value)))
+                        : null,
+                    enemy.Element("health") != null 
+                        ? int.Parse(enemy.Element("health").Value) 
+                        : 0));
             } else Enemies = new HashSet<Enemy>();
 
             Enemies.ToList().ForEach((Enemy enemy) => { GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy; });
