@@ -19,13 +19,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         private void SetNextAction(object sender, EventArgs eventArgs)
         {
-            Console.WriteLine("Player movement controller received action");
-
-            if (eventArgs is KeyActionEventArgs && ((KeyActionEventArgs)eventArgs).KeyActionType != null)
-            {
-                Console.WriteLine("\tAction type: " + ((KeyActionEventArgs)eventArgs).KeyActionType.Item2);
-                NextAction = ((KeyActionEventArgs)eventArgs).KeyActionType;
-            }
+            if (eventArgs is KeyActionEventArgs keyActionEventArgs && keyActionEventArgs.KeyActionType != null) NextAction = keyActionEventArgs.KeyActionType;
         }
     }
 }

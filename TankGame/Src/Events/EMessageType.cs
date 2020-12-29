@@ -10,6 +10,7 @@
         RegisterClickable,
         UnregisterClickable,
         PlayerMoved,
+        PawnMoved,
         KeyAction,
         KeyPressed
     }

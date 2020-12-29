@@ -61,5 +61,12 @@ namespace TankGame.Src.Actors.Fields
 
             return fieldElement;
         }
+
+        public override void Dispose()
+        {
+            if (GameObject != null) GameObject.Dispose();
+            GameObject = null;
+            base.Dispose();
+        }
     }
 }

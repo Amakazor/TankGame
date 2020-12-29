@@ -82,11 +82,9 @@ namespace TankGame.Src.Data.Map
             {
                 LoadFields();
                 LoadEnemies();
+                if (ContainsPlayer() && GamestateManager.Instance.Player == null) LoadPlayer();
 
-                if (ContainsPlayer())
-                {
-                    LoadPlayer();
-                }
+                Loaded = true;
             }
         }
 
@@ -101,7 +99,6 @@ namespace TankGame.Src.Data.Map
 
         private void LoadFields()
         {
-            Console.WriteLine("Loading fields in region at " + Coords.X + " " + Coords.Y + "...");
             XDocument regionFile = XDocument.Load(RegionPathGenerator.GetRegionPath(Coords));
             int x = 0;
             int y = 0;
@@ -135,13 +132,10 @@ namespace TankGame.Src.Data.Map
                     y++;
                 }
             });
-
-            Console.WriteLine("Loaded "+ x * y + " fields in region at " + Coords.X + " " + Coords.Y);
         }
 
         private void LoadPlayer()
         {
-            Console.WriteLine("Loading player in region at " + Coords.X + " " + Coords.Y + "...");
             XDocument regionFile = XDocument.Load(RegionPathGenerator.GetRegionPath(Coords));
             XElement playerData = regionFile.Root.Element("spawns").Element("player");
 
@@ -151,13 +145,10 @@ namespace TankGame.Src.Data.Map
             GamestateManager.Instance.Player = Player;
 
             GetFieldAtMapCoords(Player.Coords).PawnOnField = Player;
-
-            Console.WriteLine("Loaded player in region at " + Coords.X + " " + Coords.Y);
         }
 
         private void LoadEnemies()
         {
-            Console.WriteLine("Loading enemies in region at " + Coords.X + " " + Coords.Y + "...");
             XDocument regionFile = XDocument.Load(RegionPathGenerator.GetRegionPath(Coords));
 
             if (regionFile.Root.Element("spawns") != null && regionFile.Root.Element("spawns").Descendants("enemy") != null)
@@ -175,8 +166,6 @@ namespace TankGame.Src.Data.Map
             } else Enemies = new HashSet<Enemy>();
 
             Enemies.ToList().ForEach((Enemy enemy) => { GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy; });
-
-            Console.WriteLine("Loaded " + Enemies.Count + " enemies in region at " + Coords.X + " " + Coords.Y);
         }
 
         private XmlElement SerializeFields(XmlDocument xmlDocument)
@@ -203,7 +192,14 @@ namespace TankGame.Src.Data.Map
         {
             if (Loaded)
             {
-                Save();
+                //Save();
+
+                Fields.ForEach(field => field.Dispose());
+                Fields.Clear();
+                Enemies.ToList().ForEach(enemy => enemy.Dispose());
+                Enemies.Clear();
+                if (Player != null) Player.Dispose();
+                Player = null;
             }
         }
 
@@ -235,5 +231,10 @@ namespace TankGame.Src.Data.Map
         {
             return regionFieldCoords.X * FieldsInLine + regionFieldCoords.Y;
         }
+
+        public void DeletePlayer() => Player = null;
+        public void AddPlayer(Player player) => Player = player;
+        public void DeleteEnemy(Enemy enemy) => Enemies.Add(enemy);
+        public void AddEnemy(Enemy enemy) => Enemies.Remove(enemy);
     }
 }

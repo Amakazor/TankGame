@@ -14,9 +14,9 @@ namespace TankGame.Src.Actors.Pawns.Player
             MessageBus.Instance.PostEvent(MessageType.PlayerMoved, this, new EventArgs());
         }
 
-        protected override void UpdatePosition()
+        protected override void UpdatePosition(Vector2i lastCoords, Vector2i newCoords)
         {
-            base.UpdatePosition();
+            base.UpdatePosition(lastCoords, newCoords);
             MessageBus.Instance.PostEvent(MessageType.PlayerMoved, this, new EventArgs());
         }
     }

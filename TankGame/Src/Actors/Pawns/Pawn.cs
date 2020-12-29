@@ -3,6 +3,7 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors.Pawns.MovementControllers;
+using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Actors.Pawns
@@ -39,8 +40,10 @@ namespace TankGame.Src.Actors.Pawns
             {
                 if (MovementController.CanDoAction())
                 {
+                    Vector2i lastCoords = Coords;
                     Direction = MovementController.DoAction(Direction);
-                    UpdatePosition();
+                    Vector2i newCoords = Coords;
+                    UpdatePosition(lastCoords, newCoords);
                 }
                 else if (MovementController is PlayerMovementController) MovementController.ClearAction();
 
@@ -48,10 +51,11 @@ namespace TankGame.Src.Actors.Pawns
             }
         }
 
-        protected virtual void UpdatePosition()
+        protected virtual void UpdatePosition(Vector2i lastCoords, Vector2i newCoords)
         {
             PawnSprite.SetPosition(Position);
             PawnSprite.SetDirection(Direction);
+            MessageBus.Instance.PostEvent(MessageType.PawnMoved, this, new PawnMovedEventArgs(lastCoords, newCoords));
         }
 
         public void OnDestroy(Actor other)

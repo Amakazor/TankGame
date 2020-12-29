@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TankGame.Src.Actors.Fields;
+using TankGame.Src.Actors.Pawns;
+using TankGame.Src.Actors.Pawns.Enemies;
+using TankGame.Src.Actors.Pawns.Player;
+using TankGame.Src.Events;
 using TankGame.Src.Extensions;
 using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Data.Map
 {
-    internal class GameMap
+    internal class GameMap : IDisposable
     {
         private const int MapSize = 5;
         private const int FieldsInLine = 20;
@@ -39,6 +43,32 @@ namespace TankGame.Src.Data.Map
                 Console.WriteLine("Players region not founds");
                 throw new Exception();
             }
+
+            MessageBus.Instance.Register(MessageType.PawnMoved, OnPawnMoved);
+        }
+
+        public Region GetRegionFromFieldCoords(Vector2i fieldCoords)
+        {
+            for (int i = 0; i < Regions.Count; i++)
+            {
+                Region region = Regions.ElementAt(i);
+
+                if (region.HasField(fieldCoords)) return region;
+            }
+
+            return null;
+        }
+
+        public Region GetRegionFromMapCoords(Vector2i mapCoords)
+        {
+            for (int i = 0; i < Regions.Count; i++)
+            {
+                Region region = Regions.ElementAt(i);
+
+                if (region.Coords.Equals(mapCoords)) return region;
+            }
+
+            return null;
         }
 
         public Field GetFieldFromRegion(Vector2i fieldCoords)
@@ -62,23 +92,29 @@ namespace TankGame.Src.Data.Map
 
         private void LoadNineRegions(Vector2i coords)
         {
+            Console.WriteLine(coords.X.ToString());
+            Console.WriteLine(coords.Y.ToString());
+
             if (coords.IsValid())
             {
-                for (int columnModifier = -1; columnModifier <= 1; columnModifier++)
+                Regions.ToList().ForEach(region =>
                 {
-                    for (int rowModifier = -1; rowModifier <= 1; rowModifier++)
+                    if (region.Coords.X > coords.X + 1 || region.Coords.X < coords.X - 1 || region.Coords.Y > coords.Y + 1 || region.Coords.Y < coords.Y - 1)
                     {
-                        Vector2i newCoords = new Vector2i(coords.X + columnModifier, coords.Y + rowModifier);
+                        region.Dispose();
+                        Regions.Remove(region);
+                    }
+                });
 
-                        Console.WriteLine("Trying to load region at " + newCoords.X + " " + newCoords.Y);
+                for (int columnModifier = -1; columnModifier <= 1; columnModifier++) for (int rowModifier = -1; rowModifier <= 1; rowModifier++)
+                {
+                    Vector2i newCoords = new Vector2i(coords.X + columnModifier, coords.Y + rowModifier);
 
+                    if (GetRegionFromMapCoords(newCoords) is null)
+                    {
                         if (newCoords.X >= 0 && newCoords.X <= MapSize && newCoords.Y >= 0 && newCoords.Y <= MapSize && RegionPathGenerator.GetRegionPath(newCoords) != null)
                         {
                             Regions.Add(new Region(newCoords, FieldsInLine, true));
-                        }
-                        else
-                        {
-                            Console.WriteLine("File for region at " + newCoords.X + " " + newCoords.Y + " could not be located");
                         }
                     }
                 }
@@ -128,6 +164,34 @@ namespace TankGame.Src.Data.Map
             }
 
             return nodes;
+        }
+
+        private void OnPawnMoved(object sender, EventArgs eventArgs)
+        {
+            if (eventArgs is PawnMovedEventArgs pawnMovedEventArgs && !pawnMovedEventArgs.LastCoords.Equals(pawnMovedEventArgs.NewCoords))
+            {
+                Region lastRegion = GetRegionFromFieldCoords(pawnMovedEventArgs.LastCoords);
+                Region newRegion = GetRegionFromFieldCoords(pawnMovedEventArgs.NewCoords);
+                if (!lastRegion.Equals(newRegion))
+                {
+                    if (sender is Player player)
+                    {
+                        newRegion.AddPlayer(player);
+                        lastRegion.DeletePlayer();
+                        LoadNineRegions(newRegion.Coords);
+                    }
+                    else if (sender is Enemy enemy)
+                    {
+                        newRegion.AddEnemy(enemy);
+                        lastRegion.DeleteEnemy(enemy);
+                    }
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            MessageBus.Instance.Unregister(MessageType.PawnMoved, OnPawnMoved);
         }
     }
 }
