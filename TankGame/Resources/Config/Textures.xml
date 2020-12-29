@@ -90,20 +90,35 @@
 		<name>empty</name>
 		<location>Resources/Textures/Fields/empty.png</location>
 	</texture>
-  <texture>
+	<texture>
 		<type>field</type>
 		<name>grass</name>
-		<location>Resources/Textures/Fields/grass.png</location>
+		<location>Resources/Textures/Fields/grass1.png</location>
+	</texture>
+	<texture>
+		<type>field</type>
+		<name>grass2</name>
+		<location>Resources/Textures/Fields/grass2.png</location>
 	</texture>
     <texture>
 		<type>field</type>
 		<name>road</name>
-		<location>Resources/Textures/Fields/road.png</location>
+		<location>Resources/Textures/Fields/road1.png</location>
+	</texture>
+	<texture>
+		<type>field</type>
+		<name>road2</name>
+		<location>Resources/Textures/Fields/road2.png</location>
 	</texture>
   <texture>
 		<type>field</type>
 		<name>sand</name>
-		<location>Resources/Textures/Fields/sand.png</location>
+		<location>Resources/Textures/Fields/sand1.png</location>
+	</texture>
+	<texture>
+		<type>field</type>
+		<name>sand2</name>
+		<location>Resources/Textures/Fields/sand2.png</location>
 	</texture>
   <texture>
 		<type>field</type>
