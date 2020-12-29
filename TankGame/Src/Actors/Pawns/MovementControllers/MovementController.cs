@@ -61,7 +61,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
                     if (nextField.GameObject != null && nextField.GameObject.TraversibilityData.IsTraversible)
                     {
-                        SetCooldown(nextField.TraversabilityData.SpeedModifier, nextField.GameObject.TraversibilityData.SpeedModifier);
+                        SetCooldown(nextField.TraversabilityMultiplier);
 
                         if (nextField.GameObject.DestructabilityData.DestroyOnEntry)
                         {
@@ -104,15 +104,9 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         }
 
         public virtual bool CanDoAction() => Cooldown == 0 && Owner.IsAlive;
-
         public void ClearAction() => NextAction = null;
-
         protected void SetRandomizedCooldown() => SetCooldown(GamestateManager.Instance.Random.NextDouble() / 4);
-
-        protected void SetCooldown(double multiplier = 1, double multiplier2 = 1)
-        {
-            Cooldown = Delay * multiplier * multiplier2;
-        }
+        protected void SetCooldown(double multiplier = 1) => Cooldown = Delay * multiplier;
 
         public void Tick(float deltaTime)
         {

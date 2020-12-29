@@ -121,7 +121,7 @@ namespace TankGame.Src.Data.Map
                 {
                     Field field = GetFieldFromRegion(new Vector2i(x, y));
 
-                    if (field != null) column.Add(new Node(new Vector2i(x - center.X + radius, y - center.Y + radius), field.IsTraversible(true)));
+                    if (field != null) column.Add(new Node(new Vector2i(x - center.X + radius, y - center.Y + radius), field.IsTraversible(true), field.TraversabilityMultiplier));
                     else column.Add(new Node(new Vector2i(x - center.X + radius, y - center.Y + radius), false));
                 }
                 nodes.Add(column);

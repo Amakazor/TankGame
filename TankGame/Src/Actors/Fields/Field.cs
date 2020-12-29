@@ -21,6 +21,7 @@ namespace TankGame.Src.Actors.Fields
         public Pawn PawnOnField { get; set; }
         public GameObject GameObject { get; set; }
         private string Type { get; }
+        public float TraversabilityMultiplier => TraversabilityData.SpeedModifier * ((GameObject != null && GameObject.IsTraversible) ? GameObject.TraversibilityData.SpeedModifier : 1);
 
         public Field(Vector2i coords, TraversibilityData traversabilityData, Texture texture, string type, GameObject gameObject) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
         {
