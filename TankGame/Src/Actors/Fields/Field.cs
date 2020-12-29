@@ -45,6 +45,12 @@ namespace TankGame.Src.Actors.Fields
                    && (GameObject != null ? (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.TraversibilityData.IsTraversible) : true);
         }
 
+        public bool IsShootable(bool excludePlayer = false, bool orObjectDestructible = false)
+        {
+            return (PawnOnField == null || (excludePlayer && PawnOnField is Player))
+                   && (GameObject != null ? (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.TraversibilityData.IsTraversible) : true);
+        }
+
         internal XmlElement SerializeToXML(XmlDocument xmlDocument)
         {
             XmlElement fieldElement = xmlDocument.CreateElement("field");

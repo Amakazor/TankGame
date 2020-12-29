@@ -95,7 +95,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 return !Line.Any(coords =>
                 {
                     Field field = GamestateManager.Instance.Map.GetFieldFromRegion(coords);
-                    if (field == null || !field.IsTraversible(false, true)) return true;
+                    if (field == null || !field.IsShootable(false, true)) return true;
                     return false;
                 });
             }
