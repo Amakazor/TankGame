@@ -167,7 +167,7 @@ namespace TankGame.Src.Data.Map
                     enemy.Element("type").Value,
                     enemy.Element("aimc").Value,
                     enemy.Element("path") != null && enemy.Element("path").Descendants("point") != null
-                        ? new List<Vector2i>(from point in enemy.Element("path").Descendants("point") select new Vector2i(int.Parse(point.Element("x").Value), int.Parse(point.Element("y").Value)))
+                        ? new List<Vector2i>(from point in enemy.Element("path").Descendants("point") select new Vector2i((Coords.X * FieldsInLine) + int.Parse(point.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(point.Element("y").Value)))
                         : null,
                     enemy.Element("health") != null 
                         ? int.Parse(enemy.Element("health").Value) 
