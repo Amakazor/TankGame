@@ -110,9 +110,6 @@
       <!--1x1-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>bigbuilding</type>
-      </object>
     </field>
     <field>
       <!--1x2-->
@@ -208,49 +205,31 @@
       <!--2x0-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>bigbuilding</type>
-      </object>
     </field>
     <field>
       <!--2x1-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--2x2-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--2x3-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--2x4-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--2x5-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--2x6-->
@@ -331,9 +310,6 @@
       <!--3x1-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--3x2-->
@@ -354,9 +330,6 @@
       <!--3x5-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--3x6-->
@@ -437,9 +410,6 @@
       <!--4x1-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--4x2-->
@@ -460,9 +430,6 @@
       <!--4x5-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--4x6-->
@@ -543,9 +510,6 @@
       <!--5x1-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--5x2-->
@@ -566,9 +530,6 @@
       <!--5x5-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--5x6-->
@@ -649,9 +610,6 @@
       <!--6x1-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--6x2-->
@@ -672,9 +630,6 @@
       <!--6x5-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--6x6-->
@@ -755,41 +710,26 @@
       <!--7x1-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--7x2-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--7x3-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--7x4-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--7x5-->
       <type>empty</type>
       <texture>empty</texture>
-      <object>
-        <type>fence1</type>
-      </object>
     </field>
     <field>
       <!--7x6-->
