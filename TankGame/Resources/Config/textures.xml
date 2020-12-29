@@ -90,4 +90,24 @@
 		<name>empty</name>
 		<location>Resources/Textures/Fields/empty.png</location>
 	</texture>
+  <texture>
+		<type>field</type>
+		<name>grass</name>
+		<location>Resources/Textures/Fields/grass.png</location>
+	</texture>
+    <texture>
+		<type>field</type>
+		<name>road</name>
+		<location>Resources/Textures/Fields/road.png</location>
+	</texture>
+  <texture>
+		<type>field</type>
+		<name>sand</name>
+		<location>Resources/Textures/Fields/sand.png</location>
+	</texture>
+  <texture>
+		<type>field</type>
+		<name>water</name>
+		<location>Resources/Textures/Fields/water.png</location>
+	</texture>
 </textures>
