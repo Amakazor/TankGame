@@ -1,8 +1,10 @@
-﻿using SFML.Graphics;
+﻿using SFML.Audio;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using TankGame.Src.Data;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -13,6 +15,7 @@ namespace TankGame.Src.Actors.GameObjects
         public TraversibilityData TraversibilityData { get; private set; }
         public DestructabilityData DestructabilityData { get; private set; }
         private SpriteComponent ObjectSprite { get; set; }
+        private SoundBuffer DestructionSound { get; }
         private string Type { get; }
         public int Health { get => DestructabilityData.Health; set => DestructabilityData = new DestructabilityData(value, DestructabilityData.IsDestructible, DestructabilityData.DestroyOnEntry); }
         public bool IsTraversible => TraversibilityData.IsTraversible;
@@ -46,6 +49,7 @@ namespace TankGame.Src.Actors.GameObjects
 
         public void OnHit()
         {
+            SoundManager.Instance.PlayRandomSound("destruction", Position / 64);
             if (IsDestructible && IsAlive) Health--;
             if (Health <= 0) OnDestroy();
         }

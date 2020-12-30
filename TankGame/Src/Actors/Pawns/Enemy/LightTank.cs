@@ -8,5 +8,11 @@ namespace TankGame.Src.Actors.Pawns.Enemies
         public LightTank(Vector2f position, Vector2f size, int health = 1) : base(position, size, TextureManager.Instance.GetTexture(TextureType.Pawn, "enemy1"), health)
         {
         }
+
+        protected override void UpdatePosition(Vector2i lastCoords, Vector2i newCoords)
+        {
+            SoundManager.Instance.PlaySound("move", "light", Position / 64);
+            base.UpdatePosition(lastCoords, newCoords);
+        }
     }
 }

@@ -3,6 +3,7 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors.Pawns.MovementControllers;
+using TankGame.Src.Data;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -74,6 +75,7 @@ namespace TankGame.Src.Actors.Pawns
 
         public void OnHit()
         {
+            SoundManager.Instance.PlayRandomSound("destruction", Position / 64);
             if (IsDestructible && IsAlive) Health--;
             if (Health <= 0) OnDestroy();
         }
