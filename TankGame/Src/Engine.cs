@@ -32,6 +32,7 @@ namespace TankGame.Src
         private View GameView { get; set; }
 
         private InputHandler InputHandler { get; }
+        private CollisionManager CollisionManager { get; set; }
 
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
@@ -95,6 +96,8 @@ namespace TankGame.Src
             {
                 tickable.Tick(deltaTime);
             }
+
+            CollisionManager.Tick();
         }
 
         private void Render(float deltaTime)
@@ -155,6 +158,7 @@ namespace TankGame.Src
 
         private void InitializeManagers()
         {
+            CollisionManager = new CollisionManager();
             TextureManager.Initialize();
             SoundManager.Initialize();
             KeyManager.Initialize();

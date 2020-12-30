@@ -2,10 +2,13 @@
 {
     internal interface IDestructible
     {
-        public void OnHit(Actor other);
-        public void OnDestroy(Actor other);
+        public void OnHit();
+        public void OnDestroy();
         public bool IsAlive { get; }
         public int Health { get; set; }
-        bool IsDestructible { get; }
+        public bool IsDestructible { get; }
+        public Actor Actor { get; }
+        public void RegisterDestructible();
+        public void UnregisterDestructible();
     }
 }

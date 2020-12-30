@@ -3,6 +3,7 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Actors.GameObjects
@@ -18,6 +19,7 @@ namespace TankGame.Src.Actors.GameObjects
         public bool IsDestructible => DestructabilityData.IsDestructible;
         public bool IsDestructibleOrTraversible => IsDestructible || IsTraversible;
         public bool IsAlive => Health > 0;
+        public Actor Actor => this;
 
         public GameObject(Vector2i coords, Tuple<TraversibilityData, DestructabilityData> gameObjectType, Texture texture, string type, int hp) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
         {
@@ -28,6 +30,8 @@ namespace TankGame.Src.Actors.GameObjects
             if (hp > 0) Health = hp;
 
             ObjectSprite = new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
+
+            RegisterDestructible();
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
@@ -35,14 +39,15 @@ namespace TankGame.Src.Actors.GameObjects
             return new HashSet<IRenderComponent> { ObjectSprite };
         }
 
-        public void OnDestroy(Actor other)
+        public void OnDestroy()
         {
-            throw new NotImplementedException();
+            Dispose();
         }
 
-        public void OnHit(Actor other)
+        public void OnHit()
         {
-            throw new NotImplementedException();
+            if (IsDestructible && IsAlive) Health--;
+            if (Health <= 0) OnDestroy();
         }
 
         internal XmlElement SerializeToXML(XmlDocument xmlDocument)
@@ -62,7 +67,18 @@ namespace TankGame.Src.Actors.GameObjects
 
         public override void Dispose()
         {
+            UnregisterDestructible();
             base.Dispose();
+        }
+
+        public void RegisterDestructible()
+        {
+            MessageBus.Instance.PostEvent(MessageType.RegisterDestructible, this, new EventArgs());
+        }
+
+        public void UnregisterDestructible()
+        {
+            MessageBus.Instance.PostEvent(MessageType.UnregisterDestructible, this, new EventArgs());
         }
     }
 }

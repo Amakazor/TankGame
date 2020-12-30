@@ -1,54 +1,73 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Data;
+using TankGame.Src.Events;
+using TankGame.Src.Extensions;
 using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Actors.Projectiles
 {
     internal class Projectile : TickableActor
     {
-        protected Direction Direction { get; }
-        protected SpriteComponent ProjectileComponent { get; set; }
-        protected RectangleComponent CollisionRectangle { get; set; }
-        protected Pawn Owner { get; }
+        private static readonly float FlightDistance = 640;
+        private Direction Direction { get; }
+        private SpriteComponent ProjectileComponent { get; set; }
+        public Pawn Owner { get; private set; }
+        private Vector2f StartingPosition { get; }
+        private bool HasFlownToFar => StartingPosition.ManhattanDistance(Position) >= FlightDistance;
+        public Vector2f CollisionPosition => Position + (Size / 4);
+        public Vector2f CollistionSize => (Size / 2);
 
         public Projectile(Vector2f position, Direction direction, Pawn owner) : base(position, new Vector2f(64, 64))
         {
+            StartingPosition = Position;
             Direction = direction;
             Owner = owner;
-            CollisionRectangle = new RectangleComponent(Position, Size, this);
 
             ProjectileComponent = Owner switch
             {
-                Enemy  _ => new SpriteComponent(Position, Size, this, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk1"), new Color(255, 255, 255, 255), Direction),
+                Enemy _ => new SpriteComponent(Position, Size, this, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk1"), new Color(255, 255, 255, 255), Direction),
                 Player _ => new SpriteComponent(Position, Size, this, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk2"), new Color(255, 255, 255, 255), Direction),
                 _ => throw new System.NotImplementedException(),
             };
+
+            MessageBus.Instance.PostEvent(MessageType.RegisterProjectile, this, new EventArgs());
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
         {
-            return new HashSet<IRenderComponent> { ProjectileComponent, CollisionRectangle };
+            return new HashSet<IRenderComponent> { ProjectileComponent };
         }
 
         public override void Tick(float deltaTime)
         {
-            Vector2f moveVector = Direction switch
+            if (!HasFlownToFar)
             {
-                Direction.Up => new Vector2f(0 * deltaTime, -300 * deltaTime),
-                Direction.Down => new Vector2f(0 * deltaTime, 300 * deltaTime),
-                Direction.Left => new Vector2f(-300 * deltaTime, 0 * deltaTime),
-                Direction.Right => new Vector2f(300 * deltaTime, 0 * deltaTime),
-                _ => new Vector2f(0, 0),
-            };
+                Vector2f moveVector = Direction switch
+                {
+                    Direction.Up => new Vector2f(0 * deltaTime, -300 * deltaTime),
+                    Direction.Down => new Vector2f(0 * deltaTime, 300 * deltaTime),
+                    Direction.Left => new Vector2f(-300 * deltaTime, 0 * deltaTime),
+                    Direction.Right => new Vector2f(300 * deltaTime, 0 * deltaTime),
+                    _ => new Vector2f(0, 0),
+                };
 
-            Position += moveVector;
-            ProjectileComponent.SetPosition(Position);
-            CollisionRectangle.SetPosition(Position);
+                Position += moveVector;
+                ProjectileComponent.SetPosition(Position);
+            }
+            else Dispose();
+        } 
+            
+        public override void Dispose()
+        {
+            Owner = null;
+            MessageBus.Instance.PostEvent(MessageType.UnregisterProjectile, this, new EventArgs());
+            base.Dispose();
         }
     }
 }

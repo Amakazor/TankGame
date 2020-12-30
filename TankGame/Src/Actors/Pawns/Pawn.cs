@@ -22,11 +22,14 @@ namespace TankGame.Src.Actors.Pawns
         }
         public bool IsAlive => Health > 0;
         public bool IsDestructible => true;
+        public Actor Actor => this;
 
         public Pawn(Vector2f position, Vector2f size, Texture texture, int health) : base(position, size)
         {
             Health = health;
             PawnSprite = new SpriteComponent(Position, Size, this, Texture = texture, new Color(255, 255, 255, 255));
+
+            RegisterDestructible();
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
@@ -58,14 +61,31 @@ namespace TankGame.Src.Actors.Pawns
             MessageBus.Instance.PostEvent(MessageType.PawnMoved, this, new PawnMovedEventArgs(lastCoords, newCoords));
         }
 
-        public void OnDestroy(Actor other)
+        public void OnDestroy()
         {
             Dispose();
         }
 
-        public void OnHit(Actor other)
+        public override void Dispose()
         {
-            throw new NotImplementedException();
+            UnregisterDestructible();
+            base.Dispose();
+        }
+
+        public void OnHit()
+        {
+            if (IsDestructible && IsAlive) Health--;
+            if (Health <= 0) OnDestroy();
+        }
+
+        public void RegisterDestructible()
+        {
+            MessageBus.Instance.PostEvent(MessageType.RegisterDestructible, this, new EventArgs());
+        }
+
+        public void UnregisterDestructible()
+        {
+            MessageBus.Instance.PostEvent(MessageType.UnregisterDestructible, this, new EventArgs());
         }
     }
 }
