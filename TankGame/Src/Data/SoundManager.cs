@@ -116,16 +116,17 @@ namespace TankGame.Src.Data
 
             float soundDistance = position.ManhattanDistance(GamestateManager.Instance.Player.Position / 64);
 
-            Sound newSound = new Sound(soundbuffer);
+            float volume = Math.Min(20 * 1 / (soundDistance == 0 ? 1 : soundDistance), 20) * ((soundType == "move") ? 0.25F : 1);
 
-            newSound.Volume = Math.Min(20 * 1 / (soundDistance == 0 ? 1 : soundDistance), 20) * ((soundType == "move") ? 0.125F : 1);
-            if (newSound.Volume < 0.25) newSound.Volume = 0;
-            if (newSound.Volume > 0)
+            if (volume > 0.25)
             {
+                Sound newSound = new Sound(soundbuffer)
+                {
+                    Volume = volume
+                };
                 newSound.Play();
                 Sounds.Add(newSound);
             }
-            else newSound.Dispose();
         }
     }
 }
