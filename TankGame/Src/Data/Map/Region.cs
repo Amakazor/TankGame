@@ -234,7 +234,12 @@ namespace TankGame.Src.Data.Map
 
         public void DeletePlayer() => Player = null;
         public void AddPlayer(Player player) => Player = player;
-        public void DeleteEnemy(Enemy enemy) => Enemies.Add(enemy);
-        public void AddEnemy(Enemy enemy) => Enemies.Remove(enemy);
+        public void DeleteEnemy(Enemy enemy)
+        {
+            Enemies.Remove(enemy);
+            GetFieldAtMapCoords(enemy.Coords).PawnOnField = null;
+        }
+
+        public void AddEnemy(Enemy enemy) => Enemies.Add(enemy);
     }
 }

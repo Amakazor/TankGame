@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Map;
 
 namespace TankGame.Src.Actors.Pawns.Enemies
 {
@@ -16,6 +17,7 @@ namespace TankGame.Src.Actors.Pawns.Enemies
         public override void OnDestroy()
         {
             GamestateManager.Instance.AddPoints(ScoreAdded, Position + new Vector2f((Size.X / 2) - 75, ((Size.Y / 10) - 10)));
+            GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords).DeleteEnemy(this);
             base.OnDestroy();
         }
     }
