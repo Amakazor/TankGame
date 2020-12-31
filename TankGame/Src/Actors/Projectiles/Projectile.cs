@@ -14,14 +14,15 @@ namespace TankGame.Src.Actors.Projectiles
 {
     internal class Projectile : TickableActor
     {
-        private static readonly float FlightDistance = 640;
+        private const float FlightDistance = 640;
+        private const float Speed = 200;
         private Direction Direction { get; }
         private SpriteComponent ProjectileComponent { get; set; }
         public Pawn Owner { get; private set; }
         private Vector2f StartingPosition { get; }
         private bool HasFlownToFar => StartingPosition.ManhattanDistance(Position) >= FlightDistance;
-        public Vector2f CollisionPosition => Position + (Size / 4);
-        public Vector2f CollistionSize => (Size / 2);
+        public Vector2f CollisionPosition => Position + ((Size - CollistionSize) / 2);
+        public Vector2f CollistionSize => (Size / 4);
 
         public Projectile(Vector2f position, Direction direction, Pawn owner) : base(position, new Vector2f(64, 64))
         {
@@ -51,10 +52,10 @@ namespace TankGame.Src.Actors.Projectiles
             {
                 Vector2f moveVector = Direction switch
                 {
-                    Direction.Up => new Vector2f(0 * deltaTime, -300 * deltaTime),
-                    Direction.Down => new Vector2f(0 * deltaTime, 300 * deltaTime),
-                    Direction.Left => new Vector2f(-300 * deltaTime, 0 * deltaTime),
-                    Direction.Right => new Vector2f(300 * deltaTime, 0 * deltaTime),
+                    Direction.Up => new Vector2f(0 * deltaTime, -Speed * deltaTime),
+                    Direction.Down => new Vector2f(0 * deltaTime, Speed * deltaTime),
+                    Direction.Left => new Vector2f(-Speed * deltaTime, 0 * deltaTime),
+                    Direction.Right => new Vector2f(Speed * deltaTime, 0 * deltaTime),
                     _ => new Vector2f(0, 0),
                 };
 

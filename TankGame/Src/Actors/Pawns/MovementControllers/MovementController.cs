@@ -17,6 +17,11 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         protected Tuple<string, string> NextAction { get; set; }
         protected Pawn Owner { get; }
         public bool IsRotating { get; protected set; }
+        public bool IsMoving { get; protected set; }
+        public double RotationCooldown { get; protected set; }
+        public double MovementCooldown { get; protected set; }
+        public double RotationProgress => 1 - (Cooldown / RotationCooldown);
+        public double MovementProgress => 1 - (Cooldown / MovementCooldown);
 
         public MovementController(double delay, Pawn owner)
         {
@@ -62,17 +67,22 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                     nextField.PawnOnField = Owner;
                     prevField.PawnOnField = null;
 
-                    if (nextField.GameObject != null && nextField.GameObject.TraversibilityData.IsTraversible)
+                    if (nextField.GameObject == null || nextField.GameObject.IsTraversible)
                     {
-                        SetCooldown(nextField.TraversabilityMultiplier);
+                        IsMoving = true;
+                        float averageTraversabilityMultiplier = nextField.TraversabilityMultiplier + prevField.TraversabilityMultiplier / 2;
+                        MovementCooldown = averageTraversabilityMultiplier * Delay;
+                        SetCooldown(averageTraversabilityMultiplier);
 
-                        if (nextField.GameObject.DestructabilityData.DestroyOnEntry)
+                        if (nextField.GameObject != null)
                         {
-                            nextField.GameObject.Dispose();
-                            nextField.GameObject = null;
+                            if (nextField.GameObject.DestructabilityData.DestroyOnEntry)
+                            {
+                                nextField.GameObject.Dispose();
+                                nextField.GameObject = null;
+                            }
                         }
                     }
-                    else SetCooldown(nextField.TraversabilityData.SpeedModifier);
                 }
                 else SetRandomizedCooldown();
                 return nextDirection;
@@ -103,15 +113,30 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         public Direction Rotate(Direction currentDirection, Direction direction)
         {
             IsRotating = true;
-            SetCooldown(RotationMultiplier * (IsDirectionOposite(currentDirection, direction) ? 2 : 1));
+
+            double newRotationMultiplier = RotationMultiplier * (IsDirectionOposite(currentDirection, direction) ? 2 : 1);
+
+            RotationCooldown = newRotationMultiplier * Delay;
+            SetCooldown(newRotationMultiplier);
+
             return direction;
         }
 
         public virtual bool CanDoAction()
         {
             bool canDoAction = Cooldown == 0 && Owner.IsAlive;
-            if (canDoAction) IsRotating = false;
+            if (canDoAction) ClearStatus();
             return canDoAction;
+        }
+
+        public void ClearStatus()
+        {
+            IsRotating = false;
+            IsMoving = false;
+            RotationCooldown = 0;
+            MovementCooldown = 0;
+            Owner.LastDirection = Owner.Direction;
+            Owner.LastPosition = Owner.Position;
         }
 
         public void ClearAction() => NextAction = null;
@@ -125,8 +150,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         }
 
         public bool IsDirectionOposite(Direction lastDirection, Direction currentDirection) => (lastDirection == Direction.Up && currentDirection == Direction.Down) || (lastDirection == Direction.Down && currentDirection == Direction.Up) || (lastDirection == Direction.Left && currentDirection == Direction.Right) || (lastDirection == Direction.Right && currentDirection == Direction.Left);
-        public double RotationCooldown(Direction lastDirection, Direction currentDirection) => RotationMultiplier * (IsDirectionOposite(lastDirection, currentDirection) ? 2 : 1) * Delay;
-        public double RotationProgress(Direction lastDirection, Direction currentDirection) => 1 - (Cooldown / RotationCooldown(lastDirection, currentDirection));
+        
 
         public void RegisterTickable()
         {

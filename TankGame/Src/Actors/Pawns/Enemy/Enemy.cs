@@ -16,7 +16,7 @@ namespace TankGame.Src.Actors.Pawns.Enemies
 
         public override void OnDestroy()
         {
-            GamestateManager.Instance.AddPoints(ScoreAdded, Position + new Vector2f((Size.X / 2) - 75, ((Size.Y / 10) - 10)));
+            GamestateManager.Instance.AddPoints(ScoreAdded, RealPosition + new Vector2f((Size.X / 2) - 75, ((Size.Y / 10) - 10)));
             GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords).DeleteEnemy(this);
             base.OnDestroy();
         }

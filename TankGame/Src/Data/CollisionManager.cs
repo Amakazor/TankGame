@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using TankGame.Src.Actors;
 using TankGame.Src.Actors.GameObjects;
+using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Projectiles;
@@ -80,7 +81,7 @@ namespace TankGame.Src.Data
             }
         }
 
-        private bool CheckCollision(Projectile projectile, Actor actor2) => CollidesAABB(projectile.CollisionPosition, projectile.CollistionSize, actor2.Position, actor2.Size);
+        private bool CheckCollision(Projectile projectile, Actor actor2) => CollidesAABB(projectile.CollisionPosition, projectile.CollistionSize, (actor2 is Pawn pawn) ? pawn.RealPosition : actor2.Position, actor2.Size);
 
         private bool CollidesAABB(Vector2f position1, Vector2f size1, Vector2f position2, Vector2f size2)
         {

@@ -110,6 +110,8 @@ namespace TankGame.Src
 
             Renderables.AddDeleteRange(RenderablesToAdd, RenderablesToDelete);
 
+            if (GamestateManager.Instance.Player != null) RecenterView(GamestateManager.Instance.Player.RealPosition);
+
             PrepareRenderQueue().ForEach((List<IRenderable> RenderLayer)
                 => RenderLayer.ForEach((IRenderable renderable)
                     => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
@@ -262,7 +264,7 @@ namespace TankGame.Src
         {
             if (sender is Player senderPlayer)
             {
-                RecenterView(senderPlayer.Position);
+                RecenterView(senderPlayer.RealPosition);
             }
         }
     }
