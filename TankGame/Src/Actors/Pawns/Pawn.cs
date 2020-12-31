@@ -11,6 +11,7 @@ namespace TankGame.Src.Actors.Pawns
 {
     internal abstract class Pawn : TickableActor, IDestructible
     {
+        public Direction LastDirection { get; protected set; }
         public Direction Direction { get; protected set; }
         public int Health { get; set; }
         public MovementController MovementController { get; set; }
@@ -40,6 +41,10 @@ namespace TankGame.Src.Actors.Pawns
 
         public override void Tick(float deltaTime)
         {
+            if (!MovementController.IsRotating && LastDirection != Direction) LastDirection = Direction;
+
+            if (MovementController.IsRotating) PawnSprite.SetDirection(CalculateRotationAngle());
+
             if (MovementController != null)
             {
                 if (MovementController.CanDoAction())
@@ -58,8 +63,35 @@ namespace TankGame.Src.Actors.Pawns
         protected virtual void UpdatePosition(Vector2i lastCoords, Vector2i newCoords)
         {
             PawnSprite.SetPosition(Position);
-            PawnSprite.SetDirection(Direction);
+            PawnSprite.SetDirection(CalculateRotationAngle());
             MessageBus.Instance.PostEvent(MessageType.PawnMoved, this, new PawnMovedEventArgs(lastCoords, newCoords));
+        }
+
+        protected double CalculateRotationAngle()
+        {
+            if (!MovementController.IsRotating) return GetRotationAngleFromDirection(Direction);
+            else
+            {
+                double startRotationAngle = GetRotationAngleFromDirection(LastDirection);
+                double endRotationAngle = GetRotationAngleFromDirection(Direction);
+
+                if (Math.Abs(startRotationAngle + 360 - endRotationAngle) < Math.Abs(startRotationAngle - endRotationAngle)) startRotationAngle += 360;
+                if (Math.Abs(endRotationAngle + 360 - startRotationAngle) < Math.Abs(endRotationAngle - startRotationAngle)) endRotationAngle += 360;
+
+                return startRotationAngle + (endRotationAngle - startRotationAngle) * MovementController.RotationProgress(LastDirection, Direction);
+            }
+        }
+
+        protected float GetRotationAngleFromDirection(Direction direction)
+        {
+            return direction switch
+            {
+                Direction.Up => 180,
+                Direction.Down => 0,
+                Direction.Left => 90,
+                Direction.Right => 270,
+                _ => 0
+            };
         }
 
         public virtual void OnDestroy()

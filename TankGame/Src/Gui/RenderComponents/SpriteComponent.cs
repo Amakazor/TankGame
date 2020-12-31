@@ -62,6 +62,11 @@ namespace TankGame.Src.Gui.RenderComponents
             };
         }
 
+        public void SetDirection(double angle)
+        {
+            Sprite.Rotation = (float)angle;
+        }
+
         Drawable IRenderComponent.Shape => Sprite;
     }
 }

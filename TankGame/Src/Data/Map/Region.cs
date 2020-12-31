@@ -199,7 +199,7 @@ namespace TankGame.Src.Data.Map
                 Enemies.ToList().ForEach(enemy => enemy.Dispose());
                 Enemies.Clear();
                 if (Player != null) Player.Dispose();
-                Player = null;
+                DeletePlayer();
             }
         }
 

@@ -29,7 +29,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             {
                 if (CanDoAction())
                 {
-                     return Rotate(GetLineDirectionToPlayer(currentDirection));
+                     return Rotate(currentDirection, GetLineDirectionToPlayer(currentDirection));
                 }
             }
 

@@ -10,10 +10,13 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     internal abstract class MovementController : ITickable
     {
+        protected const double RotationMultiplier = 0.5;
+
         protected double Delay { get; }
         protected double Cooldown { get; set; }
         protected Tuple<string, string> NextAction { get; set; }
         protected Pawn Owner { get; }
+        public bool IsRotating { get; protected set; }
 
         public MovementController(double delay, Pawn owner)
         {
@@ -40,7 +43,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             else if (NextAction.Equals(KeyActionType.MoveRight)) nextDirection = Direction.Right;
             else return currentDirection;
 
-            return nextDirection == currentDirection ? Move(currentDirection, nextDirection) : Rotate(nextDirection);
+            return nextDirection == currentDirection ? Move(currentDirection, nextDirection) : Rotate(currentDirection, nextDirection);
         }
 
         public Direction Move(Direction currentDirection, Direction nextDirection)
@@ -97,13 +100,20 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             return direction;
         }
 
-        public Direction Rotate(Direction direction)
+        public Direction Rotate(Direction currentDirection, Direction direction)
         {
-            SetCooldown(0.25F);
+            IsRotating = true;
+            SetCooldown(RotationMultiplier * (IsDirectionOposite(currentDirection, direction) ? 2 : 1));
             return direction;
         }
 
-        public virtual bool CanDoAction() => Cooldown == 0 && Owner.IsAlive;
+        public virtual bool CanDoAction()
+        {
+            bool canDoAction = Cooldown == 0 && Owner.IsAlive;
+            if (canDoAction) IsRotating = false;
+            return canDoAction;
+        }
+
         public void ClearAction() => NextAction = null;
         protected void SetRandomizedCooldown() => SetCooldown(GamestateManager.Instance.Random.NextDouble() / 4);
         protected void SetCooldown(double multiplier = 1) => Cooldown = Delay * multiplier;
@@ -113,6 +123,10 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             if (Cooldown > 0) Cooldown -= deltaTime;
             if (Cooldown < 0) Cooldown = 0;
         }
+
+        public bool IsDirectionOposite(Direction lastDirection, Direction currentDirection) => (lastDirection == Direction.Up && currentDirection == Direction.Down) || (lastDirection == Direction.Down && currentDirection == Direction.Up) || (lastDirection == Direction.Left && currentDirection == Direction.Right) || (lastDirection == Direction.Right && currentDirection == Direction.Left);
+        public double RotationCooldown(Direction lastDirection, Direction currentDirection) => RotationMultiplier * (IsDirectionOposite(lastDirection, currentDirection) ? 2 : 1) * Delay;
+        public double RotationProgress(Direction lastDirection, Direction currentDirection) => 1 - (Cooldown / RotationCooldown(lastDirection, currentDirection));
 
         public void RegisterTickable()
         {

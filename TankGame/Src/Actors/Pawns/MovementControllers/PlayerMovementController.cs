@@ -14,7 +14,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         public override bool CanDoAction()
         {
-            return NextAction != null ? base.CanDoAction() : false;
+            return base.CanDoAction() && NextAction != null;
         }
 
         private void SetNextAction(object sender, EventArgs eventArgs)
