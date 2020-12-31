@@ -31,6 +31,7 @@ namespace TankGame.Src.Actors.Fields
             Type = type;
             Surface = new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
             GameObject = gameObject;
+            if (gameObject != null) GameObject.Field = this;
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
@@ -66,6 +67,11 @@ namespace TankGame.Src.Actors.Fields
             if (GameObject != null) fieldElement.AppendChild(GameObject.SerializeToXML(xmlDocument));
 
             return fieldElement;
+        }
+
+        public void OnGameObjectDestruction()
+        {
+            GameObject = null;
         }
 
         public override void Dispose()

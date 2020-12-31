@@ -4,6 +4,7 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using TankGame.Src.Actors.Fields;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
@@ -15,7 +16,6 @@ namespace TankGame.Src.Actors.GameObjects
         public TraversibilityData TraversibilityData { get; private set; }
         public DestructabilityData DestructabilityData { get; private set; }
         private SpriteComponent ObjectSprite { get; set; }
-        private SoundBuffer DestructionSound { get; }
         private string Type { get; }
         public int Health { get => DestructabilityData.Health; set => DestructabilityData = new DestructabilityData(value, DestructabilityData.IsDestructible, DestructabilityData.DestroyOnEntry); }
         public bool IsTraversible => TraversibilityData.IsTraversible;
@@ -23,6 +23,7 @@ namespace TankGame.Src.Actors.GameObjects
         public bool IsDestructibleOrTraversible => IsDestructible || IsTraversible;
         public bool IsAlive => Health > 0;
         public Actor Actor => this;
+        public Field Field { private get; set; }
 
         public GameObject(Vector2i coords, Tuple<TraversibilityData, DestructabilityData> gameObjectType, Texture texture, string type, int hp) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
         {
@@ -44,6 +45,7 @@ namespace TankGame.Src.Actors.GameObjects
 
         public void OnDestroy()
         {
+            Field.OnGameObjectDestruction();
             Dispose();
         }
 
