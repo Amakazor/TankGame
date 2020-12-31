@@ -11,7 +11,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         protected Vector2i LastPlayerPosition { get; set; }
         protected Vector2i TargetPosition { get; set; }
         protected Stack<Node> Path { get; set; }
-        public ChaseAIMovementController(float delay, Pawn owner) : base(delay, owner)
+        public ChaseAIMovementController(double delay, Pawn owner) : base(delay, owner)
         {
         }
 

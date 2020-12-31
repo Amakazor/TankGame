@@ -9,7 +9,7 @@ namespace TankGame.Src.Actors.Pawns
 {
     internal static class EnemyFactory
     {
-        private static readonly Dictionary<string, Func<float, Enemy, List<Vector2i>, AIMovementController>> AIMCTypes = new Dictionary<string, Func<float, Enemy, List<Vector2i>, AIMovementController>>
+        private static readonly Dictionary<string, Func<double, Enemy, List<Vector2i>, AIMovementController>> AIMCTypes = new Dictionary<string, Func<double, Enemy, List<Vector2i>, AIMovementController>>
         {
             {"random", (delay, owner, patrolRoute) =>  new RandomAIMovementController     (delay, owner)},
             {"chase",  (delay, owner, patrolRoute) =>  new ChaseAIMovementController      (delay, owner)},
@@ -30,8 +30,8 @@ namespace TankGame.Src.Actors.Pawns
             {
                 Enemy newEnemy = EnemyTypes[enemyType](coords);
                 if (health != 0) newEnemy.Health = health;
-
-                newEnemy.MovementController = AIMCTypes[AIMCType](newEnemy switch{LightTank _ => 1, MediumTank _ => 2, HeavyTank _ => 3, _ => 1}, newEnemy, patrolRoute);
+                
+                newEnemy.MovementController = AIMCTypes[AIMCType](newEnemy switch{LightTank _ => 0.75, MediumTank _ => 1.5, HeavyTank _ => 2.25, _ => 1}, newEnemy, patrolRoute);
 
                 return newEnemy;
             }

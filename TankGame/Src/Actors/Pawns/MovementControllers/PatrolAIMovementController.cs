@@ -15,7 +15,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         protected Vector2i TargetPosition { get; set; }
         protected Stack<Node> Path { get; set; }
 
-        public PatrolAIMovementController(float delay, Pawn owner, List<Vector2i> patrolRoute) : base(delay, owner)
+        public PatrolAIMovementController(double delay, Pawn owner, List<Vector2i> patrolRoute) : base(delay, owner)
         {
             PatrolRoute = patrolRoute;
             TargetPosition = new Vector2i(-1, -1);

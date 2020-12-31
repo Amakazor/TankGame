@@ -10,7 +10,7 @@ namespace TankGame.Src.Actors.Pawns.Player
     {
         public Player(Vector2f position, Vector2f size, int health = 3) : base(position, size, TextureManager.Instance.GetTexture(TextureType.Pawn, "player1"), health)
         {
-            MovementController = new PlayerMovementController(0.3F, this);
+            MovementController = new PlayerMovementController(0.5F, this);
             MessageBus.Instance.PostEvent(MessageType.PlayerMoved, this, new EventArgs());
         }
 

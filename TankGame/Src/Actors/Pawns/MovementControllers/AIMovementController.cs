@@ -14,7 +14,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
     {
         protected const int SightDistance = 6;
 
-        public AIMovementController(float delay, Pawn owner) : base(delay, owner)
+        public AIMovementController(double delay, Pawn owner) : base(delay, owner)
         {
         }
 
