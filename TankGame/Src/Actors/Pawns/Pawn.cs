@@ -62,7 +62,7 @@ namespace TankGame.Src.Actors.Pawns
             MessageBus.Instance.PostEvent(MessageType.PawnMoved, this, new PawnMovedEventArgs(lastCoords, newCoords));
         }
 
-        public void OnDestroy()
+        public virtual void OnDestroy()
         {
             Dispose();
         }

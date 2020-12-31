@@ -46,8 +46,9 @@ namespace TankGame.Src.Gui.RenderComponents
             TextElement = new Text(text, Font, fontSize)
             {
                 FillColor = color,
-                Position = CalculatePosition()
             };
+
+            TextElement.Position = CalculatePosition();
         }
 
         public void SetFontSize(uint fontSize)

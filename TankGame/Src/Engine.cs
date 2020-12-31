@@ -10,6 +10,7 @@ using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Projectiles;
+using TankGame.Src.Actors.Text;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
 using TankGame.Src.Events;
@@ -98,6 +99,7 @@ namespace TankGame.Src
             }
 
             CollisionManager.Tick();
+            GamestateManager.Instance.Tick(deltaTime);
         }
 
         private void Render(float deltaTime)
@@ -123,6 +125,7 @@ namespace TankGame.Src
                 new List<IRenderable>(),
                 new List<IRenderable>(),
                 new List<IRenderable>(),
+                new List<IRenderable>(),
                 new List<IRenderable>()
             };
 
@@ -130,6 +133,9 @@ namespace TankGame.Src
             {
                 switch (renderable)
                 {
+                    case TextBox _:
+                        RenderQueue[4].Add(renderable);
+                        break;
                     case Projectile _:
                         RenderQueue[3].Add(renderable);
                         break;
