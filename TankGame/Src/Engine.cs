@@ -37,10 +37,10 @@ namespace TankGame.Src
 
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
-        
+
         private HashSet<ITickable> TickablesToAdd { get; }
         private HashSet<IRenderable> RenderablesToAdd { get; }
-        
+
         private HashSet<ITickable> TickablesToDelete { get; }
         private HashSet<IRenderable> RenderablesToDelete { get; }
 
@@ -110,9 +110,9 @@ namespace TankGame.Src
 
             Renderables.AddDeleteRange(RenderablesToAdd, RenderablesToDelete);
 
-            PrepareRenderQueue().ForEach((List<IRenderable> RenderLayer) 
-                => RenderLayer.ForEach((IRenderable renderable) 
-                    => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent) 
+            PrepareRenderQueue().ForEach((List<IRenderable> RenderLayer)
+                => RenderLayer.ForEach((IRenderable renderable)
+                    => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
                         => Window.Draw(renderComponent.Shape))));
 
             Window.Display();
@@ -172,8 +172,8 @@ namespace TankGame.Src
 
         private void InitializeWindow()
         {
-            Width = 800;
             Height = 800;
+            Width = Height * 16 / 10;
 
             Window = new RenderWindow(new VideoMode(Width, Height), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
             Window.SetVerticalSyncEnabled(true);
@@ -182,10 +182,12 @@ namespace TankGame.Src
 
         private void InitializeView()
         {
-            ViewWidth = 800;
-            ViewHeight = 800;
+            ViewWidth = 64 * 11;
+            ViewHeight = 64 * 11;
 
             GameView = new View(new Vector2f(ViewWidth / 2, ViewHeight / 2), new Vector2f(ViewWidth, ViewHeight));
+
+            RecalculateViewport(Height, Width);
         }
 
         private void SetInputHandlers()
@@ -194,6 +196,26 @@ namespace TankGame.Src
             {
                 Window.KeyPressed += InputHandler.OnKeyPress;
                 Window.MouseButtonPressed += InputHandler.OnClick;
+                Window.Resized += OnResize;
+            }
+        }
+
+        private void OnResize(object sender, SizeEventArgs newSize)
+        {
+            RecalculateViewport(newSize.Height, newSize.Width);
+        }
+
+        private void RecalculateViewport(uint height, uint width)
+        {
+            float aspectRatio = (float)height / width;
+
+            if (GameView != null && (aspectRatio < 0.9 || aspectRatio > 1.1))
+            {
+                GameView.Viewport = Window.Size.X > Window.Size.Y
+                    ? new FloatRect(new Vector2f((1 - aspectRatio) / 2, 0),     new Vector2f(aspectRatio, 1))
+                    : new FloatRect(new Vector2f(0, (1 - 1 / aspectRatio) / 2), new Vector2f(1, 1 / aspectRatio));
+
+                GameView.Size = new Vector2f(ViewWidth, ViewHeight);
             }
         }
 
@@ -240,7 +262,7 @@ namespace TankGame.Src
         {
             if (sender is Player senderPlayer)
             {
-                RecenterView(senderPlayer.Position + (senderPlayer.Size / 2));
+                RecenterView(senderPlayer.Position);
             }
         }
     }
