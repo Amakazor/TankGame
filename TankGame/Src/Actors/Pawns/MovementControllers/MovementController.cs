@@ -64,13 +64,11 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 if (nextField != null & prevField != null && nextField.IsTraversible())
                 {
                     Owner.Coords = nextCoords;
-                    nextField.PawnOnField = Owner;
-                    prevField.PawnOnField = null;
 
                     if (nextField.GameObject == null || nextField.GameObject.IsTraversible)
                     {
                         IsMoving = true;
-                        float averageTraversabilityMultiplier = nextField.TraversabilityMultiplier + prevField.TraversabilityMultiplier / 2;
+                        float averageTraversabilityMultiplier = (nextField.TraversabilityMultiplier + prevField.TraversabilityMultiplier) / 2;
                         MovementCooldown = averageTraversabilityMultiplier * Delay;
                         SetCooldown(averageTraversabilityMultiplier);
 
@@ -147,6 +145,13 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (Cooldown > 0) Cooldown -= deltaTime;
             if (Cooldown < 0) Cooldown = 0;
+
+            if (IsMoving && MovementProgress >= 0.5)
+            {
+                GameMap gameMap = GamestateManager.Instance.Map;
+                gameMap.GetFieldFromRegion(Owner.Coords).PawnOnField = Owner;
+                gameMap.GetFieldFromRegion(Owner.LastCoords).PawnOnField = null;
+            }
         }
 
         public bool IsDirectionOposite(Direction lastDirection, Direction currentDirection) => (lastDirection == Direction.Up && currentDirection == Direction.Down) || (lastDirection == Direction.Down && currentDirection == Direction.Up) || (lastDirection == Direction.Left && currentDirection == Direction.Right) || (lastDirection == Direction.Right && currentDirection == Direction.Left);

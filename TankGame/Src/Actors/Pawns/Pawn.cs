@@ -24,6 +24,7 @@ namespace TankGame.Src.Actors.Pawns
             get => new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
             set => Position = new Vector2f(value.X * Size.X, value.Y * Size.Y);
         }
+        public Vector2i LastCoords => new Vector2i((int)(LastPosition.X / Size.X), (int)(LastPosition.Y / Size.Y));
         public bool IsAlive => Health > 0;
         public bool IsDestructible => true;
         public Actor Actor => this;
