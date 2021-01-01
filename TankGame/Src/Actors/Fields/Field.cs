@@ -23,13 +23,14 @@ namespace TankGame.Src.Actors.Fields
         private string Type { get; }
         public float TraversabilityMultiplier => TraversabilityData.SpeedModifier * ((GameObject != null && GameObject.IsTraversible) ? GameObject.TraversibilityData.SpeedModifier : 1);
 
-        public Field(Vector2i coords, TraversibilityData traversabilityData, Texture texture, string type, GameObject gameObject) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
+        public Field(Vector2i coords, TraversibilityData traversabilityData, bool rotatable, Texture texture, string type, GameObject gameObject) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
         {
             Coords = coords;
             TraversabilityData = traversabilityData;
             Texture = texture;
             Type = type;
             Surface = new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
+            if (rotatable) Surface.SetDirection(GamestateManager.Instance.Random.Next(1, 5) * 90);
             GameObject = gameObject;
             if (gameObject != null) GameObject.Field = this;
         }

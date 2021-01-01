@@ -108,7 +108,8 @@ namespace TankGame.Src.Data.Map
             regionFile.Root.Element("fields").Descendants("field").ToList().ForEach((XElement fieldElement) => {
                 Fields.Add(new Field(
                     new Vector2i((Coords.X * FieldsInLine) + x, (Coords.Y * FieldsInLine) + y),
-                    FieldType.FieldTypes[fieldElement.Element("type").Value],
+                    FieldType.FieldTypes[fieldElement.Element("type").Value].Item1,
+                    FieldType.FieldTypes[fieldElement.Element("type").Value].Item2,
                     TextureManager.Instance.GetTexture(TextureType.Field, fieldElement.Element("texture").Value),
                     fieldElement.Element("type").Value,
                     (fieldElement.Element("object") != null && fieldElement.Element("object").Value != null) 

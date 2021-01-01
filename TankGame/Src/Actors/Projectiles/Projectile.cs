@@ -22,6 +22,7 @@ namespace TankGame.Src.Actors.Projectiles
         private Vector2f StartingPosition { get; }
         private bool HasFlownToFar => StartingPosition.ManhattanDistance(Position) >= FlightDistance;
         private float SpeedMultiplier => (float)(-(Math.Pow(Math.Cos(Math.PI * FlightProgressReversed), (FlightProgressReversed > 0.5) ? 3 : 9) - 1) / 2 + 0.2);
+
         private double FlightProgressReversed => 1 - StartingPosition.ManhattanDistance(Position) / FlightDistance;
         public Vector2f CollisionPosition => Position + ((Size - CollistionSize) / 2);
         public Vector2f CollistionSize => (Size / 4);

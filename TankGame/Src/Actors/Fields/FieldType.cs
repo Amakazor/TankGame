@@ -1,16 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TankGame.Src.Actors.Fields
 {
     internal static class FieldType
     {
-        public static readonly TraversibilityData Empty = new TraversibilityData(1, true);
-        public static readonly TraversibilityData Grass = new TraversibilityData(1.75F, true);
-        public static readonly TraversibilityData Road = new TraversibilityData(1, true);
-        public static readonly TraversibilityData Sand = new TraversibilityData(2.5F, true);
-        public static readonly TraversibilityData Water = new TraversibilityData(0, false);
+        public static readonly Tuple<TraversibilityData, bool> Empty = new Tuple<TraversibilityData, bool>( new TraversibilityData(1, true), false);
+        public static readonly Tuple<TraversibilityData, bool> Grass = new Tuple<TraversibilityData, bool>(new TraversibilityData(1.75F, true), true);
+        public static readonly Tuple<TraversibilityData, bool> Road = new Tuple<TraversibilityData, bool>(new TraversibilityData(1, true), false);
+        public static readonly Tuple<TraversibilityData, bool> Sand = new Tuple<TraversibilityData, bool>(new TraversibilityData(2.5F, true), true);
+        public static readonly Tuple<TraversibilityData, bool> Water = new Tuple<TraversibilityData, bool>(new TraversibilityData(0, false), true);
 
-        public static readonly Dictionary<string, TraversibilityData> FieldTypes = new Dictionary<string, TraversibilityData>
+        public static readonly Dictionary<string, Tuple<TraversibilityData, bool>> FieldTypes = new Dictionary<string, Tuple<TraversibilityData, bool>>
         {
             { "empty", Empty },
             { "grass", Grass },

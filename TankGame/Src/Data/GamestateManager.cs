@@ -48,6 +48,7 @@ namespace TankGame.Src.Data
 
             if (ComboDeltaTimeCummulated > ComboTime)
             {
+                Console.WriteLine(Combo);
                 ComboDeltaTimeCummulated = 0;
                 Combo = Math.Max(1, Combo - 1);
             }
