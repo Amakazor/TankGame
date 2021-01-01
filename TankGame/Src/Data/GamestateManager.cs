@@ -17,6 +17,7 @@ namespace TankGame.Src.Data
 
         public ulong Points { get; private set; }
         private uint Combo { get; set; }
+        private uint CompletedActivities { get; set; }
         private double ComboDeltaTimeCummulated { get; set; }
         public GameMap Map { get; set; }
         public Player Player { get; set; }
@@ -32,12 +33,17 @@ namespace TankGame.Src.Data
             PointsTextBoxes = new HashSet<PointsAddedTextBox>();
         }
 
-        public void AddPoints(uint points, Vector2f? position = null)
+        public void AddPoints(uint points, Vector2f? position = null, bool useCombo = true)
         {
-            ComboDeltaTimeCummulated = 0;
-            Points += points * Combo;
-            PointsTextBoxes.Add(new PointsAddedTextBox(position ?? Player.Position + new Vector2f((Player.Size.X / 2) - 50, (Player.Size.Y / 4) - 10), points, Combo));
-            Combo = Math.Min(Combo + 1, MaxCombo);
+            if (useCombo)
+            {
+                ComboDeltaTimeCummulated = 0;
+                Points += points * Combo;
+                Combo = Math.Min(Combo + 1, MaxCombo);
+            }
+            else Points += points;
+
+            PointsTextBoxes.Add(new PointsAddedTextBox(position ?? Player.Position + new Vector2f((Player.Size.X / 2) - 50, (Player.Size.Y / 4) - 10), points, useCombo ? Combo - 1 : 1));
         }
 
         public void Tick(float deltaTime)
@@ -48,10 +54,14 @@ namespace TankGame.Src.Data
 
             if (ComboDeltaTimeCummulated > ComboTime)
             {
-                Console.WriteLine(Combo);
                 ComboDeltaTimeCummulated = 0;
                 Combo = Math.Max(1, Combo - 1);
             }
+        }
+
+        public void CompleteActivity(uint points, Vector2f position)
+        {
+            AddPoints(points * ++CompletedActivities, position, false);
         }
     }
 }

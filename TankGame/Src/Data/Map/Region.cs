@@ -11,6 +11,7 @@ using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.GameObjects;
 using SFML.Graphics;
+using TankGame.Src.Actors.GameObjects.Activities;
 
 namespace TankGame.Src.Data.Map
 {
@@ -59,8 +60,9 @@ namespace TankGame.Src.Data.Map
         public Vector2i Coords { get; }
         public int FieldsInLine { get; }
         private List<Field> Fields { get; set; }
-        private HashSet<Enemy> Enemies { get; set; }
+        public HashSet<Enemy> Enemies { get; private set; }
         private Player Player { get; set; }
+        public Activity Activity { get; private set; }
         public bool Loaded { get; private set; }
 
         public Region(Vector2i coords, int fieldsInLine, bool load)
@@ -83,6 +85,7 @@ namespace TankGame.Src.Data.Map
                 LoadFields();
                 LoadEnemies();
                 if (ContainsPlayer() && GamestateManager.Instance.Player == null) LoadPlayer();
+                LoadActivity();
 
                 Loaded = true;
             }
@@ -169,6 +172,24 @@ namespace TankGame.Src.Data.Map
             Enemies.ToList().ForEach((Enemy enemy) => { GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy; });
         }
 
+        private void LoadActivity()
+        {
+            XDocument regionFile = XDocument.Load(RegionPathGenerator.GetRegionPath(Coords));
+            XElement activityData = regionFile.Root.Element("activity");
+
+            if (activityData != null && activityData.Element("type") != null)
+            {
+                Activity = activityData.Element("type").Value switch
+                {
+                    "destroy" => new DestroyAllActivity(new Vector2i((Coords.X * FieldsInLine) + int.Parse(activityData.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(activityData.Element("y").Value)),
+                                                        activityData.Element("initial") is null ? (uint?)null : uint.Parse(activityData.Element("initial").Value),
+                                                        Enemies),
+                    _ => throw new NotImplementedException()
+                };
+                GetFieldAtMapCoords(Activity.Coords).GameObject = Activity;
+            }
+        }
+
         private XmlElement SerializeFields(XmlDocument xmlDocument)
         {
             XmlElement fieldsElement = xmlDocument.CreateElement("Fields");
@@ -200,6 +221,7 @@ namespace TankGame.Src.Data.Map
                 Enemies.ToList().ForEach(enemy => enemy.Dispose());
                 Enemies.Clear();
                 if (Player != null) Player.Dispose();
+                Activity = null;
                 DeletePlayer();
             }
         }
@@ -231,6 +253,12 @@ namespace TankGame.Src.Data.Map
         private int ConvertRegionFieldCoordsToFieldIndex(Vector2i regionFieldCoords)
         {
             return regionFieldCoords.X * FieldsInLine + regionFieldCoords.Y;
+        }
+
+        public void OnEnemyDestruction(Enemy enemy)
+        {
+            if (Activity is DestroyAllActivity destroyAllActivity) destroyAllActivity.OnEnemyDestruction(enemy);
+            DeleteEnemy(enemy);
         }
 
         public void DeletePlayer() => Player = null;

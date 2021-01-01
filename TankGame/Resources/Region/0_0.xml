@@ -2020,6 +2020,11 @@
       <texture>empty</texture>
     </field>
   </fields>
+  <activity>
+    <type>destroy</type>
+    <x>2</x>
+    <y>2</y>
+  </activity>
   <spawns>
     <player>
       <x>4</x>

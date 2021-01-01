@@ -24,6 +24,7 @@ namespace TankGame.Src.Actors.GameObjects
         public bool IsAlive => Health > 0;
         public Actor Actor => this;
         public Field Field { private get; set; }
+        public Vector2i Coords => new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
 
         public GameObject(Vector2i coords, Tuple<TraversibilityData, DestructabilityData> gameObjectType, Texture texture, string type, int hp) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
         {
