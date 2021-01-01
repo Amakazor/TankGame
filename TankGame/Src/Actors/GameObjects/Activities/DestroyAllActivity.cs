@@ -11,22 +11,16 @@ namespace TankGame.Src.Actors.GameObjects.Activities
 {
     internal class DestroyAllActivity : Activity
     {
-        private HashSet<Enemy> Enemies { get; set; }
-        private readonly uint InitialEnemiesCount;
-
-        public DestroyAllActivity(Vector2i coords, uint? initialEnemiesCount, HashSet<Enemy> enemies) : base(coords, new Tuple<TraversibilityData, DestructabilityData>(new TraversibilityData(1, false), new DestructabilityData(1, false, false)), TextureManager.Instance.GetTexture(TextureType.Activity, "tower"), "", 1, "Destroy all enemies", 1000)
+        public DestroyAllActivity(Vector2i coords, HashSet<Enemy> enemies, int? hp = null, string name = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData> gameObjectType = null) : base(coords, enemies, hp ?? 1, name??"Destroy all enemies", gameObjectType??new Tuple<TraversibilityData, DestructabilityData>(new TraversibilityData(1, false), new DestructabilityData(1, false, false)), pointsAdded??1000)
         {
-            Enemies = new HashSet<Enemy>(enemies);
-            InitialEnemiesCount = initialEnemiesCount?? (uint)Enemies.Count;
-            if (InitialEnemiesCount == 0) ActivityStatus = ActivityStatus.Completed; 
+            AllEnemiesCount = (uint)Enemies.Count;
+            if (AllEnemiesCount == 0) ActivityStatus = ActivityStatus.Completed;
         }
 
         protected override string CalculateProgress()
         {
             if (Enemies.Count == 0 && ActivityStatus != ActivityStatus.Completed) ChangeStatus(ActivityStatus.Completed);
-            return (InitialEnemiesCount - Enemies.Count) + " of " + InitialEnemiesCount;
+            return (AllEnemiesCount - Enemies.Count) + " of " + AllEnemiesCount;
         }
-
-        public void OnEnemyDestruction(Enemy enemy) => Enemies.Remove(enemy);
     }
 }

@@ -182,8 +182,8 @@ namespace TankGame.Src.Data.Map
                     }
                     else if (sender is Enemy enemy)
                     {
-                        newRegion.AddEnemy(enemy);
-                        lastRegion.DeleteEnemy(enemy);
+                        newRegion.EnemyWanderedIn(enemy);
+                        lastRegion.EnemyWanderedOut(enemy);
                     }
                 }
             }

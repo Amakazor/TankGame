@@ -160,8 +160,8 @@ namespace TankGame.Src
 
         private void StartGame(bool isNewGame)
         {
-            Map = new GameMap(isNewGame);
-            GamestateManager.Instance.Map = Map;
+            GamestateManager.Instance.Map = new GameMap(isNewGame);
+            Map = GamestateManager.Instance.Map;
         }
 
         private void InitializeManagers()
@@ -184,8 +184,8 @@ namespace TankGame.Src
 
         private void InitializeView()
         {
-            ViewWidth = 64 * 11;
-            ViewHeight = 64 * 11;
+            ViewWidth = 64 * (2 * 6 + 1);
+            ViewHeight = ViewWidth;
 
             GameView = new View(new Vector2f(ViewWidth / 2, ViewHeight / 2), new Vector2f(ViewWidth, ViewHeight));
 

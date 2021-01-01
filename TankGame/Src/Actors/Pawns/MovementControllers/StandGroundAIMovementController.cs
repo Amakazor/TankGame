@@ -19,7 +19,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (CanDoAction())
             {
-                if (CanSeePlayerInUnobstructedLine) NextAction = KeyActionType.Shoot;
+                if (CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine) NextAction = KeyActionType.Shoot;
                 else
                 {
                     Vector2i currentPlayerPosition = GamestateManager.Instance.Player.Coords;
@@ -67,7 +67,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         private Vector2i GetValidStandGroundPosition()
         {
-            Vector2i targetPosition = GetClosestValidShootingPosition(GetValidShootingPositions().FindAll(position => position.ManhattanDistance(HomePosition) <= StandGroundRadius));
+            Vector2i targetPosition = GetClosestValidShootingPositionToPlayer(GetValidShootingPositions().FindAll(position => position.ManhattanDistance(HomePosition) <= StandGroundRadius));
             return targetPosition.Equals(new Vector2i(-1, -1)) ? HomePosition : targetPosition;
         }
     }

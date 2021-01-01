@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Map;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -28,6 +29,7 @@ namespace TankGame.Src.Actors.Pawns
         public bool IsAlive => Health > 0;
         public bool IsDestructible => true;
         public Actor Actor => this;
+        public Region CurrentRegion => GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords);
 
         public Pawn(Vector2f position, Vector2f size, Texture texture, int health) : base(position, size)
         {

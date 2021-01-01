@@ -19,7 +19,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (CanDoAction())
             {
-                if (CanSeePlayerInUnobstructedLine) NextAction = KeyActionType.Shoot;
+                if (CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine) NextAction = KeyActionType.Shoot;
                 else
                 {
                     Vector2i currentPlayerPosition = GamestateManager.Instance.Player.Coords;
@@ -27,13 +27,13 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                     if (LastPlayerPosition == null || LastPlayerPosition != currentPlayerPosition)
                     {
                         LastPlayerPosition = currentPlayerPosition;
-                        TargetPosition = GetClosestValidShootingPosition();
+                        TargetPosition = GetClosestValidShootingPositionToPlayer();
                         Path = null;
                     }
 
                     if (!TargetPosition.Equals(new Vector2i(-1, -1)) && !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
                     {
-                        TargetPosition = GetClosestValidShootingPosition();
+                        TargetPosition = GetClosestValidShootingPositionToPlayer();
                         Path = null;
                     }
 

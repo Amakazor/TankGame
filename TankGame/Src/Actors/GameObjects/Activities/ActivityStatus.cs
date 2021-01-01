@@ -1,6 +1,6 @@
 ﻿internal enum ActivityStatus
 {
-    NotStarted,
+    Stopped,
     Started,
     Completed,
     Failed

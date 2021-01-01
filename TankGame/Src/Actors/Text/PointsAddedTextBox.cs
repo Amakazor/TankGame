@@ -1,8 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using TankGame.Src.Events;
 
 namespace TankGame.Src.Actors.Text
@@ -10,7 +8,7 @@ namespace TankGame.Src.Actors.Text
     internal class PointsAddedTextBox : TextBox, ITickable
     {
         public double TimeToLive { get; private set; }
-        public PointsAddedTextBox(Vector2f position, uint points, uint combo) : base(position, new Vector2f(100, 20), points + (combo > 1 ? " X " + combo : ""), 16, Color.Red)
+        public PointsAddedTextBox(Vector2f position, long points, uint combo) : base(position, new Vector2f(100, 20), points + (combo > 1 ? " X " + combo : ""), 16, Color.Red)
         {
             TimeToLive = 2;
             RegisterTickable();

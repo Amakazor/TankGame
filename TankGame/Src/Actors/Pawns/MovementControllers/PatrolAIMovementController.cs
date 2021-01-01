@@ -25,7 +25,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (CanDoAction())
             {
-                if (CanSeePlayerInUnobstructedLine) NextAction = KeyActionType.Shoot;
+                if (CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine) NextAction = KeyActionType.Shoot;
                 else
                 {
                     if (CurrentPatrolRoute is null || CurrentPatrolRoute.Count == 0)

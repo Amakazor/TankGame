@@ -62,7 +62,7 @@ namespace TankGame.Src.Data.Map
         private List<Field> Fields { get; set; }
         public HashSet<Enemy> Enemies { get; private set; }
         private Player Player { get; set; }
-        public Activity Activity { get; private set; }
+        public Activity Activity { get; set; }
         public bool Loaded { get; private set; }
 
         public Region(Vector2i coords, int fieldsInLine, bool load)
@@ -181,12 +181,12 @@ namespace TankGame.Src.Data.Map
             {
                 Activity = activityData.Element("type").Value switch
                 {
-                    "destroy" => new DestroyAllActivity(new Vector2i((Coords.X * FieldsInLine) + int.Parse(activityData.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(activityData.Element("y").Value)),
-                                                        activityData.Element("initial") is null ? (uint?)null : uint.Parse(activityData.Element("initial").Value),
-                                                        Enemies),
+                    "destroy" => new DestroyAllActivity(new Vector2i((Coords.X * FieldsInLine) + int.Parse(activityData.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(activityData.Element("y").Value)), Enemies),
+                    "protect" => new ProtectActivity(new Vector2i((Coords.X * FieldsInLine) + int.Parse(activityData.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(activityData.Element("y").Value)), Enemies),
                     _ => throw new NotImplementedException()
                 };
-                GetFieldAtMapCoords(Activity.Coords).GameObject = Activity;
+                Activity.Field = GetFieldAtMapCoords(Activity.Coords);
+                Activity.Field.GameObject = Activity;
             }
         }
 
@@ -255,9 +255,22 @@ namespace TankGame.Src.Data.Map
             return regionFieldCoords.X * FieldsInLine + regionFieldCoords.Y;
         }
 
+        public bool HasDestructibleActivity => Activity != null && Activity.IsDestructible;
+
         public void OnEnemyDestruction(Enemy enemy)
         {
-            if (Activity is DestroyAllActivity destroyAllActivity) destroyAllActivity.OnEnemyDestruction(enemy);
+            DeleteEnemy(enemy);
+        }
+
+        public void EnemyWanderedIn(Enemy enemy)
+        {
+            if (Activity != null) Activity.OnEnemyWanderIn();
+            AddEnemy(enemy);
+        }
+        
+        public void EnemyWanderedOut(Enemy enemy)
+        {
+            if (Activity != null) Activity.OnEnemyWanderOut();
             DeleteEnemy(enemy);
         }
 

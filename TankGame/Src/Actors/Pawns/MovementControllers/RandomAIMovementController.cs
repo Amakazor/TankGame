@@ -12,7 +12,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (CanDoAction())
             {
-                if (CanSeePlayerInUnobstructedLine) NextAction = KeyActionType.Shoot;
+                if (CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine) NextAction = KeyActionType.Shoot;
                 else
                 {
                     NextAction = (GamestateManager.Instance.Random.Next(1, 5)) switch

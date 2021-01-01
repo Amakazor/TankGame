@@ -15,9 +15,9 @@ namespace TankGame.Src.Data
 
         private static GamestateManager instance;
 
-        public ulong Points { get; private set; }
+        public long Points { get; private set; }
         private uint Combo { get; set; }
-        private uint CompletedActivities { get; set; }
+        private int CompletedActivities { get; set; }
         private double ComboDeltaTimeCummulated { get; set; }
         public GameMap Map { get; set; }
         public Player Player { get; set; }
@@ -33,7 +33,7 @@ namespace TankGame.Src.Data
             PointsTextBoxes = new HashSet<PointsAddedTextBox>();
         }
 
-        public void AddPoints(uint points, Vector2f? position = null, bool useCombo = true)
+        public void AddPoints(long points, Vector2f? position = null, bool useCombo = true)
         {
             if (useCombo)
             {
@@ -59,9 +59,14 @@ namespace TankGame.Src.Data
             }
         }
 
-        public void CompleteActivity(uint points, Vector2f position)
+        public void CompleteActivity(int points, Vector2f position)
         {
-            AddPoints(points * ++CompletedActivities, position, false);
+            AddPoints(points * Math.Max(++CompletedActivities, 1), position, false);
+        }
+
+        public void FailActivity(int points, Vector2f position)
+        {
+            AddPoints(-1 * points * Math.Max(--CompletedActivities, 1), position, false);
         }
     }
 }
