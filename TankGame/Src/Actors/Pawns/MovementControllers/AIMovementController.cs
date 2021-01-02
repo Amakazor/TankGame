@@ -9,6 +9,7 @@ using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
 using TankGame.Src.Extensions;
+using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
@@ -24,7 +25,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         public override Direction DoAction(Direction currentDirection)
         {
-            if (NextAction == null || CanSeePlayerInUnobstructedLine)
+            if (NextAction == null || CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine)
             {
                 DecideOnNextAction();
             }
@@ -37,7 +38,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                     return Rotate(currentDirection, GetLineDirectionToPlayer(currentDirection));
                 }
             }
-            else if (CanSeeActivityInUnobstructedLine && currentDirection != GetLineDirectionToActivity(currentDirection) && Owner.CurrentRegion.HasDestructibleActivity)
+            else if (!CanSeePlayerInUnobstructedLine && CanSeeActivityInUnobstructedLine && currentDirection != GetLineDirectionToActivity(currentDirection) && Owner.CurrentRegion.HasDestructibleActivity)
             {
                 if (CanDoAction())
                 {
@@ -64,27 +65,26 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             return activity != null ? activity.Coords.IsInLine(coords) && activity.Coords.ManhattanDistance(coords) <= ActivityShootingDistance : false;
         }
 
-        protected List<Vector2i> GetAllShootingPositions(Vector2i? targetCoords = null, uint? shootingDistance = null)
+        protected List<Vector2i> GetAllShootingPositions(Vector2i targetCoords, uint? shootingDistance = null)
         {
             List<Vector2i> positions = new List<Vector2i>();
 
-            Vector2i TargetCoords = targetCoords != null ? (Vector2i)targetCoords : GamestateManager.Instance.Player.Coords;
             int ShootingDistance = shootingDistance != null ? (int)shootingDistance : PlayerShootingDistance;
             GameMap gameMap = GamestateManager.Instance.Map;
 
             for (int x = 0 - ShootingDistance; x <= ShootingDistance; x++)
             {
-                if (x != 0 && gameMap.GetFieldFromRegion(new Vector2i(TargetCoords.X + x, TargetCoords.Y)) != null)
+                if (x != 0 && gameMap.GetFieldFromRegion(new Vector2i(targetCoords.X + x, targetCoords.Y)) != null)
                 {
-                    positions.Add(new Vector2i(TargetCoords.X + x, TargetCoords.Y));
+                    positions.Add(new Vector2i(targetCoords.X + x, targetCoords.Y));
                 }
             }
 
             for (int y = 0 - ShootingDistance; y <= ShootingDistance; y++)
             {
-                if (y != 0 && gameMap.GetFieldFromRegion(new Vector2i(TargetCoords.X, TargetCoords.Y + y)) != null)
+                if (y != 0 && gameMap.GetFieldFromRegion(new Vector2i(targetCoords.X, targetCoords.Y + y)) != null)
                 {
-                    positions.Add(new Vector2i(TargetCoords.X, TargetCoords.Y + y));
+                    positions.Add(new Vector2i(targetCoords.X, targetCoords.Y + y));
                 }
             }
 
@@ -93,12 +93,14 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         protected List<Vector2i> GetValidShootingPositions(Vector2i? targetCoords = null, uint? shootingDistance = null)
         {
-            return GetAllShootingPositions(targetCoords, shootingDistance)
+            Vector2i TargetCoords = targetCoords != null ? (Vector2i)targetCoords : GamestateManager.Instance.Player.Coords;
+
+            return GetAllShootingPositions(TargetCoords, shootingDistance)
                    .OrderBy(position => position.ManhattanDistance(Owner.Coords))
                    .ToList()
                    .FindAll(position => 
                         GamestateManager.Instance.Map.IsFieldTraversible(position) && 
-                        IsLineUnobstructed(GamestateManager.Instance.Player.Coords.GetAllVectorsBeetween(position)));
+                        IsLineUnobstructed(TargetCoords.GetAllVectorsBeetween(position)));
         }
 
         protected Vector2i GetClosestValidShootingPositionToPlayer(List<Vector2i> ValidShootingPositions = null)
@@ -159,6 +161,11 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             else if (nextCoords.Y > Owner.Coords.Y) return KeyActionType.MoveDown;
             else if (nextCoords.Y < Owner.Coords.Y) return KeyActionType.MoveUp;
             else return null;
+        }
+
+        protected Stack<Node> GeneratePath(List<List<Node>> grid, Vector2i start, Vector2i end)
+        {
+            return new AStar(grid).FindPath(start, end);
         }
 
         protected abstract void DecideOnNextAction();

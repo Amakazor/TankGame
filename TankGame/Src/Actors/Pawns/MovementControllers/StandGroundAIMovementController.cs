@@ -24,42 +24,26 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 {
                     Vector2i currentPlayerPosition = GamestateManager.Instance.Player.Coords;
 
-                    if (LastPlayerPosition == null || LastPlayerPosition != currentPlayerPosition)
+                    if (LastPlayerPosition == null || LastPlayerPosition != currentPlayerPosition || !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
                     {
                         LastPlayerPosition = currentPlayerPosition;
-                        TargetPosition = new Vector2i(-1, -1);
-                        Path = null;
-                    }
-
-                    if (TargetPosition.Equals(new Vector2i(-1, -1)) || !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
-                    {
                         TargetPosition = GetValidStandGroundPosition();
                         Path = null;
                     }
 
-                    if (!TargetPosition.Equals(new Vector2i(-1, -1)) && GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
+                    if (!IsPlayerWithinChaseRadius() && !TargetPosition.Equals(HomePosition)) NextAction = null;
+                    else
                     {
-                        if ((Path == null || Path.Count == 0) && (IsPlayerWithinChaseRadius() || TargetPosition.Equals(HomePosition)))
+                        if (!TargetPosition.IsInvalid())
                         {
-                            AStar aStar = new AStar(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, SightDistance));
-                            Path = aStar.FindPath(new Vector2i(SightDistance, SightDistance), new Vector2i(SightDistance, SightDistance) + TargetPosition - Owner.Coords);
-                        }
+                            if (Path != null && Path.Count == 0) Path = null;
 
-                        if ((IsPlayerWithinChaseRadius() || TargetPosition.Equals(HomePosition)) && Path != null)
-                        {
-                            Node node = Path.Pop();
+                            Path ??= GeneratePath(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, SightDistance), new Vector2i(SightDistance, SightDistance), new Vector2i(SightDistance, SightDistance) + TargetPosition - Owner.Coords);
 
-                            if (node != null)
-                            {
-                                Vector2i nextCoords = node.Position + Owner.Coords - new Vector2i(SightDistance, SightDistance);
-
-                                NextAction = GetActionFromNextCoords(nextCoords);
-                            }
-                            else NextAction = null;
+                            NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.Coords - new Vector2i(SightDistance, SightDistance));
                         }
                         else NextAction = null;
                     }
-                    else NextAction = null;
                 }
             }
             else NextAction = null;

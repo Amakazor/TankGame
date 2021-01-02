@@ -12,6 +12,7 @@ using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.GameObjects;
 using SFML.Graphics;
 using TankGame.Src.Actors.GameObjects.Activities;
+using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Data.Map
 {
@@ -245,7 +246,7 @@ namespace TankGame.Src.Data.Map
             return Fields[index];
         }
 
-        private Vector2i ConvertMapCoordsToRegionFieldCoords(Vector2i mapFieldCoords)
+        public Vector2i ConvertMapCoordsToRegionFieldCoords(Vector2i mapFieldCoords)
         {
             return new Vector2i(mapFieldCoords.X % FieldsInLine, mapFieldCoords.Y % FieldsInLine);
         }
@@ -256,6 +257,26 @@ namespace TankGame.Src.Data.Map
         }
 
         public bool HasDestructibleActivity => Activity != null && Activity.IsDestructible;
+
+        public List<List<Node>> GetNodesInRegion()
+        {
+            List<List<Node>> nodes = new List<List<Node>>();
+
+            for (int x = 0; x < FieldsInLine; x++)
+            {
+                List<Node> column = new List<Node>();
+                for (int y = 0; y < FieldsInLine; y++)
+                {
+                    Field field = Fields[ConvertRegionFieldCoordsToFieldIndex(new Vector2i(x, y))];
+
+                    if (field != null) column.Add(new Node(new Vector2i(x, y), field.IsTraversible(true), field.TraversabilityMultiplier));
+                    else column.Add(new Node(new Vector2i(x, y), false));
+                }
+                nodes.Add(column);
+            }
+
+            return nodes;
+        }
 
         public void OnEnemyDestruction(Enemy enemy)
         {

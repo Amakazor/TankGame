@@ -2027,14 +2027,14 @@
   </activity>
   <spawns>
     <player>
-      <x>4</x>
-      <y>4</y>
+      <x>2</x>
+      <y>6</y>
     </player>
     <enemy>
       <type>light</type>
       <aimc>chase</aimc>
       <x>0</x>
-      <y>2</y>
+      <y>5</y>
     </enemy>
     <enemy>
       <type>medium</type>

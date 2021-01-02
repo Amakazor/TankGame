@@ -38,27 +38,13 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                         TargetPosition = CurrentPatrolRoute.Pop();
                     }
 
-                    if (!TargetPosition.Equals(new Vector2i(-1, -1)))
+                    if (!TargetPosition.IsInvalid())
                     {
-                        if (Path == null || Path.Count == 0)
-                        {
-                            AStar aStar = new AStar(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, SightDistance));
-                            Path = aStar.FindPath(new Vector2i(SightDistance, SightDistance), new Vector2i(SightDistance, SightDistance) + TargetPosition - Owner.Coords);
-                        }
+                        if (Path != null && Path.Count == 0) Path = null;
 
-                        if (Path != null)
-                        {
-                            Node node = Path.Pop();
+                        Path ??= GeneratePath(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, SightDistance), new Vector2i(SightDistance, SightDistance), new Vector2i(SightDistance, SightDistance) + TargetPosition - Owner.Coords);
 
-                            if (node != null)
-                            {
-                                Vector2i nextCoords = node.Position + Owner.Coords - new Vector2i(SightDistance, SightDistance);
-
-                                NextAction = GetActionFromNextCoords(nextCoords);
-                            }
-                            else NextAction = null;
-                        }
-                        else NextAction = null;
+                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.Coords - new Vector2i(SightDistance, SightDistance));
                     }
                     else NextAction = null;
                 }
