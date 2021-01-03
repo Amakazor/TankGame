@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Xml;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Map;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -16,6 +17,7 @@ namespace TankGame.Src.Actors.GameObjects
         public TraversibilityData TraversibilityData { get; private set; }
         public DestructabilityData DestructabilityData { get; private set; }
         private SpriteComponent ObjectSprite { get; set; }
+        public Region Region { private get; set; }
         private string Type { get; }
         public int Health { get => DestructabilityData.Health; set => DestructabilityData = new DestructabilityData(value, DestructabilityData.IsDestructible, DestructabilityData.DestroyOnEntry); }
         public bool IsTraversible => TraversibilityData.IsTraversible;
@@ -25,6 +27,7 @@ namespace TankGame.Src.Actors.GameObjects
         public Actor Actor => this;
         public Field Field { get; set; }
         public Vector2i Coords => new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
+        public Region CurrentRegion => Region ??= GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords);
 
         public GameObject(Vector2i coords, Tuple<TraversibilityData, DestructabilityData> gameObjectType, Texture texture, string type, int hp) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
         {

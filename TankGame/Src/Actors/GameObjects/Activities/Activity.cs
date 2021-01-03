@@ -13,7 +13,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         protected uint AllEnemiesCount;
         public string Name { get; }
         public string ProgressText => CalculateProgress();
-        public int PointsAdded { get; }
+        public int PointsAdded { get; protected set; }
         public ActivityStatus ActivityStatus { get; protected set; }
         protected HashSet<Enemy> Enemies { get; set; }
 
@@ -26,7 +26,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
             RegisterTickable();
         }
 
-        protected void ChangeStatus(ActivityStatus activityStatus)
+        public virtual void ChangeStatus(ActivityStatus activityStatus)
         {
             ActivityStatus = activityStatus;
             if (activityStatus == ActivityStatus.Completed) GamestateManager.Instance.CompleteActivity(PointsAdded, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));

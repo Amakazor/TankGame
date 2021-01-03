@@ -24,11 +24,11 @@ namespace TankGame.Src.Actors.Pawns
             { "heavy",  (Coords) => new HeavyTank (Coords*64, new Vector2f(64, 64))}
         };
 
-        public static Enemy CreateEnemy(Vector2f coords, string enemyType, string AIMCType, List<Vector2i> patrolRoute, int health)
+        public static Enemy CreateEnemy(Vector2i coords, string enemyType, string AIMCType, List<Vector2i> patrolRoute, int health)
         {
             if (EnemyTypes.ContainsKey(enemyType) && AIMCTypes.ContainsKey(AIMCType))
             {
-                Enemy newEnemy = EnemyTypes[enemyType](coords);
+                Enemy newEnemy = EnemyTypes[enemyType](new Vector2f(coords.X, coords.Y));
                 if (health != 0) newEnemy.Health = health;
                 
                 newEnemy.MovementController = AIMCTypes[AIMCType](newEnemy switch{LightTank _ => 0.75, MediumTank _ => 1.5, HeavyTank _ => 2.25, _ => 1}, newEnemy, patrolRoute);
@@ -37,5 +37,7 @@ namespace TankGame.Src.Actors.Pawns
             }
             else throw new Exception();
         }
+
+        public static Enemy CreateEnemy(EnemySpawnData enemySpawnData, int health) => CreateEnemy(enemySpawnData.Coords, enemySpawnData.Type, enemySpawnData.AimcType, enemySpawnData.PatrolRoute, health);
     }
 }

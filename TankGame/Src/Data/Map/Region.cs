@@ -159,7 +159,7 @@ namespace TankGame.Src.Data.Map
             if (regionFile.Root.Element("spawns") != null && regionFile.Root.Element("spawns").Descendants("enemy") != null)
             {
                 Enemies = new HashSet<Enemy>(from enemy in regionFile.Root.Element("spawns").Descendants("enemy") select EnemyFactory.CreateEnemy(
-                    new Vector2f((Coords.X * FieldsInLine) + int.Parse(enemy.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(enemy.Element("y").Value)),
+                    new Vector2i((Coords.X * FieldsInLine) + int.Parse(enemy.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(enemy.Element("y").Value)),
                     enemy.Element("type").Value,
                     enemy.Element("aimc").Value,
                     enemy.Element("path") != null && enemy.Element("path").Descendants("point") != null
@@ -180,14 +180,30 @@ namespace TankGame.Src.Data.Map
 
             if (activityData != null && activityData.Element("type") != null)
             {
+                int mapXCoords = (Coords.X * FieldsInLine);
+                int mapYCoords = (Coords.Y * FieldsInLine);
+                Vector2i ActivityCoords = new Vector2i(mapXCoords + int.Parse(activityData.Element("x").Value), mapYCoords + int.Parse(activityData.Element("y").Value));
                 Activity = activityData.Element("type").Value switch
                 {
-                    "destroy" => new DestroyAllActivity(new Vector2i((Coords.X * FieldsInLine) + int.Parse(activityData.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(activityData.Element("y").Value)), Enemies),
-                    "protect" => new ProtectActivity(new Vector2i((Coords.X * FieldsInLine) + int.Parse(activityData.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(activityData.Element("y").Value)), Enemies),
+                    "destroy" => new DestroyAllActivity(ActivityCoords, Enemies),
+                    "protect" => new ProtectActivity(ActivityCoords, Enemies),
+                    "wave"    => new WaveActivity(ActivityCoords, Enemies,
+                                                  new Queue<List<EnemySpawnData>>(from waves in activityData.Element("waves").Descendants("wave") select new List<EnemySpawnData>(from spawnData in waves.Descendants("enemy") select new EnemySpawnData(
+                                                      new Vector2i(mapXCoords + int.Parse(spawnData.Element("x").Value),
+                                                                   mapYCoords + int.Parse(spawnData.Element("y").Value)),
+                                                      spawnData.Element("type").Value,
+                                                      spawnData.Element("aimc").Value,
+                                                      spawnData.Element("path") != null && spawnData.Element("path").Descendants("point") != null
+                                                        ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
+                                                        : null))),
+                                                  activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0),
                     _ => throw new NotImplementedException()
                 };
                 Activity.Field = GetFieldAtMapCoords(Activity.Coords);
                 Activity.Field.GameObject = Activity;
+                Activity.Region = this;
+                if (Player != null) Activity.ChangeStatus(ActivityStatus.Started);
+
             }
         }
 
@@ -295,8 +311,18 @@ namespace TankGame.Src.Data.Map
             DeleteEnemy(enemy);
         }
 
-        public void DeletePlayer() => Player = null;
-        public void AddPlayer(Player player) => Player = player;
+        public void DeletePlayer()
+        {
+            Player = null;
+            if (Activity != null) Activity.ChangeStatus(ActivityStatus.Stopped);
+        }
+
+        public void AddPlayer(Player player)
+        {
+            Player = player;
+            if (Activity != null) Activity.ChangeStatus(ActivityStatus.Started);
+        }
+
         public void DeleteEnemy(Enemy enemy)
         {
             Enemies.Remove(enemy);
