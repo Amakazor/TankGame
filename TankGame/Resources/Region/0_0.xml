@@ -2059,10 +2059,4 @@
     </wave>
     </waves>
   </activity>
-  <spawns>
-    <player>
-      <x>2</x>
-      <y>6</y>
-    </player>
-  </spawns>
 </region>
