@@ -2009,11 +2009,6 @@
     </field>
   </fields>
   <spawns>
-	  <spawns>
-		  <player>
-			  <x>19</x>
-			  <y>1</y>
-		  </player>
-	  </spawns>
+	 
   </spawns>
 </region>
