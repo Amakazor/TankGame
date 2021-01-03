@@ -1,11 +1,7 @@
-﻿using SFML.Graphics;
-using SFML.System;
+﻿using SFML.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TankGame.Src.Actors.Pawns.Enemies;
-using TankGame.Src.Data;
 
 namespace TankGame.Src.Actors.GameObjects.Activities
 {

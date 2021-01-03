@@ -197,6 +197,16 @@ namespace TankGame.Src.Data.Map
                                                         ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
                                                         : null))),
                                                   activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0),
+                    "waveprotect"    => new WaveProtectActivity(ActivityCoords, Enemies,
+                                                  new Queue<List<EnemySpawnData>>(from waves in activityData.Element("waves").Descendants("wave") select new List<EnemySpawnData>(from spawnData in waves.Descendants("enemy") select new EnemySpawnData(
+                                                      new Vector2i(mapXCoords + int.Parse(spawnData.Element("x").Value),
+                                                                   mapYCoords + int.Parse(spawnData.Element("y").Value)),
+                                                      spawnData.Element("type").Value,
+                                                      spawnData.Element("aimc").Value,
+                                                      spawnData.Element("path") != null && spawnData.Element("path").Descendants("point") != null
+                                                        ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
+                                                        : null))),
+                                                  activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0),
                     _ => throw new NotImplementedException()
                 };
                 Activity.Field = GetFieldAtMapCoords(Activity.Coords);

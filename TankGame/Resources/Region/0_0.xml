@@ -2021,7 +2021,7 @@
     </field>
   </fields>
   <activity>
-    <type>wave</type>
+    <type>waveprotect</type>
     <x>2</x>
     <y>2</y>
     <waves>
