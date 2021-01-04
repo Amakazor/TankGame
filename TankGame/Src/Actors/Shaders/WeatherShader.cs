@@ -8,7 +8,7 @@ namespace TankGame.Src.Actors.Shaders
         private float Time;
         public WeatherShader(float intensity) : base(new Shader(null, null, "resources/shaders/fragment/scroll.glsl"))
         {
-            Shader.SetUniform("texture", Shader.CurrentTexture);
+            Shader.SetUniform("textureSample", Shader.CurrentTexture);
             Shader.SetUniform("resolution", new Vec2(64, 64));
             Shader.SetUniform("intensityX", -intensity);
             Shader.SetUniform("intensityY", intensity);
