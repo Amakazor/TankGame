@@ -8,8 +8,8 @@ namespace TankGame.Src.Data
 {
     internal class WeatherController : ITickable, IDisposable
     {
-        public static int WeatherMinimalTime = 1;
-        public static int WeatherMaximalTime = 4;
+        public static int WeatherMinimalTime = 30;
+        public static int WeatherMaximalTime = 61;
         public static float WeatherMinimalIntensity = 0.5F;
         public static float WeatherMaximalIntensity = 3F;
         private Weather Weather { get; set; }
