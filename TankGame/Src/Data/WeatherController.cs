@@ -1,6 +1,7 @@
 ﻿using SFML.Audio;
 using System;
 using TankGame.Src.Actors;
+using TankGame.Src.Actors.Shaders;
 using TankGame.Src.Actors.Weathers;
 using TankGame.Src.Events;
 
@@ -14,11 +15,14 @@ namespace TankGame.Src.Data
         public static float WeatherMaximalIntensity = 3F;
         private Weather Weather { get; set; }
         public float CurrentWeatherTime { get; private set; }
+        public AnimationType AnimationType;
 
         public WeatherController(float newWeatherTime, int WeatherType, float intensity)
         {
             RegisterTickable();
             CurrentWeatherTime = 0;
+
+            AnimationType = WeatherShader.CanUseShader ? AnimationType.Shaded : AnimationType.Animated;
 
             GetNewWeather(newWeatherTime, WeatherType, intensity);
         }
@@ -44,8 +48,8 @@ namespace TankGame.Src.Data
             Weather = (weatherType != 0 ? weatherType : GamestateManager.Instance.Random.Next(1, 4)) switch
             {
                 1 => null,
-                2 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity),
-                3 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity),
+                2 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType),
+                3 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType),
                 _ => null,
             };
 
