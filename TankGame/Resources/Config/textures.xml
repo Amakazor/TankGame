@@ -67,6 +67,11 @@
 	</texture>
 	<texture>
 		<type>gameobject</type>
+		<name>gruz</name>
+		<location>Resources/Textures/Buildings/gruz.png</location>
+	</texture>
+	<texture>
+		<type>gameobject</type>
 		<name>fence1</name>
 		<location>Resources/Textures/Buildings/fence1.png</location>
 	</texture>
@@ -84,6 +89,16 @@
 		<type>gameobject</type>
 		<name>tree</name>
 		<location>Resources/Textures/Buildings/tree.png</location>
+	</texture>
+	<texture>
+		<type>gameobject</type>
+		<name>tree2</name>
+		<location>Resources/Textures/Buildings/tree2.png</location>
+	</texture>
+	<texture>
+		<type>gameobject</type>
+		<name>pien</name>
+		<location>Resources/Textures/Buildings/pien.png</location>
 	</texture>
   <texture>
 		<type>activity</type>

@@ -2063,5 +2063,31 @@
 			  </point>
 			</path>
 	  </enemy>
+	  <enemy>
+		  <type>heavy</type>
+		  <aimc>patrol</aimc>
+		  <x>14</x>
+		  <y>12</y>
+		  <path>
+			  <point>
+				  <x>14</x>
+				  <y>13</y>
+			  </point>
+			  <point>
+				  <x>14</x>
+				  <y>13</y>
+			  </point>
+			  <point>
+				  <x>14</x>
+				  <y>16</y>
+			  </point>
+			  <point>
+				  <x>14</x>
+				  <y>16</y>
+			  </point>
+		  </path>
+	  </enemy>
+		
+	  
   </spawns>
 </region>
