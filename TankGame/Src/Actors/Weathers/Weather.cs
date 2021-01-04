@@ -16,7 +16,8 @@ namespace TankGame.Src.Actors.Weathers
 
         public Weather(Texture weatherTexture, float speedModifier, string musicType, float intensity) : base(new Vector2f(0, 0), new Vector2f(64, 64))
         {
-            ComplexShader = Shader.IsAvailable ? new WeatherShader(intensity) : null;
+            ComplexShader = null;
+            //ComplexShader = Shader.IsAvailable ? new WeatherShader(intensity) : null;
 
             SpeedModifier = speedModifier;
 
