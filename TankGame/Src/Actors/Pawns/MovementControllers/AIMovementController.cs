@@ -62,7 +62,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         protected bool IsInLineWithActivity(Vector2i coords)
         {
-            Activity activity = GamestateManager.Instance.Map.GetRegionFromFieldCoords(coords).Activity;
+            Activity activity = GamestateManager.Instance.Map.GetRegionFromFieldCoords(coords)?.Activity;
             return activity != null ? activity.Coords.IsInLine(coords) && activity.Coords.ManhattanDistance(coords) <= ActivityShootingDistance : false;
         }
 

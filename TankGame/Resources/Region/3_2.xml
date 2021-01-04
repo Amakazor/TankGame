@@ -2111,12 +2111,12 @@
     </field>
   </fields>
   <spawns>
-      <enemy>
+    <enemy>
       <type>light</type>
       <aimc>chase</aimc>
       <x>5</x>
       <y>0</y>
-      </enemy>
+    </enemy>
     <enemy>
       <type>light</type>
       <aimc>chase</aimc>
@@ -2165,12 +2165,5 @@
       <x>19</x>
       <y>0</y>
     </enemy>
-    -<player>
-
-      <x>0</x>
-
-      <y>1</y>
-
-    </player>
   </spawns>
 </region>
