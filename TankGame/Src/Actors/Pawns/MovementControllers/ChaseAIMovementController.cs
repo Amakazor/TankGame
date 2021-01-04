@@ -20,10 +20,10 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (CanDoAction())
             {
-                if (CanSeePlayerInUnobstructedLine || (CanSeeActivityInUnobstructedLine && Owner.CurrentRegion.HasDestructibleActivity)) NextAction = KeyActionType.Shoot;
+                if (CanSeePlayerInUnobstructedLine || (CanSeeActivityInUnobstructedLine && Owner.CurrentRegion != null && Owner.CurrentRegion.HasDestructibleActivity)) NextAction = KeyActionType.Shoot;
                 else
                 {
-                    if (Owner.CurrentRegion.HasDestructibleActivity) ChaseActivity();
+                    if (Owner.CurrentRegion != null && Owner.CurrentRegion.HasDestructibleActivity) ChaseActivity();
                     else ChasePlayer();
                 }
             }
@@ -40,28 +40,33 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         protected void ChasePlayer()
         {
-            if (!IsPlayerWithinChaseRadius()) NextAction = null;
-            else
+            if (Owner.CurrentRegion != null)
             {
-                Vector2i currentPlayerPosition = GamestateManager.Instance.Player.Coords;
-
-                if (LastPlayerPosition == null || LastPlayerPosition != currentPlayerPosition || !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
+                if (!IsPlayerWithinChaseRadius()) NextAction = null;
+                else
                 {
-                    LastPlayerPosition = currentPlayerPosition;
-                    TargetPosition = GetClosestValidShootingPositionToPlayer();
-                    Path = null;
+                    Vector2i currentPlayerPosition = GamestateManager.Instance.Player.Coords;
+
+                    if (LastPlayerPosition == null || LastPlayerPosition != currentPlayerPosition || !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
+                    {
+                        LastPlayerPosition = currentPlayerPosition;
+                        TargetPosition = GetClosestValidShootingPositionToPlayer();
+                        Path = null;
+                    }
+
+                    if (!TargetPosition.IsInvalid())
+                    {
+                        if (Path != null && Path.Count == 0) Path = null;
+
+                        Path ??= GeneratePath(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, SightDistance), new Vector2i(SightDistance, SightDistance), new Vector2i(SightDistance, SightDistance) + TargetPosition - Owner.Coords);
+
+                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.Coords - new Vector2i(SightDistance, SightDistance));
+                    }
+                    else NextAction = null;
                 }
-
-                if (!TargetPosition.IsInvalid())
-                {
-                    if (Path != null && Path.Count == 0) Path = null;
-
-                    Path ??= GeneratePath(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, SightDistance), new Vector2i(SightDistance, SightDistance), new Vector2i(SightDistance, SightDistance) + TargetPosition - Owner.Coords);
-
-                    NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.Coords - new Vector2i(SightDistance, SightDistance));
-                }
-                else NextAction = null;
             }
+            else NextAction = null;
+
         }
 
         protected void ChaseActivity()

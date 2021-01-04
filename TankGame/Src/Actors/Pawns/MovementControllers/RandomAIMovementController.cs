@@ -10,7 +10,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         protected override void DecideOnNextAction()
         {
-            if (CanDoAction())
+            if (CanDoAction() && Owner.CurrentRegion != null)
             {
                 if (CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine) NextAction = KeyActionType.Shoot;
                 else
