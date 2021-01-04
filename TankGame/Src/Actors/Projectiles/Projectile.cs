@@ -14,8 +14,11 @@ namespace TankGame.Src.Actors.Projectiles
 {
     internal class Projectile : TickableActor
     {
-        private const float FlightDistance = 64 * 7;
-        private const float Speed = 250;
+        private const float BaseFlightDistance = 64 * 7;
+        private const float BaseSpeed = 250;
+
+        private float FlightDistance = BaseFlightDistance * (1 / (GamestateManager.Instance.WeatherModifier * GamestateManager.Instance.WeatherModifier));
+        private float FlightSpeed = BaseSpeed * (1 / (GamestateManager.Instance.WeatherModifier * GamestateManager.Instance.WeatherModifier));
         private Direction Direction { get; }
         private SpriteComponent ProjectileComponent { get; set; }
         public Pawn Owner { get; private set; }
@@ -55,10 +58,10 @@ namespace TankGame.Src.Actors.Projectiles
             {
                 Vector2f moveVector = Direction switch
                 {
-                    Direction.Up => new Vector2f(0, -Speed * deltaTime * SpeedMultiplier),
-                    Direction.Down => new Vector2f(0, Speed * deltaTime * SpeedMultiplier),
-                    Direction.Left => new Vector2f(-Speed * deltaTime * SpeedMultiplier, 0),
-                    Direction.Right => new Vector2f(Speed * deltaTime * SpeedMultiplier, 0),
+                    Direction.Up => new Vector2f(0, -FlightSpeed * deltaTime * SpeedMultiplier),
+                    Direction.Down => new Vector2f(0, FlightSpeed * deltaTime * SpeedMultiplier),
+                    Direction.Left => new Vector2f(-FlightSpeed * deltaTime * SpeedMultiplier, 0),
+                    Direction.Right => new Vector2f(FlightSpeed * deltaTime * SpeedMultiplier, 0),
                     _ => new Vector2f(0, 0),
                 };
 

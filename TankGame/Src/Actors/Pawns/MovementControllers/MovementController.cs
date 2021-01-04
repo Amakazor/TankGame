@@ -69,7 +69,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                     {
                         IsMoving = true;
                         float averageTraversabilityMultiplier = (nextField.TraversabilityMultiplier + prevField.TraversabilityMultiplier) / 2;
-                        MovementCooldown = averageTraversabilityMultiplier * Delay;
+                        MovementCooldown = averageTraversabilityMultiplier * Delay * GamestateManager.Instance.WeatherModifier;
                         SetCooldown(averageTraversabilityMultiplier);
 
                         if (nextField.GameObject != null)
@@ -114,7 +114,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
             double newRotationMultiplier = RotationMultiplier * (IsDirectionOposite(currentDirection, direction) ? 2 : 1);
 
-            RotationCooldown = newRotationMultiplier * Delay;
+            RotationCooldown = newRotationMultiplier * Delay * GamestateManager.Instance.WeatherModifier;
             SetCooldown(newRotationMultiplier);
 
             return direction;
@@ -139,7 +139,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         public void ClearAction() => NextAction = null;
         protected void SetRandomizedCooldown() => SetCooldown(GamestateManager.Instance.Random.NextDouble() / 4);
-        protected void SetCooldown(double multiplier = 1) => Cooldown = Delay * multiplier;
+        protected void SetCooldown(double multiplier = 1) => Cooldown = Delay * multiplier * GamestateManager.Instance.WeatherModifier;
 
         public void Tick(float deltaTime)
         {

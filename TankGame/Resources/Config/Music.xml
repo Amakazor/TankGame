@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<musics>
+  <music>
+    <type>rain</type>
+    <name>rain1</name>
+    <location>Resources/Music/rain1.ogg</location>
+  </music>
+  <music>
+    <type>rain</type>
+    <name>rain2</name>
+    <location>Resources/Music/rain2.ogg</location>
+  </music>
+  <music>
+    <type>rain</type>
+    <name>rain3</name>
+    <location>Resources/Music/rain3.ogg</location>
+  </music>
+  <music>
+    <type>snow</type>
+    <name>snow1</name>
+    <location>Resources/Music/snow1.ogg</location>
+  </music>
+  <music>
+    <type>snow</type>
+    <name>snow2</name>
+    <location>Resources/Music/snow2.ogg</location>
+  </music>
+  <music>
+    <type>snow</type>
+    <name>snow3</name>
+    <location>Resources/Music/snow3.ogg</location>
+  </music>
+</musics>
