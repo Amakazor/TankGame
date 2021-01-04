@@ -48,6 +48,11 @@ namespace TankGame.Src.Gui.RenderComponents
             SetScaleFromSize(size);
         }
 
+        public void SetTextureRectSize(Vector2i size)
+        {
+            Sprite.TextureRect = new IntRect(new Vector2i(0, 0), size);
+        }
+
         public void SetPosition(Vector2f position) => Sprite.Position = position;
 
         public void SetDirection(Direction direction)

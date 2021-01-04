@@ -11,6 +11,7 @@ using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Actors.Text;
+using TankGame.Src.Actors.Weathers;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
 using TankGame.Src.Events;
@@ -38,12 +39,6 @@ namespace TankGame.Src
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
 
-        private HashSet<ITickable> TickablesToAdd { get; }
-        private HashSet<IRenderable> RenderablesToAdd { get; }
-
-        private HashSet<ITickable> TickablesToDelete { get; }
-        private HashSet<IRenderable> RenderablesToDelete { get; }
-
         private GameMap Map { get; set; }
 
         public Engine()
@@ -52,12 +47,6 @@ namespace TankGame.Src
             ShouldQuit = false;
             Tickables = new HashSet<ITickable>();
             Renderables = new HashSet<IRenderable>();
-
-            TickablesToAdd = new HashSet<ITickable>();
-            RenderablesToAdd = new HashSet<IRenderable>();
-
-            TickablesToDelete = new HashSet<ITickable>();
-            RenderablesToDelete = new HashSet<IRenderable>();
 
             InitializeManagers();
 
@@ -91,9 +80,7 @@ namespace TankGame.Src
 
         private void Tick(float deltaTime)
         {
-            Tickables.AddDeleteRange(TickablesToAdd, TickablesToDelete);
-
-            foreach (ITickable tickable in Tickables)
+            foreach (ITickable tickable in Tickables.ToList())
             {
                 tickable.Tick(deltaTime);
             }
@@ -108,14 +95,12 @@ namespace TankGame.Src
             Window.SetView(GameView);
             Window.Clear(Color.Black);
 
-            Renderables.AddDeleteRange(RenderablesToAdd, RenderablesToDelete);
-
             if (GamestateManager.Instance.Player != null) RecenterView(GamestateManager.Instance.Player.RealPosition);
 
             PrepareRenderQueue().ForEach((List<IRenderable> RenderLayer)
                 => RenderLayer.ForEach((IRenderable renderable)
                     => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
-                        => Window.Draw(renderComponent.Shape))));
+                        => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null))))));
 
             Window.Display();
         }
@@ -128,6 +113,7 @@ namespace TankGame.Src
                 new List<IRenderable>(),
                 new List<IRenderable>(),
                 new List<IRenderable>(),
+                new List<IRenderable>(),
                 new List<IRenderable>()
             };
 
@@ -136,6 +122,9 @@ namespace TankGame.Src
                 switch (renderable)
                 {
                     case TextBox _:
+                        RenderQueue[5].Add(renderable);
+                        break;
+                    case Weather _:
                         RenderQueue[4].Add(renderable);
                         break;
                     case Projectile _:
@@ -170,6 +159,7 @@ namespace TankGame.Src
             TextureManager.Initialize();
             SoundManager.Initialize();
             KeyManager.Initialize();
+            MusicManager.Initialize();
         }
 
         private void InitializeWindow()
@@ -204,6 +194,8 @@ namespace TankGame.Src
 
         private void OnResize(object sender, SizeEventArgs newSize)
         {
+            Height = newSize.Height;
+            Width = newSize.Width;
             RecalculateViewport(newSize.Height, newSize.Width);
         }
 
@@ -242,22 +234,22 @@ namespace TankGame.Src
 
         private void OnRegisterTickable(object sender, EventArgs eventArgs)
         {
-            if (sender is ITickable) TickablesToAdd.Add((ITickable)sender);
+            if (sender is ITickable tickable) Tickables.Add(tickable);
         }
 
         private void OnUnregisterTickable(object sender, EventArgs eventArgs)
         {
-            if (sender is ITickable && Tickables.Contains((ITickable)sender)) TickablesToDelete.Add((ITickable)sender);
+            if (sender is ITickable tickable) Tickables.Remove(tickable);
         }
 
         private void OnRegisterRenderable(object sender, EventArgs eventArgs)
         {
-            if (sender is IRenderable) RenderablesToAdd.Add((IRenderable)sender);
+            if (sender is IRenderable renderable) Renderables.Add(renderable);
         }
 
         private void OnUnregisterRenderable(object sender, EventArgs eventArgs)
         {
-            if (sender is IRenderable && Renderables.Contains((IRenderable)sender)) RenderablesToDelete.Add((IRenderable)sender);
+            if (sender is IRenderable renderable) Renderables.Remove(renderable);
         }
         
         private void OnPlayerMoved(object sender, EventArgs eventArgs)

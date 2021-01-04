@@ -20,10 +20,13 @@ namespace TankGame.Src.Data
         private int CompletedActivities { get; set; }
         private double ComboDeltaTimeCummulated { get; set; }
         public GameMap Map { get; set; }
+        public WeatherController WeatherController { get; set;}
         public Player Player { get; set; }
         public Random Random { get; }
         public static GamestateManager Instance => instance ?? (instance = new GamestateManager());
         private HashSet<PointsAddedTextBox> PointsTextBoxes;
+        public float WeatherModifier => WeatherController.GetSpeedModifier();
+        public float WeatherTime => WeatherController.CurrentWeatherTime;
 
         private GamestateManager()
         {
@@ -31,6 +34,9 @@ namespace TankGame.Src.Data
             Combo = 1;
             Random = new Random();
             PointsTextBoxes = new HashSet<PointsAddedTextBox>();
+            WeatherController = new WeatherController(Random.Next(WeatherController.WeatherMinimalTime, WeatherController.WeatherMaximalTime),
+                                                      Random.Next(1, 4),
+                                                      (float)((Random.NextDouble() * (WeatherController.WeatherMaximalIntensity - WeatherController.WeatherMinimalIntensity)) + WeatherController.WeatherMaximalIntensity));
         }
 
         public void AddPoints(long points, Vector2f? position = null, bool useCombo = true)

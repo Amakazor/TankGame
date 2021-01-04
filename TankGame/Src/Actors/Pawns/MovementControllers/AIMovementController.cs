@@ -2,10 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Actors.GameObjects.Activities;
-using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
 using TankGame.Src.Extensions;
@@ -15,9 +13,12 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     internal abstract class AIMovementController : MovementController
     {
-        protected const int SightDistance = 6;
-        protected const int PlayerShootingDistance = 5;
-        protected const int ActivityShootingDistance = 3;
+        protected const int BaseSightDistance = 6;
+        protected const int BasePlayerShootinhDistance = 5;
+        protected const int BaseActivitityShootingDistance = 3;
+        protected int SightDistance => (int)Math.Floor(BaseSightDistance * (1 / GamestateManager.Instance.WeatherModifier));
+        protected int PlayerShootingDistance => (int)Math.Floor(BasePlayerShootinhDistance * (1 / GamestateManager.Instance.WeatherModifier));
+        protected int ActivityShootingDistance => (int)Math.Floor(BaseActivitityShootingDistance * (1 / GamestateManager.Instance.WeatherModifier));
 
         public AIMovementController(double delay, Pawn owner) : base(delay, owner)
         {
@@ -111,7 +112,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         protected Vector2i GetClosestValidShootingPositionToActivity()
         {
-            List<Vector2i> ValidShootingPositions = GetValidShootingPositions(Owner.CurrentRegion.Activity.Coords, ActivityShootingDistance);
+            List<Vector2i> ValidShootingPositions = GetValidShootingPositions(Owner.CurrentRegion.Activity.Coords, (uint)ActivityShootingDistance);
             ValidShootingPositions = ValidShootingPositions.FindAll(position => Owner.CurrentRegion.HasField(position));
             return ValidShootingPositions.Count > 0 ? ValidShootingPositions.First() : new Vector2i(-1, -1);
         }
