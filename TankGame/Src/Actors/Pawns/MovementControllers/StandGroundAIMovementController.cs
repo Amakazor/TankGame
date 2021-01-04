@@ -1,15 +1,15 @@
 ﻿using SFML.System;
-using System.Collections.Generic;
+using System;
 using TankGame.Src.Data;
 using TankGame.Src.Extensions;
-using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     class StandGroundAIMovementController : ChaseAIMovementController
     {
         private Vector2i HomePosition { get; }
-        private const int StandGroundRadius = 2;
+        private const int BaseStandGroundRadius = 3;
+        private int StandGroundRadius  => (int)Math.Floor(BaseStandGroundRadius * (1 / GamestateManager.Instance.WeatherModifier));
         public StandGroundAIMovementController(double delay, Pawn owner) : base(delay, owner)
         {
             HomePosition = Owner.Coords;

@@ -15,4 +15,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Music\" />
+  </ItemGroup>
+
 </Project>

@@ -42,9 +42,9 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                     {
                         if (Path != null && Path.Count == 0) Path = null;
 
-                        Path ??= GeneratePath(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, SightDistance), new Vector2i(SightDistance, SightDistance), new Vector2i(SightDistance, SightDistance) + TargetPosition - Owner.Coords);
+                        Path ??= GeneratePath(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, BaseSightDistance), new Vector2i(BaseSightDistance, BaseSightDistance), new Vector2i(BaseSightDistance, BaseSightDistance) + TargetPosition - Owner.Coords);
 
-                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.Coords - new Vector2i(SightDistance, SightDistance));
+                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.Coords - new Vector2i(BaseSightDistance, BaseSightDistance));
                     }
                     else NextAction = null;
                 }
