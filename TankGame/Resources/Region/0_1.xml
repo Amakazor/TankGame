@@ -1055,7 +1055,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>tree1</type>
+        <type>tree</type>
       </object>
     </field>
     <field>
@@ -1069,7 +1069,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>tree1</type>
+        <type>tree</type>
       </object>
     </field>
     <field>
