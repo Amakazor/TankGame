@@ -895,7 +895,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
 
     </field>
@@ -904,7 +904,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -912,7 +912,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -920,7 +920,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -928,7 +928,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -936,7 +936,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -944,7 +944,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -952,7 +952,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -960,7 +960,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -968,7 +968,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -976,7 +976,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -984,7 +984,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -1017,7 +1017,7 @@
       <type>grass</type>
       <texture>grass</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
@@ -1663,7 +1663,7 @@
       <type>sand</type>
       <texture>sand</texture>
       <object>
-        <type>fence</type>
+        <type>fence1</type>
       </object>
     </field>
     <field>
