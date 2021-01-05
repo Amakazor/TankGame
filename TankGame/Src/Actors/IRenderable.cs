@@ -10,5 +10,8 @@ namespace TankGame.Src.Actors
         public void RegisterRenderable();
 
         public void UnregisterRenderable();
+
+        public RenderLayer RenderableRenderLayer { get;}
+        public RenderView RenderableRenderView { get;}
     }
 }

@@ -10,6 +10,10 @@ namespace TankGame.Src.Actors
     {
         public Vector2f Position { get; protected set; }
         public Vector2f Size { get; protected set; }
+        protected RenderLayer RenderLayer { get; set; }
+        protected RenderView RenderView { get; set; }
+        public RenderLayer RenderableRenderLayer => RenderLayer;
+        public RenderView RenderableRenderView => RenderView;
 
         public Actor(Vector2f position, Vector2f size)
         {

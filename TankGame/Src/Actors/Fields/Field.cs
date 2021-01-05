@@ -33,6 +33,9 @@ namespace TankGame.Src.Actors.Fields
             if (rotatable) Surface.SetDirection(GamestateManager.Instance.Random.Next(1, 5) * 90);
             GameObject = gameObject;
             if (gameObject != null) GameObject.Field = this;
+
+            RenderLayer = RenderLayer.Field;
+            RenderView = RenderView.Game;
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()

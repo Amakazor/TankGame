@@ -45,6 +45,9 @@ namespace TankGame.Src.Actors.Projectiles
 
             MessageBus.Instance.PostEvent(MessageType.RegisterProjectile, this, new EventArgs());
             SoundManager.Instance.PlayRandomSound("shot", Position / 64);
+
+            RenderLayer = RenderLayer.Projectile;
+            RenderView = RenderView.Game;
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()

@@ -36,6 +36,9 @@ namespace TankGame.Src.Actors.Weathers
 
             MusicManager.Instance.PlayRandomMusic(musicType);
 
+            RenderLayer = RenderLayer.Weather;
+            RenderView = RenderView.Game;
+
             RegisterTickable();
         }
 

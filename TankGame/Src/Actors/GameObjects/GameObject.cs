@@ -40,6 +40,10 @@ namespace TankGame.Src.Actors.GameObjects
             ObjectSprite = new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
 
             RegisterDestructible();
+
+            RenderLayer = RenderLayer.GameObject;
+            RenderView = RenderView.Game;
+
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()

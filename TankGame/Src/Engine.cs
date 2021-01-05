@@ -7,6 +7,7 @@ using System.Linq;
 using TankGame.Src.Actors;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Actors.GameObjects;
+using TankGame.Src.Actors.GUI;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Projectiles;
@@ -25,13 +26,16 @@ namespace TankGame.Src
         public string GameTitle { get; private set; }
         private bool ShouldQuit { get; set; }
 
-        private uint Width { get; set; }
-        private uint Height { get; set; }
+        private uint WindowHeight { get; set; }
+        private uint WindowWidth { get; set; }
         private RenderWindow Window { get; set; }
 
-        private uint ViewWidth { get; set; }
-        private uint ViewHeight { get; set; }
+        private uint GameViewWidth { get; set; }
+        private uint GameViewHeight { get; set; }
         private View GameView { get; set; }
+        private uint UIViewWidth { get; set; }
+        private uint UIViewHeight { get; set; }
+        private View UIView { get; set; }
 
         private InputHandler InputHandler { get; }
         private CollisionManager CollisionManager { get; set; }
@@ -97,58 +101,31 @@ namespace TankGame.Src
 
             if (GamestateManager.Instance.Player != null) RecenterView(GamestateManager.Instance.Player.RealPosition);
 
-            PrepareRenderQueue().ForEach((List<IRenderable> RenderLayer)
-                => RenderLayer.ForEach((IRenderable renderable)
+            Renderables.ToList()
+                .FindAll(renderable => renderable.RenderableRenderView == RenderView.Game)
+                .OrderBy(renderable => (int)renderable.RenderableRenderLayer)
+                .ToList()
+                .ForEach((IRenderable renderable)
                     => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
-                        => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null))))));
+                        => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null)))));
+
+            Window.SetView(UIView);
+
+            Renderables.ToList()
+               .FindAll(renderable => renderable.RenderableRenderView == RenderView.UI)
+               .OrderBy(renderable => (int)renderable.RenderableRenderLayer)
+               .ToList()
+               .ForEach((IRenderable renderable)
+                   => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
+                       => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null)))));
 
             Window.Display();
         }
 
-        private List<List<IRenderable>> PrepareRenderQueue()
-        {
-            List<List<IRenderable>> RenderQueue = new List<List<IRenderable>>
-            {
-                new List<IRenderable>(),
-                new List<IRenderable>(),
-                new List<IRenderable>(),
-                new List<IRenderable>(),
-                new List<IRenderable>(),
-                new List<IRenderable>()
-            };
-
-            Renderables.ToList().ForEach(renderable =>
-            {
-                switch (renderable)
-                {
-                    case TextBox _:
-                        RenderQueue[5].Add(renderable);
-                        break;
-                    case Weather _:
-                        RenderQueue[4].Add(renderable);
-                        break;
-                    case Projectile _:
-                        RenderQueue[3].Add(renderable);
-                        break;
-                    case Pawn _:
-                        RenderQueue[2].Add(renderable);
-                        break;
-                    case GameObject _:
-                        RenderQueue[1].Add(renderable);
-                        break;
-                    case Field _:
-                        RenderQueue[0].Add(renderable);
-                        break;
-                    default:
-                        break;
-                }
-            });
-
-            return RenderQueue;
-        }
-
         private void StartGame(bool isNewGame)
         {
+            new HealthDisplay();
+
             GamestateManager.Instance.Map = new GameMap(isNewGame);
             Map = GamestateManager.Instance.Map;
         }
@@ -164,22 +141,26 @@ namespace TankGame.Src
 
         private void InitializeWindow()
         {
-            Height = 800;
-            Width = Height * 16 / 10;
+            WindowWidth = 800;
+            WindowHeight = WindowWidth * 16 / 10;
 
-            Window = new RenderWindow(new VideoMode(Width, Height), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
+            Window = new RenderWindow(new VideoMode(WindowHeight, WindowWidth), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 2 });
             Window.SetVerticalSyncEnabled(true);
             Window.Closed += (_, __) => Window.Close();
         }
 
         private void InitializeView()
         {
-            ViewWidth = 64 * (2 * 6 + 1);
-            ViewHeight = ViewWidth;
+            GameViewWidth = 64 * (2 * 6 + 1);
+            GameViewHeight = GameViewWidth;
 
-            GameView = new View(new Vector2f(ViewWidth / 2, ViewHeight / 2), new Vector2f(ViewWidth, ViewHeight));
+            UIViewWidth = 1000;
+            UIViewHeight = UIViewWidth / 5;
 
-            RecalculateViewport(Height, Width);
+            GameView = new View(new Vector2f(GameViewWidth / 2, GameViewHeight / 2), new Vector2f(GameViewWidth, GameViewHeight));
+            UIView = new View(new Vector2f(UIViewWidth / 2 - 32, UIViewHeight / 2 - 32), new Vector2f(UIViewWidth, UIViewHeight));
+
+            RecalculateViewport(WindowWidth, WindowHeight);
         }
 
         private void SetInputHandlers()
@@ -194,22 +175,30 @@ namespace TankGame.Src
 
         private void OnResize(object sender, SizeEventArgs newSize)
         {
-            Height = newSize.Height;
-            Width = newSize.Width;
+            WindowWidth = newSize.Height;
+            WindowHeight = newSize.Width;
             RecalculateViewport(newSize.Height, newSize.Width);
         }
 
         private void RecalculateViewport(uint height, uint width)
         {
+            float uiWidth = 1F;
+            float uiHeight = 0.2F;
+            float gameSize = 0.8F;
             float aspectRatio = (float)height / width;
-
-            if (GameView != null && (aspectRatio < 0.9 || aspectRatio > 1.1))
+            
+            if (GameView != null)
             {
                 GameView.Viewport = Window.Size.X > Window.Size.Y
-                    ? new FloatRect(new Vector2f((1 - aspectRatio) / 2, 0),     new Vector2f(aspectRatio, 1))
-                    : new FloatRect(new Vector2f(0, (1 - 1 / aspectRatio) / 2), new Vector2f(1, 1 / aspectRatio));
+                    ? new FloatRect(new Vector2f((1- gameSize) + ((gameSize - (gameSize * aspectRatio)) / 2), (1 - gameSize)), new Vector2f(gameSize * aspectRatio, gameSize))
+                    : new FloatRect(new Vector2f((1 - gameSize), (1 - gameSize) + ((gameSize - (gameSize * (1 / aspectRatio))) / 2)), new Vector2f(gameSize, gameSize * (1 / aspectRatio)));
+            }
 
-                GameView.Size = new Vector2f(ViewWidth, ViewHeight);
+            if (UIView != null)
+            {
+                UIView.Viewport = Window.Size.X > Window.Size.Y
+                   ? new FloatRect(new Vector2f((1 - uiWidth * aspectRatio) / 2, 0), new Vector2f(uiWidth * aspectRatio, uiHeight))
+                   : new FloatRect(new Vector2f((1 - uiWidth) / 2, 0), new Vector2f(uiWidth, uiHeight * (1 / aspectRatio)));
             }
         }
 
@@ -219,7 +208,7 @@ namespace TankGame.Src
         }
 
         private void RegisterEvents()
-        {
+        {            
             MessageBus messageBus = MessageBus.Instance;
 
             messageBus.Register(MessageType.Quit, OnQuit);

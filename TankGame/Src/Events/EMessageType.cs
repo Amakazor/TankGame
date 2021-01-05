@@ -16,6 +16,7 @@
         PlayerMoved,
         PawnMoved,
         KeyAction,
-        KeyPressed
+        KeyPressed,
+        PlayerHealthChanged
     }
 }

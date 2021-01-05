@@ -33,6 +33,7 @@ namespace TankGame.Src.Gui.RenderComponents
         public Drawable Shape => Rectangle;
         public void SetPosition(Vector2f position) => Rectangle.Position = position;
         public void SetSize(Vector2f size) => Rectangle.Size = size;
+        public void SetFillColor(Color color) => Rectangle.FillColor = color;
 
         public bool IsPointInside(Vector2f point)
         {

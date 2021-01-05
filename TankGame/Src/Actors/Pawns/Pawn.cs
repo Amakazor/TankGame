@@ -37,6 +37,10 @@ namespace TankGame.Src.Actors.Pawns
             PawnSprite = new SpriteComponent(Position, Size, this, Texture = texture, new Color(255, 255, 255, 255));
             PawnSprite.SetDirection(Direction.Up);
             RegisterDestructible();
+
+            RenderLayer = RenderLayer.Pawn;
+            RenderView = RenderView.Game;
+
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
@@ -119,7 +123,7 @@ namespace TankGame.Src.Actors.Pawns
             base.Dispose();
         }
 
-        public void OnHit()
+        public virtual void OnHit()
         {
             SoundManager.Instance.PlayRandomSound("destruction", Position / 64);
             if (IsDestructible && IsAlive) Health--;
