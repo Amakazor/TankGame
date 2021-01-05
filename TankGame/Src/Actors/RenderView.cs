@@ -1,6 +1,6 @@
 ﻿internal enum RenderView
 {
     Game,
-    UI,
+    HUD,
     Menu
 }

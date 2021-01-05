@@ -112,7 +112,7 @@ namespace TankGame.Src
             Window.SetView(UIView);
 
             Renderables.ToList()
-               .FindAll(renderable => renderable.RenderableRenderView == RenderView.UI)
+               .FindAll(renderable => renderable.RenderableRenderView == RenderView.HUD)
                .OrderBy(renderable => (int)renderable.RenderableRenderLayer)
                .ToList()
                .ForEach((IRenderable renderable)
@@ -125,6 +125,7 @@ namespace TankGame.Src
         private void StartGame(bool isNewGame)
         {
             new HealthDisplay();
+            new ActivityDisplay();
 
             GamestateManager.Instance.Map = new GameMap(isNewGame);
             Map = GamestateManager.Instance.Map;

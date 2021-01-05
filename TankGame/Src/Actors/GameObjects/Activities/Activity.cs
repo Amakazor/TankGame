@@ -12,7 +12,20 @@ namespace TankGame.Src.Actors.GameObjects.Activities
     internal abstract class Activity : GameObject, ITickable
     {
         protected uint AllEnemiesCount;
-        public string Name { get; }
+        private string name;
+        public string Name
+        {
+            get
+            {
+                return ActivityStatus == ActivityStatus.Started ? name : (ActivityStatus == ActivityStatus.Completed ? "Completed" : "Failed");
+            }
+
+            set
+            {
+                name = value;
+            }
+        }
+
         public string ProgressText => CalculateProgress();
         public int PointsAdded { get; protected set; }
         public ActivityStatus ActivityStatus { get; protected set; }
@@ -43,7 +56,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
                 DestructabilityData = AfterCompletionDestructabilityData;
             }
 
-            if (activityStatus == ActivityStatus.Failed) GamestateManager.Instance.FailActivity(PointsAdded, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
+            if (activityStatus == ActivityStatus.Failed) GamestateManager.Instance.FailActivity(PointsAdded / 4, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
         }
 
         public void Tick(float deltaTime)
@@ -70,12 +83,12 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         }
 
         public void OnEnemyWanderIn()
-        { 
+        {
             if (ActivityStatus != ActivityStatus.Completed) AllEnemiesCount++;
         }
 
         public void OnEnemyWanderOut()
-        { 
+        {
             if (ActivityStatus != ActivityStatus.Completed) AllEnemiesCount--;
         }
 

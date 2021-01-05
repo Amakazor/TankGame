@@ -7,6 +7,6 @@
     Weather,
     Border,
     TextBox,
-    UIBack,
-    UIFront
+    HUDBack,
+    HUDFront
 }

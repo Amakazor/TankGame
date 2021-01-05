@@ -22,13 +22,13 @@ namespace TankGame.Src.Actors.GUI
 
             Heart = new SpriteComponent(Position, new Vector2f(64, 64), this, TextureManager.Instance.GetTexture("hp", "hp"), new Color(255, 255, 255, 255));
             Outline = new RectangleComponent(Position + new Vector2f(48, -16), new Vector2f(64 * 10, 32), this, new Color(32, 0, 0, 255), new Color(64, 64, 64, 255), 2);
-            Inside = new RectangleComponent(Position + new Vector2f(48, -16), new Vector2f(64 * 10, 32), this, new Color(128, 0, 0, 255));
+            Inside = new RectangleComponent(Position + new Vector2f(48, -16), new Vector2f(64 * 10, 32), this, new Color(192, 0, 0, 255));
 
 
             RenderComponents = new HashSet<IRenderComponent> { Heart, Outline, Inside };
 
-            RenderLayer = RenderLayer.UIFront;
-            RenderView = RenderView.UI;
+            RenderLayer = RenderLayer.HUDFront;
+            RenderView = RenderView.HUD;
         }
 
         public override void Dispose()

@@ -20,7 +20,10 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         protected override string CalculateProgress()
         {
             if (Enemies.Count == 0 && ActivityStatus != ActivityStatus.Completed) ChangeStatus(ActivityStatus.Completed);
-            return (AllEnemiesCount - Enemies.Count) + " of " + AllEnemiesCount;
+
+            if (ActivityStatus == ActivityStatus.Completed || ActivityStatus == ActivityStatus.Failed) return "";
+
+            return "Enemy " + (AllEnemiesCount - Enemies.Count) + " of " + AllEnemiesCount;
         }
     }
 }

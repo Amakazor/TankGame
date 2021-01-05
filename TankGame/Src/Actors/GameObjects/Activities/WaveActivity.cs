@@ -28,14 +28,16 @@ namespace TankGame.Src.Actors.GameObjects.Activities
 
         protected override string CalculateProgress()
         {
-            if (Enemies.Count == 0 && ActivityStatus != ActivityStatus.Completed)
+            if (Enemies.Count == 0 && ActivityStatus == ActivityStatus.Started)
             {
                 if (EnemySpawns.Count == 0) ChangeStatus(ActivityStatus.Completed);
                 else SpawnNextWave();
             }
 
-            return (AllEnemiesCount - Enemies.Count) + " of " + AllEnemiesCount + "\n" +
-                   "Wave " + CurrentWave + "of" + (CurrentWave + (EnemySpawns == null ? EnemySpawns.Count : 0));
+            if (ActivityStatus == ActivityStatus.Completed || ActivityStatus == ActivityStatus.Failed) return "";
+
+            return "Enemy " + (AllEnemiesCount - Enemies.Count) + " of " + AllEnemiesCount + "\n" +
+                   "Wave " + CurrentWave + " of " + (CurrentWave + (EnemySpawns != null ? EnemySpawns.Count : 0));
         }
 
         public override void ChangeStatus(ActivityStatus activityStatus)

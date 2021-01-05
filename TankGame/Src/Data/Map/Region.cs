@@ -324,13 +324,13 @@ namespace TankGame.Src.Data.Map
         public void DeletePlayer()
         {
             Player = null;
-            if (Activity != null) Activity.ChangeStatus(ActivityStatus.Stopped);
+            if (Activity != null && Activity.ActivityStatus == ActivityStatus.Started) Activity.ChangeStatus(ActivityStatus.Stopped);
         }
 
         public void AddPlayer(Player player)
         {
             Player = player;
-            if (Activity != null) Activity.ChangeStatus(ActivityStatus.Started);
+            if (Activity != null && Activity.ActivityStatus == ActivityStatus.Stopped) Activity.ChangeStatus(ActivityStatus.Started);
         }
 
         public void DeleteEnemy(Enemy enemy)

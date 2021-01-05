@@ -16,6 +16,7 @@ namespace TankGame.Src.Data
         private static GamestateManager instance;
 
         public long Points { get; private set; }
+        private long PointsBeforeSubstraction { get; set; }
         private uint Combo { get; set; }
         private int CompletedActivities { get; set; }
         private double ComboDeltaTimeCummulated { get; set; }
@@ -41,6 +42,8 @@ namespace TankGame.Src.Data
 
         public void AddPoints(long points, Vector2f? position = null, bool useCombo = true)
         {
+            if (points < 0) PointsBeforeSubstraction = points;
+
             long pointsBeforeAddition = Points;
             if (useCombo)
             {
@@ -50,7 +53,7 @@ namespace TankGame.Src.Data
             }
             else Points += points;
 
-            if (pointsBeforeAddition / 10000 != Points / 10000 && Points > pointsBeforeAddition) Player.AddHealth(Convert.ToInt32((Points / 10000) - (pointsBeforeAddition / 10000)));
+            if (pointsBeforeAddition / 10000 != Points / 10000 && Points > pointsBeforeAddition && Points > PointsBeforeSubstraction) Player.AddHealth(Convert.ToInt32((Points / 10000) - (pointsBeforeAddition / 10000)));
 
             PointsTextBoxes.Add(new PointsAddedTextBox(position ?? Player.Position + new Vector2f((Player.Size.X / 2) - 50, (Player.Size.Y / 4) - 10), points, useCombo ? Combo - 1 : 1));
         }
