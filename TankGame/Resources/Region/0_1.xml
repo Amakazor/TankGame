@@ -597,12 +597,7 @@
       <!--0x12-->
       <type>grass</type>
       <texture>grass</texture>
-      <enemy>
-        <type>light</type>
-        <aimc>stand</aimc>
-        <x>5</x>
-        <y>12</y>
-      </enemy>
+      
 
     </field>
     <field>
@@ -792,12 +787,7 @@
       <!--7x5-->
       <type>road</type>
       <texture>road</texture>
-      <enemy>
-        <type>medium</type>
-        <aimc>chase</aimc>
-        <x>7</x>
-        <y>5</y>
-      </enemy>
+      
 
     </field>
     <field>
@@ -1004,12 +994,7 @@
       <!--8x18-->
       <type>grass</type>
       <texture>grass</texture>
-      <enemy>
-        <type>heavy</type>
-        <aimc>random</aimc>
-        <x>8</x>
-        <y>18</y>
-      </enemy>
+      
 
     </field>
     <field>
@@ -1194,12 +1179,7 @@
       <!--10x9-->
       <type>grass</type>
       <texture>grass</texture>
-      <enemy>
-        <type>light</type>
-        <aimc>random</aimc>
-        <x>10</x>
-        <y>9</y>
-      </enemy>
+      
 
     </field>
     <field>
@@ -1675,23 +1655,7 @@
       <!--14x17-->
       <type>road</type>
       <texture>road</texture>
-      <enemy>
-        <type>heavy</type>
-        <aimc>patrol</aimc>
-        <x>14</x>
-        <y>17</y>
-        <path>
-          <point>
-            
-            <x>10</x>
-            <y>17</y>
-          </point>
-          <point>
-            <x>14</x>
-            <y>17</y>
-          </point>
-        </path>
-      </enemy>
+      
 
     </field>
     <field>
@@ -1728,12 +1692,7 @@
       <!--15x4-->
       <type>grass</type>
       <texture>grass</texture>
-      <enemy>
-        <type>medium</type>
-        <aimc>chase</aimc>
-        <x>15</x>
-        <y>4</y>
-      </enemy>
+      
 
     </field>
     <field>
@@ -2236,5 +2195,52 @@
     </field>
   </fields>
   <spawns>
+    <enemy>
+      <type>light</type>
+      <aimc>stand</aimc>
+      <x>5</x>
+      <y>12</y>
+    </enemy>
+    <enemy>
+      <type>medium</type>
+      <aimc>chase</aimc>
+      <x>7</x>
+      <y>5</y>
+    </enemy>
+    <enemy>
+      <type>heavy</type>
+      <aimc>random</aimc>
+      <x>8</x>
+      <y>18</y>
+    </enemy>
+    <enemy>
+      <type>light</type>
+      <aimc>random</aimc>
+      <x>10</x>
+      <y>9</y>
+    </enemy>
+    <enemy>
+      <type>heavy</type>
+      <aimc>patrol</aimc>
+      <x>14</x>
+      <y>17</y>
+      <path>
+        <point>
+
+          <x>10</x>
+          <y>17</y>
+        </point>
+        <point>
+          <x>14</x>
+          <y>17</y>
+        </point>
+      </path>
+    </enemy>
+    <enemy>
+      <type>medium</type>
+      <aimc>chase</aimc>
+      <x>15</x>
+      <y>4</y>
+    </enemy>
   </spawns>
 </region>
