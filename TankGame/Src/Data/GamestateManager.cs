@@ -56,7 +56,7 @@ namespace TankGame.Src.Data
             }
             else Points += points;
 
-            if (pointsBeforeAddition / 10000 != Points / 10000 && Points > pointsBeforeAddition && Points > PointsBeforeSubstraction) Player.AddHealth(Convert.ToInt32((Points / 10000) - (pointsBeforeAddition / 10000)));
+            if (pointsBeforeAddition / 5000 != Points / 5000 && Points > pointsBeforeAddition && Points > PointsBeforeSubstraction) Player.AddHealth(Convert.ToInt32((Points / 5000) - (pointsBeforeAddition / 5000)));
 
             PointsTextBoxes.Add(new PointsAddedTextBox(position ?? Player.Position + new Vector2f((Player.Size.X / 2) - 50, (Player.Size.Y / 4) - 10), points, useCombo ? Combo - 1 : 1));
         }
