@@ -10,7 +10,7 @@ namespace TankGame.Src.Data
 {
     internal class GamestateManager
     {
-        private const double ComboTime = 5;
+        private const double ComboTime = 7.5;
         private const uint MaxCombo = 10;
 
         private static GamestateManager instance;

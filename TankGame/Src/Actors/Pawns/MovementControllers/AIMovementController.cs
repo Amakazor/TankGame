@@ -98,6 +98,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
             return GetAllShootingPositions(TargetCoords, shootingDistance)
                    .OrderBy(position => position.ManhattanDistance(Owner.Coords))
+                   .ThenBy(postion => GamestateManager.Instance.Map.GetFieldFromRegion(postion).TraversabilityMultiplier)
                    .ToList()
                    .FindAll(position => 
                         GamestateManager.Instance.Map.IsFieldTraversible(position) && 
