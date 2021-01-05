@@ -16,6 +16,9 @@ namespace TankGame.Src.Actors.Buttons
             BoundingBox = new RectangleComponent(Position, Size, this);
 
             RegisterClickable();
+
+            RenderLayer = RenderLayer.MenuFront;
+            RenderView = RenderView.Menu;
         }
 
         public abstract bool OnClick(MouseButtonEventArgs eventArgs);

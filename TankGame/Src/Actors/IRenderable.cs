@@ -5,12 +5,10 @@ namespace TankGame.Src.Actors
 {
     internal interface IRenderable
     {
+        public bool Visible { get; set; }
         HashSet<IRenderComponent> GetRenderComponents();
-
         public void RegisterRenderable();
-
         public void UnregisterRenderable();
-
         public RenderLayer RenderableRenderLayer { get;}
         public RenderView RenderableRenderView { get;}
     }

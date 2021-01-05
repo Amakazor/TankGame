@@ -35,9 +35,12 @@ namespace TankGame.Src.Data
             Combo = 1;
             Random = new Random();
             PointsTextBoxes = new HashSet<PointsAddedTextBox>();
-            WeatherController = new WeatherController(Random.Next(WeatherController.WeatherMinimalTime, WeatherController.WeatherMaximalTime),
-                                                      Random.Next(1, 4),
-                                                      (float)((Random.NextDouble() * (WeatherController.WeatherMaximalIntensity - WeatherController.WeatherMinimalIntensity)) + WeatherController.WeatherMaximalIntensity));
+            WeatherController = null;
+        }
+
+        public void Start()
+        {
+            WeatherController = new WeatherController();
         }
 
         public void AddPoints(long points, Vector2f? position = null, bool useCombo = true)

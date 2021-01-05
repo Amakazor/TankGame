@@ -5,18 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TankGame.Src.Actors;
-using TankGame.Src.Actors.Fields;
-using TankGame.Src.Actors.GameObjects;
-using TankGame.Src.Actors.GUI;
-using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Player;
-using TankGame.Src.Actors.Projectiles;
-using TankGame.Src.Actors.Text;
-using TankGame.Src.Actors.Weathers;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
 using TankGame.Src.Events;
-using TankGame.Src.Extensions;
 using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src
@@ -33,12 +25,19 @@ namespace TankGame.Src
         private uint GameViewWidth { get; set; }
         private uint GameViewHeight { get; set; }
         private View GameView { get; set; }
-        private uint UIViewWidth { get; set; }
-        private uint UIViewHeight { get; set; }
-        private View UIView { get; set; }
+
+        private uint HUDViewWidth { get; set; }
+        private uint HUDViewHeight { get; set; }
+        private View HUDView { get; set; }
+
+        private uint MenuViewWidth { get; set; }
+        private uint MenuViewHeight { get; set; }
+        private View MenuView { get; set; }
 
         private InputHandler InputHandler { get; }
         private CollisionManager CollisionManager { get; set; }
+        private HUD HUD { get; set; }
+        private Menu Menu { get; set; }
 
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
@@ -62,7 +61,9 @@ namespace TankGame.Src
 
             RegisterEvents();
 
-            StartGame(false);
+            Menu = new Menu();
+
+            //StartGame(false);
         }
 
         public void Loop()
@@ -102,17 +103,27 @@ namespace TankGame.Src
             if (GamestateManager.Instance.Player != null) RecenterView(GamestateManager.Instance.Player.RealPosition);
 
             Renderables.ToList()
-                .FindAll(renderable => renderable.RenderableRenderView == RenderView.Game)
+                .FindAll(renderable => renderable.RenderableRenderView == RenderView.Game && renderable.Visible)
                 .OrderBy(renderable => (int)renderable.RenderableRenderLayer)
                 .ToList()
                 .ForEach((IRenderable renderable)
                     => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
                         => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null)))));
 
-            Window.SetView(UIView);
+            Window.SetView(HUDView);
 
             Renderables.ToList()
-               .FindAll(renderable => renderable.RenderableRenderView == RenderView.HUD)
+               .FindAll(renderable => renderable.RenderableRenderView == RenderView.HUD && renderable.Visible)
+               .OrderBy(renderable => (int)renderable.RenderableRenderLayer)
+               .ToList()
+               .ForEach((IRenderable renderable)
+                   => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
+                       => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null)))));
+            
+            Window.SetView(MenuView);
+
+            Renderables.ToList()
+               .FindAll(renderable => renderable.RenderableRenderView == RenderView.Menu && renderable.Visible)
                .OrderBy(renderable => (int)renderable.RenderableRenderLayer)
                .ToList()
                .ForEach((IRenderable renderable)
@@ -124,9 +135,11 @@ namespace TankGame.Src
 
         private void StartGame(bool isNewGame)
         {
-            new HealthDisplay();
-            new ActivityDisplay();
+            Menu.Hide();
 
+            HUD = new HUD();
+
+            GamestateManager.Instance.Start();
             GamestateManager.Instance.Map = new GameMap(isNewGame);
             Map = GamestateManager.Instance.Map;
         }
@@ -155,11 +168,15 @@ namespace TankGame.Src
             GameViewWidth = 64 * (2 * 6 + 1);
             GameViewHeight = GameViewWidth;
 
-            UIViewWidth = 1000;
-            UIViewHeight = UIViewWidth / 5;
+            HUDViewWidth = 1000;
+            HUDViewHeight = HUDViewWidth / 5;
+
+            MenuViewWidth = 1000;
+            MenuViewHeight = MenuViewWidth;
 
             GameView = new View(new Vector2f(GameViewWidth / 2, GameViewHeight / 2), new Vector2f(GameViewWidth, GameViewHeight));
-            UIView = new View(new Vector2f(UIViewWidth / 2 - 32, UIViewHeight / 2 - 32), new Vector2f(UIViewWidth, UIViewHeight));
+            HUDView = new View(new Vector2f(HUDViewWidth / 2 - 32, HUDViewHeight / 2 - 32), new Vector2f(HUDViewWidth, HUDViewHeight));
+            MenuView = new View(new Vector2f(MenuViewWidth / 2, MenuViewHeight / 2), new Vector2f(MenuViewWidth, MenuViewHeight));
 
             RecalculateViewport(WindowWidth, WindowHeight);
         }
@@ -195,11 +212,18 @@ namespace TankGame.Src
                     : new FloatRect(new Vector2f((1 - gameSize), (1 - gameSize) + ((gameSize - (gameSize * (1 / aspectRatio))) / 2)), new Vector2f(gameSize, gameSize * (1 / aspectRatio)));
             }
 
-            if (UIView != null)
+            if (HUDView != null)
             {
-                UIView.Viewport = Window.Size.X > Window.Size.Y
+                HUDView.Viewport = Window.Size.X > Window.Size.Y
                    ? new FloatRect(new Vector2f((1 - uiWidth * aspectRatio) / 2, 0), new Vector2f(uiWidth * aspectRatio, uiHeight))
                    : new FloatRect(new Vector2f((1 - uiWidth) / 2, 0), new Vector2f(uiWidth, uiHeight * (1 / aspectRatio)));
+            }
+
+            if (MenuView != null)
+            {
+                MenuView.Viewport = Window.Size.X > Window.Size.Y
+                    ? new FloatRect(new Vector2f((1 - aspectRatio) / 2, 0), new Vector2f(aspectRatio, 1))
+                    : new FloatRect(new Vector2f(0, ( 1 - (1 / aspectRatio))/ 2), new Vector2f(1, 1 / aspectRatio));
             }
         }
 
@@ -212,11 +236,15 @@ namespace TankGame.Src
         {            
             MessageBus messageBus = MessageBus.Instance;
 
+            messageBus.Register(MessageType.StartGame, OnStartGame);
             messageBus.Register(MessageType.Quit, OnQuit);
+
             messageBus.Register(MessageType.RegisterTickable, OnRegisterTickable);
             messageBus.Register(MessageType.UnregisterTickable, OnUnregisterTickable);
+
             messageBus.Register(MessageType.RegisterRenderable, OnRegisterRenderable);
             messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
+
             messageBus.Register(MessageType.PlayerMoved, OnPlayerMoved);
         }
 
@@ -248,6 +276,11 @@ namespace TankGame.Src
             {
                 RecenterView(senderPlayer.RealPosition);
             }
+        }
+
+        private void OnStartGame(object sender, EventArgs eventArgs)
+        {
+            if (eventArgs is StartGameEventArgs startGameEventArgs) StartGame(startGameEventArgs.NewGame);
         }
     }
 }

@@ -18,6 +18,9 @@
         KeyAction,
         KeyPressed,
         PlayerHealthChanged,
-        UpdateActivityDisplay
+        UpdateActivityDisplay,
+        StartGame,
+        CancelKeyChanges,
+        MenuRefreshKeys
     }
 }

@@ -37,7 +37,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
             if (ActivityStatus == ActivityStatus.Completed || ActivityStatus == ActivityStatus.Failed) return "";
 
             return "Enemy " + (AllEnemiesCount - Enemies.Count) + " of " + AllEnemiesCount + "\n" +
-                   "Wave " + CurrentWave + " of " + (CurrentWave + (EnemySpawns != null ? EnemySpawns.Count : 0));
+                   "Wave  " + CurrentWave + " of " + (CurrentWave + (EnemySpawns != null ? EnemySpawns.Count : 0));
         }
 
         public override void ChangeStatus(ActivityStatus activityStatus)

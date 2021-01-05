@@ -39,11 +39,14 @@ namespace TankGame.Src.Events
 
             foreach (IClickable clickable in Clickables)
             {
-                foreach (IRenderComponent component in clickable.GetRenderComponents())
+                if (clickable.Visible)
                 {
-                    if (component.IsPointInside(point))
+                    foreach (IRenderComponent component in clickable.GetRenderComponents())
                     {
-                        clickable.OnClick(eventArgs);
+                        if (component.IsPointInside(point))
+                        {
+                            clickable.OnClick(eventArgs);
+                        }
                     }
                 }
             }

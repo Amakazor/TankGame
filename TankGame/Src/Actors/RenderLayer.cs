@@ -8,5 +8,7 @@
     Border,
     TextBox,
     HUDBack,
-    HUDFront
+    HUDFront,
+    MenuBack,
+    MenuFront
 }
