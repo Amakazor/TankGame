@@ -15,7 +15,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         protected Queue<List<EnemySpawnData>> EnemySpawns { get; }
         protected uint CurrentWave { get; set; }
 
-        public WaveActivity(Vector2i coords, HashSet<Enemy> enemies, Queue<List<EnemySpawnData>> enemySpawns, uint currentWave = 0, int? hp = null, string name = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData> gameObjectType = null) : base(coords, enemies, hp ?? 1, name ?? "Destroy all enemies", gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData>(new TraversibilityData(1, false), new DestructabilityData(1, false, false)), pointsAdded ?? 3000)        
+        public WaveActivity(Vector2i coords, HashSet<Enemy> enemies, Queue<List<EnemySpawnData>> enemySpawns, uint currentWave = 0, int? hp = null, string name = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType = null) : base(coords, enemies, hp ?? 1, name ?? "Destroy all enemies", gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(1, false, false), null), pointsAdded ?? 3000)        
         {
             EnemySpawns = enemySpawns;
             CurrentWave = currentWave;

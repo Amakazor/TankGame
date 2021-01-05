@@ -9,7 +9,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
 {
     internal class WaveProtectActivity : WaveActivity
     {
-        public WaveProtectActivity(Vector2i coords, HashSet<Enemy> enemies, Queue<List<EnemySpawnData>> enemySpawns, uint currentWave = 0, int? hp = null, string name = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData> gameObjectType = null) : base(coords, enemies, enemySpawns, currentWave, hp ?? 5 * enemySpawns.Count(), name ?? "Destroy all enemies", pointsAdded ?? 5000, gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData>(new TraversibilityData(1, false), new DestructabilityData(3, true, false)))
+        public WaveProtectActivity(Vector2i coords, HashSet<Enemy> enemies, Queue<List<EnemySpawnData>> enemySpawns, uint currentWave = 0, int? hp = null, string name = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType = null) : base(coords, enemies, enemySpawns, currentWave, hp ?? 5 * enemySpawns.Count(), name ?? "Destroy all enemies", pointsAdded ?? 5000, gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(3, true, false), "towerdestroyed"))
         {
         }
 

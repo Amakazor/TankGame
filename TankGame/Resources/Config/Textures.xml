@@ -101,9 +101,19 @@
 		<location>Resources/Textures/Buildings/pien.png</location>
 	</texture>
   <texture>
-		<type>activity</type>
+		<type>gameobject</type>
 		<name>tower</name>
 		<location>Resources/Textures/Buildings/tower.png</location>
+	</texture>
+    <texture>
+		<type>gameobject</type>
+		<name>towerdestroyed</name>
+		<location>Resources/Textures/Buildings/tower_destroyed.png</location>
+	</texture>
+    <texture>
+		<type>gameobject</type>
+		<name>towercompleted</name>
+		<location>Resources/Textures/Buildings/tower_completed.png</location>
 	</texture>
   <texture>
 		<type>field</type>

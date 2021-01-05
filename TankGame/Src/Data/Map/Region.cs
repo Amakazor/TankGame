@@ -124,7 +124,7 @@ namespace TankGame.Src.Data.Map
                             fieldElement.Element("object").Element("type").Value,
                             (fieldElement.Element("object").Element("hp") != null && fieldElement.Element("object").Element("hp").Value != null)
                                 ? int.Parse(fieldElement.Element("object").Element("hp").Value)
-                                : 0)
+                                : -1)
                         : null));
 
                 if (y == 19)
@@ -336,7 +336,7 @@ namespace TankGame.Src.Data.Map
         public void DeleteEnemy(Enemy enemy)
         {
             Enemies.Remove(enemy);
-            GetFieldAtMapCoords(enemy.Coords).PawnOnField = null;
+            GamestateManager.Instance.Map.GetFieldFromRegion(enemy.Coords).PawnOnField = null;
         }
 
         public void AddEnemy(Enemy enemy) => Enemies.Add(enemy);

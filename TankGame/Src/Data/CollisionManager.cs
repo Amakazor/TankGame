@@ -52,31 +52,34 @@ namespace TankGame.Src.Data
             {
                 foreach (IDestructible destructible in Destructibles)
                 {
-                    if (destructible.IsDestructible && destructible.IsAlive && CheckCollision(projectile, destructible.Actor))
+                    if (CheckCollision(projectile, destructible.Actor))
                     {
-                        switch (destructible.Actor)
+                        if (destructible.IsDestructible && destructible.IsAlive)
                         {
-                            case Enemy _:
-                                if (projectile.Owner is Player)
-                                {
+                            switch (destructible.Actor)
+                            {
+                                case Enemy _:
+                                    if (projectile.Owner is Player)
+                                    {
+                                        destructible.OnHit();
+                                        projectile.Dispose();
+                                    }
+                                    break;
+                                case Player _:
+                                    if (projectile.Owner is Enemy)
+                                    {
+                                        destructible.OnHit();
+                                        projectile.Dispose();
+                                    }
+                                    break;
+                                case GameObject _:
                                     destructible.OnHit();
                                     projectile.Dispose();
-                                }
-                                break;
-                            case Player _:
-                                if (projectile.Owner is Enemy)
-                                {
-                                    destructible.OnHit();
-                                    projectile.Dispose();
-                                }
-                                break;
-                            case GameObject _:
-                                destructible.OnHit();
-                                projectile.Dispose();
-                                break;
+                                    break;
+                            }
                         }
-
-                    } 
+                        else if (destructible.StopsProjectile) projectile.Dispose();
+                    }
                 }
             }
         }

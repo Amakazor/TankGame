@@ -30,6 +30,7 @@ namespace TankGame.Src.Actors.Pawns
         public bool IsDestructible => true;
         public Actor Actor => this;
         public Region CurrentRegion => GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords);
+        public bool StopsProjectile => true;
 
         public Pawn(Vector2f position, Vector2f size, Texture texture, int health) : base(position, size)
         {

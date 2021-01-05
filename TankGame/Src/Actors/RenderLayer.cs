@@ -5,6 +5,7 @@
     Pawn,
     Projectile,
     Weather,
+    Border,
     TextBox,
     UIBack,
     UIFront

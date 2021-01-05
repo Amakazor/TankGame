@@ -76,8 +76,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                         {
                             if (nextField.GameObject.DestructabilityData.DestroyOnEntry)
                             {
-                                nextField.GameObject.Dispose();
-                                nextField.GameObject = null;
+                                nextField.GameObject.OnDestroy();
                             }
                         }
                     }
