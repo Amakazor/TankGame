@@ -9,13 +9,16 @@ namespace TankGame.Src.Actors.Buttons
 {
     internal abstract class Button : Actor, IClickable
     {
-        protected RectangleComponent BoundingBox { get; }
+        protected RectangleComponent BoundingBox { get; set; }
 
         public Button(Vector2f position, Vector2f size) : base(position, size)
         {
             BoundingBox = new RectangleComponent(Position, Size, this);
 
             RegisterClickable();
+
+            RenderLayer = RenderLayer.MenuFront;
+            RenderView = RenderView.Menu;
         }
 
         public abstract bool OnClick(MouseButtonEventArgs eventArgs);

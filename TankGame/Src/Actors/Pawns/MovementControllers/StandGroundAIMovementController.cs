@@ -10,7 +10,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         private Vector2i HomePosition { get; }
         private const int BaseStandGroundRadius = 3;
         private int StandGroundRadius  => (int)Math.Floor(BaseStandGroundRadius * (1 / GamestateManager.Instance.WeatherModifier));
-        public StandGroundAIMovementController(double delay, Pawn owner) : base(delay, owner)
+        public StandGroundAIMovementController(double delay, Pawn owner) : base(delay, owner, "stand")
         {
             HomePosition = Owner.Coords;
         }

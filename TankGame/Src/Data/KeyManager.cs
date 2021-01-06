@@ -24,7 +24,7 @@ namespace TankGame.Src.Data
 
         public void ChangeAndSaveKey(Tuple<string, string> keyActionType, Keyboard.Key keyCode)
         {
-            if (KeysDictionary.ContainsKey(keyActionType) && KeysDictionary[keyActionType] != keyCode)
+            if (KeysDictionary.ContainsKey(keyActionType))
             {
                 KeysDictionary[keyActionType] = keyCode;
                 SaveKeys();
@@ -105,9 +105,9 @@ namespace TankGame.Src.Data
 
             foreach (KeyValuePair<Tuple<string, string>, Keyboard.Key> key in KeysDictionary)
             {
-                if (keysConfig.Element(key.Key.Item1) != null)
+                if (keysConfig.Root.Element(key.Key.Item1) != null)
                 {
-                    XElement keyElement = keysConfig.Element(key.Key.Item1);
+                    XElement keyElement = keysConfig.Root.Element(key.Key.Item1);
                     keyElement.Value = ((int)key.Value).ToString();
                 }
             }

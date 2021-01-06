@@ -5,15 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TankGame.Src.Actors;
-using TankGame.Src.Actors.Fields;
-using TankGame.Src.Actors.GameObjects;
-using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Player;
-using TankGame.Src.Actors.Projectiles;
-using TankGame.Src.Actors.Text;
-using TankGame.Src.Actors.Weathers;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
+using TankGame.Src.Data.Statistics;
 using TankGame.Src.Events;
 using TankGame.Src.Extensions;
 using TankGame.Src.Gui.RenderComponents;
@@ -25,21 +20,30 @@ namespace TankGame.Src
         public string GameTitle { get; private set; }
         private bool ShouldQuit { get; set; }
 
-        private uint Width { get; set; }
-        private uint Height { get; set; }
+        private uint WindowHeight { get; set; }
+        private uint WindowWidth { get; set; }
         private RenderWindow Window { get; set; }
 
-        private uint ViewWidth { get; set; }
-        private uint ViewHeight { get; set; }
+        private uint GameViewWidth { get; set; }
+        private uint GameViewHeight { get; set; }
         private View GameView { get; set; }
 
+        private uint HUDViewWidth { get; set; }
+        private uint HUDViewHeight { get; set; }
+        private View HUDView { get; set; }
+
+        private uint MenuViewWidth { get; set; }
+        private uint MenuViewHeight { get; set; }
+        private View MenuView { get; set; }
+
         private InputHandler InputHandler { get; }
-        private CollisionManager CollisionManager { get; set; }
+        private CollisionHandler CollisionHandler { get; set; }
+
+        private HUD HUD { get; set; }
+        private Menu Menu { get; set; }
 
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
-
-        private GameMap Map { get; set; }
 
         public Engine()
         {
@@ -58,7 +62,7 @@ namespace TankGame.Src
 
             RegisterEvents();
 
-            StartGame(false);
+            Menu = new Menu();
         }
 
         public void Loop()
@@ -72,24 +76,41 @@ namespace TankGame.Src
                 float deltaTime = (time2.Ticks - time1.Ticks) / 10000000f;
 
                 Tick(deltaTime);
-                Render(deltaTime);
+                Render();
 
                 time1 = time2;
+            }
+
+            if (!Window.IsOpen && GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
+            {
+                GamestateManager.Instance.Save();
+
+                HUD.Dispose();
+                HUD = null;
+
+                GamestateManager.Instance.Clear();
+
+                CollisionHandler.Clear();
+
+                MusicManager.Instance.StopMusic();
             }
         }
 
         private void Tick(float deltaTime)
         {
-            foreach (ITickable tickable in Tickables.ToList())
+            if (GamestateManager.Instance.GamePhase == GamePhase.Playing)
             {
-                tickable.Tick(deltaTime);
-            }
+                foreach (ITickable tickable in Tickables.ToList())
+                {
+                    tickable.Tick(deltaTime);
+                }
 
-            CollisionManager.Tick();
-            GamestateManager.Instance.Tick(deltaTime);
+                CollisionHandler.Tick();
+                GamestateManager.Instance.Tick(deltaTime);
+            }
         }
 
-        private void Render(float deltaTime)
+        private void Render()
         {
             Window.DispatchEvents();
             Window.SetView(GameView);
@@ -97,65 +118,71 @@ namespace TankGame.Src
 
             if (GamestateManager.Instance.Player != null) RecenterView(GamestateManager.Instance.Player.RealPosition);
 
-            PrepareRenderQueue().ForEach((List<IRenderable> RenderLayer)
-                => RenderLayer.ForEach((IRenderable renderable)
-                    => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
-                        => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null))))));
+            Renderables.ToList()
+                .FindAll(renderable => renderable.RenderableRenderView == RenderView.Game && renderable.Visible)
+                .Draw(Window);
+
+            Window.SetView(HUDView);
+
+            Renderables.ToList()
+               .FindAll(renderable => renderable.RenderableRenderView == RenderView.HUD && renderable.Visible)
+               .Draw(Window);
+
+            Window.SetView(MenuView);
+
+            Renderables.ToList()
+               .FindAll(renderable => renderable.RenderableRenderView == RenderView.Menu && renderable.Visible)
+               .Draw(Window);
+               
 
             Window.Display();
         }
 
-        private List<List<IRenderable>> PrepareRenderQueue()
-        {
-            List<List<IRenderable>> RenderQueue = new List<List<IRenderable>>
-            {
-                new List<IRenderable>(),
-                new List<IRenderable>(),
-                new List<IRenderable>(),
-                new List<IRenderable>(),
-                new List<IRenderable>(),
-                new List<IRenderable>()
-            };
-
-            Renderables.ToList().ForEach(renderable =>
-            {
-                switch (renderable)
-                {
-                    case TextBox _:
-                        RenderQueue[5].Add(renderable);
-                        break;
-                    case Weather _:
-                        RenderQueue[4].Add(renderable);
-                        break;
-                    case Projectile _:
-                        RenderQueue[3].Add(renderable);
-                        break;
-                    case Pawn _:
-                        RenderQueue[2].Add(renderable);
-                        break;
-                    case GameObject _:
-                        RenderQueue[1].Add(renderable);
-                        break;
-                    case Field _:
-                        RenderQueue[0].Add(renderable);
-                        break;
-                    default:
-                        break;
-                }
-            });
-
-            return RenderQueue;
-        }
-
         private void StartGame(bool isNewGame)
         {
-            GamestateManager.Instance.Map = new GameMap(isNewGame);
-            Map = GamestateManager.Instance.Map;
+            if (GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
+            {
+                if (isNewGame) StopGame();
+                else if (GamestateManager.Instance.GamePhase == GamePhase.Paused)
+                {
+                    Menu.Hide();
+                    GamestateManager.Instance.GamePhase = GamePhase.Playing;
+                    return;
+                }
+            }
+
+            Menu.Hide();
+
+            HUD = new HUD();
+
+            GamestateManager.Instance.Start(isNewGame);
+        }
+
+        private void StopGame()
+        {
+            if (GamestateManager.Instance.GamePhase == GamePhase.Ending)
+            {
+                ScoreManager.AddScore(Menu.PlayerName, GamestateManager.Instance.Points);
+                GamestateManager.Instance.DeleteSave();
+            }
+            else
+            {
+                GamestateManager.Instance.Save();
+            }
+
+            HUD.Dispose();
+            HUD = null;
+            GamestateManager.Instance.Clear();
+            CollisionHandler.Clear();
+
+            MusicManager.Instance.StopMusic();
+
+            Menu.ShowMenu();
         }
 
         private void InitializeManagers()
         {
-            CollisionManager = new CollisionManager();
+            CollisionHandler = new CollisionHandler();
             TextureManager.Initialize();
             SoundManager.Initialize();
             KeyManager.Initialize();
@@ -164,52 +191,80 @@ namespace TankGame.Src
 
         private void InitializeWindow()
         {
-            Height = 800;
-            Width = Height * 16 / 10;
+            WindowWidth = 800;
+            WindowHeight = WindowWidth * 16 / 10;
 
-            Window = new RenderWindow(new VideoMode(Width, Height), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 8 });
+            Window = new RenderWindow(new VideoMode(WindowHeight, WindowWidth), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 2 });
             Window.SetVerticalSyncEnabled(true);
             Window.Closed += (_, __) => Window.Close();
         }
 
         private void InitializeView()
         {
-            ViewWidth = 64 * (2 * 6 + 1);
-            ViewHeight = ViewWidth;
+            GameViewWidth = 64 * (2 * 6 + 1);
+            GameViewHeight = GameViewWidth;
 
-            GameView = new View(new Vector2f(ViewWidth / 2, ViewHeight / 2), new Vector2f(ViewWidth, ViewHeight));
+            HUDViewWidth = 1000;
+            HUDViewHeight = HUDViewWidth / 5;
 
-            RecalculateViewport(Height, Width);
+            MenuViewWidth = 1000;
+            MenuViewHeight = MenuViewWidth;
+
+            GameView = new View(new Vector2f(GameViewWidth / 2, GameViewHeight / 2), new Vector2f(GameViewWidth, GameViewHeight));
+            HUDView = new View(new Vector2f(HUDViewWidth / 2 - 32, HUDViewHeight / 2 - 32), new Vector2f(HUDViewWidth, HUDViewHeight));
+            MenuView = new View(new Vector2f(MenuViewWidth / 2, MenuViewHeight / 2), new Vector2f(MenuViewWidth, MenuViewHeight));
+
+            RecalculateViewport(WindowWidth, WindowHeight);
         }
 
         private void SetInputHandlers()
         {
             if (Window != null && InputHandler != null)
             {
+                Window.Resized += OnResize;
+
                 Window.KeyPressed += InputHandler.OnKeyPress;
                 Window.MouseButtonPressed += InputHandler.OnClick;
-                Window.Resized += OnResize;
+                Window.TextEntered += InputHandler.OnTextInput;
             }
         }
 
         private void OnResize(object sender, SizeEventArgs newSize)
         {
-            Height = newSize.Height;
-            Width = newSize.Width;
+            WindowWidth = newSize.Height;
+            WindowHeight = newSize.Width;
+
             RecalculateViewport(newSize.Height, newSize.Width);
         }
 
         private void RecalculateViewport(uint height, uint width)
         {
-            float aspectRatio = (float)height / width;
+            float uiWidth = 1F;
+            float uiHeight = 0.2F;
 
-            if (GameView != null && (aspectRatio < 0.9 || aspectRatio > 1.1))
+            float gameSize = 0.8F;
+
+            float aspectRatio = (float)height / width;
+            
+            if (GameView != null)
             {
                 GameView.Viewport = Window.Size.X > Window.Size.Y
-                    ? new FloatRect(new Vector2f((1 - aspectRatio) / 2, 0),     new Vector2f(aspectRatio, 1))
-                    : new FloatRect(new Vector2f(0, (1 - 1 / aspectRatio) / 2), new Vector2f(1, 1 / aspectRatio));
+                    ? new FloatRect(new Vector2f((1- gameSize) + ((gameSize - (gameSize * aspectRatio)) / 2), (1 - gameSize)), new Vector2f(gameSize * aspectRatio, gameSize))
+                    : new FloatRect(new Vector2f((1 - gameSize), (1 - gameSize) + ((gameSize - (gameSize * (1 / aspectRatio))) / 2)), new Vector2f(gameSize, gameSize * (1 / aspectRatio)));
+            }
 
-                GameView.Size = new Vector2f(ViewWidth, ViewHeight);
+            if (HUDView != null)
+            {
+                HUDView.Viewport = Window.Size.X > Window.Size.Y
+                   ? new FloatRect(new Vector2f((1 - uiWidth * aspectRatio) / 2, 0), new Vector2f(uiWidth * aspectRatio, uiHeight))
+                   : new FloatRect(new Vector2f((1 - uiWidth) / 2, 0), new Vector2f(uiWidth, uiHeight * (1 / aspectRatio)));
+            }
+
+            if (MenuView != null)
+            {
+                MenuView.Viewport = Window.Size.X > Window.Size.Y
+                    ? new FloatRect(new Vector2f((1 - aspectRatio) / 2, 0), new Vector2f(aspectRatio, 1))
+                    : new FloatRect(new Vector2f(0, ( 1 - (1 / aspectRatio))/ 2), new Vector2f(1, 1 / aspectRatio));
             }
         }
 
@@ -219,18 +274,36 @@ namespace TankGame.Src
         }
 
         private void RegisterEvents()
-        {
+        {            
             MessageBus messageBus = MessageBus.Instance;
 
-            messageBus.Register(MessageType.Quit, OnQuit);
             messageBus.Register(MessageType.RegisterTickable, OnRegisterTickable);
             messageBus.Register(MessageType.UnregisterTickable, OnUnregisterTickable);
+
             messageBus.Register(MessageType.RegisterRenderable, OnRegisterRenderable);
             messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
+
+            messageBus.Register(MessageType.StartGame, OnStartGame);
+            messageBus.Register(MessageType.StopGame, OnStopGame);
+            messageBus.Register(MessageType.Quit, OnQuit);
+
+            messageBus.Register(MessageType.KeyAction, OnKeyAction);
+
             messageBus.Register(MessageType.PlayerMoved, OnPlayerMoved);
+            messageBus.Register(MessageType.PlayerDeath, OnPlayerDeath);
         }
 
-        private void OnQuit(object sender, EventArgs eventArgs) => ShouldQuit = true;
+        private void OnQuit(object sender, EventArgs eventArgs)
+        {
+            if (GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
+            {
+                StopGame();
+            }
+            else
+            {
+                ShouldQuit = true;
+            }
+        }
 
         private void OnRegisterTickable(object sender, EventArgs eventArgs)
         {
@@ -257,6 +330,39 @@ namespace TankGame.Src
             if (sender is Player senderPlayer)
             {
                 RecenterView(senderPlayer.RealPosition);
+            }
+        }
+        
+        private void OnPlayerDeath(object sender, EventArgs eventArgs)
+        {
+            GamestateManager.Instance.GamePhase = GamePhase.Ending;
+            Menu.ShowEndScreen();
+        }
+
+        private void OnStopGame(object arg1, EventArgs arg2)
+        {
+            StopGame();
+        }
+
+        private void OnStartGame(object sender, EventArgs eventArgs)
+        {
+            if (eventArgs is StartGameEventArgs startGameEventArgs) StartGame(startGameEventArgs.NewGame);
+        }
+
+        private void OnKeyAction(object sender, EventArgs eventArgs)
+        {
+            if (eventArgs is KeyActionEventArgs keyActionEventArgs && keyActionEventArgs.KeyActionType != null && keyActionEventArgs.KeyActionType.Equals(KeyActionType.Pause))
+            {
+                if (GamestateManager.Instance.GamePhase == GamePhase.Playing)
+                {
+                    GamestateManager.Instance.GamePhase = GamePhase.Paused;
+                    Menu.ShowMenu();
+                }
+                else if (GamestateManager.Instance.GamePhase == GamePhase.Paused)
+                {
+                    GamestateManager.Instance.GamePhase = GamePhase.Playing;
+                    Menu.Hide();
+                }
             }
         }
     }

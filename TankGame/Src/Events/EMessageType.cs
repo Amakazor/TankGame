@@ -16,6 +16,14 @@
         PlayerMoved,
         PawnMoved,
         KeyAction,
-        KeyPressed
+        KeyPressed,
+        PlayerHealthChanged,
+        UpdateActivityDisplay,
+        StartGame,
+        CancelInputs,
+        MenuRefreshKeys,
+        TextInput,
+        PlayerDeath,
+        StopGame
     }
 }

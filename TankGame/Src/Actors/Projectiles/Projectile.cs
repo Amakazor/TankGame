@@ -15,7 +15,7 @@ namespace TankGame.Src.Actors.Projectiles
     internal class Projectile : TickableActor
     {
         private const float BaseFlightDistance = 64 * 7;
-        private const float BaseSpeed = 250;
+        private const float BaseSpeed = 200;
 
         private float FlightDistance = BaseFlightDistance * (1 / (GamestateManager.Instance.WeatherModifier * GamestateManager.Instance.WeatherModifier));
         private float FlightSpeed = BaseSpeed * (1 / (GamestateManager.Instance.WeatherModifier * GamestateManager.Instance.WeatherModifier));
@@ -45,6 +45,9 @@ namespace TankGame.Src.Actors.Projectiles
 
             MessageBus.Instance.PostEvent(MessageType.RegisterProjectile, this, new EventArgs());
             SoundManager.Instance.PlayRandomSound("shot", Position / 64);
+
+            RenderLayer = RenderLayer.Projectile;
+            RenderView = RenderView.Game;
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()

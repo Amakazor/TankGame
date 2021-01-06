@@ -1,6 +1,6 @@
-﻿using SFML.Audio;
-using System;
+﻿using System;
 using TankGame.Src.Actors;
+using TankGame.Src.Actors.Shaders;
 using TankGame.Src.Actors.Weathers;
 using TankGame.Src.Events;
 
@@ -14,15 +14,35 @@ namespace TankGame.Src.Data
         public static float WeatherMaximalIntensity = 3F;
         private Weather Weather { get; set; }
         public float CurrentWeatherTime { get; private set; }
+        public string WeatherType => Weather is null ? "clear" : Weather.Type;
+        public AnimationType AnimationType;
 
-        public WeatherController(float newWeatherTime, int WeatherType, float intensity)
+        public WeatherController()
         {
             RegisterTickable();
             CurrentWeatherTime = 0;
 
-            GetNewWeather(newWeatherTime, WeatherType, intensity);
+            AnimationType = WeatherShader.CanUseShader ? AnimationType.Shaded : AnimationType.Animated;
+
+            GetNewWeather();
         }
 
+        public void SetWeather(string type, float weatherTime)
+        {
+            if (Weather != null) Weather.Dispose();
+            Weather = null; 
+            MusicManager.Instance.StopMusic();
+
+            CurrentWeatherTime = weatherTime;
+            float intensity = (float)((GamestateManager.Instance.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity)) + WeatherMinimalIntensity);
+            Weather = type switch
+            {
+                "clear" => null,
+                "rain"  => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, "rain"),
+                "snow"  => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, "snow"),
+                _ => null,
+            };
+        }
 
         public float GetSpeedModifier()
         {
@@ -35,17 +55,17 @@ namespace TankGame.Src.Data
             if (CurrentWeatherTime <= 0) GetNewWeather();
         }
 
-        private void GetNewWeather(float newWeatherTime = 0, int weatherType = 0, float intensity = 0)
+        private void GetNewWeather()
         {
             if (Weather != null) Weather.Dispose();
             Weather = null;
-            CurrentWeatherTime = newWeatherTime != 0 ? newWeatherTime : GamestateManager.Instance.Random.Next(WeatherMinimalTime, WeatherMaximalTime);
-            if (intensity == 0) intensity = (float)((GamestateManager.Instance.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity)) + WeatherMinimalIntensity);
-            Weather = (weatherType != 0 ? weatherType : GamestateManager.Instance.Random.Next(1, 4)) switch
+            CurrentWeatherTime = GamestateManager.Instance.Random.Next(WeatherMinimalTime, WeatherMaximalTime);
+            float intensity = (float)((GamestateManager.Instance.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity)) + WeatherMinimalIntensity);
+            Weather = GamestateManager.Instance.Random.Next(1, 4) switch
             {
                 1 => null,
-                2 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity),
-                3 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity),
+                2 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, "rain"),
+                3 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, "snow"),
                 _ => null,
             };
 
@@ -64,6 +84,7 @@ namespace TankGame.Src.Data
 
         public void Dispose()
         {
+            if (Weather != null) Weather.Dispose();
             UnregisterTickable();
         }
     }

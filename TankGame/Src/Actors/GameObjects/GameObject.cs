@@ -14,9 +14,11 @@ namespace TankGame.Src.Actors.GameObjects
 {
     internal class GameObject : Actor, IDestructible
     {
-        public TraversibilityData TraversibilityData { get; private set; }
-        public DestructabilityData DestructabilityData { get; private set; }
-        private SpriteComponent ObjectSprite { get; set; }
+        public TraversibilityData TraversibilityData { get; protected set; }
+        public DestructabilityData DestructabilityData { get; protected set; }
+        private DestructabilityData DestructabilityDataAfterDestruction { get; }
+        private TraversibilityData TraversibilityDataAfterDestruction { get; }
+        protected SpriteComponent ObjectSprite { get; set; }
         public Region Region { private get; set; }
         private string Type { get; }
         public int Health { get => DestructabilityData.Health; set => DestructabilityData = new DestructabilityData(value, DestructabilityData.IsDestructible, DestructabilityData.DestroyOnEntry); }
@@ -28,18 +30,37 @@ namespace TankGame.Src.Actors.GameObjects
         public Field Field { get; set; }
         public Vector2i Coords => new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
         public Region CurrentRegion => Region ??= GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords);
+        protected Texture AfterDestructionTexture { get; set; }
+        public bool StopsProjectile => DestructabilityData.StopsProjectile;
 
-        public GameObject(Vector2i coords, Tuple<TraversibilityData, DestructabilityData> gameObjectType, Texture texture, string type, int hp) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
+        public GameObject(Vector2i coords, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType, Texture texture, string type, int hp) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
         {
             TraversibilityData = gameObjectType.Item1;
             DestructabilityData = gameObjectType.Item2;
+
+            DestructabilityDataAfterDestruction = new DestructabilityData(0, false, false, false);
+            TraversibilityDataAfterDestruction = new TraversibilityData(1.25F, true);
+
             Type = type;
+            AfterDestructionTexture = gameObjectType.Item3 == null ? null : AfterDestructionTexture = TextureManager.Instance.GetTexture("gameobject", gameObjectType.Item3); 
 
-            if (hp > 0) Health = hp;
+            if (hp > -1) Health = hp;
 
-            ObjectSprite = new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
+            ObjectSprite = Health == 0
+                ? new SpriteComponent(Position, Size, this, AfterDestructionTexture, new Color(255, 255, 255, 255))
+                : new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
+
+            if (Health == 0)
+            {
+                TraversibilityData = TraversibilityDataAfterDestruction;
+                DestructabilityData = DestructabilityDataAfterDestruction;
+            }
 
             RegisterDestructible();
+
+            RenderLayer = RenderLayer.GameObject;
+            RenderView = RenderView.Game;
+
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
@@ -49,8 +70,18 @@ namespace TankGame.Src.Actors.GameObjects
 
         public virtual void OnDestroy()
         {
-            Field.OnGameObjectDestruction();
-            Dispose();
+            Health = 0;
+            if (AfterDestructionTexture == null)
+            {
+                Field.OnGameObjectDestruction();
+                Dispose();
+            }
+            else
+            {
+                ObjectSprite = new SpriteComponent(Position, Size, this, AfterDestructionTexture, new Color(255, 255, 255, 255));
+                TraversibilityData = TraversibilityDataAfterDestruction;
+                DestructabilityData = DestructabilityDataAfterDestruction;
+            }
         }
 
         public void OnHit()
@@ -60,14 +91,14 @@ namespace TankGame.Src.Actors.GameObjects
             if (Health <= 0) OnDestroy();
         }
 
-        internal XmlElement SerializeToXML(XmlDocument xmlDocument)
+        internal virtual XmlElement SerializeToXML(XmlDocument xmlDocument)
         {
             XmlElement objectElement = xmlDocument.CreateElement("object");
             XmlElement typeElement = xmlDocument.CreateElement("type");
             XmlElement hpElement = xmlDocument.CreateElement("hp");
 
-            typeElement.InnerText = Type;
-            hpElement.InnerText = DestructabilityData.Health.ToString();
+               typeElement.InnerText = Type;
+            hpElement.InnerText = Health.ToString();
 
             objectElement.AppendChild(typeElement);
             objectElement.AppendChild(hpElement);

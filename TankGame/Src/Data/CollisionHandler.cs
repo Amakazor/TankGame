@@ -1,8 +1,7 @@
 ﻿using SFML.System;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Security.Cryptography;
+using System.Linq;
 using TankGame.Src.Actors;
 using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.Pawns;
@@ -10,30 +9,19 @@ using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Events;
-using TankGame.Src.Extensions;
 
 namespace TankGame.Src.Data
 {
-    internal class CollisionManager : IDisposable
+    internal class CollisionHandler : IDisposable
     {
         private HashSet<IDestructible> Destructibles { get; }
         private HashSet<Projectile> Projectiles { get; }
 
-        private HashSet<IDestructible> DestructiblesToAdd { get; }
-        private HashSet<Projectile> ProjectilesToAdd { get; }
-
-        private HashSet<IDestructible> DestructiblesToDelete { get; }
-        private HashSet<Projectile> ProjectilesToDelete { get; }
-
-        public CollisionManager()
+        public CollisionHandler()
         {
             Destructibles = new HashSet<IDestructible>();
-            DestructiblesToAdd = new HashSet<IDestructible>();
-            DestructiblesToDelete = new HashSet<IDestructible>();
             
             Projectiles = new HashSet<Projectile>();
-            ProjectilesToAdd = new HashSet<Projectile>();
-            ProjectilesToDelete = new HashSet<Projectile>();
 
             MessageBus messageBus = MessageBus.Instance;
 
@@ -45,38 +33,38 @@ namespace TankGame.Src.Data
 
         public void Tick()
         {
-            Projectiles.AddDeleteRange(ProjectilesToAdd, ProjectilesToDelete);
-            Destructibles.AddDeleteRange(DestructiblesToAdd, DestructiblesToDelete);
-
-            foreach (Projectile projectile in Projectiles)
+            foreach (Projectile projectile in Projectiles.ToList())
             {
-                foreach (IDestructible destructible in Destructibles)
+                foreach (IDestructible destructible in Destructibles.ToList())
                 {
-                    if (destructible.IsDestructible && destructible.IsAlive && CheckCollision(projectile, destructible.Actor))
+                    if (CheckCollision(projectile, destructible.Actor))
                     {
-                        switch (destructible.Actor)
+                        if (destructible.IsDestructible && destructible.IsAlive)
                         {
-                            case Enemy _:
-                                if (projectile.Owner is Player)
-                                {
+                            switch (destructible.Actor)
+                            {
+                                case Enemy _:
+                                    if (projectile.Owner is Player)
+                                    {
+                                        destructible.OnHit();
+                                        projectile.Dispose();
+                                    }
+                                    break;
+                                case Player _:
+                                    if (projectile.Owner is Enemy)
+                                    {
+                                        destructible.OnHit();
+                                        projectile.Dispose();
+                                    }
+                                    break;
+                                case GameObject _:
                                     destructible.OnHit();
                                     projectile.Dispose();
-                                }
-                                break;
-                            case Player _:
-                                if (projectile.Owner is Enemy)
-                                {
-                                    destructible.OnHit();
-                                    projectile.Dispose();
-                                }
-                                break;
-                            case GameObject _:
-                                destructible.OnHit();
-                                projectile.Dispose();
-                                break;
+                                    break;
+                            }
                         }
-
-                    } 
+                        else if (destructible.StopsProjectile) projectile.Dispose();
+                    }
                 }
             }
         }
@@ -93,35 +81,37 @@ namespace TankGame.Src.Data
 
         private void OnRegisterDestructible(object sender, EventArgs eventArgs)
         {
-            if (sender is IDestructible destructible) DestructiblesToAdd.Add(destructible);
+            if (sender is IDestructible destructible) Destructibles.Add(destructible);
         }
 
         private void OnUnregisterDestructible(object sender, EventArgs eventArgs)
         {
-            if (sender is IDestructible destructible && Destructibles.Contains(destructible)) DestructiblesToDelete.Add(destructible);
+            if (sender is IDestructible destructible) Destructibles.Remove(destructible);
         }
 
         private void OnRegisterProjectile(object sender, EventArgs eventArgs)
         {
-            if (sender is Projectile projectile) ProjectilesToAdd.Add(projectile);
+            if (sender is Projectile projectile) Projectiles.Add(projectile);
         }
 
         private void OnUnregisterProjectile(object sender, EventArgs eventArgs)
         {
-            if (sender is Projectile projectile && Projectiles.Contains(projectile)) ProjectilesToDelete.Add(projectile);
+            if (sender is Projectile projectile) Projectiles.Remove(projectile);
+        }
+
+        public void Clear()
+        {
+            Projectiles.ToList().ForEach(projectile => projectile?.Dispose());
+
+            Destructibles.Clear();
+            Projectiles.Clear();
         }
 
         public void Dispose()
         {
             MessageBus messageBus = MessageBus.Instance;
 
-            Destructibles.Clear();
-            DestructiblesToAdd.Clear();
-            DestructiblesToDelete.Clear();
-
-            Projectiles.Clear();
-            ProjectilesToAdd.Clear();
-            ProjectilesToDelete.Clear();
+            Clear();
 
             messageBus.Unregister(MessageType.RegisterDestructible, OnRegisterDestructible);
             messageBus.Unregister(MessageType.UnregisterDestructible, OnUnregisterDestructible);

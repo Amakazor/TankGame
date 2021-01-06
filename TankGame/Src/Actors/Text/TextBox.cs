@@ -11,14 +11,16 @@ namespace TankGame.Src.Actors.Text
     {
         protected AlignedTextComponent Text;
 
-        public TextBox(Vector2f position, Vector2f size, string text, uint fontSize, Color? textColor = null) : base(position, size)
+        public TextBox(Vector2f position, Vector2f size, string text, uint fontSize, Color? textColor = null, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(position, size)
         {
-            Text = new AlignedTextComponent(Position, Size, new Vector2f(0, 0), fontSize, TextPosition.Middle, TextPosition.Middle, this, text, textColor ?? Color.White);
+            Text = new AlignedTextComponent(Position, Size, new Vector2f(0, 0), fontSize, horizontalPosition, verticalPosition, this, text, textColor ?? Color.White);
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
         {
             return new HashSet<IRenderComponent> { Text };
         }
+
+        public void SetText(string newText) => Text.SetText(newText);
     }
 }

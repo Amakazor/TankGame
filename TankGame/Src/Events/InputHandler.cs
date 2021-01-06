@@ -3,6 +3,7 @@ using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TankGame.Src.Actors;
 using TankGame.Src.Data;
 using TankGame.Src.Gui.RenderComponents;
@@ -28,25 +29,22 @@ namespace TankGame.Src.Events
             if (keyActionType != null) MessageBus.Instance.PostEvent(MessageType.KeyAction, sender, new KeyActionEventArgs(keyActionType));
             MessageBus.Instance.PostEvent(MessageType.KeyPressed, sender, eventArgs);
         }
-
-        public void OnClick(object sender, MouseButtonEventArgs eventArgs)
+        public void OnTextInput(object sender, TextEventArgs textEventArgs)
         {
-            Vector2f point = Window.MapPixelToCoords(new Vector2i(eventArgs.X, eventArgs.Y));
+            MessageBus.Instance.PostEvent(MessageType.TextInput, sender, textEventArgs);
+        }
 
-            Console.WriteLine("Mouse clicked at:");
-            Console.WriteLine("\tScreen coordinates: " + eventArgs.X + " " + eventArgs.Y);
-            Console.WriteLine("\tGlobal coordinates: " + point.X + " " + point.Y);
+        public void OnClick(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            Vector2f point = Window.MapPixelToCoords(new Vector2i(mouseButtonEventArgs.X, mouseButtonEventArgs.Y));
 
-            foreach (IClickable clickable in Clickables)
-            {
-                foreach (IRenderComponent component in clickable.GetRenderComponents())
-                {
-                    if (component.IsPointInside(point))
-                    {
-                        clickable.OnClick(eventArgs);
-                    }
-                }
-            }
+            Clickables.ToList()
+                .FindAll(clickable => clickable.Visible)
+                .ForEach(clickable 
+                    => clickable.GetRenderComponents()
+                        .ToList()
+                        .FindAll(component => component != null && component.IsPointInside(point))
+                        .ForEach(_ => clickable.OnClick(mouseButtonEventArgs)));
         }
 
         private void RegisterEvents()

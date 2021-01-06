@@ -12,6 +12,10 @@ namespace TankGame.Src.Actors.Text
         {
             TimeToLive = 2;
             RegisterTickable();
+
+            RenderLayer = RenderLayer.TextBox;
+            RenderView = RenderView.Game;
+
         }
 
         public void Tick(float deltaTime)
