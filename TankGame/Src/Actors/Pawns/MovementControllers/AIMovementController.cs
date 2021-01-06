@@ -26,6 +26,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         public AIMovementController(double delay, Pawn owner, string aimcType) : base(delay, owner)
         {
             AimcType = aimcType;
+            SetCooldown(0.5);
         }
 
         public XmlNode SerializeAIMovementControllerType(XmlDocument xmlDocument)
