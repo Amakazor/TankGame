@@ -1489,13 +1489,13 @@
     </field>
     <field>
       <!--13x2-->
-      <type>sand</type>
-      <texture>sand</texture>
+      <type>water</type>
+      <texture>water</texture>
     </field>
     <field>
       <!--13x3-->
-      <type>grass</type>
-      <texture>grass</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--13x4-->
@@ -1504,13 +1504,13 @@
     </field>
     <field>
       <!--13x5-->
-      <type>road</type>
-      <texture>road</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x6-->
-      <type>grass</type>
-      <texture>grass</texture>
+      <type>road</type>
+      <texture>road</texture>
     </field>
     <field>
       <!--13x7-->
@@ -1529,8 +1529,8 @@
     </field>
     <field>
       <!--13x10-->
-      <type>grass</type>
-      <texture>grass</texture>
+      <type>road</type>
+      <texture>road</texture>
     </field>
     <field>
       <!--13x11-->
@@ -1640,8 +1640,8 @@
     </field>
     <field>
       <!--14x11-->
-      <type>road</type>
-      <texture>road</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x12-->
@@ -1810,13 +1810,13 @@
     </field>
     <field>
       <!--16x2-->
-      <type>sand</type>
-      <texture>sand</texture>
+      <type>water</type>
+      <texture>water</texture>
     </field>
     <field>
       <!--16x3-->
-      <type>grass</type>
-      <texture>grass</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--16x4-->
@@ -2036,8 +2036,8 @@
     </field>
     <field>
       <!--18x3-->
-      <type>grass</type>
-      <texture>grass</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--18x4-->
