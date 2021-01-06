@@ -14,6 +14,7 @@ namespace TankGame.Src.Data
         public static float WeatherMaximalIntensity = 3F;
         private Weather Weather { get; set; }
         public float CurrentWeatherTime { get; private set; }
+        public string WeatherType => Weather is null ? "clear" : Weather.Type;
         public AnimationType AnimationType;
 
         public WeatherController()
@@ -26,6 +27,22 @@ namespace TankGame.Src.Data
             GetNewWeather();
         }
 
+        public void SetWeather(string type, float weatherTime)
+        {
+            if (Weather != null) Weather.Dispose();
+            Weather = null; 
+            MusicManager.Instance.StopMusic();
+
+            CurrentWeatherTime = weatherTime;
+            float intensity = (float)((GamestateManager.Instance.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity)) + WeatherMinimalIntensity);
+            Weather = type switch
+            {
+                "clear" => null,
+                "rain"  => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, "rain"),
+                "snow"  => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, "snow"),
+                _ => null,
+            };
+        }
 
         public float GetSpeedModifier()
         {
@@ -47,8 +64,8 @@ namespace TankGame.Src.Data
             Weather = GamestateManager.Instance.Random.Next(1, 4) switch
             {
                 1 => null,
-                2 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType),
-                3 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType),
+                2 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, "rain"),
+                3 => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, "snow"),
                 _ => null,
             };
 
@@ -67,6 +84,7 @@ namespace TankGame.Src.Data
 
         public void Dispose()
         {
+            if (Weather != null) Weather.Dispose();
             UnregisterTickable();
         }
     }

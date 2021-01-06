@@ -8,7 +8,9 @@ using TankGame.Src.Actors;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Data;
 using TankGame.Src.Data.Map;
+using TankGame.Src.Data.Statistics;
 using TankGame.Src.Events;
+using TankGame.Src.Extensions;
 using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src
@@ -35,14 +37,13 @@ namespace TankGame.Src
         private View MenuView { get; set; }
 
         private InputHandler InputHandler { get; }
-        private CollisionManager CollisionManager { get; set; }
+        private CollisionHandler CollisionHandler { get; set; }
+
         private HUD HUD { get; set; }
         private Menu Menu { get; set; }
 
         private HashSet<ITickable> Tickables { get; }
         private HashSet<IRenderable> Renderables { get; }
-
-        private GameMap Map { get; set; }
 
         public Engine()
         {
@@ -62,8 +63,6 @@ namespace TankGame.Src
             RegisterEvents();
 
             Menu = new Menu();
-
-            //StartGame(false);
         }
 
         public void Loop()
@@ -77,24 +76,41 @@ namespace TankGame.Src
                 float deltaTime = (time2.Ticks - time1.Ticks) / 10000000f;
 
                 Tick(deltaTime);
-                Render(deltaTime);
+                Render();
 
                 time1 = time2;
+            }
+
+            if (!Window.IsOpen && GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
+            {
+                GamestateManager.Instance.Save();
+
+                HUD.Dispose();
+                HUD = null;
+
+                GamestateManager.Instance.Clear();
+
+                CollisionHandler.Clear();
+
+                MusicManager.Instance.StopMusic();
             }
         }
 
         private void Tick(float deltaTime)
         {
-            foreach (ITickable tickable in Tickables.ToList())
+            if (GamestateManager.Instance.GamePhase == GamePhase.Playing)
             {
-                tickable.Tick(deltaTime);
-            }
+                foreach (ITickable tickable in Tickables.ToList())
+                {
+                    tickable.Tick(deltaTime);
+                }
 
-            CollisionManager.Tick();
-            GamestateManager.Instance.Tick(deltaTime);
+                CollisionHandler.Tick();
+                GamestateManager.Instance.Tick(deltaTime);
+            }
         }
 
-        private void Render(float deltaTime)
+        private void Render()
         {
             Window.DispatchEvents();
             Window.SetView(GameView);
@@ -104,49 +120,69 @@ namespace TankGame.Src
 
             Renderables.ToList()
                 .FindAll(renderable => renderable.RenderableRenderView == RenderView.Game && renderable.Visible)
-                .OrderBy(renderable => (int)renderable.RenderableRenderLayer)
-                .ToList()
-                .ForEach((IRenderable renderable)
-                    => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
-                        => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null)))));
+                .Draw(Window);
 
             Window.SetView(HUDView);
 
             Renderables.ToList()
                .FindAll(renderable => renderable.RenderableRenderView == RenderView.HUD && renderable.Visible)
-               .OrderBy(renderable => (int)renderable.RenderableRenderLayer)
-               .ToList()
-               .ForEach((IRenderable renderable)
-                   => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
-                       => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null)))));
-            
+               .Draw(Window);
+
             Window.SetView(MenuView);
 
             Renderables.ToList()
                .FindAll(renderable => renderable.RenderableRenderView == RenderView.Menu && renderable.Visible)
-               .OrderBy(renderable => (int)renderable.RenderableRenderLayer)
-               .ToList()
-               .ForEach((IRenderable renderable)
-                   => renderable.GetRenderComponents().ToList().ForEach((IRenderComponent renderComponent)
-                       => Window.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null)))));
+               .Draw(Window);
+               
 
             Window.Display();
         }
 
         private void StartGame(bool isNewGame)
         {
+            if (GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
+            {
+                if (isNewGame) StopGame();
+                else if (GamestateManager.Instance.GamePhase == GamePhase.Paused)
+                {
+                    Menu.Hide();
+                    GamestateManager.Instance.GamePhase = GamePhase.Playing;
+                    return;
+                }
+            }
+
             Menu.Hide();
 
             HUD = new HUD();
 
-            GamestateManager.Instance.Start();
-            GamestateManager.Instance.Map = new GameMap(isNewGame);
-            Map = GamestateManager.Instance.Map;
+            GamestateManager.Instance.Start(isNewGame);
+        }
+
+        private void StopGame()
+        {
+            if (GamestateManager.Instance.GamePhase == GamePhase.Ending)
+            {
+                ScoreManager.AddScore(Menu.PlayerName, GamestateManager.Instance.Points);
+                GamestateManager.Instance.DeleteSave();
+            }
+            else
+            {
+                GamestateManager.Instance.Save();
+            }
+
+            HUD.Dispose();
+            HUD = null;
+            GamestateManager.Instance.Clear();
+            CollisionHandler.Clear();
+
+            MusicManager.Instance.StopMusic();
+
+            Menu.ShowMenu();
         }
 
         private void InitializeManagers()
         {
-            CollisionManager = new CollisionManager();
+            CollisionHandler = new CollisionHandler();
             TextureManager.Initialize();
             SoundManager.Initialize();
             KeyManager.Initialize();
@@ -185,9 +221,11 @@ namespace TankGame.Src
         {
             if (Window != null && InputHandler != null)
             {
+                Window.Resized += OnResize;
+
                 Window.KeyPressed += InputHandler.OnKeyPress;
                 Window.MouseButtonPressed += InputHandler.OnClick;
-                Window.Resized += OnResize;
+                Window.TextEntered += InputHandler.OnTextInput;
             }
         }
 
@@ -195,6 +233,7 @@ namespace TankGame.Src
         {
             WindowWidth = newSize.Height;
             WindowHeight = newSize.Width;
+
             RecalculateViewport(newSize.Height, newSize.Width);
         }
 
@@ -202,7 +241,9 @@ namespace TankGame.Src
         {
             float uiWidth = 1F;
             float uiHeight = 0.2F;
+
             float gameSize = 0.8F;
+
             float aspectRatio = (float)height / width;
             
             if (GameView != null)
@@ -236,19 +277,33 @@ namespace TankGame.Src
         {            
             MessageBus messageBus = MessageBus.Instance;
 
-            messageBus.Register(MessageType.StartGame, OnStartGame);
-            messageBus.Register(MessageType.Quit, OnQuit);
-
             messageBus.Register(MessageType.RegisterTickable, OnRegisterTickable);
             messageBus.Register(MessageType.UnregisterTickable, OnUnregisterTickable);
 
             messageBus.Register(MessageType.RegisterRenderable, OnRegisterRenderable);
             messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
 
+            messageBus.Register(MessageType.StartGame, OnStartGame);
+            messageBus.Register(MessageType.StopGame, OnStopGame);
+            messageBus.Register(MessageType.Quit, OnQuit);
+
+            messageBus.Register(MessageType.KeyAction, OnKeyAction);
+
             messageBus.Register(MessageType.PlayerMoved, OnPlayerMoved);
+            messageBus.Register(MessageType.PlayerDeath, OnPlayerDeath);
         }
 
-        private void OnQuit(object sender, EventArgs eventArgs) => ShouldQuit = true;
+        private void OnQuit(object sender, EventArgs eventArgs)
+        {
+            if (GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
+            {
+                StopGame();
+            }
+            else
+            {
+                ShouldQuit = true;
+            }
+        }
 
         private void OnRegisterTickable(object sender, EventArgs eventArgs)
         {
@@ -277,10 +332,38 @@ namespace TankGame.Src
                 RecenterView(senderPlayer.RealPosition);
             }
         }
+        
+        private void OnPlayerDeath(object sender, EventArgs eventArgs)
+        {
+            GamestateManager.Instance.GamePhase = GamePhase.Ending;
+            Menu.ShowEndScreen();
+        }
+
+        private void OnStopGame(object arg1, EventArgs arg2)
+        {
+            StopGame();
+        }
 
         private void OnStartGame(object sender, EventArgs eventArgs)
         {
             if (eventArgs is StartGameEventArgs startGameEventArgs) StartGame(startGameEventArgs.NewGame);
+        }
+
+        private void OnKeyAction(object sender, EventArgs eventArgs)
+        {
+            if (eventArgs is KeyActionEventArgs keyActionEventArgs && keyActionEventArgs.KeyActionType != null && keyActionEventArgs.KeyActionType.Equals(KeyActionType.Pause))
+            {
+                if (GamestateManager.Instance.GamePhase == GamePhase.Playing)
+                {
+                    GamestateManager.Instance.GamePhase = GamePhase.Paused;
+                    Menu.ShowMenu();
+                }
+                else if (GamestateManager.Instance.GamePhase == GamePhase.Paused)
+                {
+                    GamestateManager.Instance.GamePhase = GamePhase.Playing;
+                    Menu.Hide();
+                }
+            }
         }
     }
 }

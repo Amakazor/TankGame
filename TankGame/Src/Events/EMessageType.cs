@@ -20,7 +20,10 @@
         PlayerHealthChanged,
         UpdateActivityDisplay,
         StartGame,
-        CancelKeyChanges,
-        MenuRefreshKeys
+        CancelInputs,
+        MenuRefreshKeys,
+        TextInput,
+        PlayerDeath,
+        StopGame
     }
 }

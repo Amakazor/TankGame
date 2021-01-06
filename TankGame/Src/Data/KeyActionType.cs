@@ -9,5 +9,6 @@ namespace TankGame.Src.Data
         public static Tuple<string, string> MoveLeft => new Tuple<string, string>("keymoveleft", "Move left");
         public static Tuple<string, string> MoveRight => new Tuple<string, string>("keymoveright", "Move right");
         public static Tuple<string, string> Shoot => new Tuple<string, string>("keyshoot", "Fire");
+        public static Tuple<string, string> Pause => new Tuple<string, string>("keypause", "Pause");
     }
 }

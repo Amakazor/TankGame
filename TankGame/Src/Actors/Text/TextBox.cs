@@ -20,5 +20,7 @@ namespace TankGame.Src.Actors.Text
         {
             return new HashSet<IRenderComponent> { Text };
         }
+
+        public void SetText(string newText) => Text.SetText(newText);
     }
 }

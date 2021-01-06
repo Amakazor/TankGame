@@ -13,18 +13,19 @@ namespace TankGame.Src.Actors.Weathers
     {
         public override Shader CurrentShader => ComplexShader?.Shader;
         private ComplexShader ComplexShader { get; }
-        protected SpriteComponent WeatherComponent { get; }
+        protected SpriteComponent WeatherComponent { get; set; }
         public float SpeedModifier { get; protected set; }
         public float Intensity { get; }
         public AnimationType AnimationType { get; }
+        public string Type { get; }
         public Vector2f PositionOffset { get; set; }
 
-        public Weather(Texture weatherTexture, float speedModifier, string musicType, float intensity, AnimationType animationType) : base(animationType == AnimationType.Shaded ? new Vector2f(0, 0) : new Vector2f(-128, -128), new Vector2f(64, 64))
+        public Weather(Texture weatherTexture, float speedModifier, string musicType, float intensity, AnimationType animationType, string type) : base(animationType == AnimationType.Shaded ? new Vector2f(0, 0) : new Vector2f(-128, -128), new Vector2f(64, 64))
         {
             SpeedModifier = speedModifier;
             Intensity = intensity;
             AnimationType = animationType;
-
+            Type = type;
             ComplexShader = AnimationType == AnimationType.Shaded ? new WeatherShader(Intensity) : null;
 
             weatherTexture.Repeated = true;
@@ -70,6 +71,8 @@ namespace TankGame.Src.Actors.Weathers
         public override void Dispose()
         {
             UnregisterTickable();
+            WeatherComponent = null;
+            if (ComplexShader != null) ComplexShader.Dispose();
             base.Dispose();
         }
     }

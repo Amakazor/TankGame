@@ -5,6 +5,6 @@
         Main,
         Keys,
         Scores,
-        SaveScore
+        EndScreen
     }
 }

@@ -38,7 +38,7 @@ namespace TankGame.Src.Actors.GameObjects
             TraversibilityData = gameObjectType.Item1;
             DestructabilityData = gameObjectType.Item2;
 
-            DestructabilityDataAfterDestruction = new DestructabilityData(1, false, false, false);
+            DestructabilityDataAfterDestruction = new DestructabilityData(0, false, false, false);
             TraversibilityDataAfterDestruction = new TraversibilityData(1.25F, true);
 
             Type = type;
@@ -49,6 +49,12 @@ namespace TankGame.Src.Actors.GameObjects
             ObjectSprite = Health == 0
                 ? new SpriteComponent(Position, Size, this, AfterDestructionTexture, new Color(255, 255, 255, 255))
                 : new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
+
+            if (Health == 0)
+            {
+                TraversibilityData = TraversibilityDataAfterDestruction;
+                DestructabilityData = DestructabilityDataAfterDestruction;
+            }
 
             RegisterDestructible();
 
@@ -64,6 +70,7 @@ namespace TankGame.Src.Actors.GameObjects
 
         public virtual void OnDestroy()
         {
+            Health = 0;
             if (AfterDestructionTexture == null)
             {
                 Field.OnGameObjectDestruction();
@@ -84,14 +91,14 @@ namespace TankGame.Src.Actors.GameObjects
             if (Health <= 0) OnDestroy();
         }
 
-        internal XmlElement SerializeToXML(XmlDocument xmlDocument)
+        internal virtual XmlElement SerializeToXML(XmlDocument xmlDocument)
         {
             XmlElement objectElement = xmlDocument.CreateElement("object");
             XmlElement typeElement = xmlDocument.CreateElement("type");
             XmlElement hpElement = xmlDocument.CreateElement("hp");
 
-            typeElement.InnerText = Type;
-            hpElement.InnerText = DestructabilityData.Health.ToString();
+               typeElement.InnerText = Type;
+            hpElement.InnerText = Health.ToString();
 
             objectElement.AppendChild(typeElement);
             objectElement.AppendChild(hpElement);

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using TankGame.Src.Actors.GameObjects;
+using TankGame.Src.Actors.GameObjects.Activities;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Data;
@@ -68,7 +69,7 @@ namespace TankGame.Src.Actors.Fields
             fieldElement.AppendChild(typeElement);
             fieldElement.AppendChild(textureElement);
 
-            if (GameObject != null) fieldElement.AppendChild(GameObject.SerializeToXML(xmlDocument));
+            if (GameObject != null && !(GameObject is Activity)) fieldElement.AppendChild(GameObject.SerializeToXML(xmlDocument));
 
             return fieldElement;
         }
@@ -82,6 +83,7 @@ namespace TankGame.Src.Actors.Fields
         {
             if (GameObject != null) GameObject.Dispose();
             GameObject = null;
+
             base.Dispose();
         }
     }

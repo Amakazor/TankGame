@@ -19,7 +19,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         private void SetNextAction(object sender, EventArgs eventArgs)
         {
-            if (eventArgs is KeyActionEventArgs keyActionEventArgs && keyActionEventArgs.KeyActionType != null) NextAction = keyActionEventArgs.KeyActionType;
+            if (eventArgs is KeyActionEventArgs keyActionEventArgs && keyActionEventArgs.KeyActionType != null && !keyActionEventArgs.KeyActionType.Equals(KeyActionType.Pause)) NextAction = keyActionEventArgs.KeyActionType;
         }
     }
 }

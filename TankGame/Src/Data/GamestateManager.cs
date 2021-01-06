@@ -1,7 +1,10 @@
 ﻿using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Text;
 using TankGame.Src.Data.Map;
@@ -12,8 +15,11 @@ namespace TankGame.Src.Data
     {
         private const double ComboTime = 7.5;
         private const uint MaxCombo = 10;
+        private const string Savefile = "Resources/Save/currentsave.xml";
 
         private static GamestateManager instance;
+
+        public GamePhase GamePhase;
 
         public long Points { get; private set; }
         private long PointsBeforeSubstraction { get; set; }
@@ -31,16 +37,116 @@ namespace TankGame.Src.Data
 
         private GamestateManager()
         {
+            GamePhase = GamePhase.NotStarted;
+
             Points = 0;
             Combo = 1;
+            CompletedActivities = 0;
+
             Random = new Random();
+
             PointsTextBoxes = new HashSet<PointsAddedTextBox>();
+
             WeatherController = null;
         }
 
-        public void Start()
+        public void Start(bool isNewGame)
         {
+            GamePhase = GamePhase.Playing;
             WeatherController = new WeatherController();
+
+            if (!File.Exists(Savefile) || isNewGame) DeleteSave();
+            else Load();
+            
+            Map = new GameMap();
+
+            Save();
+        }
+
+        public void Save()
+        {
+            if (!Directory.Exists("Resources/Save")) Directory.CreateDirectory("Resources/Save");
+            if (!Directory.Exists("Resources/Save/Region")) Directory.CreateDirectory("Resources/Save/Region");
+
+            XmlDocument savefile = new XmlDocument();
+
+            XmlElement gamestateElement = savefile.CreateElement("gamestate");
+
+            XmlElement pointsElement = savefile.CreateElement("points");
+            XmlElement pointsBeforeSubstractionElement = savefile.CreateElement("pointsbs");
+            XmlElement comboElement = savefile.CreateElement("combo");
+            XmlElement completedActivitiesElement = savefile.CreateElement("activities");
+            XmlElement comboDeltaTimeElement = savefile.CreateElement("combotime");
+            XmlElement weatherElement = savefile.CreateElement("weathertype");
+            XmlElement weatherTimeElement = savefile.CreateElement("weathertime");
+
+            pointsElement.InnerText = Points.ToString();
+            pointsBeforeSubstractionElement.InnerText = PointsBeforeSubstraction.ToString();
+            comboElement.InnerText = Combo.ToString();
+            completedActivitiesElement.InnerText = CompletedActivities.ToString();
+            comboDeltaTimeElement.InnerText = ComboDeltaTimeCummulated.ToString();
+            weatherElement.InnerText = WeatherController.WeatherType;
+            weatherTimeElement.InnerText = WeatherController.CurrentWeatherTime.ToString();
+
+            gamestateElement.AppendChild(pointsElement);
+            gamestateElement.AppendChild(pointsBeforeSubstractionElement);
+            gamestateElement.AppendChild(comboElement);
+            gamestateElement.AppendChild(completedActivitiesElement);
+            gamestateElement.AppendChild(comboDeltaTimeElement);
+            gamestateElement.AppendChild(weatherElement);
+            gamestateElement.AppendChild(weatherTimeElement);
+
+            savefile.AppendChild(savefile.CreateXmlDeclaration("1.0", "utf-8", null));
+            savefile.AppendChild(gamestateElement);
+            savefile.Save(Savefile);
+
+            Map.Save();
+        }
+
+        public void Load()
+        {
+            try
+            {
+                XDocument saveFile = XDocument.Load(Savefile);
+                Points = int.Parse(saveFile.Root.Element("points").Value);
+                PointsBeforeSubstraction = int.Parse(saveFile.Root.Element("pointsbs").Value);
+                Combo = uint.Parse(saveFile.Root.Element("combo").Value);
+                CompletedActivities = int.Parse(saveFile.Root.Element("activities").Value);
+                ComboDeltaTimeCummulated = float.Parse(saveFile.Root.Element("combotime").Value);
+                WeatherController.SetWeather(saveFile.Root.Element("weathertype").Value, float.Parse(saveFile.Root.Element("weathertime").Value));
+            }
+            catch (Exception)
+            {
+                DeleteSave();
+            }
+        }
+
+        public void Clear()
+        {
+            Map.Dispose();
+            PointsTextBoxes.ToList().ForEach(pointsTextBox => pointsTextBox.Dispose());
+            WeatherController.Dispose();
+
+            Map = null;
+            Player = null;
+            WeatherController = null;
+            PointsTextBoxes = new HashSet<PointsAddedTextBox>();
+
+            GamePhase = GamePhase.NotStarted;
+            Points = 0;
+            Combo = 1;
+            CompletedActivities = 0;
+            ComboDeltaTimeCummulated = 0;
+        }
+
+        public void DeleteSave()
+        {
+            DirectoryInfo directory = Directory.GetParent(RegionPathGenerator.SavedRegionDirectory);
+            if (directory.Exists)
+            {
+                directory.GetFiles().ToList().ForEach(fileInfo => fileInfo.Delete());
+                Directory.GetParent(directory.ToString()).GetFiles().ToList().ForEach(fileInfo => fileInfo.Delete());
+            }
         }
 
         public void AddPoints(long points, Vector2f? position = null, bool useCombo = true)

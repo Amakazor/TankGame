@@ -13,7 +13,7 @@ namespace TankGame.Src.Actors.Background
 
         public MenuBackground() : base(new Vector2f(0, 0), new Vector2f(1000, 1000))
         {
-            BackgroundRectangle = new RectangleComponent(Position, Size, this, new Color(64, 64, 64, 255));
+            BackgroundRectangle = new RectangleComponent(Position, Size, this, new Color(128, 128, 128, 170));
 
             RenderLayer = RenderLayer.MenuBack;
             RenderView = RenderView.Menu;

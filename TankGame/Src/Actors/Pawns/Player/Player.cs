@@ -1,5 +1,6 @@
 ﻿using SFML.System;
 using System;
+using System.Xml;
 using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
@@ -31,6 +32,30 @@ namespace TankGame.Src.Actors.Pawns.Player
         {
             base.OnHit();
             MessageBus.Instance.PostEvent(MessageType.PlayerHealthChanged, this, new PlayerHealthChangeEventArgs(Health));
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            MessageBus.Instance.PostEvent(MessageType.PlayerDeath, this, new EventArgs());
+        }
+
+        internal XmlNode SerializeToXML(XmlDocument xmlDocument)
+        {
+            XmlElement playerElement = xmlDocument.CreateElement("player");
+            XmlElement xElement = xmlDocument.CreateElement("x");
+            XmlElement yElement = xmlDocument.CreateElement("y");
+            XmlElement healthElement = xmlDocument.CreateElement("health");
+
+            xElement.InnerText = (Coords.X % 20).ToString();
+            yElement.InnerText = (Coords.Y % 20).ToString();
+            healthElement.InnerText = Health.ToString();
+
+            playerElement.AppendChild(xElement);
+            playerElement.AppendChild(yElement);
+            playerElement.AppendChild(healthElement);
+
+            return playerElement;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Actors.GameObjects.Activities;
 using TankGame.Src.Data;
@@ -13,6 +14,8 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     internal abstract class AIMovementController : MovementController
     {
+        public string AimcType { get; }
+
         protected const int BaseSightDistance = 6;
         protected const int BasePlayerShootinhDistance = 5;
         protected const int BaseActivitityShootingDistance = 3;
@@ -20,8 +23,16 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         protected int PlayerShootingDistance => (int)Math.Floor(BasePlayerShootinhDistance * (1 / GamestateManager.Instance.WeatherModifier));
         protected int ActivityShootingDistance => (int)Math.Floor(BaseActivitityShootingDistance * (1 / GamestateManager.Instance.WeatherModifier));
 
-        public AIMovementController(double delay, Pawn owner) : base(delay, owner)
+        public AIMovementController(double delay, Pawn owner, string aimcType) : base(delay, owner)
         {
+            AimcType = aimcType;
+        }
+
+        public XmlNode SerializeAIMovementControllerType(XmlDocument xmlDocument)
+        {
+            XmlElement typeElement = xmlDocument.CreateElement("aimc");
+            typeElement.InnerText = AimcType;
+            return typeElement;
         }
 
         public override Direction DoAction(Direction currentDirection)

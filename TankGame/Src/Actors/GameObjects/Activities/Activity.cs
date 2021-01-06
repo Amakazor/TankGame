@@ -2,6 +2,7 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
@@ -13,6 +14,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
     {
         protected uint AllEnemiesCount;
         private string name;
+        protected string Type;
         public string Name
         {
             get
@@ -33,12 +35,14 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         protected Texture AfterCompletionTexture { get; }
         protected DestructabilityData AfterCompletionDestructabilityData { get; }
 
-        public Activity(Vector2i coords, HashSet<Enemy> enemies, int hp, string name, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType, int pointsAdded) : base(coords, gameObjectType, TextureManager.Instance.GetTexture(TextureType.GameObject, "tower"), "", hp)
+        public Activity(Vector2i coords, HashSet<Enemy> enemies, int hp, string name, string type, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType, int pointsAdded) : base(coords, gameObjectType, TextureManager.Instance.GetTexture(TextureType.GameObject, "tower"), "", hp)
         {
             Name = name;
+            Type = type;
             PointsAdded = pointsAdded;
             Enemies = enemies;
-            ActivityStatus = ActivityStatus.Stopped;
+            
+            ActivityStatus = Health == 0 ? ActivityStatus.Failed : ActivityStatus.Stopped;
 
             AfterCompletionTexture = TextureManager.Instance.GetTexture("gameobject", "towercompleted");
             AfterCompletionDestructabilityData = new DestructabilityData(1, false, false);
@@ -52,11 +56,18 @@ namespace TankGame.Src.Actors.GameObjects.Activities
             if (activityStatus == ActivityStatus.Completed)
             {
                 GamestateManager.Instance.CompleteActivity(PointsAdded, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
-                ObjectSprite = new SpriteComponent(Position, Size, this, AfterCompletionTexture, new Color(255, 255, 255, 255));
-                DestructabilityData = AfterCompletionDestructabilityData;
+                ChangeToCompleted();
             }
 
             if (activityStatus == ActivityStatus.Failed) GamestateManager.Instance.FailActivity(PointsAdded / 4, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
+
+            if (GamestateManager.Instance.Map != null) GamestateManager.Instance.Save();
+        }
+
+        public void ChangeToCompleted()
+        {
+            ObjectSprite = new SpriteComponent(Position, Size, this, AfterCompletionTexture, new Color(255, 255, 255, 255));
+            DestructabilityData = AfterCompletionDestructabilityData;
         }
 
         public void Tick(float deltaTime)
@@ -97,5 +108,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
             GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords).Activity = null;
             base.OnDestroy();
         }
+
+        internal abstract override XmlElement SerializeToXML(XmlDocument xmlDocument);
     }
 }

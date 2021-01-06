@@ -18,33 +18,29 @@ namespace TankGame.Src.Data.Map
         private const int MapSize = 5;
         private const int FieldsInLine = 20;
 
-        private HashSet<Region> Regions { get; }
+        private HashSet<Region> Regions { get; set; }
 
-        public GameMap(bool newGame)
+        public GameMap()
         {
-            if (newGame)
-            {
-                DeleteSavedRegions();
-            }
-
             Regions = new HashSet<Region>();
-
-            Console.WriteLine("Searching players region...");
 
             Vector2i playersRegionCoords = SearchForPlayerRegion();
 
             if (playersRegionCoords.IsValid())
             {
-                Console.WriteLine("Players region found");
-                LoadNineRegions(playersRegionCoords);
+                LoadNineRegions(playersRegionCoords, false);
             }
             else
             {
-                Console.WriteLine("Players region not founds");
-                throw new Exception();
+                throw new Exception("No players region");
             }
 
             MessageBus.Instance.Register(MessageType.PawnMoved, OnPawnMoved);
+        }
+
+        public void Save()
+        {
+            Regions.ToList().ForEach(region => region.Save());
         }
 
         public Region GetRegionFromFieldCoords(Vector2i fieldCoords)
@@ -90,7 +86,7 @@ namespace TankGame.Src.Data.Map
             return field is null ? false : field.IsTraversible(excludePlayer, orObjectDestructible);
         }
 
-        private void LoadNineRegions(Vector2i coords)
+        private void LoadNineRegions(Vector2i coords, bool save = true)
         {
             Console.WriteLine(coords.X.ToString());
             Console.WriteLine(coords.Y.ToString());
@@ -101,6 +97,7 @@ namespace TankGame.Src.Data.Map
                 {
                     if (region.Coords.X > coords.X + 1 || region.Coords.X < coords.X - 1 || region.Coords.Y > coords.Y + 1 || region.Coords.Y < coords.Y - 1)
                     {
+                        region.Save();
                         region.Dispose();
                         Regions.Remove(region);
                     }
@@ -119,6 +116,8 @@ namespace TankGame.Src.Data.Map
                     }
                 }
             }
+
+           if (save) GamestateManager.Instance.Save();
         }
 
         private Vector2i SearchForPlayerRegion()
@@ -137,13 +136,6 @@ namespace TankGame.Src.Data.Map
             }
 
             return new Vector2i(-1, -1);
-        }
-
-        private void DeleteSavedRegions()
-        {
-            var directory = Directory.GetParent(RegionPathGenerator.SavedRegionDirectory);
-
-            //directory.EnumerateFiles().ToList().ForEach(file => file.Delete());
         }
 
         public List<List<Node>> GetNodesInRadius(Vector2i center, int radius)
@@ -192,6 +184,8 @@ namespace TankGame.Src.Data.Map
         public void Dispose()
         {
             MessageBus.Instance.Unregister(MessageType.PawnMoved, OnPawnMoved);
+            Regions.ToList().ForEach(region => region.Dispose());
+            Regions = null;
         }
     }
 }

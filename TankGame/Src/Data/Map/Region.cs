@@ -13,6 +13,7 @@ using TankGame.Src.Actors.GameObjects;
 using SFML.Graphics;
 using TankGame.Src.Actors.GameObjects.Activities;
 using TankGame.Src.Pathfinding;
+using TankGame.Src.Events;
 
 namespace TankGame.Src.Data.Map
 {
@@ -92,6 +93,40 @@ namespace TankGame.Src.Data.Map
             }
         }
 
+        public void Save()
+        {
+            if (Loaded)
+            {
+                XmlDocument savefile = new XmlDocument();
+                XmlElement regionElement = savefile.CreateElement("region");
+
+                regionElement.AppendChild(SerializeFields(savefile));
+                regionElement.AppendChild(SerializeSpawns(savefile));
+                regionElement.AppendChild(SerializeActivity(savefile));
+
+                savefile.AppendChild(savefile.CreateXmlDeclaration("1.0", "utf-8", null));
+                savefile.AppendChild(regionElement);
+                savefile.Save(RegionPathGenerator.GetSavedRegionPath(Coords));
+            }
+        }
+
+        public void Dispose()
+        {
+            if (Loaded)
+            {
+                Fields.ForEach(field => field.Dispose());
+                Fields.Clear();
+
+                Enemies.ToList().ForEach(enemy => enemy.Dispose());
+                Enemies.Clear();
+
+                if (Player != null) Player.Dispose();
+
+                Player = null;
+                Activity = null;
+            }
+        }
+
         public bool ContainsPlayer()
         {
             XDocument regionFile = XDocument.Load(RegionPathGenerator.GetRegionPath(Coords));
@@ -145,9 +180,12 @@ namespace TankGame.Src.Data.Map
             XElement playerData = regionFile.Root.Element("spawns").Element("player");
 
             Player = new Player(new Vector2f(((Coords.X * FieldsInLine) + float.Parse(playerData.Element("x").Value)) * 64.0F, ((Coords.Y * FieldsInLine) + float.Parse(playerData.Element("y").Value)) * 64.0F), new Vector2f(64.0F, 64.0F));
-            Player.Health = (playerData.Element("hp") is null) ? Player.Health : int.Parse(playerData.Element("hp").Value);
+            Player.Health = (playerData.Element("health") is null) ? Player.Health : int.Parse(playerData.Element("health").Value);
 
             GamestateManager.Instance.Player = Player;
+
+            MessageBus.Instance.PostEvent(MessageType.PlayerHealthChanged, this, new PlayerHealthChangeEventArgs(Player.Health));
+            if (Player.Health == 0) Player.OnDestroy();
 
             GetFieldAtMapCoords(Player.Coords).PawnOnField = Player;
         }
@@ -186,7 +224,7 @@ namespace TankGame.Src.Data.Map
                 Activity = activityData.Element("type").Value switch
                 {
                     "destroy" => new DestroyAllActivity(ActivityCoords, Enemies),
-                    "protect" => new ProtectActivity(ActivityCoords, Enemies),
+                    "protect" => new ProtectActivity(ActivityCoords, Enemies, activityData.Element("health") != null ? int.Parse(activityData.Element("health").Value) : -1),
                     "wave"    => new WaveActivity(ActivityCoords, Enemies,
                                                   new Queue<List<EnemySpawnData>>(from waves in activityData.Element("waves").Descendants("wave") select new List<EnemySpawnData>(from spawnData in waves.Descendants("enemy") select new EnemySpawnData(
                                                       new Vector2i(mapXCoords + int.Parse(spawnData.Element("x").Value),
@@ -206,20 +244,21 @@ namespace TankGame.Src.Data.Map
                                                       spawnData.Element("path") != null && spawnData.Element("path").Descendants("point") != null
                                                         ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
                                                         : null))),
-                                                  activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0),
+                                                  activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0, 
+                                                  activityData.Element("health") != null ? int.Parse(activityData.Element("health").Value) : -1),
                     _ => throw new NotImplementedException()
                 };
                 Activity.Field = GetFieldAtMapCoords(Activity.Coords);
                 Activity.Field.GameObject = Activity;
                 Activity.Region = this;
-                if (Player != null) Activity.ChangeStatus(ActivityStatus.Started);
+                if (Player != null && Activity.ActivityStatus == ActivityStatus.Stopped) Activity.ChangeStatus(ActivityStatus.Started);
 
             }
         }
 
         private XmlElement SerializeFields(XmlDocument xmlDocument)
         {
-            XmlElement fieldsElement = xmlDocument.CreateElement("Fields");
+            XmlElement fieldsElement = xmlDocument.CreateElement("fields");
 
             foreach (Field field in Fields)
             {
@@ -228,29 +267,27 @@ namespace TankGame.Src.Data.Map
 
             return fieldsElement;
         }
-
-        private void Save()
+        
+        private XmlElement SerializeSpawns(XmlDocument xmlDocument)
         {
-            XmlDocument savefile = new XmlDocument();
-            savefile.AppendChild(savefile.CreateXmlDeclaration("1.0", "utf-8", null));
-            savefile.AppendChild(SerializeFields(savefile));
-            savefile.Save(RegionPathGenerator.GetSavedRegionPath(Coords));
+            XmlElement fieldsElement = xmlDocument.CreateElement("spawns");
+
+            foreach (Enemy enemy in Enemies)
+            {
+                fieldsElement.AppendChild(enemy.SerializeToXML(xmlDocument));
+            }
+
+            if (Player != null)
+            {
+                fieldsElement.AppendChild(Player.SerializeToXML(xmlDocument));
+            }
+
+            return fieldsElement;
         }
 
-        public void Dispose()
+        private XmlNode SerializeActivity(XmlDocument savefile)
         {
-            if (Loaded)
-            {
-                //Save();
-
-                Fields.ForEach(field => field.Dispose());
-                Fields.Clear();
-                Enemies.ToList().ForEach(enemy => enemy.Dispose());
-                Enemies.Clear();
-                if (Player != null) Player.Dispose();
-                Activity = null;
-                DeletePlayer();
-            }
+            return Activity != null ? Activity.SerializeToXML(savefile) : savefile.CreateElement("activity");
         }
 
         public bool HasField(Vector2i mapFieldCoords)

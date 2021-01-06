@@ -4,7 +4,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     internal class RandomAIMovementController : AIMovementController
     {
-        public RandomAIMovementController(double delay, Pawn owner) : base(delay, owner)
+        public RandomAIMovementController(double delay, Pawn owner) : base(delay, owner, "random")
         {
         }
 
