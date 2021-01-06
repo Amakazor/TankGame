@@ -59,8 +59,6 @@
       <texture>grass</texture>
     </field>
     <field>
-    </field>
-    <field>
       <!--0x10-->
       <type>grass</type>
       <texture>grass</texture>
@@ -1506,8 +1504,8 @@
     </field>
     <field>
       <!--13x5-->
-      <type>rade</type>
-      <texture>rade</texture>
+      <type>road</type>
+      <texture>road</texture>
     </field>
     <field>
       <!--13x6-->

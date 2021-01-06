@@ -2033,7 +2033,7 @@
     <waves>
       <wave>
         <enemy>
-          <type>light</type>
+          <type>heavy</type>
           <aimc>chase</aimc>
           <x>0</x>
           <y>5</y>
@@ -2041,7 +2041,7 @@
       </wave>
       <wave>
         <enemy>
-          <type>light</type>
+          <type>medium</type>
           <aimc>chase</aimc>
           <x>2</x>
           <y>4</y>
@@ -2067,8 +2067,8 @@
   </activity>
   <spawns>
     <player>
-      <x>1</x>
-      <y>1</y>
+      <x>4</x>
+      <y>4</y>
     </player>
 	</spawns>
 </region>
