@@ -2065,7 +2065,10 @@
     </wave>
     </waves>
   </activity>
-    <spawns>
-      
-	  </spawns>
+  <spawns>
+    <player>
+      <x>1</x>
+      <y>1</y>
+    </player>
+	</spawns>
 </region>
