@@ -54,7 +54,7 @@ namespace TankGame.Src.Actors.Weathers
             {
                 if (PositionOffset.X > 64) PositionOffset -= new Vector2f(64, 64);
                 PositionOffset += new Vector2f(Intensity * deltaTime * 64, Intensity * deltaTime * 64);
-                WeatherComponent.SetPosition(Position + PositionOffset);
+              //  WeatherComponent.SetPosition(Position + PositionOffset);
             }
         }
 
