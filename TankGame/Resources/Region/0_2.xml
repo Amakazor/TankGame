@@ -1504,8 +1504,8 @@
     </field>
     <field>
       <!--13x5-->
-      <type>rade</type>
-      <texture>rade</texture>
+      <type>road</type>
+      <texture>road</texture>
     </field>
     <field>
       <!--13x6-->
