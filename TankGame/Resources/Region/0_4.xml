@@ -2370,7 +2370,7 @@
       <y>15</y>
     </enemy>
     <enemy>
-      <type>heavy</type>
+      <type>light</type>
       <aimc>patrol</aimc>
       <x>19</x>
       <y>19</y>
