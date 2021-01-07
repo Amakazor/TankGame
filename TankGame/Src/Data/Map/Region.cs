@@ -205,37 +205,9 @@ namespace TankGame.Src.Data.Map
                         : null,
                     enemy.Element("health") != null 
                         ? int.Parse(enemy.Element("health").Value) 
-                        : 0));
+                        : -1,
+                    this));
             } else Enemies = new HashSet<Enemy>();
-
-            Enemies.ToList().ForEach((Enemy enemy) => 
-            {
-                if (GetFieldAtMapCoords(enemy.Coords).PawnOnField == null) GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                else if(GetFieldAtMapCoords(enemy.Coords + new Vector2i(1, 0)) != null && GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
-                {
-                    enemy.Coords += new Vector2i(1, 0);
-                    GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                }
-                else if(GetFieldAtMapCoords(enemy.Coords + new Vector2i(-1, 0)) != null && GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
-                {
-                    enemy.Coords += new Vector2i(-1, 0);
-                    GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                }
-                else if(GetFieldAtMapCoords(enemy.Coords + new Vector2i(0, 1)) != null && GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
-                {
-                    enemy.Coords += new Vector2i(0, 1);
-                    GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                }
-                else if(GetFieldAtMapCoords(enemy.Coords + new Vector2i(0, -1)) != null && GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
-                {
-                    enemy.Coords += new Vector2i(0, -1);
-                    GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                }
-                else
-                {
-                    enemy.OnDestroy();
-                }
-            });
         }
 
         private void LoadActivity()

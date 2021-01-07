@@ -55,35 +55,9 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         protected void SpawnNextWave()
         {
             CurrentWave++;
-            new List<Enemy>(from enemySpawnData in EnemySpawns.Dequeue() select EnemyFactory.CreateEnemy(enemySpawnData, 0)).ForEach(enemy => 
+            (from enemySpawnData in EnemySpawns.Dequeue() select EnemyFactory.CreateEnemy(enemySpawnData, -1, CurrentRegion)).ToList().ForEach(enemy => 
             {
                 Enemies.Add(enemy);
-
-                if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField == null) CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                else if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords + new Vector2i(1, 0)) != null && CurrentRegion.GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
-                {
-                    enemy.Coords += new Vector2i(1, 0);
-                    CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                }
-                else if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords + new Vector2i(-1, 0)) != null && CurrentRegion.GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
-                {
-                    enemy.Coords += new Vector2i(-1, 0);
-                    CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                }
-                else if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords + new Vector2i(0, 1)) != null && CurrentRegion.GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
-                {
-                    enemy.Coords += new Vector2i(0, 1);
-                    CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                }
-                else if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords + new Vector2i(0, -1)) != null && CurrentRegion.GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
-                {
-                    enemy.Coords += new Vector2i(0, -1);
-                    CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
-                }
-                else
-                {
-                    enemy.OnDestroy();
-                }
             });
 
             AllEnemiesCount = (uint)Enemies.Count;

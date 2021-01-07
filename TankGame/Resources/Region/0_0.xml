@@ -2034,7 +2034,7 @@
       <wave>
         <enemy>
           <type>heavy</type>
-          <aimc>random</aimc>
+          <aimc>chase</aimc>
           <x>0</x>
           <y>5</y>
         </enemy>
