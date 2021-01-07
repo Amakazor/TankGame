@@ -1104,7 +1104,11 @@
     </field>
     <field>
       <!--10x4-->
-
+      <type>grass</type>
+      <texture>grass</texture>
+      <object>
+        <type>tree</type>
+      </object>
     </field>
     <field>
       <!--10x5-->
