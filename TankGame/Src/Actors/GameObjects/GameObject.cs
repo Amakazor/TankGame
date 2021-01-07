@@ -29,7 +29,7 @@ namespace TankGame.Src.Actors.GameObjects
         public Actor Actor => this;
         public Field Field { get; set; }
         public Vector2i Coords => new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
-        public Region CurrentRegion => Region ??= GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords);
+        public virtual Region CurrentRegion => Region ??= GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords);
         protected Texture AfterDestructionTexture { get; set; }
         public bool StopsProjectile => DestructabilityData.StopsProjectile;
 

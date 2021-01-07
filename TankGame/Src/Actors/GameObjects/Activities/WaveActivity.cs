@@ -8,6 +8,7 @@ using System.Xml;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Map;
 
 namespace TankGame.Src.Actors.GameObjects.Activities
 {
@@ -15,10 +16,10 @@ namespace TankGame.Src.Actors.GameObjects.Activities
     {
         protected Queue<List<EnemySpawnData>> EnemySpawns { get; }
         protected uint CurrentWave { get; set; }
-
-        public WaveActivity(Vector2i coords, HashSet<Enemy> enemies, Queue<List<EnemySpawnData>> enemySpawns, uint currentWave = 0, int? hp = null, string name = null, string type = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType = null) : base(coords, enemies, hp ?? 1, name ?? "Destroy all enemies", type ?? "wave", gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(1, false, false), null), pointsAdded ?? 3000)        
+        public WaveActivity(Vector2i coords, HashSet<Enemy> enemies, Queue<List<EnemySpawnData>> enemySpawns, Region region, uint currentWave = 0, int? hp = null, string name = null, string type = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType = null) : base(coords, enemies, hp ?? 1, name ?? "Destroy all enemies", type ?? "wave", gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(1, false, false), null), pointsAdded ?? 3000)        
         {
             EnemySpawns = enemySpawns;
+            Region = region;
             CurrentWave = currentWave;
             AllEnemiesCount = (uint)Enemies.Count;
             if (AllEnemiesCount == 0 && (enemySpawns == null || EnemySpawns.Count == 0))
@@ -54,7 +55,37 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         protected void SpawnNextWave()
         {
             CurrentWave++;
-            new List<Enemy>(from enemySpawnData in EnemySpawns.Dequeue() select EnemyFactory.CreateEnemy(enemySpawnData, 0)).ForEach(enemy => { CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy; Enemies.Add(enemy); });
+            new List<Enemy>(from enemySpawnData in EnemySpawns.Dequeue() select EnemyFactory.CreateEnemy(enemySpawnData, 0)).ForEach(enemy => 
+            {
+                Enemies.Add(enemy);
+
+                if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField == null) CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
+                else if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords + new Vector2i(1, 0)) != null && CurrentRegion.GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
+                {
+                    enemy.Coords += new Vector2i(1, 0);
+                    CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
+                }
+                else if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords + new Vector2i(-1, 0)) != null && CurrentRegion.GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
+                {
+                    enemy.Coords += new Vector2i(-1, 0);
+                    CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
+                }
+                else if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords + new Vector2i(0, 1)) != null && CurrentRegion.GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
+                {
+                    enemy.Coords += new Vector2i(0, 1);
+                    CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
+                }
+                else if (CurrentRegion.GetFieldAtMapCoords(enemy.Coords + new Vector2i(0, -1)) != null && CurrentRegion.GetFieldAtMapCoords(enemy.Coords - new Vector2i(1, 0)).PawnOnField == null)
+                {
+                    enemy.Coords += new Vector2i(0, -1);
+                    CurrentRegion.GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy;
+                }
+                else
+                {
+                    enemy.OnDestroy();
+                }
+            });
+
             AllEnemiesCount = (uint)Enemies.Count;
             if (AllEnemiesCount == 0 && EnemySpawns.Count == 0 && ActivityStatus != ActivityStatus.Completed) ChangeStatus(ActivityStatus.Completed);
         }

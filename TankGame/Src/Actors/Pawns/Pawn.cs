@@ -51,8 +51,8 @@ namespace TankGame.Src.Actors.Pawns
 
         public override void Tick(float deltaTime)
         {
-            if (MovementController.IsRotating) PawnSprite.SetDirection(CalculateRotationAngle());
-            if (MovementController.IsMoving) PawnSprite.SetPosition(RealPosition);
+            PawnSprite.SetDirection(CalculateRotationAngle());
+            PawnSprite.SetPosition(RealPosition);
 
             if (MovementController != null)
             {
