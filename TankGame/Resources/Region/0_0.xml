@@ -2034,7 +2034,7 @@
       <wave>
         <enemy>
           <type>heavy</type>
-          <aimc>chase</aimc>
+          <aimc>random</aimc>
           <x>0</x>
           <y>5</y>
         </enemy>
@@ -2042,25 +2042,15 @@
       <wave>
         <enemy>
           <type>medium</type>
-          <aimc>chase</aimc>
+          <aimc>random</aimc>
           <x>2</x>
           <y>4</y>
         </enemy>
         <enemy>
           <type>medium</type>
-          <aimc>patrol</aimc>
+          <aimc>random</aimc>
           <x>5</x>
           <y>1</y>
-          <path>
-            <point>
-              <x>5</x>
-              <y>1</y>
-            </point>
-            <point>
-              <x>9</x>
-              <y>1</y>
-            </point>
-          </path>
         </enemy>
     </wave>
     </waves>
