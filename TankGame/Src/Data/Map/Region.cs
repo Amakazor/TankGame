@@ -401,7 +401,10 @@ namespace TankGame.Src.Data.Map
         public void DeleteEnemy(Enemy enemy)
         {
             Enemies.Remove(enemy);
-            GamestateManager.Instance.Map.GetFieldFromRegion(enemy.Coords).PawnOnField = null;
+            GameMap map = GamestateManager.Instance.Map;
+
+            if (map.GetFieldFromRegion(enemy.Coords).PawnOnField == enemy) map.GetFieldFromRegion(enemy.Coords).PawnOnField = null;
+            if (map.GetFieldFromRegion(enemy.LastCoords).PawnOnField == enemy) map.GetFieldFromRegion(enemy.LastCoords).PawnOnField = null;
         }
 
         public void AddEnemy(Enemy enemy) => Enemies.Add(enemy);

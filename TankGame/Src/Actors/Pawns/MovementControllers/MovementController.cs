@@ -145,15 +145,16 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             if (Cooldown > 0) Cooldown -= deltaTime;
             if (Cooldown < 0) Cooldown = 0;
 
-            if (IsMoving && MovementProgress >= 0.5)
-            {
-                GameMap gameMap = GamestateManager.Instance.Map;
+            GameMap gameMap = GamestateManager.Instance.Map;
 
-                if (gameMap.GetFieldFromRegion(Owner.Coords) != null)
-                {
-                    gameMap.GetFieldFromRegion(Owner.Coords).PawnOnField = Owner;
-                    gameMap.GetFieldFromRegion(Owner.LastCoords).PawnOnField = null;
-                }
+            if (IsMoving && gameMap.GetFieldFromRegion(Owner.Coords) != null)
+            {
+                gameMap.GetFieldFromRegion(Owner.Coords).PawnOnField = Owner;
+            }
+
+            if (IsMoving && MovementProgress >= 0.8 && gameMap.GetFieldFromRegion(Owner.LastCoords).PawnOnField == Owner)
+            {
+                gameMap.GetFieldFromRegion(Owner.LastCoords).PawnOnField = null;
             }
         }
 
