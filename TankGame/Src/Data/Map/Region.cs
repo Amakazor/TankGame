@@ -205,10 +205,9 @@ namespace TankGame.Src.Data.Map
                         : null,
                     enemy.Element("health") != null 
                         ? int.Parse(enemy.Element("health").Value) 
-                        : 0));
+                        : -1,
+                    this));
             } else Enemies = new HashSet<Enemy>();
-
-            Enemies.ToList().ForEach((Enemy enemy) => { GetFieldAtMapCoords(enemy.Coords).PawnOnField = enemy; });
         }
 
         private void LoadActivity()
@@ -234,6 +233,7 @@ namespace TankGame.Src.Data.Map
                                                       spawnData.Element("path") != null && spawnData.Element("path").Descendants("point") != null
                                                         ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
                                                         : null))),
+                                                  this,
                                                   activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0),
                     "waveprotect"    => new WaveProtectActivity(ActivityCoords, Enemies,
                                                   new Queue<List<EnemySpawnData>>(from waves in activityData.Element("waves").Descendants("wave") select new List<EnemySpawnData>(from spawnData in waves.Descendants("enemy") select new EnemySpawnData(
@@ -244,13 +244,13 @@ namespace TankGame.Src.Data.Map
                                                       spawnData.Element("path") != null && spawnData.Element("path").Descendants("point") != null
                                                         ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
                                                         : null))),
+                                                  this,
                                                   activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0, 
                                                   activityData.Element("health") != null ? int.Parse(activityData.Element("health").Value) : -1),
                     _ => throw new NotImplementedException()
                 };
                 Activity.Field = GetFieldAtMapCoords(Activity.Coords);
                 Activity.Field.GameObject = Activity;
-                Activity.Region = this;
                 if (Player != null && Activity.ActivityStatus == ActivityStatus.Stopped) Activity.ChangeStatus(ActivityStatus.Started);
 
             }
@@ -373,7 +373,10 @@ namespace TankGame.Src.Data.Map
         public void DeleteEnemy(Enemy enemy)
         {
             Enemies.Remove(enemy);
-            GamestateManager.Instance.Map.GetFieldFromRegion(enemy.Coords).PawnOnField = null;
+            GameMap map = GamestateManager.Instance.Map;
+
+            if (map.GetFieldFromRegion(enemy.Coords).PawnOnField == enemy) map.GetFieldFromRegion(enemy.Coords).PawnOnField = null;
+            if (map.GetFieldFromRegion(enemy.LastCoords).PawnOnField == enemy) map.GetFieldFromRegion(enemy.LastCoords).PawnOnField = null;
         }
 
         public void AddEnemy(Enemy enemy) => Enemies.Add(enemy);

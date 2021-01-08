@@ -2033,7 +2033,7 @@
     <waves>
       <wave>
         <enemy>
-          <type>light</type>
+          <type>heavy</type>
           <aimc>chase</aimc>
           <x>0</x>
           <y>5</y>
@@ -2041,31 +2041,24 @@
       </wave>
       <wave>
         <enemy>
-          <type>light</type>
-          <aimc>chase</aimc>
+          <type>medium</type>
+          <aimc>random</aimc>
           <x>2</x>
           <y>4</y>
         </enemy>
         <enemy>
           <type>medium</type>
-          <aimc>patrol</aimc>
+          <aimc>random</aimc>
           <x>5</x>
           <y>1</y>
-          <path>
-            <point>
-              <x>5</x>
-              <y>1</y>
-            </point>
-            <point>
-              <x>9</x>
-              <y>1</y>
-            </point>
-          </path>
         </enemy>
     </wave>
     </waves>
   </activity>
-    <spawns>
-      
-	  </spawns>
+  <spawns>
+    <player>
+      <x>4</x>
+      <y>4</y>
+    </player>
+	</spawns>
 </region>
