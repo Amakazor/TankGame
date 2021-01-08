@@ -272,15 +272,9 @@ namespace TankGame.Src.Data.Map
         {
             XmlElement fieldsElement = xmlDocument.CreateElement("spawns");
 
-            foreach (Enemy enemy in Enemies)
-            {
-                fieldsElement.AppendChild(enemy.SerializeToXML(xmlDocument));
-            }
+            Enemies.ToList().FindAll(enemy => enemy != null).ForEach(enemy => fieldsElement.AppendChild(enemy.SerializeToXML(xmlDocument)));
 
-            if (Player != null)
-            {
-                fieldsElement.AppendChild(Player.SerializeToXML(xmlDocument));
-            }
+            if (Player != null) fieldsElement.AppendChild(Player.SerializeToXML(xmlDocument));
 
             return fieldsElement;
         }
