@@ -152,7 +152,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 gameMap.GetFieldFromRegion(Owner.Coords).PawnOnField = Owner;
             }
 
-            if (IsMoving && MovementProgress >= 0.8 && gameMap.GetFieldFromRegion(Owner.LastCoords).PawnOnField == Owner)
+            if (IsMoving && MovementProgress >= 0.8 && gameMap.GetFieldFromRegion(Owner.LastCoords)?.PawnOnField == Owner)
             {
                 gameMap.GetFieldFromRegion(Owner.LastCoords).PawnOnField = null;
             }
