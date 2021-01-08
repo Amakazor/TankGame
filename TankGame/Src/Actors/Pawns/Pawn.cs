@@ -113,6 +113,11 @@ namespace TankGame.Src.Actors.Pawns
             };
         }
 
+        public virtual void OnDestroy(Region region = null)
+        {
+            OnDestroy();
+        }
+
         public virtual void OnDestroy()
         {
             Dispose();
@@ -128,7 +133,7 @@ namespace TankGame.Src.Actors.Pawns
         {
             SoundManager.Instance.PlayRandomSound("destruction", Position / 64);
             if (IsDestructible && IsAlive) Health--;
-            if (Health <= 0) OnDestroy();
+            if (Health <= 0) OnDestroy(CurrentRegion);
         }
 
         public void RegisterDestructible()
@@ -140,5 +145,7 @@ namespace TankGame.Src.Actors.Pawns
         {
             MessageBus.Instance.PostEvent(MessageType.UnregisterDestructible, this, new EventArgs());
         }
+
+        
     }
 }

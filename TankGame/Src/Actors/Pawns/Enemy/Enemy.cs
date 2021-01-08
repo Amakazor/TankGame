@@ -19,10 +19,10 @@ namespace TankGame.Src.Actors.Pawns.Enemies
             Type = type;
         }
 
-        public override void OnDestroy()
+        public override void OnDestroy(Region region = null)
         {
             GamestateManager.Instance.AddPoints(ScoreAdded, RealPosition + new Vector2f((Size.X / 2) - 75, ((Size.Y / 10) - 10)));
-            GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords).OnEnemyDestruction(this);
+            (region ?? CurrentRegion).OnEnemyDestruction(this);
             base.OnDestroy();
         }
 
