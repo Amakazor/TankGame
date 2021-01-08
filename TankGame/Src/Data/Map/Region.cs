@@ -117,7 +117,7 @@ namespace TankGame.Src.Data.Map
                 Fields.ForEach(field => field.Dispose());
                 Fields.Clear();
 
-                Enemies.ToList().ForEach(enemy => enemy.Dispose());
+                Enemies.ToList().FindAll(enemy => enemy != null).ForEach(enemy => enemy.Dispose());
                 Enemies.Clear();
 
                 if (Player != null) Player.Dispose();
