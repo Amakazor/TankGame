@@ -1,20 +1,16 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using TankGame.Src.Actors;
 using TankGame.Src.Actors.Pawns;
 
 namespace TankGame.Src.Gui.RenderComponents
 {
     internal class SpriteComponent : IRenderComponent
     {
-        public IRenderable Actor { get;}
         private Sprite Sprite { get; }
         private Vector2f Size { get; set; }
 
-        public SpriteComponent(Vector2f position, Vector2f size, IRenderable actor, Texture texture, Color color, Direction direction = Direction.Down)
+        public SpriteComponent(Vector2f position, Vector2f size, Texture texture, Color color, Direction direction = Direction.Down)
         {
-            Actor = actor;
-
             Sprite = new Sprite(texture)
             {
                 Position = position,

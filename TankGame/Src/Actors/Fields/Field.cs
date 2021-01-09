@@ -1,8 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Xml;
 using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.GameObjects.Activities;
@@ -30,7 +28,7 @@ namespace TankGame.Src.Actors.Fields
             TraversabilityData = traversabilityData;
             Texture = texture;
             Type = type;
-            Surface = new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
+            Surface = new SpriteComponent(Position, Size, texture, new Color(255, 255, 255, 255));
             if (rotatable) Surface.SetDirection(GamestateManager.Instance.Random.Next(1, 5) * 90);
             GameObject = gameObject;
             if (gameObject != null) GameObject.Field = this;

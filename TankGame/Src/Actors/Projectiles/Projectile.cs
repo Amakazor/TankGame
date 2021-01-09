@@ -38,8 +38,8 @@ namespace TankGame.Src.Actors.Projectiles
 
             ProjectileComponent = Owner switch
             {
-                Enemy _ => new SpriteComponent(Position, Size, this, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk1"), new Color(255, 255, 255, 255), Direction),
-                Player _ => new SpriteComponent(Position, Size, this, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk2"), new Color(255, 255, 255, 255), Direction),
+                Enemy _ => new SpriteComponent(Position, Size, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk1"), new Color(255, 255, 255, 255), Direction),
+                Player _ => new SpriteComponent(Position, Size, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk2"), new Color(255, 255, 255, 255), Direction),
                 _ => throw new System.NotImplementedException(),
             };
 

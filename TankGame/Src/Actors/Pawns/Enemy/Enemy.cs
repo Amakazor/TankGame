@@ -1,29 +1,19 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
 using System.Xml;
 using TankGame.Src.Actors.Pawns.MovementControllers;
-using TankGame.Src.Data;
-using TankGame.Src.Data.Map;
 
 namespace TankGame.Src.Actors.Pawns.Enemies
 {
     abstract internal class Enemy : Pawn
     {
-        uint ScoreAdded { get; }
+        public uint ScoreAdded { get; }
         public string Type { get; }
 
         public Enemy(Vector2f position, Vector2f size, Texture texture, int health, uint scoreAdded, string type) : base(position, size, texture, health)
         {
             ScoreAdded = scoreAdded;
             Type = type;
-        }
-
-        public override void OnDestroy(Region region = null)
-        {
-            GamestateManager.Instance.AddPoints(ScoreAdded, RealPosition + new Vector2f((Size.X / 2) - 75, ((Size.Y / 10) - 10)));
-            (region ?? CurrentRegion).OnEnemyDestruction(this);
-            base.OnDestroy();
         }
 
         internal XmlNode SerializeToXML(XmlDocument xmlDocument)

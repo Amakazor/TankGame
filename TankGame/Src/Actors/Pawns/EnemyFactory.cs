@@ -2,16 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Data.Map;
-using TankGame.Src.Extensions;
 
 namespace TankGame.Src.Actors.Pawns
 {
     internal static class EnemyFactory
     {
+        private static readonly List<Vector2i> MovementVectors = new List<Vector2i> { new Vector2i(1, 0), new Vector2i(-1, 0), new Vector2i(0, 1), new Vector2i(0, -1) };
+
         private static readonly Dictionary<string, Func<double, Enemy, List<Vector2i>, AIMovementController>> AIMCTypes = new Dictionary<string, Func<double, Enemy, List<Vector2i>, AIMovementController>>
         {
             {"random", (delay, owner, patrolRoute) =>  new RandomAIMovementController     (delay, owner)},
@@ -27,6 +28,43 @@ namespace TankGame.Src.Actors.Pawns
             { "heavy",  (Coords) => new HeavyTank (Coords*64, new Vector2f(64, 64))}
         };
 
+        private static bool MoveSpawnIfNecessary(Enemy enemy, Region region)
+        {
+            if (region.GetFieldAtMapCoords(enemy.Coords).PawnOnField != null)
+            {
+                Vector2i movementVector = MovementVectors.FirstOrDefault(vector
+                    => region.GetFieldAtMapCoords(enemy.Coords + vector).IsTraversible()
+                       && region.GetFieldAtMapCoords(enemy.Coords + vector) != null
+                       && region.GetFieldAtMapCoords(enemy.Coords + vector).PawnOnField == null
+                       && (region.GetFieldAtMapCoords(enemy.Coords).GameObject == null
+                           || region.GetFieldAtMapCoords(enemy.Coords).GameObject.IsDestructibleOrTraversible));
+
+                if (movementVector != default)
+                {
+                    enemy.Coords += movementVector;
+                    GameObject gameObject = region.GetFieldAtMapCoords(enemy.Coords).GameObject;
+                    if (gameObject != null && gameObject.IsDestructible) gameObject.OnDestroy();
+                    return true;
+                }
+                else return false;
+            }
+            else
+            {
+                GameObject gameObject = region.GetFieldAtMapCoords(enemy.Coords).GameObject;
+                if (gameObject != null)
+                {
+                    if (gameObject.IsDestructibleOrTraversible)
+                    {
+                        if (gameObject.IsDestructible) gameObject.OnDestroy();
+                        return true;
+
+                    }
+                    else return false;
+                }
+                else return true;
+            }
+        }
+
         public static Enemy CreateEnemy(Vector2i coords, string enemyType, string AIMCType, List<Vector2i> patrolRoute, int health, Region region)
         {
             if (EnemyTypes.ContainsKey(enemyType) && AIMCTypes.ContainsKey(AIMCType))
@@ -36,29 +74,18 @@ namespace TankGame.Src.Actors.Pawns
                 
                 newEnemy.MovementController = AIMCTypes[AIMCType](newEnemy switch{LightTank _ => 0.75, MediumTank _ => 1.5, HeavyTank _ => 2.25, _ => 1}, newEnemy, patrolRoute);
 
-                if (region.GetFieldAtMapCoords(newEnemy.Coords).PawnOnField != null)
+                if (MoveSpawnIfNecessary(newEnemy, region))
                 {
-                    if (!new List<Vector2i> { new Vector2i(1, 0), new Vector2i(-1, 0), new Vector2i(0, 1), new Vector2i(0, -1) }.Any(vector => ((region.GetFieldAtMapCoords(newEnemy.Coords + vector).IsTraversible() && region.GetFieldAtMapCoords(newEnemy.Coords + vector) != null && region.GetFieldAtMapCoords(newEnemy.Coords + vector).PawnOnField == null) ? newEnemy.Coords += vector : new Vector2i(-1, -1)).IsValid()))
-                    {
-                        newEnemy.OnDestroy();
-                        return null;
-                    }
+                    region.GetFieldAtMapCoords(newEnemy.Coords).PawnOnField = newEnemy;
+                    return newEnemy;
                 }
-
-                if (region.GetFieldAtMapCoords(newEnemy.Coords).GameObject != null)
+                else
                 {
-                    if (region.GetFieldAtMapCoords(newEnemy.Coords).GameObject.IsDestructibleOrTraversible && region.GetFieldAtMapCoords(newEnemy.Coords).GameObject.IsDestructible) region.GetFieldAtMapCoords(newEnemy.Coords).GameObject.OnDestroy();
-                    else
-                    {
-                        newEnemy.OnDestroy();
-                        return null;
-                    }
+                    newEnemy.OnDestroy();
+                    return null;
                 }
-                
-                region.GetFieldAtMapCoords(newEnemy.Coords).PawnOnField = newEnemy;
-                return newEnemy;
             }
-            else throw new Exception();
+            else return null;
         }
 
         public static Enemy CreateEnemy(EnemySpawnData enemySpawnData, int health, Region region) => CreateEnemy(enemySpawnData.Coords, enemySpawnData.Type, enemySpawnData.AimcType, enemySpawnData.PatrolRoute, health, region);

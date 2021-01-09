@@ -1,7 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
-using TankGame.Src.Actors;
 
 namespace TankGame.Src.Gui.RenderComponents
 {
@@ -21,15 +20,13 @@ namespace TankGame.Src.Gui.RenderComponents
         private TextPosition HorizontalPosition { get; }
         private TextPosition VerticalPosition { get; }
 
-        public IRenderable Actor { get; }
-
         private readonly Font Font;
 
         private Text TextElement { get; }
 
         public bool IsPointInside(Vector2f point) => false;
 
-        public AlignedTextComponent(Vector2f containerPosition, Vector2f containerSize, Vector2f margins, uint fontSize, TextPosition horizontalPosition, TextPosition verticalPosition, IRenderable actor, string text, Color color)
+        public AlignedTextComponent(Vector2f containerPosition, Vector2f containerSize, Vector2f margins, uint fontSize, TextPosition horizontalPosition, TextPosition verticalPosition, string text, Color color)
         {
             ContainerPosition = containerPosition;
             ContainerSize = containerSize;
@@ -38,8 +35,6 @@ namespace TankGame.Src.Gui.RenderComponents
 
             HorizontalPosition = horizontalPosition;
             VerticalPosition = verticalPosition;
-
-            Actor = actor;
 
             Font = new Font("Resources/Fonts/PressStart2P-Regular.ttf");
 

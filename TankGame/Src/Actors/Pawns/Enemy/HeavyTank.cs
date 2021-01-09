@@ -1,5 +1,4 @@
 ﻿using SFML.System;
-using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Data;
 
 namespace TankGame.Src.Actors.Pawns.Enemies

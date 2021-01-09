@@ -1,19 +1,19 @@
 ﻿using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using TankGame.Src.Actors.Fields;
-using System.IO;
-using System.Linq;
-using TankGame.Src.Actors.Pawns.Player;
-using TankGame.Src.Actors.Pawns.Enemies;
-using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.GameObjects;
-using SFML.Graphics;
 using TankGame.Src.Actors.GameObjects.Activities;
-using TankGame.Src.Pathfinding;
+using TankGame.Src.Actors.Pawns;
+using TankGame.Src.Actors.Pawns.Enemies;
+using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Events;
+using TankGame.Src.Extensions;
+using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Data.Map
 {
@@ -84,6 +84,7 @@ namespace TankGame.Src.Data.Map
         {
             if (!Loaded)
             {
+                MessageBus.Instance.Register(MessageType.PawnDeath, OnPawnDeath);
                 LoadFields();
                 LoadEnemies();
                 if (ContainsPlayer() && GamestateManager.Instance.Player == null) LoadPlayer();
@@ -124,6 +125,15 @@ namespace TankGame.Src.Data.Map
 
                 Player = null;
                 Activity = null;
+                MessageBus.Instance.Unregister(MessageType.PawnDeath, OnPawnDeath);
+            }
+        }
+
+        private void OnPawnDeath(object sender, EventArgs eventArgs)
+        {
+            if (eventArgs is PawnEventArgs pawnEventArgs && pawnEventArgs.Pawn is Enemy enemy && GetFieldAtMapCoords(enemy.Coords) != null)
+            {
+                DeleteEnemy(enemy);
             }
         }
 
@@ -289,31 +299,11 @@ namespace TankGame.Src.Data.Map
             return Coords.X * FieldsInLine <= mapFieldCoords.X && Coords.Y * FieldsInLine <= mapFieldCoords.Y && (Coords.X + 1) * FieldsInLine > mapFieldCoords.X && (Coords.Y + 1) * FieldsInLine > mapFieldCoords.Y;
         }
 
-        public Field GetFieldAtMapCoords(Vector2i mapFieldCoords)
-        {
-            if (HasField(mapFieldCoords))
-            {
-                return GetFieldAtIndex(ConvertRegionFieldCoordsToFieldIndex(ConvertMapCoordsToRegionFieldCoords(mapFieldCoords)));
-            }
-            else return null;
-        }
-
-        private Field GetFieldAtIndex(int index)
-        {
-            return Fields[index];
-        }
-
-        public Vector2i ConvertMapCoordsToRegionFieldCoords(Vector2i mapFieldCoords)
-        {
-            return new Vector2i(mapFieldCoords.X % FieldsInLine, mapFieldCoords.Y % FieldsInLine);
-        }
-
-        private int ConvertRegionFieldCoordsToFieldIndex(Vector2i regionFieldCoords)
-        {
-            return regionFieldCoords.X * FieldsInLine + regionFieldCoords.Y;
-        }
-
-        public bool HasDestructibleActivity => Activity != null && Activity.IsDestructible;
+        public Field GetFieldAtMapCoords(Vector2i mapFieldCoords) => HasField(mapFieldCoords) ? FieldAtIndex(ConvertRegionFieldCoordsToFieldIndex(ConvertMapCoordsToRegionFieldCoords(mapFieldCoords))) : null;
+        private Field FieldAtIndex(int index) => Fields[index];
+        public Vector2i ConvertMapCoordsToRegionFieldCoords(Vector2i mapFieldCoords) => mapFieldCoords.Modulo(FieldsInLine);
+        private int ConvertRegionFieldCoordsToFieldIndex(Vector2i regionFieldCoords) => regionFieldCoords.X * FieldsInLine + regionFieldCoords.Y;
+        public bool HasDestructibleActivity => Activity != null && Activity.IsDestructible && Activity.ActivityStatus == ActivityStatus.Started;
 
         public List<List<Node>> GetNodesInRegion()
         {
@@ -333,11 +323,6 @@ namespace TankGame.Src.Data.Map
             }
 
             return nodes;
-        }
-
-        public void OnEnemyDestruction(Enemy enemy)
-        {
-            DeleteEnemy(enemy);
         }
 
         public void EnemyWanderedIn(Enemy enemy)

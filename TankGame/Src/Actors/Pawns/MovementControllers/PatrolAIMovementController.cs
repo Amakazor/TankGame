@@ -1,7 +1,5 @@
 ﻿using SFML.System;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 using TankGame.Src.Data;
 using TankGame.Src.Extensions;

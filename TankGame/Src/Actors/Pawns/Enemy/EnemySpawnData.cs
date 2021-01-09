@@ -1,6 +1,5 @@
 ﻿using SFML.System;
 using System.Collections.Generic;
-using System.Numerics;
 
 internal struct EnemySpawnData
 {

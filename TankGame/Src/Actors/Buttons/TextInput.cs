@@ -3,7 +3,6 @@ using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -21,9 +20,9 @@ namespace TankGame.Src.Actors.Buttons
         {
             Focused = false;
 
-            InputText = new AlignedTextComponent(position, size, new Vector2f(0, 0), fontSize, horizontalPosition, verticalPosition, this, "", new Color(255, 255, 255, 255));
-            InputPlaceholderText = new AlignedTextComponent(position, size, new Vector2f(0, 0), fontSize, horizontalPosition, verticalPosition, this, placeholderText, new Color(200, 200, 200, 255));
-            BoundingBox = new RectangleComponent(position, size, this, new Color(32, 32, 32, 255), new Color(128, 128, 128, 255), 2);
+            InputText = new AlignedTextComponent(position, size, new Vector2f(0, 0), fontSize, horizontalPosition, verticalPosition, "", new Color(255, 255, 255, 255));
+            InputPlaceholderText = new AlignedTextComponent(position, size, new Vector2f(0, 0), fontSize, horizontalPosition, verticalPosition, placeholderText, new Color(200, 200, 200, 255));
+            BoundingBox = new RectangleComponent(position, size, new Color(32, 32, 32, 255), new Color(128, 128, 128, 255), 2);
 
             MessageBus.Instance.Register(MessageType.CancelInputs, OnCancelInputs);
             MessageBus.Instance.Register(MessageType.TextInput, OnKeyPressed);

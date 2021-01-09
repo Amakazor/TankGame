@@ -35,7 +35,7 @@ namespace TankGame.Src.Actors.Pawns
         public Pawn(Vector2f position, Vector2f size, Texture texture, int health) : base(position, size)
         {
             Health = health;
-            PawnSprite = new SpriteComponent(Position, Size, this, Texture = texture, new Color(255, 255, 255, 255));
+            PawnSprite = new SpriteComponent(Position, Size, Texture = texture, new Color(255, 255, 255, 255));
             PawnSprite.SetDirection(Direction.Up);
             RegisterDestructible();
 
@@ -113,13 +113,9 @@ namespace TankGame.Src.Actors.Pawns
             };
         }
 
-        public virtual void OnDestroy(Region region = null)
-        {
-            OnDestroy();
-        }
-
         public virtual void OnDestroy()
         {
+            MessageBus.Instance.PostEvent(MessageType.PawnDeath, this, new PawnEventArgs(this));
             Dispose();
         }
 
@@ -133,7 +129,7 @@ namespace TankGame.Src.Actors.Pawns
         {
             SoundManager.Instance.PlayRandomSound("destruction", Position / 64);
             if (IsDestructible && IsAlive) Health--;
-            if (Health <= 0) OnDestroy(CurrentRegion);
+            if (Health <= 0) OnDestroy();
         }
 
         public void RegisterDestructible()

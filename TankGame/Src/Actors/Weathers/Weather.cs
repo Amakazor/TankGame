@@ -32,7 +32,7 @@ namespace TankGame.Src.Actors.Weathers
 
             PositionOffset = new Vector2f(0, 0);
 
-            WeatherComponent = new SpriteComponent(Position, Size, this, weatherTexture, new Color(255, 255, 255, 255));
+            WeatherComponent = new SpriteComponent(Position, Size, weatherTexture, new Color(255, 255, 255, 255));
             WeatherComponent.SetTextureRectSize(new Vector2i(5 * 20 * 64 + (animationType == AnimationType.Animated ? 2 * 64 : 0), 5 * 20 * 64 + (animationType == AnimationType.Animated ? 2 * 64 : 0)));
 
             MusicManager.Instance.PlayRandomMusic(musicType);

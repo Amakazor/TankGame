@@ -2,8 +2,6 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using TankGame.Src.Actors.GameObjects.Activities;
 using TankGame.Src.Data;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
@@ -17,8 +15,8 @@ namespace TankGame.Src.Actors.GUI
 
         public ActivityDisplay() : base(new Vector2f(10, 64 + 10), new Vector2f(490, 200 - (64 + 10)))
         {
-            ActivityName = new AlignedTextComponent(Position, new Vector2f(Size.X, Size.Y / 3), new Vector2f(0, 0), 17, TextPosition.Start, TextPosition.Middle, this, "", Color.White);
-            ActivityText = new AlignedTextComponent(Position + new Vector2f(0, Size.Y / 3), new Vector2f(Size.X, Size.Y / 3), new Vector2f(0, 0), 15, TextPosition.Start, TextPosition.Middle, this, "", Color.White);
+            ActivityName = new AlignedTextComponent(Position, new Vector2f(Size.X, Size.Y / 3), new Vector2f(0, 0), 17, TextPosition.Start, TextPosition.Middle, "", Color.White);
+            ActivityText = new AlignedTextComponent(Position + new Vector2f(0, Size.Y / 3), new Vector2f(Size.X, Size.Y / 3), new Vector2f(0, 0), 15, TextPosition.Start, TextPosition.Middle, "", Color.White);
 
             RenderView = RenderView.HUD;
             RenderLayer = RenderLayer.HUDFront;
