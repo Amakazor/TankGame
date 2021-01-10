@@ -1,6 +1,4 @@
 ﻿using System;
-using TankGame.Src.Actors.Projectiles;
-using TankGame.Src.Data;
 using TankGame.Src.Data.Controls;
 using TankGame.Src.Events;
 

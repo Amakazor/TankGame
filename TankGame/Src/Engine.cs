@@ -7,7 +7,6 @@ using System.Linq;
 using TankGame.Src.Actors;
 using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Pawns.Player;
-using TankGame.Src.Data;
 using TankGame.Src.Data.Collisions;
 using TankGame.Src.Data.Controls;
 using TankGame.Src.Data.Gamestate;
@@ -138,7 +137,6 @@ namespace TankGame.Src
             Renderables.ToList()
                .FindAll(renderable => renderable.RenderableRenderView == RenderView.Menu && renderable.Visible)
                .Draw(Window);
-               
 
             Window.Display();
         }
@@ -250,11 +248,11 @@ namespace TankGame.Src
             float gameSize = 0.8F;
 
             float aspectRatio = (float)height / width;
-            
+
             if (GameView != null)
             {
                 GameView.Viewport = Window.Size.X > Window.Size.Y
-                    ? new FloatRect(new Vector2f((1- gameSize) + ((gameSize - (gameSize * aspectRatio)) / 2), (1 - gameSize)), new Vector2f(gameSize * aspectRatio, gameSize))
+                    ? new FloatRect(new Vector2f((1 - gameSize) + ((gameSize - (gameSize * aspectRatio)) / 2), (1 - gameSize)), new Vector2f(gameSize * aspectRatio, gameSize))
                     : new FloatRect(new Vector2f((1 - gameSize), (1 - gameSize) + ((gameSize - (gameSize * (1 / aspectRatio))) / 2)), new Vector2f(gameSize, gameSize * (1 / aspectRatio)));
             }
 
@@ -269,7 +267,7 @@ namespace TankGame.Src
             {
                 MenuView.Viewport = Window.Size.X > Window.Size.Y
                     ? new FloatRect(new Vector2f((1 - aspectRatio) / 2, 0), new Vector2f(aspectRatio, 1))
-                    : new FloatRect(new Vector2f(0, ( 1 - (1 / aspectRatio))/ 2), new Vector2f(1, 1 / aspectRatio));
+                    : new FloatRect(new Vector2f(0, (1 - (1 / aspectRatio)) / 2), new Vector2f(1, 1 / aspectRatio));
             }
         }
 
@@ -279,7 +277,7 @@ namespace TankGame.Src
         }
 
         private void RegisterEvents()
-        {            
+        {
             MessageBus messageBus = MessageBus.Instance;
 
             messageBus.Register(MessageType.RegisterTickable, OnRegisterTickable);
@@ -329,7 +327,7 @@ namespace TankGame.Src
         {
             if (sender is IRenderable renderable) Renderables.Remove(renderable);
         }
-        
+
         private void OnPlayerMoved(object sender, EventArgs eventArgs)
         {
             if (sender is Player senderPlayer)
@@ -337,7 +335,7 @@ namespace TankGame.Src
                 RecenterView(senderPlayer.RealPosition);
             }
         }
-        
+
         private void OnPawnDeath(object sender, EventArgs eventArgs)
         {
             if (eventArgs is PawnEventArgs pawnEventArgs && pawnEventArgs.Pawn is Player)

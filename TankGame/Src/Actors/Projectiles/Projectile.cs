@@ -6,7 +6,6 @@ using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
-using TankGame.Src.Data;
 using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Sounds;
 using TankGame.Src.Data.Textures;
@@ -76,8 +75,8 @@ namespace TankGame.Src.Actors.Projectiles
                 ProjectileComponent.SetPosition(Position);
             }
             else Dispose();
-        } 
-            
+        }
+
         public override void Dispose()
         {
             Owner = null;

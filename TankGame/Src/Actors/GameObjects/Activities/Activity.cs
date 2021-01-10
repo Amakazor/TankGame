@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Xml;
 using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Pawns.Enemies;
-using TankGame.Src.Data;
 using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
@@ -15,9 +14,10 @@ namespace TankGame.Src.Actors.GameObjects.Activities
 {
     internal abstract class Activity : GameObject, ITickable
     {
-        protected uint AllEnemiesCount;
+        protected uint AllEnemiesCount { get; set; }
+        protected string Type { get; }
+
         private string name;
-        protected string Type;
         public string Name
         {
             get
@@ -44,7 +44,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
             Type = type;
             PointsAdded = pointsAdded;
             Enemies = enemies;
-            
+
             ActivityStatus = Health == 0 ? ActivityStatus.Failed : ActivityStatus.Stopped;
 
             AfterCompletionTexture = TextureManager.Instance.GetTexture("gameobject", "towercompleted");

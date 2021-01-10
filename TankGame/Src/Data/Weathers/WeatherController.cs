@@ -33,7 +33,7 @@ namespace TankGame.Src.Data.Weathers
         public void SetWeather(string type, float weatherTime)
         {
             if (Weather != null) Weather.Dispose();
-            Weather = null; 
+            Weather = null;
             MusicManager.Instance.StopMusic();
 
             CurrentWeatherTime = weatherTime;
@@ -41,8 +41,8 @@ namespace TankGame.Src.Data.Weathers
             Weather = type switch
             {
                 "clear" => null,
-                "rain"  => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, "rain"),
-                "snow"  => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, "snow"),
+                "rain" => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, "rain"),
+                "snow" => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F,  MusicType.Snow, intensity, AnimationType, "snow"),
                 _ => null,
             };
         }

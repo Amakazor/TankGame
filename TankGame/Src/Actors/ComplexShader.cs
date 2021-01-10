@@ -16,15 +16,9 @@ namespace TankGame.Src.Actors.Shaders
 
         public abstract void Tick(float deltaTime);
 
-        public void RegisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.RegisterTickable, this, new EventArgs());
-        }
+        public void RegisterTickable() => MessageBus.Instance.PostEvent(MessageType.RegisterTickable, this, new EventArgs());
 
-        public void UnregisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.UnregisterTickable, this, new EventArgs());
-        }
+        public void UnregisterTickable() => MessageBus.Instance.PostEvent(MessageType.UnregisterTickable, this, new EventArgs());
 
         public void Dispose()
         {

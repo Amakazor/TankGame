@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TankGame.Src.Data;
 using TankGame.Src.Data.Controls;
 using TankGame.Src.Extensions;
 using TankGame.Src.Pathfinding;
@@ -25,7 +24,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (CanDoAction() && Owner.CurrentRegion != null)
             {
-                PatrolRoute ??= Owner.CurrentRegion.GetNodesInRegion().SelectMany(node => node).Select(node => node.Position).OrderBy(node => Guid.NewGuid()).ToList();
+                PatrolRoute ??= Owner.CurrentRegion.GetNodesInRegion().SelectMany(node => node).ToList().FindAll(node => node.Walkable).Select(node => node.Position).OrderBy(node => Guid.NewGuid()).ToList();
 
                 if (CanSeePlayerInUnobstructedLine || (CanSeeActivityInUnobstructedLine && Owner.CurrentRegion.HasDestructibleActivity)) NextAction = KeyActionType.Shoot;
                 else
@@ -35,20 +34,15 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                         CurrentPatrolRoute = new Stack<Vector2i>(PatrolRoute);
                     }
 
-                    if (TargetPosition.IsInvalid() || TargetPosition.Equals(Owner.Coords))
+                    if (Path != null && !Path.Any()) Path = null;
+
+                    while (CurrentPatrolRoute != null && CurrentPatrolRoute.Any() && (Path == null || TargetPosition.IsInvalid() || TargetPosition.Equals(Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords))))
                     {
                         TargetPosition = CurrentPatrolRoute.Pop();
-                    }
-
-                    if (!TargetPosition.IsInvalid())
-                    {
-                        if (Path != null && Path.Count == 0) Path = null;
-
                         Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), TargetPosition);
-
-                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.CurrentRegion.Coords * 20);
                     }
-                    else NextAction = null;
+
+                    NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.CurrentRegion.Coords * 20);
                 }
             }
             else NextAction = null;

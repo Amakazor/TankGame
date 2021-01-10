@@ -1,11 +1,10 @@
-﻿using System;
-using TankGame.Src;
+﻿using TankGame.Src;
 
 namespace TankGame
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             Engine engine = new Engine();
             engine.Loop();

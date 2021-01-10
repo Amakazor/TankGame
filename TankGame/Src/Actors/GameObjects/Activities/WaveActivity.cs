@@ -10,11 +10,12 @@ using TankGame.Src.Data.Map;
 
 namespace TankGame.Src.Actors.GameObjects.Activities
 {
-    class WaveActivity : Activity
+    internal class WaveActivity : Activity
     {
         protected Queue<List<EnemySpawnData>> EnemySpawns { get; }
         protected uint CurrentWave { get; set; }
-        public WaveActivity(Vector2i coords, HashSet<Enemy> enemies, Queue<List<EnemySpawnData>> enemySpawns, Region region, uint currentWave = 0, int? hp = null, string name = null, string type = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType = null) : base(coords, enemies, hp ?? 1, name ?? "Destroy all enemies", type ?? "wave", gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(1, false, false), null), pointsAdded ?? 3000)        
+
+        public WaveActivity(Vector2i coords, HashSet<Enemy> enemies, Queue<List<EnemySpawnData>> enemySpawns, Region region, uint currentWave = 0, int? hp = null, string name = null, string type = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType = null) : base(coords, enemies, hp ?? 1, name ?? "Destroy all enemies", type ?? "wave", gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(1, false, false), null), pointsAdded ?? 3000)
         {
             EnemySpawns = enemySpawns;
             Region = region;
@@ -28,7 +29,6 @@ namespace TankGame.Src.Actors.GameObjects.Activities
 
             PointsAdded *= (int)currentWave + (enemySpawns == null ? 0 : enemySpawns.Count);
         }
-
 
         protected override string CalculateProgress()
         {
@@ -53,7 +53,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         protected void SpawnNextWave()
         {
             CurrentWave++;
-            (from enemySpawnData in EnemySpawns.Dequeue() select EnemyFactory.CreateEnemy(enemySpawnData, -1, CurrentRegion)).ToList().ForEach(enemy => 
+            (from enemySpawnData in EnemySpawns.Dequeue() select EnemyFactory.CreateEnemy(enemySpawnData, -1, CurrentRegion)).ToList().ForEach(enemy =>
             {
                 Enemies.Add(enemy);
             });
@@ -121,7 +121,6 @@ namespace TankGame.Src.Actors.GameObjects.Activities
                         enemyElement.AppendChild(pathElement);
                     }
                     waveElement.AppendChild(enemyElement);
-
                 });
                 wavesElement.AppendChild(waveElement);
             });
