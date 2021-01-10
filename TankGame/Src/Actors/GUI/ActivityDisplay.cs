@@ -29,6 +29,7 @@ namespace TankGame.Src.Actors.GUI
             if (GamestateManager.Instance?.Player?.CurrentRegion?.Activity?.ProgressText != null)
             {
                 ActivityName.SetText("Current objective: " + GamestateManager.Instance.Player.CurrentRegion.Activity.Name);
+
                 ActivityText.SetText(GamestateManager.Instance.Player.CurrentRegion.Activity.ProgressText ?? "");
             }
             else
