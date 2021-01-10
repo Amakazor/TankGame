@@ -20,6 +20,9 @@
       <!--0x3-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--0x4-->
@@ -30,6 +33,9 @@
       <!--0x5-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--0x6-->
@@ -70,6 +76,9 @@
       <!--0x13-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--0x14-->
@@ -105,6 +114,9 @@
       <!--1x0-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--1x1-->
@@ -140,6 +152,9 @@
       <!--1x7-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--1x8-->
@@ -186,6 +201,9 @@
       <!--1x15-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--1x16-->
@@ -204,6 +222,9 @@
       <!--1x18-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--1x19-->
@@ -337,6 +358,9 @@
       <!--3x4-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--3x5-->
@@ -352,6 +376,9 @@
       <!--3x7-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--3x8-->
@@ -397,6 +424,9 @@
       <!--3x16-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--3x17-->
@@ -577,6 +607,9 @@
       <!--5x12-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--5x13-->
@@ -597,6 +630,9 @@
       <!--5x16-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--5x17-->
@@ -612,6 +648,9 @@
       <!--5x19-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--6x0-->
@@ -688,11 +727,17 @@
       <!--6x13-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--6x14-->
 		<type>grass</type>
 		<texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--6x15-->
@@ -1498,6 +1543,9 @@
 			  <!--12x12-->
 			  <type>grass</type>
 			  <texture>grass</texture>
+			  <object>
+				  <type>tree</type>
+			  </object>
 		  </field>
 		  <field>
 			  <!--12x13-->
@@ -1533,6 +1581,9 @@
 			  <!--12x19-->
 			  <type>grass</type>
 			  <texture>grass</texture>
+			  <object>
+				  <type>tree</type>
+			  </object>
 		  </field>
 	  <field>
 		  <!--15x0-->
@@ -1636,6 +1687,9 @@
 		  <!--12x19-->
 		  <type>grass</type>
 		  <texture>grass</texture>
+		  <object>
+			  <type>tree</type>
+		  </object>
 	  </field>
 	  <field>
 		  <!--16x0-->
@@ -1696,6 +1750,9 @@
 		  <!--12x11-->
 		  <type>grass</type>
 		  <texture>grass</texture>
+		  <object>
+			  <type>tree</type>
+		  </object>
 	  </field>
 	  <field>
 		  <!--12x12-->
@@ -1721,6 +1778,9 @@
 		  <!--12x16-->
 		  <type>grass</type>
 		  <texture>grass</texture>
+		  <object>
+			  <type>tree</type>
+		  </object>
 	  </field>
 	  <field>
 		  <!--12x17-->
@@ -1796,6 +1856,9 @@
 		  <!--12x11-->
 		  <type>grass</type>
 		  <texture>grass</texture>
+		  <object>
+			  <type>tree</type>
+		  </object>
 	  </field>
 	  <field>
 		  <!--12x12-->
@@ -1821,6 +1884,9 @@
 		  <!--12x16-->
 		  <type>grass</type>
 		  <texture>grass</texture>
+		  <object>
+			  <type>tree</type>
+		  </object>
 	  </field>
 	  <field>
 		  <!--12x17-->
@@ -1901,6 +1967,9 @@
 		  <!--12x12-->
 		  <type>grass</type>
 		  <texture>grass</texture>
+		  <object>
+			  <type>tree</type>
+		  </object>
 	  </field>
 	  <field>
 		  <!--12x13-->
@@ -1921,6 +1990,9 @@
 		  <!--12x16-->
 		  <type>grass</type>
 		  <texture>grass</texture>
+		  <object>
+			  <type>tree</type>
+		  </object>
 	  </field>
 	  <field>
 		  <!--12x17-->
@@ -1996,6 +2068,9 @@
       <!--19x11-->
       <type>grass</type>
       <texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--19x12-->
@@ -2016,6 +2091,9 @@
       <!--19x15-->
       <type>grass</type>
       <texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
     <field>
       <!--19x16-->
@@ -2036,6 +2114,9 @@
       <!--19x19-->
       <type>grass</type>
       <texture>grass</texture>
+		<object>
+			<type>tree</type>
+		</object>
     </field>
   </fields>
   <spawns>
