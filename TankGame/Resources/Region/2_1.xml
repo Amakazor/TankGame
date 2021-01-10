@@ -612,7 +612,7 @@
 		<field>
 			<!--5x7-->
 			<type>road</type>
-			<texture>road2</texture>
+			<texture>road-lbr</texture>
 		</field>
 		<field>
 			<!--5x8-->
@@ -1399,7 +1399,7 @@
 		<field>
 			<!--12x7-->
 			<type>road</type>
-			<texture>road2</texture>
+			<texture>road-lbr</texture>
 		</field>
 		<field>
 			<!--12x8-->
@@ -1445,6 +1445,9 @@
 			<!--12x16-->
 			<type>grass</type>
 			<texture>grass</texture>
+			<object>
+				<type>bigbuilding</type>
+			</object>
 		</field>
 		<field>
 			<!--12x17-->
@@ -1787,9 +1790,6 @@
 			<!--12x16-->
 			<type>grass</type>
 			<texture>grass</texture>
-			<object>
-				<type>bigbuilding</type>
-			</object>
 		</field>
 		<field>
 			<!--12x17-->
@@ -2313,6 +2313,23 @@
 			<x>14</x>
 			<y>2</y>
 		</enemy>
+		<enemy>
+			<type>light</type>
+			<aimc>chase</aimc>
+			<x>5</x>
+			<y>9</y>
+		</enemy>
+		<enemy>
+			<type>light</type>
+			<aimc>chase</aimc>
+			<x>12</x>
+			<y>10</y>
+		</enemy>
+		<activity>
+			<type>destroy</type>
+			<x>17</x>
+			<y>17</y>
+		</activity>
 
 
 	</spawns>

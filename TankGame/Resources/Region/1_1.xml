@@ -1141,7 +1141,7 @@
 		<field>
 			<!--10x7-->
 			<type>road</type>
-			<texture>road2</texture>
+			<texture>road-lbr</texture>
 		</field>
 		<field>
 			<!--10x8-->
@@ -2267,6 +2267,11 @@
 			<x>14</x>
 			<y>2</y>
 		</enemy>
+		<activity>
+			<type>protect</type>
+			<x>5</x>
+			<y>16</y>
+		</activity>
 
 
 	</spawns>
