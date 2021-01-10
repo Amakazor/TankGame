@@ -130,11 +130,56 @@
 		<name>grass2</name>
 		<location>Resources/Textures/Fields/grass2.png</location>
 	</texture>
-    <texture>
+  <texture>
 		<type>field</type>
 		<name>road</name>
 		<location>Resources/Textures/Fields/road1.png</location>
 	</texture>
+  <texture>
+    <type>field</type>
+    <name>road-junction</name>
+    <location>Resources/Textures/Fields/road-junction.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>road-lb</name>
+    <location>Resources/Textures/Fields/road-lb.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>road-rb</name>
+    <location>Resources/Textures/Fields/road-rb.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>road-lt</name>
+    <location>Resources/Textures/Fields/road-lt.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>road-rt</name>
+    <location>Resources/Textures/Fields/road-rt.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>road-lbr</name>
+    <location>Resources/Textures/Fields/road-lbr.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>road-ltr</name>
+    <location>Resources/Textures/Fields/road-ltr.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>road-tlb</name>
+    <location>Resources/Textures/Fields/road-tlb.png</location>
+  </texture>
+  <texture>
+    <type>field</type>
+    <name>road-trb</name>
+    <location>Resources/Textures/Fields/road-trb.png</location>
+  </texture>
 	<texture>
 		<type>field</type>
 		<name>road2</name>
@@ -154,5 +199,10 @@
 		<type>field</type>
 		<name>water</name>
 		<location>Resources/Textures/Fields/water.png</location>
+	</texture>
+  <texture>
+		<type>border</type>
+		<name>hedgehog</name>
+		<location>Resources/Textures/Border/hedgehog.png</location>
 	</texture>
 </textures>
