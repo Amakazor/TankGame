@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Pawns.MovementControllers;
-using TankGame.Src.Data;
 using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Map;
 using TankGame.Src.Data.Sounds;
@@ -19,15 +18,16 @@ namespace TankGame.Src.Actors.Pawns
         public Direction Direction { get; set; }
         public int Health { get; set; }
         public MovementController MovementController { get; set; }
-        private Texture Texture { get; }
         private SpriteComponent PawnSprite { get; }
         public Vector2f LastPosition { get; set; }
         public Vector2f RealPosition => CalculatePosition();
+
         public Vector2i Coords
         {
             get => new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
             set => Position = new Vector2f(value.X * Size.X, value.Y * Size.Y);
         }
+
         public Vector2i LastCoords => new Vector2i((int)(LastPosition.X / Size.X), (int)(LastPosition.Y / Size.Y));
         public bool IsAlive => Health > 0;
         public bool IsDestructible => true;
@@ -38,13 +38,12 @@ namespace TankGame.Src.Actors.Pawns
         public Pawn(Vector2f position, Vector2f size, Texture texture, int health) : base(position, size)
         {
             Health = health;
-            PawnSprite = new SpriteComponent(Position, Size, Texture = texture, new Color(255, 255, 255, 255));
+            PawnSprite = new SpriteComponent(Position, Size, texture, new Color(255, 255, 255, 255));
             PawnSprite.SetDirection(Direction.Up);
             RegisterDestructible();
 
             RenderLayer = RenderLayer.Pawn;
             RenderView = RenderView.Game;
-
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
@@ -94,15 +93,7 @@ namespace TankGame.Src.Actors.Pawns
             }
         }
 
-        protected Vector2f CalculatePosition()
-        {
-            if (!MovementController.IsMoving) return Position;
-            else
-            {
-                return LastPosition + (Position - LastPosition) * (float)MovementController.MovementProgress;
-            }
-
-        }
+        protected Vector2f CalculatePosition() => !MovementController.IsMoving ? Position : LastPosition + (Position - LastPosition) * (float)MovementController.MovementProgress;
 
         protected float GetRotationAngleFromDirection(Direction direction)
         {
@@ -144,7 +135,5 @@ namespace TankGame.Src.Actors.Pawns
         {
             MessageBus.Instance.PostEvent(MessageType.UnregisterDestructible, this, new EventArgs());
         }
-
-        
     }
 }

@@ -99,7 +99,7 @@ namespace TankGame.Src.Data.Sounds
             if (MusicDictionary.ContainsKey(musicType))
             {
                 if (musicType != CurrentMusicType)
-                { 
+                {
                     CurrentMusicType = musicType;
                     if (CurrentMusic != null) CurrentMusic.Dispose();
                     CurrentMusic = new Music(MusicDictionary[musicType].ElementAt(new Random().Next(0, MusicDictionary[musicType].Count)).Value)

@@ -2,7 +2,7 @@
 
 namespace TankGame.Src.Events
 {
-    class StartGameEventArgs : EventArgs
+    internal class StartGameEventArgs : EventArgs
     {
         public bool NewGame { get; }
 

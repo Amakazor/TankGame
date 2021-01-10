@@ -23,9 +23,7 @@ namespace TankGame.Src.Data.Sounds
             Sounds = new List<Sound>();
         }
 
-
         public static SoundManager Instance { get { return instance ?? (instance = new SoundManager()); } }
-
         public static void Initialize() => _ = Instance;
 
         private SoundBuffer GetSound(string soundType, string name)
@@ -102,9 +100,8 @@ namespace TankGame.Src.Data.Sounds
         {
             SoundBuffer soundBuffer = GetSound(soundType, name);
             if (soundBuffer != null) PlaySoundFromBuffer(soundType, soundBuffer, position);
-
         }
-        
+
         public void PlayRandomSound(string soundType, Vector2f position)
         {
             SoundBuffer soundBuffer = GetRandomSound(soundType);

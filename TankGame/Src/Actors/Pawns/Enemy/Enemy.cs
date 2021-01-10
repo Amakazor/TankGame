@@ -2,6 +2,7 @@
 using SFML.System;
 using System.Xml;
 using TankGame.Src.Actors.Pawns.MovementControllers;
+using TankGame.Src.Data.Sounds;
 
 namespace TankGame.Src.Actors.Pawns.Enemies
 {
@@ -9,11 +10,13 @@ namespace TankGame.Src.Actors.Pawns.Enemies
     {
         public uint ScoreAdded { get; }
         public string Type { get; }
+        public string MoveSoundName { get; }
 
-        public Enemy(Vector2f position, Vector2f size, Texture texture, int health, uint scoreAdded, string type) : base(position, size, texture, health)
+        public Enemy(Vector2f position, Vector2f size, Texture texture, int health, uint scoreAdded, string type, string moveSoundName) : base(position, size, texture, health)
         {
             ScoreAdded = scoreAdded;
             Type = type;
+            MoveSoundName = moveSoundName;
         }
 
         internal XmlNode SerializeToXML(XmlDocument xmlDocument)
@@ -37,6 +40,12 @@ namespace TankGame.Src.Actors.Pawns.Enemies
             if (MovementController != null && MovementController is PatrolAIMovementController PAIMC) enemyElement.AppendChild(PAIMC.SerializePath(xmlDocument));
 
             return enemyElement;
+        }
+
+        protected override void UpdatePosition(Vector2i lastCoords, Vector2i newCoords)
+        {
+            SoundManager.Instance.PlaySound("move", MoveSoundName, Position / 64);
+            base.UpdatePosition(lastCoords, newCoords);
         }
     }
 }

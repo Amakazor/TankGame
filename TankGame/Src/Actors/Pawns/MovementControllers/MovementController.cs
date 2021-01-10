@@ -3,7 +3,6 @@ using System;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Projectiles;
-using TankGame.Src.Data;
 using TankGame.Src.Data.Controls;
 using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Map;

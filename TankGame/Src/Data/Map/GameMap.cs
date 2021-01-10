@@ -36,22 +36,13 @@ namespace TankGame.Src.Data.Map
 
             Vector2i playersRegionCoords = SearchForPlayerRegion();
 
-            if (playersRegionCoords.IsValid())
-            {
-                LoadNineRegions(playersRegionCoords, false);
-            }
-            else
-            {
-                throw new Exception("No players region");
-            }
+            if (playersRegionCoords.IsValid()) LoadNineRegions(playersRegionCoords, false);
+            else throw new Exception("No players region");
 
             MessageBus.Instance.Register(MessageType.PawnMoved, OnPawnMoved);
         }
 
-        public void Save()
-        {
-            Regions.ToList().ForEach(region => region.Save());
-        }
+        public void Save() => Regions.ToList().ForEach(region => region.Save());
 
         public Region GetRegionFromFieldCoords(Vector2i fieldCoords)
         {
@@ -111,34 +102,31 @@ namespace TankGame.Src.Data.Map
                 });
 
                 for (int columnModifier = -1; columnModifier <= 1; columnModifier++) for (int rowModifier = -1; rowModifier <= 1; rowModifier++)
-                {
-                    Vector2i newCoords = new Vector2i(coords.X + columnModifier, coords.Y + rowModifier);
-
-                    if (GetRegionFromMapCoords(newCoords) is null)
                     {
-                        if (newCoords.X >= 0 && newCoords.X <= MapSize && newCoords.Y >= 0 && newCoords.Y <= MapSize && RegionPathGenerator.GetRegionPath(newCoords) != null)
+                        Vector2i newCoords = new Vector2i(coords.X + columnModifier, coords.Y + rowModifier);
+
+                        if (GetRegionFromMapCoords(newCoords) is null)
                         {
-                            Regions.Add(new Region(newCoords, FieldsInLine, true));
+                            if (newCoords.X >= 0 && newCoords.X <= MapSize && newCoords.Y >= 0 && newCoords.Y <= MapSize && RegionPathGenerator.GetRegionPath(newCoords) != null)
+                            {
+                                Regions.Add(new Region(newCoords, FieldsInLine, true));
+                            }
                         }
                     }
-                }
             }
 
-           if (save) GamestateManager.Instance.Save();
+            if (save) GamestateManager.Instance.Save();
         }
 
         private Vector2i SearchForPlayerRegion()
         {
-            for (int column = 0; column < MapSize; column++)
+            for (int column = 0; column < MapSize; column++) for (int row = 0; row < MapSize; row++)
             {
-                for (int row = 0; row < MapSize; row++)
-                {
-                    Vector2i regionCoords = new Vector2i(column, row);
+                Vector2i regionCoords = new Vector2i(column, row);
 
-                    if (RegionPathGenerator.GetRegionPath(regionCoords) != null && new Region(regionCoords, FieldsInLine, false).ContainsPlayer())
-                    {
-                        return regionCoords;
-                    }
+                if (RegionPathGenerator.GetRegionPath(regionCoords) != null && new Region(regionCoords, FieldsInLine, false).ContainsPlayer())
+                {
+                    return regionCoords;
                 }
             }
 
@@ -195,7 +183,7 @@ namespace TankGame.Src.Data.Map
             MessageBus.Instance.Unregister(MessageType.PawnMoved, OnPawnMoved);
             Regions.ToList().ForEach(region => region.Dispose());
             Regions = null;
-            
+
             Borders.ToList().ForEach(border => border.Dispose());
             Borders = null;
         }

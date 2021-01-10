@@ -7,7 +7,6 @@ using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.GameObjects.Activities;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Player;
-using TankGame.Src.Data;
 using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Textures;
 using TankGame.Src.Gui.RenderComponents;

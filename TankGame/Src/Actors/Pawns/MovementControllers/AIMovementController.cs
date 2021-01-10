@@ -5,7 +5,6 @@ using System.Linq;
 using System.Xml;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Actors.GameObjects.Activities;
-using TankGame.Src.Data;
 using TankGame.Src.Data.Controls;
 using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Map;

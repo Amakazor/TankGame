@@ -1,7 +1,6 @@
 ﻿using SFML.System;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -19,46 +18,6 @@ using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Data.Map
 {
-    internal static class RegionPathGenerator
-    {
-        public static readonly string DefaultRegionDirectory = "Resources/Region/";
-        public static readonly string SavedRegionDirectory = "Resources/Save/Region/";
-        public static string GetRegionPath(Vector2i coords)
-        {
-            string regionFileName = GetFileName(coords);
-
-            if (File.Exists(SavedRegionDirectory + regionFileName))
-            {
-                return GetSavedRegionPath(coords);
-            }
-            else if (File.Exists(DefaultRegionDirectory + regionFileName))
-            {
-                return GetDefaultRegionPath(coords);
-            }
-            else return null;
-        }
-
-        public static string GetDefaultRegionPath(Vector2i coords)
-        {
-            return GenerateRegionPath(coords, DefaultRegionDirectory);
-        }
-        
-        public static string GetSavedRegionPath(Vector2i coords)
-        {
-            return GenerateRegionPath(coords, SavedRegionDirectory);
-        }
-
-        public static string GetFileName(Vector2i coords)
-        {
-            return coords.X.ToString() + "_" + coords.Y.ToString() + ".xml";
-        }
-
-        private static string GenerateRegionPath(Vector2i coords, string directory)
-        {
-            return directory + GetFileName(coords);
-        }
-    }
-
     internal class Region : IDisposable
     {
         public Vector2i Coords { get; }
@@ -74,10 +33,7 @@ namespace TankGame.Src.Data.Map
             Coords = coords;
             FieldsInLine = fieldsInLine;
 
-            if (load)
-            {
-                Load();
-            }
+            if (load) Load();
         }
 
         public void Load()
@@ -154,14 +110,15 @@ namespace TankGame.Src.Data.Map
 
             Fields = new List<Field>();
 
-            regionFile.Root.Element("fields").Descendants("field").ToList().ForEach((XElement fieldElement) => {
+            regionFile.Root.Element("fields").Descendants("field").ToList().ForEach((XElement fieldElement) =>
+            {
                 Fields.Add(new Field(
                     new Vector2i((Coords.X * FieldsInLine) + x, (Coords.Y * FieldsInLine) + y),
                     FieldType.FieldTypes[fieldElement.Element("type").Value].Item1,
                     FieldType.FieldTypes[fieldElement.Element("type").Value].Item2,
                     TextureManager.Instance.GetTexture(TextureType.Field, fieldElement.Element("texture").Value),
                     fieldElement.Element("type").Value,
-                    (fieldElement.Element("object") != null && fieldElement.Element("object").Value != null) 
+                    (fieldElement.Element("object") != null && fieldElement.Element("object").Value != null)
                         ? new GameObject(
                             new Vector2i((Coords.X * FieldsInLine) + x, (Coords.Y * FieldsInLine) + y),
                             GameObjectType.GameObjectTypes[fieldElement.Element("object").Element("type").Value],
@@ -172,15 +129,12 @@ namespace TankGame.Src.Data.Map
                                 : -1)
                         : null));
 
-                if (y == 19)
+                if (y == FieldsInLine - 1)
                 {
                     y = 0;
                     x++;
                 }
-                else
-                {
-                    y++;
-                }
+                else y++;
             });
         }
 
@@ -206,18 +160,20 @@ namespace TankGame.Src.Data.Map
 
             if (regionFile.Root.Element("spawns") != null && regionFile.Root.Element("spawns").Descendants("enemy") != null)
             {
-                Enemies = new HashSet<Enemy>(from enemy in regionFile.Root.Element("spawns").Descendants("enemy") select EnemyFactory.CreateEnemy(
-                    new Vector2i((Coords.X * FieldsInLine) + int.Parse(enemy.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(enemy.Element("y").Value)),
-                    enemy.Element("type").Value,
-                    enemy.Element("aimc").Value,
-                    enemy.Element("path") != null && enemy.Element("path").Descendants("point") != null
-                        ? new List<Vector2i>(from point in enemy.Element("path").Descendants("point") select new Vector2i((Coords.X * FieldsInLine) + int.Parse(point.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(point.Element("y").Value)))
-                        : null,
-                    enemy.Element("health") != null 
-                        ? int.Parse(enemy.Element("health").Value) 
-                        : -1,
-                    this));
-            } else Enemies = new HashSet<Enemy>();
+                Enemies = new HashSet<Enemy>(from enemy in regionFile.Root.Element("spawns").Descendants("enemy")
+                    select EnemyFactory.CreateEnemy(
+                        new Vector2i((Coords.X * FieldsInLine) + int.Parse(enemy.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(enemy.Element("y").Value)),
+                        enemy.Element("type").Value,
+                        enemy.Element("aimc").Value,
+                        enemy.Element("path") != null && enemy.Element("path").Descendants("point") != null
+                            ? new List<Vector2i>(from point in enemy.Element("path").Descendants("point") select new Vector2i((Coords.X * FieldsInLine) + int.Parse(point.Element("x").Value), (Coords.Y * FieldsInLine) + int.Parse(point.Element("y").Value)))
+                            : null,
+                        enemy.Element("health") != null
+                            ? int.Parse(enemy.Element("health").Value)
+                            : -1,
+                        this));
+            }
+            else Enemies = new HashSet<Enemy>();
         }
 
         private void LoadActivity()
@@ -234,35 +190,38 @@ namespace TankGame.Src.Data.Map
                 {
                     "destroy" => new DestroyAllActivity(ActivityCoords, Enemies),
                     "protect" => new ProtectActivity(ActivityCoords, Enemies, activityData.Element("health") != null ? int.Parse(activityData.Element("health").Value) : -1),
-                    "wave"    => new WaveActivity(ActivityCoords, Enemies,
-                                                  new Queue<List<EnemySpawnData>>(from waves in activityData.Element("waves").Descendants("wave") select new List<EnemySpawnData>(from spawnData in waves.Descendants("enemy") select new EnemySpawnData(
-                                                      new Vector2i(mapXCoords + int.Parse(spawnData.Element("x").Value),
-                                                                   mapYCoords + int.Parse(spawnData.Element("y").Value)),
-                                                      spawnData.Element("type").Value,
-                                                      spawnData.Element("aimc").Value,
-                                                      spawnData.Element("path") != null && spawnData.Element("path").Descendants("point") != null
-                                                        ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
-                                                        : null))),
-                                                  this,
-                                                  activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0),
-                    "waveprotect"    => new WaveProtectActivity(ActivityCoords, Enemies,
-                                                  new Queue<List<EnemySpawnData>>(from waves in activityData.Element("waves").Descendants("wave") select new List<EnemySpawnData>(from spawnData in waves.Descendants("enemy") select new EnemySpawnData(
-                                                      new Vector2i(mapXCoords + int.Parse(spawnData.Element("x").Value),
-                                                                   mapYCoords + int.Parse(spawnData.Element("y").Value)),
-                                                      spawnData.Element("type").Value,
-                                                      spawnData.Element("aimc").Value,
-                                                      spawnData.Element("path") != null && spawnData.Element("path").Descendants("point") != null
-                                                        ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
-                                                        : null))),
-                                                  this,
-                                                  activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0, 
-                                                  activityData.Element("health") != null ? int.Parse(activityData.Element("health").Value) : -1),
+                    "wave" => new WaveActivity(ActivityCoords, Enemies,
+                        new Queue<List<EnemySpawnData>>(from waves in activityData.Element("waves").Descendants("wave")
+                            select new List<EnemySpawnData>(from spawnData in waves.Descendants("enemy")
+                                select new EnemySpawnData(
+                                    new Vector2i(mapXCoords + int.Parse(spawnData.Element("x").Value), mapYCoords + int.Parse(spawnData.Element("y").Value)),
+                                    spawnData.Element("type").Value,
+                                    spawnData.Element("aimc").Value,
+                                    spawnData.Element("path") != null && spawnData.Element("path").Descendants("point") != null
+                                        ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
+                                        : null))),
+                        this,
+                        activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0),
+                    "waveprotect" => new WaveProtectActivity(ActivityCoords, Enemies,
+                        new Queue<List<EnemySpawnData>>(from waves in activityData.Element("waves").Descendants("wave")
+                            select new List<EnemySpawnData>(from spawnData in waves.Descendants("enemy")
+                                select new EnemySpawnData(
+                                    new Vector2i(mapXCoords + int.Parse(spawnData.Element("x").Value), mapYCoords + int.Parse(spawnData.Element("y").Value)),
+                                    spawnData.Element("type").Value,
+                                    spawnData.Element("aimc").Value,
+                                    spawnData.Element("path") != null && spawnData.Element("path").Descendants("point") != null
+                                        ? new List<Vector2i>(from point in spawnData.Element("path").Descendants("point") select new Vector2i(mapXCoords + int.Parse(point.Element("x").Value), mapYCoords + int.Parse(point.Element("y").Value)))
+                                        : null))),
+                        this,
+                        activityData.Element("currentWave") != null ? uint.Parse(activityData.Element("currentWave").Value) : 0,
+                        activityData.Element("health") != null ? int.Parse(activityData.Element("health").Value) : -1),
                     _ => throw new NotImplementedException()
                 };
+
                 Activity.Field = GetFieldAtMapCoords(Activity.Coords);
                 Activity.Field.GameObject = Activity;
-                if (Player != null && Activity.ActivityStatus == ActivityStatus.Stopped) Activity.ChangeStatus(ActivityStatus.Started);
 
+                if (Player != null && Activity.ActivityStatus == ActivityStatus.Stopped) Activity.ChangeStatus(ActivityStatus.Started);
             }
         }
 
@@ -270,14 +229,11 @@ namespace TankGame.Src.Data.Map
         {
             XmlElement fieldsElement = xmlDocument.CreateElement("fields");
 
-            foreach (Field field in Fields)
-            {
-                fieldsElement.AppendChild(field.SerializeToXML(xmlDocument));
-            }
+            Fields.ForEach(field => fieldsElement.AppendChild(field.SerializeToXML(xmlDocument)));
 
             return fieldsElement;
         }
-        
+
         private XmlElement SerializeSpawns(XmlDocument xmlDocument)
         {
             XmlElement fieldsElement = xmlDocument.CreateElement("spawns");
@@ -294,13 +250,8 @@ namespace TankGame.Src.Data.Map
             return Activity != null ? Activity.SerializeToXML(savefile) : savefile.CreateElement("activity");
         }
 
-        public bool HasField(Vector2i mapFieldCoords)
-        {
-            return Coords.X * FieldsInLine <= mapFieldCoords.X && Coords.Y * FieldsInLine <= mapFieldCoords.Y && (Coords.X + 1) * FieldsInLine > mapFieldCoords.X && (Coords.Y + 1) * FieldsInLine > mapFieldCoords.Y;
-        }
-
-        public Field GetFieldAtMapCoords(Vector2i mapFieldCoords) => HasField(mapFieldCoords) ? FieldAtIndex(ConvertRegionFieldCoordsToFieldIndex(ConvertMapCoordsToRegionFieldCoords(mapFieldCoords))) : null;
-        private Field FieldAtIndex(int index) => Fields[index];
+        public bool HasField(Vector2i mapFieldCoords) => Coords.X * FieldsInLine <= mapFieldCoords.X && Coords.Y * FieldsInLine <= mapFieldCoords.Y && (Coords.X + 1) * FieldsInLine > mapFieldCoords.X && (Coords.Y + 1) * FieldsInLine > mapFieldCoords.Y;
+        public Field GetFieldAtMapCoords(Vector2i mapFieldCoords) => HasField(mapFieldCoords) ? Fields[ConvertRegionFieldCoordsToFieldIndex(ConvertMapCoordsToRegionFieldCoords(mapFieldCoords))] : null;
         public Vector2i ConvertMapCoordsToRegionFieldCoords(Vector2i mapFieldCoords) => mapFieldCoords.Modulo(FieldsInLine);
         private int ConvertRegionFieldCoordsToFieldIndex(Vector2i regionFieldCoords) => regionFieldCoords.X * FieldsInLine + regionFieldCoords.Y;
         public bool HasDestructibleActivity => Activity != null && Activity.IsDestructible && Activity.ActivityStatus == ActivityStatus.Started;
@@ -330,7 +281,7 @@ namespace TankGame.Src.Data.Map
             if (Activity != null) Activity.OnEnemyWanderIn();
             AddEnemy(enemy);
         }
-        
+
         public void EnemyWanderedOut(Enemy enemy)
         {
             if (Activity != null) Activity.OnEnemyWanderOut();

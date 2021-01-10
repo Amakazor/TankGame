@@ -2,7 +2,7 @@
 
 namespace TankGame.Src.Events
 {
-    class PlayerHealthChangeEventArgs : EventArgs
+    internal class PlayerHealthChangeEventArgs : EventArgs
     {
         public int CurrentHealth { get; }
 
