@@ -1,6 +1,8 @@
 ﻿using SFML.System;
 using System;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Controls;
+using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Extensions;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers

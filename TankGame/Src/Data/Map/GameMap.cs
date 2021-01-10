@@ -6,6 +6,8 @@ using TankGame.Src.Actors.Borders;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
+using TankGame.Src.Data.Gamestate;
+using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
 using TankGame.Src.Extensions;
 using TankGame.Src.Pathfinding;
@@ -96,9 +98,6 @@ namespace TankGame.Src.Data.Map
 
         private void LoadNineRegions(Vector2i coords, bool save = true)
         {
-            Console.WriteLine(coords.X.ToString());
-            Console.WriteLine(coords.Y.ToString());
-
             if (coords.IsValid())
             {
                 Regions.ToList().ForEach(region =>

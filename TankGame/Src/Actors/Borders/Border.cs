@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using TankGame.Src.Gui.RenderComponents;
+using TankGame.Src.Actors.Data;
 
 namespace TankGame.Src.Actors.Borders
 {

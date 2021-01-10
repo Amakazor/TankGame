@@ -4,6 +4,8 @@ using TankGame.Src.Actors.Fields;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Controls;
+using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Map;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
@@ -31,8 +33,6 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         public virtual Direction DoAction(Direction currentDirection)
         {
-            Console.WriteLine("Trying to do action as " + Owner.GetType().ToString());
-
             if (CanDoAction() && NextAction != null) return NextAction.Equals(KeyActionType.Shoot) ? Shoot(currentDirection) : MoveOrRotate(currentDirection);
             else if (NextAction is null && Owner is Enemy) SetRandomizedCooldown();
             return currentDirection;

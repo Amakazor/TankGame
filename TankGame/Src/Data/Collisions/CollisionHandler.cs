@@ -10,7 +10,7 @@ using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Events;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Collisions
 {
     internal class CollisionHandler : IDisposable
     {

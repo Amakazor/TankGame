@@ -11,6 +11,8 @@ using TankGame.Src.Actors.GameObjects.Activities;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
+using TankGame.Src.Data.Gamestate;
+using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
 using TankGame.Src.Extensions;
 using TankGame.Src.Pathfinding;
@@ -76,8 +78,6 @@ namespace TankGame.Src.Data.Map
             {
                 Load();
             }
-
-            Console.WriteLine("Constructed region at: " + coords.X + " " + coords.Y);
         }
 
         public void Load()

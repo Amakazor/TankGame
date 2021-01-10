@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Sounds
 {
     internal class MusicManager
     {

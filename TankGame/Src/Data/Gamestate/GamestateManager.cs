@@ -9,9 +9,10 @@ using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Text;
 using TankGame.Src.Data.Map;
+using TankGame.Src.Data.Weathers;
 using TankGame.Src.Events;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Gamestate
 {
     internal class GamestateManager
     {

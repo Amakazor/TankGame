@@ -1,7 +1,7 @@
 ﻿using System;
 using TankGame.Src.Actors.GUI;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.GUI
 {
     class HUD : IDisposable
     {

@@ -1,6 +1,7 @@
 ﻿using SFML.System;
 using System;
 using System.Collections.Generic;
+using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Pawns.Enemies;
 
 namespace TankGame.Src.Actors.GameObjects.Activities

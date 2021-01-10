@@ -1,4 +1,4 @@
-﻿namespace TankGame.Src.Data
+﻿namespace TankGame.Src.Data.Textures
 {
     internal static class TextureType
     {

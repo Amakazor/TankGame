@@ -3,9 +3,13 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Map;
+using TankGame.Src.Data.Sounds;
+using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 

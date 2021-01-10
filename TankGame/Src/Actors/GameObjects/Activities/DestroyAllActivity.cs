@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Pawns.Enemies;
 
 namespace TankGame.Src.Actors.GameObjects.Activities

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Controls
 {
     internal static class KeyActionType
     {

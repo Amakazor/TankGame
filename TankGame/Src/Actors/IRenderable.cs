@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TankGame.Src.Actors.Data;
 using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Actors

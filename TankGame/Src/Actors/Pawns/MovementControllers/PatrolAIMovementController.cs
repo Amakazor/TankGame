@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Controls;
 using TankGame.Src.Extensions;
 using TankGame.Src.Pathfinding;
 

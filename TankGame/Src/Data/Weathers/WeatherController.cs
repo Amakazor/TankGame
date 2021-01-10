@@ -2,9 +2,12 @@
 using TankGame.Src.Actors;
 using TankGame.Src.Actors.Shaders;
 using TankGame.Src.Actors.Weathers;
+using TankGame.Src.Data.Gamestate;
+using TankGame.Src.Data.Sounds;
+using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Weathers
 {
     internal class WeatherController : ITickable, IDisposable
     {

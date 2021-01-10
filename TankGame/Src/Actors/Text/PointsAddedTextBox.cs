@@ -2,6 +2,7 @@
 using SFML.System;
 using System;
 using TankGame.Src.Events;
+using TankGame.Src.Actors.Data;
 
 namespace TankGame.Src.Actors.Text
 {

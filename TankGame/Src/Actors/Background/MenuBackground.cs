@@ -2,6 +2,7 @@
 using SFML.System;
 using System.Collections.Generic;
 using TankGame.Src.Gui.RenderComponents;
+using TankGame.Src.Actors.Data;
 
 namespace TankGame.Src.Actors.Background
 {

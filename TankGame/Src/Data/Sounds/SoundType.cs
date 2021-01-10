@@ -1,4 +1,4 @@
-﻿namespace TankGame.Src.Data
+﻿namespace TankGame.Src.Data.Sounds
 {
     internal static class SoundType
     {

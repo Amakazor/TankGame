@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using TankGame.Src.Gui.RenderComponents;
+using TankGame.Src.Actors.Data;
 
 namespace TankGame.Src.Actors.Text
 {

@@ -7,11 +7,13 @@ using TankGame.Src.Actors;
 using TankGame.Src.Actors.Background;
 using TankGame.Src.Actors.Buttons;
 using TankGame.Src.Actors.Text;
+using TankGame.Src.Data.Controls;
+using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Statistics;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.GUI
 {
     class Menu : IDisposable
     {

@@ -3,6 +3,7 @@ using SFML.Window;
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Controls;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 

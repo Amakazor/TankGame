@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Controls;
+using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Extensions;
 using TankGame.Src.Pathfinding;
 

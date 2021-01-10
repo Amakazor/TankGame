@@ -2,10 +2,14 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Gamestate;
+using TankGame.Src.Data.Sounds;
+using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
 using TankGame.Src.Extensions;
 using TankGame.Src.Gui.RenderComponents;

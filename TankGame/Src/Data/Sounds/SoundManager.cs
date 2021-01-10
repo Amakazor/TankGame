@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Extensions;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Sounds
 {
     internal class SoundManager
     {

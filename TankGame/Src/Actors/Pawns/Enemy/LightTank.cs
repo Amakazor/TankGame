@@ -1,5 +1,7 @@
 ﻿using SFML.System;
 using TankGame.Src.Data;
+using TankGame.Src.Data.Sounds;
+using TankGame.Src.Data.Textures;
 
 namespace TankGame.Src.Actors.Pawns.Enemies
 {
