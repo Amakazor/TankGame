@@ -66,7 +66,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
 
         public void ChangeToCompleted()
         {
-            ObjectSprite = new SpriteComponent(Position, Size, this, AfterCompletionTexture, new Color(255, 255, 255, 255));
+            ObjectSprite = new SpriteComponent(Position, Size, AfterCompletionTexture, new Color(255, 255, 255, 255));
             DestructabilityData = AfterCompletionDestructabilityData;
         }
 

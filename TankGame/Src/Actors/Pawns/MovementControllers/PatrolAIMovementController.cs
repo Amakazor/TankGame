@@ -1,7 +1,6 @@
 ﻿using SFML.System;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Xml;
 using TankGame.Src.Data;
 using TankGame.Src.Extensions;
@@ -43,9 +42,9 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                     {
                         if (Path != null && Path.Count == 0) Path = null;
 
-                        Path ??= GeneratePath(GamestateManager.Instance.Map.GetNodesInRadius(Owner.Coords, BaseSightDistance), new Vector2i(BaseSightDistance, BaseSightDistance), new Vector2i(BaseSightDistance, BaseSightDistance) + TargetPosition - Owner.Coords);
+                        Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), TargetPosition);
 
-                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.Coords - new Vector2i(BaseSightDistance, BaseSightDistance));
+                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position);
                     }
                     else NextAction = null;
                 }

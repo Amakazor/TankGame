@@ -26,7 +26,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             {
                 PatrolRoute ??= Owner.CurrentRegion.GetNodesInRegion().SelectMany(node => node).Select(node => node.Position).OrderBy(node => Guid.NewGuid()).ToList();
 
-                if (CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine) NextAction = KeyActionType.Shoot;
+                if (CanSeePlayerInUnobstructedLine || (CanSeeActivityInUnobstructedLine && Owner.CurrentRegion.HasDestructibleActivity)) NextAction = KeyActionType.Shoot;
                 else
                 {
                     if (CurrentPatrolRoute is null || CurrentPatrolRoute.Count == 0)
@@ -45,7 +45,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
                         Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), TargetPosition);
 
-                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position);
+                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.CurrentRegion.Coords * 20);
                     }
                     else NextAction = null;
                 }

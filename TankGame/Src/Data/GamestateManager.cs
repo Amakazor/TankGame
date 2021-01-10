@@ -5,9 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Text;
 using TankGame.Src.Data.Map;
+using TankGame.Src.Events;
 
 namespace TankGame.Src.Data
 {
@@ -16,6 +18,7 @@ namespace TankGame.Src.Data
         private const double ComboTime = 7.5;
         private const uint MaxCombo = 10;
         private const string Savefile = "Resources/Save/currentsave.xml";
+        private const uint PointsPerHealthUp = 5000;
 
         private static GamestateManager instance;
 
@@ -37,6 +40,7 @@ namespace TankGame.Src.Data
 
         private GamestateManager()
         {
+            MessageBus.Instance.Register(MessageType.PawnDeath, OnPawnDeath);
             GamePhase = GamePhase.NotStarted;
 
             Points = 0;
@@ -48,6 +52,11 @@ namespace TankGame.Src.Data
             PointsTextBoxes = new HashSet<PointsAddedTextBox>();
 
             WeatherController = null;
+        }
+
+        private void OnPawnDeath(object sender, EventArgs eventArgs)
+        {
+            if (eventArgs is PawnEventArgs pawnEventArgs && pawnEventArgs.Pawn is Enemy enemy) AddPoints(enemy.ScoreAdded, enemy.RealPosition + new Vector2f((enemy.Size.X / 2) - 75, ((enemy.Size.Y / 10) - 10)));
         }
 
         public void Start(bool isNewGame)
@@ -162,7 +171,7 @@ namespace TankGame.Src.Data
             }
             else Points += points;
 
-            if (pointsBeforeAddition / 5000 != Points / 5000 && Points > pointsBeforeAddition && Points > PointsBeforeSubstraction) Player.AddHealth(Convert.ToInt32((Points / 5000) - (pointsBeforeAddition / 5000)));
+            if (pointsBeforeAddition / PointsPerHealthUp != Points / PointsPerHealthUp && Points > pointsBeforeAddition && Points > PointsBeforeSubstraction) Player.AddHealth(Convert.ToInt32((Points / PointsPerHealthUp) - (pointsBeforeAddition / PointsPerHealthUp)));
 
             PointsTextBoxes.Add(new PointsAddedTextBox(position ?? Player.Position + new Vector2f((Player.Size.X / 2) - 50, (Player.Size.Y / 4) - 10), points, useCombo ? Combo - 1 : 1));
         }
@@ -180,14 +189,7 @@ namespace TankGame.Src.Data
             }
         }
 
-        public void CompleteActivity(int points, Vector2f position)
-        {
-            AddPoints(points * Math.Max(++CompletedActivities, 1), position, false);
-        }
-
-        public void FailActivity(int points, Vector2f position)
-        {
-            AddPoints(-1 * points * Math.Max(--CompletedActivities, 1), position, false);
-        }
+        public void CompleteActivity(int points, Vector2f position) => AddPoints((int)(points * ((++CompletedActivities / 6F) + (5F / 6F))), position, false);
+        public void FailActivity(int points, Vector2f position) => AddPoints(-1 * points, position, false);
     }
 }

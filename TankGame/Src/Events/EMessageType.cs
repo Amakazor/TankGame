@@ -23,7 +23,7 @@
         CancelInputs,
         MenuRefreshKeys,
         TextInput,
-        PlayerDeath,
+        PawnDeath,
         StopGame
     }
 }

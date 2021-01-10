@@ -3,2005 +3,2035 @@
   <fields>
     <field>
       <!--0x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--0x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--1x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--2x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--3x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--3x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--3x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--3x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--4x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--4x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--4x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--4x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--4x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--4x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--4x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--5x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--5x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--5x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--5x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--5x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--5x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--5x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--5x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--6x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--6x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--6x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--6x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--7x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--8x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--9x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+       <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--10x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--11x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--11x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--11x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--11x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+     <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--12x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--12x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--12x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--12x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--13x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--13x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--13x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--13x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--13x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--13x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--13x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--14x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--14x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--14x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--14x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--15x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--15x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--15x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--15x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--15x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--16x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--16x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--16x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--16x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--17x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--17x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--17x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--17x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--18x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--18x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>sand</type>
+      <texture>sand</texture>
     </field>
     <field>
       <!--18x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--18x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x0-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x1-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x2-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x3-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x4-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x5-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x6-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x7-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x8-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x9-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x10-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x11-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x12-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x13-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x14-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x15-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x16-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x17-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x18-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
     <field>
       <!--19x19-->
-      <type>empty</type>
-      <texture>empty</texture>
+      <type>grass</type>
+      <texture>grass</texture>
     </field>
   </fields>
   <spawns>
+    <enemy>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>10</x>
+      <y>10</y>
+    </enemy>
+    <enemy>
+    <type>heavy</type>
+    <aimc>stand</aimc>
+    <x>4</x>
+    <y>7</y>
+    </enemy>
+      <enemy>
+    <type>heavy</type>
+    <aimc>stand</aimc>
+    <x>5</x>
+    <y>13</y>
+      </enemy>
+        <enemy>
+    <type>heavy</type>
+    <aimc>stand</aimc>
+    <x>1</x>
+    <y>13</y>
+        </enemy>
+          <enemy>
+    <type>heavy</type>
+    <aimc>stand</aimc>
+    <x>15</x>
+    <y>13</y>
+          </enemy>
   </spawns>
 </region>

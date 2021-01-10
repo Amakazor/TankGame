@@ -7,11 +7,9 @@ using System.Linq;
 using TankGame.Src.Actors;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Data;
-using TankGame.Src.Data.Map;
 using TankGame.Src.Data.Statistics;
 using TankGame.Src.Events;
 using TankGame.Src.Extensions;
-using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src
 {
@@ -290,7 +288,7 @@ namespace TankGame.Src
             messageBus.Register(MessageType.KeyAction, OnKeyAction);
 
             messageBus.Register(MessageType.PlayerMoved, OnPlayerMoved);
-            messageBus.Register(MessageType.PlayerDeath, OnPlayerDeath);
+            messageBus.Register(MessageType.PawnDeath, OnPawnDeath);
         }
 
         private void OnQuit(object sender, EventArgs eventArgs)
@@ -333,10 +331,13 @@ namespace TankGame.Src
             }
         }
         
-        private void OnPlayerDeath(object sender, EventArgs eventArgs)
+        private void OnPawnDeath(object sender, EventArgs eventArgs)
         {
-            GamestateManager.Instance.GamePhase = GamePhase.Ending;
-            Menu.ShowEndScreen();
+            if (eventArgs is PawnEventArgs pawnEventArgs && pawnEventArgs.Pawn is Player)
+            {
+                GamestateManager.Instance.GamePhase = GamePhase.Ending;
+                Menu.ShowEndScreen();
+            }
         }
 
         private void OnStopGame(object arg1, EventArgs arg2)

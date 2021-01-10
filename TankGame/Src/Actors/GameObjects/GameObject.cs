@@ -1,5 +1,4 @@
-﻿using SFML.Audio;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -47,8 +46,8 @@ namespace TankGame.Src.Actors.GameObjects
             if (hp > -1) Health = hp;
 
             ObjectSprite = Health == 0
-                ? new SpriteComponent(Position, Size, this, AfterDestructionTexture, new Color(255, 255, 255, 255))
-                : new SpriteComponent(Position, Size, this, texture, new Color(255, 255, 255, 255));
+                ? new SpriteComponent(Position, Size, AfterDestructionTexture, new Color(255, 255, 255, 255))
+                : new SpriteComponent(Position, Size, texture, new Color(255, 255, 255, 255));
 
             if (Health == 0)
             {
@@ -78,7 +77,7 @@ namespace TankGame.Src.Actors.GameObjects
             }
             else
             {
-                ObjectSprite = new SpriteComponent(Position, Size, this, AfterDestructionTexture, new Color(255, 255, 255, 255));
+                ObjectSprite = new SpriteComponent(Position, Size, AfterDestructionTexture, new Color(255, 255, 255, 255));
                 TraversibilityData = TraversibilityDataAfterDestruction;
                 DestructabilityData = DestructabilityDataAfterDestruction;
             }

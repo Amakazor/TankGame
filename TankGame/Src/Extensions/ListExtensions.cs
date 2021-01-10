@@ -1,11 +1,7 @@
 ﻿using SFML.Graphics;
-using SFML.Window;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using TankGame.Src.Actors;
-using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Extensions
 {

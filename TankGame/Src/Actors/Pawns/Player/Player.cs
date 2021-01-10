@@ -34,12 +34,6 @@ namespace TankGame.Src.Actors.Pawns.Player
             MessageBus.Instance.PostEvent(MessageType.PlayerHealthChanged, this, new PlayerHealthChangeEventArgs(Health));
         }
 
-        public override void OnDestroy()
-        {
-            base.OnDestroy();
-            MessageBus.Instance.PostEvent(MessageType.PlayerDeath, this, new EventArgs());
-        }
-
         internal XmlNode SerializeToXML(XmlDocument xmlDocument)
         {
             XmlElement playerElement = xmlDocument.CreateElement("player");

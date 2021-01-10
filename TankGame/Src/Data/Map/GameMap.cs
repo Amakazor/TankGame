@@ -1,10 +1,9 @@
 ﻿using SFML.System;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using TankGame.Src.Actors.Borders;
 using TankGame.Src.Actors.Fields;
-using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Events;
@@ -19,9 +18,18 @@ namespace TankGame.Src.Data.Map
         private const int FieldsInLine = 20;
 
         private HashSet<Region> Regions { get; set; }
+        private HashSet<Border> Borders { get; set; }
 
         public GameMap()
         {
+            Borders = new HashSet<Border>
+            {
+                new Border(new Vector2f(-128, -128), new Vector2f(64, 64), new Vector2i(2, MapSize*FieldsInLine + 4), TextureManager.Instance.GetTexture(TextureType.Border, "hedgehog")),
+                new Border(new Vector2f(-128, -128), new Vector2f(64, 64), new Vector2i(MapSize*FieldsInLine + 4, 2), TextureManager.Instance.GetTexture(TextureType.Border, "hedgehog")),
+                new Border(new Vector2f(MapSize*FieldsInLine*64, -128), new Vector2f(64, 64), new Vector2i(2, MapSize*FieldsInLine + 4), TextureManager.Instance.GetTexture(TextureType.Border, "hedgehog")),
+                new Border(new Vector2f(-128, MapSize*FieldsInLine*64), new Vector2f(64, 64), new Vector2i(MapSize*FieldsInLine + 4, 2), TextureManager.Instance.GetTexture(TextureType.Border, "hedgehog")),
+            };
+
             Regions = new HashSet<Region>();
 
             Vector2i playersRegionCoords = SearchForPlayerRegion();
@@ -181,11 +189,16 @@ namespace TankGame.Src.Data.Map
             }
         }
 
+        public bool IsOutOfBounds(Vector2f position) => position.X < 0 || position.Y < 0 || position.X > MapSize * FieldsInLine * 64 || position.Y > MapSize * FieldsInLine * 64;
+
         public void Dispose()
         {
             MessageBus.Instance.Unregister(MessageType.PawnMoved, OnPawnMoved);
             Regions.ToList().ForEach(region => region.Dispose());
             Regions = null;
+            
+            Borders.ToList().ForEach(border => border.Dispose());
+            Borders = null;
         }
     }
 }

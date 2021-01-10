@@ -17,8 +17,8 @@ namespace TankGame.Src.Actors.Projectiles
         private const float BaseFlightDistance = 64 * 7;
         private const float BaseSpeed = 200;
 
-        private float FlightDistance = BaseFlightDistance * (1 / (GamestateManager.Instance.WeatherModifier * GamestateManager.Instance.WeatherModifier));
-        private float FlightSpeed = BaseSpeed * (1 / (GamestateManager.Instance.WeatherModifier * GamestateManager.Instance.WeatherModifier));
+        private readonly float FlightDistance = BaseFlightDistance * (1 / (GamestateManager.Instance.WeatherModifier * GamestateManager.Instance.WeatherModifier));
+        private readonly float FlightSpeed = BaseSpeed * (1 / (GamestateManager.Instance.WeatherModifier * GamestateManager.Instance.WeatherModifier));
         private Direction Direction { get; }
         private SpriteComponent ProjectileComponent { get; set; }
         public Pawn Owner { get; private set; }
@@ -38,8 +38,8 @@ namespace TankGame.Src.Actors.Projectiles
 
             ProjectileComponent = Owner switch
             {
-                Enemy _ => new SpriteComponent(Position, Size, this, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk1"), new Color(255, 255, 255, 255), Direction),
-                Player _ => new SpriteComponent(Position, Size, this, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk2"), new Color(255, 255, 255, 255), Direction),
+                Enemy _ => new SpriteComponent(Position, Size, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk1"), new Color(255, 255, 255, 255), Direction),
+                Player _ => new SpriteComponent(Position, Size, TextureManager.Instance.GetTexture(TextureType.Projectile, "pocisk2"), new Color(255, 255, 255, 255), Direction),
                 _ => throw new System.NotImplementedException(),
             };
 
@@ -57,7 +57,7 @@ namespace TankGame.Src.Actors.Projectiles
 
         public override void Tick(float deltaTime)
         {
-            if (!HasFlownToFar)
+            if (!HasFlownToFar && !(GamestateManager.Instance.Map != null && GamestateManager.Instance.Map.IsOutOfBounds(Position)))
             {
                 Vector2f moveVector = Direction switch
                 {

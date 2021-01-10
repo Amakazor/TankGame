@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TankGame.Src.Actors;
 using TankGame.Src.Data;
-using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Events
 {
