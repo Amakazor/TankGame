@@ -127,7 +127,7 @@
     <field>
       <!--1x1-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-rb</texture>
     </field>
     <field>
       <!--1x2-->
@@ -142,7 +142,7 @@
     <field>
       <!--1x4-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-rt</texture>
     </field>
     <field>
       <!--1x5-->
@@ -466,7 +466,7 @@
     <field>
       <!--4x1-->
       <type>road</type>
-      <texture>road2</texture>
+      <texture>road-lbr</texture>
     </field>
     <field>
       <!--4x2-->
@@ -481,7 +481,7 @@
     <field>
       <!--4x4-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-lt</texture>
     </field>
     <field>
       <!--4x5-->
@@ -1516,7 +1516,7 @@
     <field>
       <!--13x1-->
       <type>road</type>
-      <texture>road2</texture>
+      <texture>road-ltr</texture>
     </field>
     <field>
       <!--13x2-->
@@ -1942,7 +1942,7 @@
     <field>
       <!--16x16-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-rb</texture>
     </field>
     <field>
       <!--16x17-->
@@ -1952,7 +1952,7 @@
     <field>
       <!--16x18-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-rt</texture>
     </field>
     <field>
       <!--16x19-->
@@ -1967,7 +1967,7 @@
     <field>
       <!--17x1-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-lb</texture>
     </field>
     <field>
       <!--17x2-->
@@ -2042,7 +2042,7 @@
     <field>
       <!--17x16-->
       <type>road</type>
-      <texture>road2</texture>
+      <texture>road-ltr</texture>
     </field>
     <field>
       <!--17x17-->
@@ -2148,7 +2148,7 @@
     <field>
       <!--18x16-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-lb</texture>
     </field>
     <field>
       <!--18x17-->
@@ -2158,7 +2158,7 @@
     <field>
       <!--18x18-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-lt</texture>
     </field>
     <field>
       <!--18x19-->
@@ -2499,9 +2499,5 @@
     </waves>
   </activity>
   <spawns>
-    <player>
-      <x>19</x>
-      <y>19</y>
-    </player>
 	</spawns>
 </region>
