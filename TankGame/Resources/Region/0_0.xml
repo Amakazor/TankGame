@@ -2056,9 +2056,11 @@
     </waves>
   </activity>
   <spawns>
+    <!--
     <player>
       <x>4</x>
       <y>4</y>
     </player>
+    -->
 	</spawns>
 </region>

@@ -2150,6 +2150,7 @@
       <x>5</x>
       <y>10</y>
     </enemy>
+    <!--
     <enemy>
       <type>medium</type>
       <aimc>chase</aimc>
@@ -2172,7 +2173,7 @@
       <type>light</type>
       <aimc>chase</aimc>
       <x>10</x>
-      <y>11</y>
+      <y>10</y>
     </enemy>
     <enemy>
       <type>light</type>
@@ -2204,6 +2205,7 @@
       <x>16</x>
       <y>2</y>
     </enemy>
+    -->
     <enemy>
       <type>light</type>
       <aimc>chase</aimc>
@@ -2222,5 +2224,9 @@
       <x>19</x>
       <y>11</y>
     </enemy>
+    <player>
+      <x>10</x>
+      <y>11</y>
+    </player>
   </spawns>
 </region>
