@@ -200,4 +200,9 @@
 		<name>water</name>
 		<location>Resources/Textures/Fields/water.png</location>
 	</texture>
+  <texture>
+		<type>border</type>
+		<name>hedgehog</name>
+		<location>Resources/Textures/Border/hedgehog.png</location>
+	</texture>
 </textures>
