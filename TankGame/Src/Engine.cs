@@ -199,6 +199,10 @@ namespace TankGame.Src
 
             Window = new RenderWindow(new VideoMode(WindowHeight, WindowWidth), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 2 });
             Window.SetVerticalSyncEnabled(true);
+
+            Texture icon = TextureManager.Instance.GetTexture(TextureType.Pawn, "player1");
+            Window.SetIcon(icon.Size.X, icon.Size.Y, icon.CopyToImage().Pixels);
+
             Window.Closed += (_, __) => Window.Close();
         }
 
