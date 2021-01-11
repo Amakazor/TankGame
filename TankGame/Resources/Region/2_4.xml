@@ -1033,7 +1033,7 @@
     </field>
     <field>
       <!--10x6-->
-       <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1203,7 +1203,7 @@
     </field>
     <field>
       <!--12x0-->
-     <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -2010,28 +2010,28 @@
       <y>10</y>
     </enemy>
     <enemy>
-    <type>heavy</type>
-    <aimc>stand</aimc>
-    <x>4</x>
-    <y>7</y>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>4</x>
+      <y>7</y>
     </enemy>
-      <enemy>
-    <type>heavy</type>
-    <aimc>stand</aimc>
-    <x>5</x>
-    <y>13</y>
-      </enemy>
-        <enemy>
-    <type>heavy</type>
-    <aimc>stand</aimc>
-    <x>1</x>
-    <y>13</y>
-        </enemy>
-          <enemy>
-    <type>heavy</type>
-    <aimc>stand</aimc>
-    <x>15</x>
-    <y>13</y>
-          </enemy>
+    <enemy>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>5</x>
+      <y>13</y>
+    </enemy>
+    <enemy>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>1</x>
+      <y>13</y>
+    </enemy>
+    <enemy>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>15</x>
+      <y>13</y>
+    </enemy>
   </spawns>
 </region>

@@ -2192,12 +2192,10 @@
 			<x>14</x>
 			<y>2</y>
 		</enemy>
-		<activity>
-			<type>protect</type>
-			<x>5</x>
-			<y>16</y>
-		</activity>
-
-
 	</spawns>
+  <activity>
+    <type>protect</type>
+    <x>5</x>
+    <y>16</y>
+  </activity>
 </region>
