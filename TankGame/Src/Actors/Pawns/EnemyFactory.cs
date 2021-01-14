@@ -57,7 +57,6 @@ namespace TankGame.Src.Actors.Pawns
                     {
                         if (gameObject.IsDestructible) gameObject.OnDestroy();
                         return true;
-
                     }
                     else return false;
                 }
@@ -71,8 +70,8 @@ namespace TankGame.Src.Actors.Pawns
             {
                 Enemy newEnemy = EnemyTypes[enemyType](new Vector2f(coords.X, coords.Y));
                 if (health != -1) newEnemy.Health = health;
-                
-                newEnemy.MovementController = AIMCTypes[AIMCType](newEnemy switch{LightTank _ => 0.75, MediumTank _ => 1.5, HeavyTank _ => 2.25, _ => 1}, newEnemy, patrolRoute);
+
+                newEnemy.MovementController = AIMCTypes[AIMCType](newEnemy switch { LightTank _ => 0.75, MediumTank _ => 1.5, HeavyTank _ => 2.25, _ => 1 }, newEnemy, patrolRoute);
 
                 if (MoveSpawnIfNecessary(newEnemy, region))
                 {

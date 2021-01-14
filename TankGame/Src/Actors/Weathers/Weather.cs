@@ -2,8 +2,9 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Shaders;
-using TankGame.Src.Data;
+using TankGame.Src.Data.Sounds;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -54,8 +55,7 @@ namespace TankGame.Src.Actors.Weathers
             {
                 if (PositionOffset.X > 64) PositionOffset -= new Vector2f(64, 64);
                 PositionOffset += new Vector2f(Intensity * deltaTime * 64, Intensity * deltaTime * 64);
-                //TODO: enable this
-              //  WeatherComponent.SetPosition(Position + PositionOffset);
+                WeatherComponent?.SetPosition(Position + PositionOffset);
             }
         }
 

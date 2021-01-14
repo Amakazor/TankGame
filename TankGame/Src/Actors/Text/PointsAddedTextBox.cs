@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using System;
+using TankGame.Src.Actors.Data;
 using TankGame.Src.Events;
 
 namespace TankGame.Src.Actors.Text
@@ -8,6 +9,7 @@ namespace TankGame.Src.Actors.Text
     internal class PointsAddedTextBox : TextBox, ITickable
     {
         public double TimeToLive { get; private set; }
+
         public PointsAddedTextBox(Vector2f position, long points, uint combo) : base(position, new Vector2f(100, 20), points + (combo > 1 ? " X " + combo : ""), 16, Color.Red)
         {
             TimeToLive = 2;
@@ -15,7 +17,6 @@ namespace TankGame.Src.Actors.Text
 
             RenderLayer = RenderLayer.TextBox;
             RenderView = RenderView.Game;
-
         }
 
         public void Tick(float deltaTime)

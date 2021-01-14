@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Sounds
 {
     internal class MusicManager
     {
@@ -99,7 +99,7 @@ namespace TankGame.Src.Data
             if (MusicDictionary.ContainsKey(musicType))
             {
                 if (musicType != CurrentMusicType)
-                { 
+                {
                     CurrentMusicType = musicType;
                     if (CurrentMusic != null) CurrentMusic.Dispose();
                     CurrentMusic = new Music(MusicDictionary[musicType].ElementAt(new Random().Next(0, MusicDictionary[musicType].Count)).Value)

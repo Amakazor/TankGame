@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TankGame.Src.Actors.Data;
 
 namespace TankGame.Src.Actors.Fields
 {

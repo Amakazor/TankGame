@@ -1,4 +1,4 @@
-﻿namespace TankGame.Src.Actors
+﻿namespace TankGame.Src.Actors.Data
 {
     internal struct DestructabilityData
     {

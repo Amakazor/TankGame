@@ -1,4 +1,4 @@
-﻿namespace TankGame.Src.Data
+﻿namespace TankGame.Src.Data.GUI
 {
     internal enum MenuLayer
     {

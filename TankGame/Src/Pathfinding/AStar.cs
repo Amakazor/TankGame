@@ -19,7 +19,6 @@ namespace TankGame.Src.Pathfinding
 
         public Stack<Node> FindPath(Vector2i Start, Vector2i End)
         {
-            Console.WriteLine("Pathfinding");
             Node start = new Node(Start);
             Node end = new Node(End);
 

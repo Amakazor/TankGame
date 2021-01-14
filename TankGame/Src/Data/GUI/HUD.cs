@@ -1,12 +1,13 @@
 ﻿using System;
 using TankGame.Src.Actors.GUI;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.GUI
 {
-    class HUD : IDisposable
+    internal class HUD : IDisposable
     {
         private HealthDisplay HealthDisplay { get; }
         private ActivityDisplay ActivityDisplay { get; }
+
         public HUD()
         {
             HealthDisplay = new HealthDisplay();

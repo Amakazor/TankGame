@@ -7,13 +7,15 @@ using TankGame.Src.Actors;
 using TankGame.Src.Actors.Background;
 using TankGame.Src.Actors.Buttons;
 using TankGame.Src.Actors.Text;
+using TankGame.Src.Data.Controls;
+using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Statistics;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.GUI
 {
-    class Menu : IDisposable
+    internal class Menu : IDisposable
     {
         private Dictionary<MenuLayer, List<Actor>> Layers { get; }
 
@@ -26,10 +28,12 @@ namespace TankGame.Src.Data
         private TextInput PlayerNameInput { get; }
 
         private ActionTextButton BackButton { get; }
-        
+
         private MenuTextBox ScoresText { get; }
         private ActionTextButton ScoresPrev { get; }
         private ActionTextButton ScoresNext { get; }
+
+        private List<Actor> ScoreActors { get; }
 
         private int ScoresOffset { get; set; }
 
@@ -51,6 +55,7 @@ namespace TankGame.Src.Data
             ScoresPrev = new ActionTextButton(new Vector2f(100, 810), new Vector2f(300, 80), "Prev", 30, OnPrevClicked);
             ScoresNext = new ActionTextButton(new Vector2f(600, 810), new Vector2f(300, 80), "Next", 30, OnNextClicked);
 
+            ScoreActors = new List<Actor> { BackButton, ScoresText, ScoresNext, ScoresPrev };
 
             Layers = new Dictionary<MenuLayer, List<Actor>>
             {
@@ -98,13 +103,7 @@ namespace TankGame.Src.Data
                 },
                 {
                     MenuLayer.Scores,
-                    new List<Actor>
-                    {
-                        ScoresText,
-                        BackButton,
-                        ScoresPrev,
-                        ScoresNext
-                    }
+                    new List<Actor> (ScoreActors)
                 }
             };
 
@@ -112,29 +111,26 @@ namespace TankGame.Src.Data
         }
 
         public void ShowMenu() => ShowLayer(MenuLayer.Main);
+
         public void ShowEndScreen() => ShowLayer(MenuLayer.EndScreen);
+
         public void Hide()
         {
             MenuBackground.Visible = false;
-            Layers.Values.ToList().ForEach(layer 
-                => layer.ForEach(renderable 
-                    => renderable.Visible = false));
+            Layers.Values.ToList().ForEach(layer => layer.ForEach(renderable => renderable.Visible = false));
         }
 
         private void ShowLayer(MenuLayer layer)
         {
-            MenuBackground.Visible = true;
 
             Refresh(1, layer);
 
-            Layers.Values.ToList().ForEach(layer 
-                => layer.ForEach(renderable 
-                    => renderable.Visible = false));
+            Hide();
+            MenuBackground.Visible = true;
 
             Refresh(2, layer);
 
-            Layers[layer].ForEach(renderable 
-                => renderable.Visible = true);
+            Layers[layer].ForEach(renderable => renderable.Visible = true);
 
             Refresh(3, layer);
         }
@@ -146,19 +142,9 @@ namespace TankGame.Src.Data
                 case 1:
                     ScoreBox.SetText(GamestateManager.Instance.Points.ToString());
                     break;
+
                 case 2:
-                    Layers[MenuLayer.Scores].Remove(ScoresText);
-                    Layers[MenuLayer.Scores].Remove(BackButton);
-                    Layers[MenuLayer.Scores].Remove(ScoresPrev);
-                    Layers[MenuLayer.Scores].Remove(ScoresNext);
-
-                    Layers[MenuLayer.Scores].ForEach(actor => actor.Dispose());
-                    Layers[MenuLayer.Scores].Clear();
-
-                    Layers[MenuLayer.Scores].Add(ScoresText);
-                    Layers[MenuLayer.Scores].Add(BackButton);
-                    Layers[MenuLayer.Scores].Add(ScoresPrev);
-                    Layers[MenuLayer.Scores].Add(ScoresNext);
+                    Layers[MenuLayer.Scores].FindAll(actor => !ScoreActors.Contains(actor)).ForEach(actor => { actor.Dispose(); Layers[MenuLayer.Scores].Remove(actor); });
 
                     int i = 0;
 
@@ -167,12 +153,12 @@ namespace TankGame.Src.Data
                         Layers[MenuLayer.Scores].AddRange(new List<Actor>
                         {
                             new MenuTextBox(new Vector2f(100, 210 + i * 50), new Vector2f(300, 50), score.Item1, 20),
-                            new MenuTextBox(new Vector2f(400, 210 + i * 50), new Vector2f(300, 50), score.Item2, 20)
+                            new MenuTextBox(new Vector2f(400, 210 + i++ * 50), new Vector2f(300, 50), score.Item2, 20)
                         });
-                        i++;
                     });
                     if (layer != MenuLayer.Scores) Layers[MenuLayer.Scores].ForEach(actor => actor.Visible = false);
                     break;
+
                 case 3:
                     QuitNoSaveButton.Visible = layer == MenuLayer.Main && GamestateManager.Instance.GamePhase != GamePhase.NotStarted && GamestateManager.Instance.GamePhase != GamePhase.Ending;
                     ScoresPrev.Visible = layer == MenuLayer.Scores && ScoresOffset > 0;
@@ -181,14 +167,13 @@ namespace TankGame.Src.Data
             }
         }
 
-        private void OnStartGameClicked(MouseButtonEventArgs mouseButtonEventArgs)    => MessageBus.Instance.PostEvent(MessageType.StartGame, this, new StartGameEventArgs(true));
+        private void OnStartGameClicked(MouseButtonEventArgs mouseButtonEventArgs) => MessageBus.Instance.PostEvent(MessageType.StartGame, this, new StartGameEventArgs(true));
         private void OnContinueGameClicked(MouseButtonEventArgs mouseButtonEventArgs) => MessageBus.Instance.PostEvent(MessageType.StartGame, this, new StartGameEventArgs(false));
-        private void OnQuitClicked(MouseButtonEventArgs mouseButtonEventArgs)         => MessageBus.Instance.PostEvent(MessageType.Quit, this, new EventArgs());
-        private void OnBackToMenuClicked(MouseButtonEventArgs mouseButtonEventArgs)   => MessageBus.Instance.PostEvent(MessageType.StopGame, this, new EventArgs());
+        private void OnQuitClicked(MouseButtonEventArgs mouseButtonEventArgs) => MessageBus.Instance.PostEvent(MessageType.Quit, this, new EventArgs());
+        private void OnBackToMenuClicked(MouseButtonEventArgs mouseButtonEventArgs) => MessageBus.Instance.PostEvent(MessageType.StopGame, this, new EventArgs());
         private void OnBackClicked(MouseButtonEventArgs mouseButtonEventArgs) => ShowLayer(MenuLayer.Main);
         private void OnKeysClicked(MouseButtonEventArgs mouseButtonEventArgs) => ShowLayer(MenuLayer.Keys);
         private void OnScoresClicked(MouseButtonEventArgs mouseButtonEventArgs) => ShowLayer(MenuLayer.Scores);
-
         private void OnQuitNoSaveButton(MouseButtonEventArgs obj)
         {
             if (GamestateManager.Instance.Player != null) GamestateManager.Instance.Player.OnDestroy();

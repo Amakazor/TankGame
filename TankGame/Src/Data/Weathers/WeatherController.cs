@@ -2,9 +2,12 @@
 using TankGame.Src.Actors;
 using TankGame.Src.Actors.Shaders;
 using TankGame.Src.Actors.Weathers;
+using TankGame.Src.Data.Gamestate;
+using TankGame.Src.Data.Sounds;
+using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Weathers
 {
     internal class WeatherController : ITickable, IDisposable
     {
@@ -30,7 +33,7 @@ namespace TankGame.Src.Data
         public void SetWeather(string type, float weatherTime)
         {
             if (Weather != null) Weather.Dispose();
-            Weather = null; 
+            Weather = null;
             MusicManager.Instance.StopMusic();
 
             CurrentWeatherTime = weatherTime;
@@ -38,8 +41,8 @@ namespace TankGame.Src.Data
             Weather = type switch
             {
                 "clear" => null,
-                "rain"  => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, "rain"),
-                "snow"  => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, "snow"),
+                "rain" => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, "rain"),
+                "snow" => new Weather(TextureManager.Instance.GetTexture(TextureType.Weather, "snow"), 1.3F,  MusicType.Snow, intensity, AnimationType, "snow"),
                 _ => null,
             };
         }

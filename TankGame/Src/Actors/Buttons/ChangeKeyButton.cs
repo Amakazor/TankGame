@@ -2,7 +2,7 @@
 using SFML.Window;
 using System;
 using System.Collections.Generic;
-using TankGame.Src.Data;
+using TankGame.Src.Data.Controls;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -58,7 +58,6 @@ namespace TankGame.Src.Actors.Buttons
             MessageBus.Instance.Unregister(MessageType.CancelInputs, OnCancelInputs);
             MessageBus.Instance.Unregister(MessageType.KeyPressed, OnKeyPressed);
             MessageBus.Instance.Unregister(MessageType.MenuRefreshKeys, OnMenuRefreshKeys);
-
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()

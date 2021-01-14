@@ -10,7 +10,7 @@ using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Events;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Collisions
 {
     internal class CollisionHandler : IDisposable
     {
@@ -20,7 +20,6 @@ namespace TankGame.Src.Data
         public CollisionHandler()
         {
             Destructibles = new HashSet<IDestructible>();
-            
             Projectiles = new HashSet<Projectile>();
 
             MessageBus messageBus = MessageBus.Instance;
@@ -43,20 +42,16 @@ namespace TankGame.Src.Data
                         {
                             switch (destructible.Actor)
                             {
-                                case Enemy _:
-                                    if (projectile.Owner is Player)
-                                    {
-                                        destructible.OnHit();
-                                        projectile.Dispose();
-                                    }
+                                case Enemy _ when projectile.Owner is Player:
+                                    destructible.OnHit();
+                                    projectile.Dispose();
                                     break;
-                                case Player _:
-                                    if (projectile.Owner is Enemy)
-                                    {
-                                        destructible.OnHit();
-                                        projectile.Dispose();
-                                    }
+
+                                case Player _ when projectile.Owner is Enemy:
+                                    destructible.OnHit();
+                                    projectile.Dispose();
                                     break;
+
                                 case GameObject _:
                                     destructible.OnHit();
                                     projectile.Dispose();

@@ -11,12 +11,12 @@ namespace TankGame.Src.Extensions
         {
             renderables.OrderBy(renderable => (int)renderable.RenderableRenderLayer)
                 .ToList()
-                .ForEach( renderable
-                    => renderable.GetRenderComponents()
-                        .ToList()
-                        .FindAll(renderComponent => renderComponent != null)
-                        .ForEach(renderComponent 
-                            => renderWindow.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null)))));
+                .ForEach(renderable
+                   => renderable.GetRenderComponents()
+                       .ToList()
+                       .FindAll(renderComponent => renderComponent != null)
+                       .ForEach(renderComponent
+                           => renderWindow.Draw(renderComponent.Shape, new RenderStates(shader: (renderable is IShadable shadable ? shadable.CurrentShader : null)))));
         }
     }
 }

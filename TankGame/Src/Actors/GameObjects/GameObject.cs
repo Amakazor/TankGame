@@ -3,9 +3,12 @@ using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Fields;
-using TankGame.Src.Data;
+using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Map;
+using TankGame.Src.Data.Sounds;
+using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
 using TankGame.Src.Gui.RenderComponents;
 
@@ -41,7 +44,7 @@ namespace TankGame.Src.Actors.GameObjects
             TraversibilityDataAfterDestruction = new TraversibilityData(1.25F, true);
 
             Type = type;
-            AfterDestructionTexture = gameObjectType.Item3 == null ? null : AfterDestructionTexture = TextureManager.Instance.GetTexture("gameobject", gameObjectType.Item3); 
+            AfterDestructionTexture = gameObjectType.Item3 == null ? null : AfterDestructionTexture = TextureManager.Instance.GetTexture("gameobject", gameObjectType.Item3);
 
             if (hp > -1) Health = hp;
 
@@ -59,7 +62,6 @@ namespace TankGame.Src.Actors.GameObjects
 
             RenderLayer = RenderLayer.GameObject;
             RenderView = RenderView.Game;
-
         }
 
         public override HashSet<IRenderComponent> GetRenderComponents()
@@ -96,7 +98,7 @@ namespace TankGame.Src.Actors.GameObjects
             XmlElement typeElement = xmlDocument.CreateElement("type");
             XmlElement hpElement = xmlDocument.CreateElement("hp");
 
-               typeElement.InnerText = Type;
+            typeElement.InnerText = Type;
             hpElement.InnerText = Health.ToString();
 
             objectElement.AppendChild(typeElement);

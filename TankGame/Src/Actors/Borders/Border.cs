@@ -1,16 +1,14 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using TankGame.Src.Actors.Data;
 using TankGame.Src.Gui.RenderComponents;
 
 namespace TankGame.Src.Actors.Borders
 {
-    class Border : Actor
+    internal class Border : Actor
     {
         protected SpriteComponent BorderComponent { get; set; }
-
 
         public Border(Vector2f position, Vector2f size, Vector2i sizeMultiplier, Texture borderTexture) : base(position, size)
         {

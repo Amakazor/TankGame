@@ -9,6 +9,7 @@ namespace TankGame.Src.Data.Statistics
     internal static class ScoreManager
     {
         private static readonly string statistics = "Resources/Statistics/Statistics.xml";
+
         public static void AddScore(string name, long points)
         {
             if (name == null || name.Length == 0) name = "unnamed";

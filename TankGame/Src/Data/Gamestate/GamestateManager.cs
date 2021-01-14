@@ -9,9 +9,10 @@ using TankGame.Src.Actors.Pawns.Enemies;
 using TankGame.Src.Actors.Pawns.Player;
 using TankGame.Src.Actors.Text;
 using TankGame.Src.Data.Map;
+using TankGame.Src.Data.Weathers;
 using TankGame.Src.Events;
 
-namespace TankGame.Src.Data
+namespace TankGame.Src.Data.Gamestate
 {
     internal class GamestateManager
     {
@@ -30,7 +31,7 @@ namespace TankGame.Src.Data
         private int CompletedActivities { get; set; }
         private double ComboDeltaTimeCummulated { get; set; }
         public GameMap Map { get; set; }
-        public WeatherController WeatherController { get; set;}
+        public WeatherController WeatherController { get; set; }
         public Player Player { get; set; }
         public Random Random { get; }
         public static GamestateManager Instance => instance ?? (instance = new GamestateManager());
@@ -66,7 +67,7 @@ namespace TankGame.Src.Data
 
             if (!File.Exists(Savefile) || isNewGame) DeleteSave();
             else Load();
-            
+
             Map = new GameMap();
 
             Save();
@@ -97,13 +98,7 @@ namespace TankGame.Src.Data
             weatherElement.InnerText = WeatherController.WeatherType;
             weatherTimeElement.InnerText = WeatherController.CurrentWeatherTime.ToString();
 
-            gamestateElement.AppendChild(pointsElement);
-            gamestateElement.AppendChild(pointsBeforeSubstractionElement);
-            gamestateElement.AppendChild(comboElement);
-            gamestateElement.AppendChild(completedActivitiesElement);
-            gamestateElement.AppendChild(comboDeltaTimeElement);
-            gamestateElement.AppendChild(weatherElement);
-            gamestateElement.AppendChild(weatherTimeElement);
+            new List<XmlElement> { pointsElement, pointsBeforeSubstractionElement, comboElement, completedActivitiesElement, comboDeltaTimeElement, weatherElement, weatherTimeElement }.ForEach(element => gamestateElement.AppendChild(element));
 
             savefile.AppendChild(savefile.CreateXmlDeclaration("1.0", "utf-8", null));
             savefile.AppendChild(gamestateElement);

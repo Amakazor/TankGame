@@ -2,7 +2,7 @@
 using System;
 using System.Xml;
 using TankGame.Src.Actors.Pawns.MovementControllers;
-using TankGame.Src.Data;
+using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
 
 namespace TankGame.Src.Actors.Pawns.Player

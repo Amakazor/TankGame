@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TankGame.Src.Actors;
-using TankGame.Src.Data;
+using TankGame.Src.Data.Controls;
 
 namespace TankGame.Src.Events
 {
@@ -28,6 +28,7 @@ namespace TankGame.Src.Events
             if (keyActionType != null) MessageBus.Instance.PostEvent(MessageType.KeyAction, sender, new KeyActionEventArgs(keyActionType));
             MessageBus.Instance.PostEvent(MessageType.KeyPressed, sender, eventArgs);
         }
+
         public void OnTextInput(object sender, TextEventArgs textEventArgs)
         {
             MessageBus.Instance.PostEvent(MessageType.TextInput, sender, textEventArgs);
@@ -39,7 +40,7 @@ namespace TankGame.Src.Events
 
             Clickables.ToList()
                 .FindAll(clickable => clickable.Visible)
-                .ForEach(clickable 
+                .ForEach(clickable
                     => clickable.GetRenderComponents()
                         .ToList()
                         .FindAll(component => component != null && component.IsPointInside(point))
