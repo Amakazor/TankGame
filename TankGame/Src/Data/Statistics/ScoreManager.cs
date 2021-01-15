@@ -34,6 +34,10 @@ namespace TankGame.Src.Data.Statistics
             }
             catch (Exception)
             {
+                XmlDocument scores = new XmlDocument();
+                scores.CreateXmlDeclaration("1.0", "utf-8", null);
+                scores.AppendChild(scores.CreateElement("statistics"));
+                scores.Save(statistics);
             }
         }
 
@@ -53,26 +57,19 @@ namespace TankGame.Src.Data.Statistics
                 }
                 catch (Exception)
                 {
-                    return null;
+                    return new List<Tuple<string, string>>();
                 }
             }
-            else return null;
+            else return new List<Tuple<string, string>>();
         }
 
         public static int GetScoresCount()
         {
             XDocument scores = XDocument.Load(statistics);
 
-            if (scores != null)
+            if (scores?.Root?.Descendants("score") != null)
             {
-                try
-                {
-                    return scores.Root.Descendants("score").Count();
-                }
-                catch (Exception)
-                {
-                    return 0;
-                }
+                return scores.Root.Descendants("score").Count();
             }
             else return 0;
         }
