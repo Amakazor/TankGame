@@ -60,7 +60,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 Field nextField = gameMap.GetFieldFromRegion(nextCoords);
                 Field prevField = gameMap.GetFieldFromRegion(Owner.Coords);
 
-                if (nextField != null & prevField != null && nextField.IsTraversible())
+                if (nextField != null && prevField != null && nextField.IsTraversible())
                 {
                     Owner.Coords = nextCoords;
 
