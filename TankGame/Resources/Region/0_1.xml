@@ -2192,7 +2192,7 @@
       <!--19x19-->
       <type>grass</type>
       <texture>grass</texture>
-    </field>
+    </field> 
   </fields>
   <spawns>
     <enemy>
@@ -2243,4 +2243,9 @@
       <y>4</y>
     </enemy>
   </spawns>
+  <activity>
+    <type>destroy</type>
+    <x>15</x>
+    <y>15</y>
+  </activity>
 </region>
