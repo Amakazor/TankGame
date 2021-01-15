@@ -2229,4 +2229,9 @@
       <y>11</y>
     </player>
   </spawns>
+  <activity>
+    <type>destroy</type>
+    <x>15</x>
+    <y>16</y>
+  </activity>
 </region>
