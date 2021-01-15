@@ -2008,7 +2008,12 @@
       <texture>water</texture>
     </field>
   </fields>
-  <spawns>
+  <activity>
+    <type>waveprotect</type>
+    <x>9</x>
+    <y>4</y>
+    <waves>
+      <wave>
     <enemy>
       <type>heavy</type>
       <aimc>stand</aimc>
@@ -2039,5 +2044,10 @@
     <x>15</x>
     <y>13</y>
        </enemy>
+      </wave>
+    </waves>
+  </activity>
+  <spawns>
+    
   </spawns>
 </region>

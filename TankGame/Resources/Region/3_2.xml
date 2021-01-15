@@ -2110,7 +2110,12 @@
       <texture>grass</texture>
     </field>
   </fields>
-  <spawns>
+  <activity>
+    <type>waveprotect</type>
+    <x>5</x>
+    <y>13</y>
+    <waves>
+      <wave>
     <enemy>
       <type>light</type>
       <aimc>chase</aimc>
@@ -2165,5 +2170,10 @@
       <x>19</x>
       <y>0</y>
     </enemy>
-  </spawns>
+    </wave>
+    </waves>
+    </activity>
+  <spawns>
+
+    </spawns>
 </region>
