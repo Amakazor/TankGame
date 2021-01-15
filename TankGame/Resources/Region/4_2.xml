@@ -2041,7 +2041,12 @@
       <texture>water</texture>
     </field>
   </fields>
-  <spawns>
+  <activity>
+    <type>waveprotect</type>
+    <x>2</x>
+    <y>17</y>
+    <waves>
+      <wave>
     <enemy>
       <type>light</type>
       <aimc>chase</aimc>
@@ -2096,5 +2101,9 @@
       <x>19</x>
       <y>3</y>
     </enemy>
+    </wave>
+    </waves>
+    </activity>
+  <spawns>
   </spawns>
 </region>

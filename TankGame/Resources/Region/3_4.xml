@@ -2071,6 +2071,8 @@
       <texture>grass</texture>
     </field>
   </fields>
+  <activity>
+    <type>destroy</type>
   <spawns>
     <enemy>
       <type>medium</type>
@@ -2109,4 +2111,5 @@
       <y>17</y>
     </enemy>
   </spawns>
+    </activity>
 </region>
