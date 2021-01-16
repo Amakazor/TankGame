@@ -22,7 +22,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             if (CanDoAction() && Owner.CurrentRegion != null)
             {
-                if (CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine) NextAction = KeyActionType.Shoot;
+                if (CanSeePlayerInUnobstructedLine || (CanSeeActivityInUnobstructedLine && Owner.CurrentRegion != null && Owner.CurrentRegion.HasDestructibleActivity)) NextAction = KeyActionType.Shoot;
                 else Patrol();
 
             }
