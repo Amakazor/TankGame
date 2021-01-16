@@ -107,6 +107,12 @@ namespace TankGame.Src.Actors.Pawns
             };
         }
 
+        public void OnDestroy(bool sendMessage)
+        {
+            if (sendMessage) OnDestroy();
+            else Dispose();
+        }
+
         public virtual void OnDestroy()
         {
             MessageBus.Instance.PostEvent(MessageType.PawnDeath, this, new PawnEventArgs(this));

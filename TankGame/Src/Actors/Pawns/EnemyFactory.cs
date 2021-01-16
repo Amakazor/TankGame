@@ -80,7 +80,7 @@ namespace TankGame.Src.Actors.Pawns
                 }
                 else
                 {
-                    newEnemy.OnDestroy();
+                    newEnemy.OnDestroy(false);
                     return null;
                 }
             }

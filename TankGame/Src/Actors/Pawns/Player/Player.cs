@@ -2,6 +2,7 @@
 using System;
 using System.Xml;
 using TankGame.Src.Actors.Pawns.MovementControllers;
+using TankGame.Src.Data.Sounds;
 using TankGame.Src.Data.Textures;
 using TankGame.Src.Events;
 
@@ -18,6 +19,7 @@ namespace TankGame.Src.Actors.Pawns.Player
 
         protected override void UpdatePosition(Vector2i lastCoords, Vector2i newCoords)
         {
+            SoundManager.Instance.PlaySound("move", "light", Position / 64);
             base.UpdatePosition(lastCoords, newCoords);
             MessageBus.Instance.PostEvent(MessageType.PlayerMoved, this, new EventArgs());
         }
