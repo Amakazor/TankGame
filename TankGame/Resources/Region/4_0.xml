@@ -2170,7 +2170,10 @@
 			<x>5</x>
 			<y>14</y>
 		</enemy>
-		
-
 	</spawns>
+	<activity>
+		<type>destroy</type>
+		<x>9</x>
+		<y>8</y>
+	</activity>
 </region>
