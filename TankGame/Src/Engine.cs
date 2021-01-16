@@ -76,13 +76,21 @@ namespace TankGame.Src
 
             while (Window.IsOpen && !ShouldQuit)
             {
-                time2 = DateTime.Now;
-                float deltaTime = (time2.Ticks - time1.Ticks) / 10000000f;
+                try
+                {
+                    time2 = DateTime.Now;
+                    float deltaTime = (time2.Ticks - time1.Ticks) / 10000000f;
 
-                Tick(deltaTime);
-                Render();
+                    Tick(deltaTime);
+                    Render();
 
-                time1 = time2;
+                    time1 = time2;
+                }
+                catch (Exception e)
+                {
+
+                    throw new InvalidOperationException("Application cannot be run, please reinstall application", e);
+                }
             }
 
             if (!Window.IsOpen && GamestateManager.Instance.GamePhase != GamePhase.NotStarted)

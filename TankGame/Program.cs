@@ -1,4 +1,5 @@
-﻿using TankGame.Src;
+﻿using System;
+using TankGame.Src;
 
 namespace TankGame
 {
@@ -6,8 +7,19 @@ namespace TankGame
     {
         private static void Main()
         {
-            Engine engine = new Engine();
-            engine.Loop();
+            try
+            {
+                Engine engine = new Engine();
+                engine.Loop();
+            }
+            catch (Exception e)
+            {
+                #if DEBUG
+                    throw;
+                #else
+                    throw new InvalidOperationException("Application cannot be run, please reinstall application", e);
+                #endif
+            }
         }
     }
 }
