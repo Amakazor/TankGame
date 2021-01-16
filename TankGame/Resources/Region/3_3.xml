@@ -38,7 +38,7 @@
     </field>
     <field>
       <!--0x7-->
-         <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -118,7 +118,7 @@
     </field>
     <field>
       <!--1x3-->
-         <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -128,12 +128,12 @@
     </field>
     <field>
       <!--1x5-->
-            <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
       <!--1x6-->
-          <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -158,7 +158,7 @@
     </field>
     <field>
       <!--1x11-->
-           <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -178,7 +178,7 @@
     </field>
     <field>
       <!--1x15-->
-        <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -273,7 +273,7 @@
     </field>
     <field>
       <!--2x14-->
-           <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -298,7 +298,7 @@
     </field>
     <field>
       <!--2x19-->
-        <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -318,7 +318,7 @@
     </field>
     <field>
       <!--3x3-->
-         <type>sand</type>
+      <type>sand</type>
       <texture>sand</texture>
     </field>
     <field>
@@ -438,7 +438,7 @@
     </field>
     <field>
       <!--4x7-->
-  <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -543,7 +543,7 @@
     </field>
     <field>
       <!--5x8-->
-     <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -558,7 +558,7 @@
     </field>
     <field>
       <!--5x11-->
-     <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -643,7 +643,7 @@
     </field>
     <field>
       <!--6x8-->
-       <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -718,7 +718,7 @@
     </field>
     <field>
       <!--7x3-->
-    <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -788,7 +788,7 @@
     </field>
     <field>
       <!--7x17-->
-        <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -988,7 +988,7 @@
     </field>
     <field>
       <!--9x14-->
-          <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1033,7 +1033,7 @@
     </field>
     <field>
       <!--10x3-->
-         <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1137,7 +1137,7 @@
     </field>
     <field>
       <!--11x2-->
-   <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1202,7 +1202,7 @@
     </field>
     <field>
       <!--11x15-->
-     <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1247,7 +1247,7 @@
     </field>
     <field>
       <!--12x4-->
-       <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1322,7 +1322,7 @@
     </field>
     <field>
       <!--12x19-->
-       <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1487,7 +1487,7 @@
     </field>
     <field>
       <!--14x12-->
-           <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1577,7 +1577,7 @@
     </field>
     <field>
       <!--15x10-->
-       <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1682,7 +1682,7 @@
     </field>
     <field>
       <!--16x11-->
-    <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1697,7 +1697,7 @@
     </field>
     <field>
       <!--16x14-->
-     <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1782,7 +1782,7 @@
     </field>
     <field>
       <!--17x11-->
-         <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1857,7 +1857,7 @@
     </field>
     <field>
       <!--18x6-->
-   <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -1912,7 +1912,7 @@
     </field>
     <field>
       <!--18x17-->
-   <type>grass</type>
+      <type>grass</type>
       <texture>grass</texture>
     </field>
     <field>
@@ -2032,48 +2032,48 @@
     <y>10</y>
     <waves>
       <wave>
-    <enemy>
-      <type>heavy</type>
-      <aimc>stand</aimc>
-      <x>14</x>
-      <y>4</y>
-    </enemy>
-    <enemy>
-      <type>heavy</type>
-      <aimc>stand</aimc>
-      <x>18</x>
-      <y>19</y>
-    </enemy>
-    <enemy>
-      <type>heavy</type>
-      <aimc>stand</aimc>
-      <x>19</x>
-      <y>10</y>
-    </enemy>
-    <enemy>
-      <type>heavy</type>
-      <aimc>stand</aimc>
-      <x>10</x>
-      <y>16</y>
-    </enemy>
-    <enemy>
-      <type>heavy</type>
-      <aimc>stand</aimc>
-      <x>10</x>
-      <y>1</y>
-    </enemy>
-    <enemy>
-      <type>heavy</type>
-      <aimc>stand</aimc>
-      <x>4</x>
-      <y>7</y>
-    </enemy>
-    <enemy>
-      <type>heavy</type>
-      <aimc>stand</aimc>
-      <x>3</x>
-      <y>17</y>
-    </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>14</x>
+          <y>4</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>18</x>
+          <y>19</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>19</x>
+          <y>10</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>10</x>
+          <y>16</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>10</x>
+          <y>1</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>4</x>
+          <y>7</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>3</x>
+          <y>17</y>
+        </enemy>
       </wave>
     </waves>
   </activity>

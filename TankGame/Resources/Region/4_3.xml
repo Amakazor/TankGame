@@ -2029,45 +2029,45 @@
     <y>15</y>
     <waves>
       <wave>
-    <enemy>
-      <type>light</type>
-      <aimc>chase</aimc>
-      <x>15</x>
-      <y>2</y>
-    </enemy>
-    <enemy>
-      <type>light</type>
-      <aimc>chase</aimc>
-      <x>15</x>
-      <y>4</y>
-    </enemy>
-    <enemy>
-      <type>light</type>
-      <aimc>chase</aimc>
-      <x>15</x>
-      <y>13</y>
-    </enemy>
-    <enemy>
-      <type>light</type>
-      <aimc>chase</aimc>
-      <x>7</x>
-      <y>15</y>
-    </enemy>
-    <enemy>
-      <type>light</type>
-      <aimc>chase</aimc>
-      <x>15</x>
-      <y>3</y>
-    </enemy>
-    <enemy>
-      <type>light</type>
-      <aimc>chase</aimc>
-      <x>2</x>
-      <y>3</y>
-    </enemy>
-  </wave>
-</waves>
-</activity>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>15</x>
+          <y>2</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>15</x>
+          <y>4</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>15</x>
+          <y>13</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>7</x>
+          <y>15</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>15</x>
+          <y>3</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>2</x>
+          <y>3</y>
+        </enemy>
+      </wave>
+    </waves>
+  </activity>
   <spawns>
   </spawns>
 </region>
