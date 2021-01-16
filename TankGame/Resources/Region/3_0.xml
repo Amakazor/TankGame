@@ -2165,7 +2165,10 @@
 			<x>5</x>
 			<y>14</y>
 		</enemy>
-	
-
 	</spawns>
+	<activity>
+		<type>protect</type>
+		<x>13</x>
+		<y>2</y>
+	</activity>
 </region>
