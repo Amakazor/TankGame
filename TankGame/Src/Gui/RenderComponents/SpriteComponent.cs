@@ -44,6 +44,11 @@ namespace TankGame.Src.Gui.RenderComponents
             SetScaleFromSize(size);
         }
 
+        public void SetScale(Vector2f scale)
+        {
+            Sprite.Scale = scale;
+        }
+
         public void SetTextureRectSize(Vector2i size)
         {
             Sprite.TextureRect = new IntRect(new Vector2i(0, 0), size);

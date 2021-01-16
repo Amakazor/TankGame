@@ -205,4 +205,9 @@
 		<name>hedgehog</name>
 		<location>Resources/Textures/Border/hedgehog.png</location>
 	</texture>
+    <texture>
+		<type>border</type>
+		<name>region</name>
+		<location>Resources/Textures/Border/region.png</location>
+	</texture>
 </textures>

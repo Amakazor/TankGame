@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using TankGame.Src.Actors.Borders;
 using TankGame.Src.Actors.Fields;
 using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.GameObjects.Activities;
@@ -25,6 +26,7 @@ namespace TankGame.Src.Data.Map
         private List<Field> Fields { get; set; }
         public HashSet<Enemy> Enemies { get; private set; }
         private Player Player { get; set; }
+        private RegionBorder RegionBorder { get; set; }
         public Activity Activity { get; set; }
         public bool Loaded { get; private set; }
 
@@ -32,6 +34,8 @@ namespace TankGame.Src.Data.Map
         {
             Coords = coords;
             FieldsInLine = fieldsInLine;
+
+            RegionBorder = new RegionBorder(new Vector2f(coords.X * 64 * fieldsInLine + (64 * (fieldsInLine / 2)) - 32, coords.Y * 64 * fieldsInLine + (64 * (fieldsInLine / 2)) - 32), new Vector2f(64 * fieldsInLine, 64 * fieldsInLine), TextureManager.Instance.GetTexture("border", "region"));
 
             if (load) Load();
         }
@@ -74,13 +78,15 @@ namespace TankGame.Src.Data.Map
                 Fields.ForEach(field => field.Dispose());
                 Fields.Clear();
 
-                Enemies.ToList().FindAll(enemy => enemy != null).ForEach(enemy => enemy.Dispose());
+                Enemies.ToList().ForEach(enemy => enemy?.Dispose());
                 Enemies.Clear();
 
-                if (Player != null) Player.Dispose();
+                Player?.Dispose();
+                RegionBorder?.Dispose();
 
                 Player = null;
                 Activity = null;
+                RegionBorder = null;
                 MessageBus.Instance.Unregister(MessageType.PawnDeath, OnPawnDeath);
             }
         }

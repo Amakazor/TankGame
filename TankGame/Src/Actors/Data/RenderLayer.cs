@@ -3,6 +3,7 @@
     internal enum RenderLayer
     {
         Field,
+        RegionBorder,
         GameObject,
         Pawn,
         Projectile,
