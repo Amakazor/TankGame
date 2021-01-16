@@ -48,13 +48,13 @@ namespace TankGame.Src.Actors.Fields
         {
             return TraversabilityData.IsTraversible
                    && (PawnOnField == null || (excludePlayer && PawnOnField is Player))
-                   && (GameObject != null ? (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible) : true);
+                   && (GameObject == null || (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible));
         }
 
         public bool IsShootable(bool excludePlayer = false, bool orObjectDestructible = false)
         {
             return (PawnOnField == null || (excludePlayer && PawnOnField is Player))
-                   && (GameObject != null ? (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible) : true);
+                   && (GameObject == null || (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible));
         }
 
         internal XmlElement SerializeToXML(XmlDocument xmlDocument)
@@ -72,6 +72,13 @@ namespace TankGame.Src.Actors.Fields
             if (GameObject != null && !(GameObject is Activity)) fieldElement.AppendChild(GameObject.SerializeToXML(xmlDocument));
 
             return fieldElement;
+        }
+
+        public void EnterField(Pawn enteringPawn)
+        {
+            if (GameObject != null && GameObject.DestructabilityData.DestroyOnEntry) GameObject.OnDestroy();
+
+            PawnOnField = enteringPawn;
         }
 
         public void OnGameObjectDestruction()

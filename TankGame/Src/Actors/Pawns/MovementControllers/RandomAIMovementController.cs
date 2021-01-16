@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TankGame.Src.Data.Controls;
 using TankGame.Src.Extensions;
-using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
@@ -12,8 +11,6 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
     {
         protected List<Vector2i> PatrolRoute { get; set; }
         protected Stack<Vector2i> CurrentPatrolRoute { get; set; }
-        protected Vector2i TargetPosition { get; set; }
-        protected Stack<Node> Path { get; set; }
 
         public RandomAIMovementController(double delay, Pawn owner) : base(delay, owner, "random")
         {
@@ -42,7 +39,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                         Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), TargetPosition);
                     }
 
-                    NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.CurrentRegion.Coords * 20);
+                    NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.CurrentRegion.Coords * Owner.CurrentRegion.FieldsInLine);
                 }
             }
             else NextAction = null;

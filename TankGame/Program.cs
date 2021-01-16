@@ -2,7 +2,7 @@
 
 namespace TankGame
 {
-    internal class Program
+    static class Program
     {
         private static void Main()
         {

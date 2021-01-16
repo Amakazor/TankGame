@@ -1,6 +1,7 @@
 ﻿using SFML.Window;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -65,9 +66,9 @@ namespace TankGame.Src.Data.Controls
             {
                 keysConfig = XDocument.Load("Resources/Config/Keys.xml");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("File Keys.xml couldn't be loaded");
+                throw new FileNotFoundException("File Keys.xml couldn't be loaded", e);
             }
 
             foreach (PropertyInfo propertyInfo in typeof(KeyActionType).GetProperties(BindingFlags.Static | BindingFlags.Public))
@@ -80,12 +81,12 @@ namespace TankGame.Src.Data.Controls
                     }
                     else
                     {
-                        throw new Exception();
+                        throw new IOException("Keys file is missing data");
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    throw new Exception("Keys file couldn't be loaded");
+                    throw new IOException("Keys file couldn't be loaded", e);
                 }
             }
         }
@@ -98,9 +99,9 @@ namespace TankGame.Src.Data.Controls
             {
                 keysConfig = XDocument.Load("Resources/Config/Keys.xml");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new Exception("File Keys.xml couldn't be loaded");
+                throw new FileNotFoundException("File Keys.xml couldn't be loaded", e);
             }
 
             foreach (KeyValuePair<Tuple<string, string>, Keyboard.Key> key in KeysDictionary)

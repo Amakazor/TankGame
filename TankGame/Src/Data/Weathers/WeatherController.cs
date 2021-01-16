@@ -11,10 +11,10 @@ namespace TankGame.Src.Data.Weathers
 {
     internal class WeatherController : ITickable, IDisposable
     {
-        public static int WeatherMinimalTime = 30;
-        public static int WeatherMaximalTime = 61;
-        public static float WeatherMinimalIntensity = 0.5F;
-        public static float WeatherMaximalIntensity = 3F;
+        public static readonly int WeatherMinimalTime = 30;
+        public static readonly int WeatherMaximalTime = 61;
+        public static readonly float WeatherMinimalIntensity = 0.5F;
+        public static readonly float WeatherMaximalIntensity = 3F;
         private Weather Weather { get; set; }
         public float CurrentWeatherTime { get; private set; }
         public string WeatherType => Weather is null ? "clear" : Weather.Type;

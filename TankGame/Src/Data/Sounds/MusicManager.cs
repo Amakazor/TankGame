@@ -38,7 +38,7 @@ namespace TankGame.Src.Data.Sounds
             }
             catch (Exception)
             {
-                throw new Exception("File Music.xml couldn't be loaded");
+                throw new FileNotFoundException("File Music.xml couldn't be loaded");
             }
 
             foreach (FieldInfo fieldInfo in typeof(MusicType).GetFields(BindingFlags.Static | BindingFlags.Public))
@@ -56,7 +56,7 @@ namespace TankGame.Src.Data.Sounds
                 }
                 catch (Exception)
                 {
-                    throw new Exception("Music file couldn't be loaded");
+                    throw new FileLoadException("Music file couldn't be loaded");
                 }
             }
 
@@ -64,7 +64,7 @@ namespace TankGame.Src.Data.Sounds
                 => musicType.Value.ToList().ForEach(musicElement
                     =>
                         {
-                            if(!File.Exists(musicElement.Value)) throw new Exception("Music file couldn't be loaded");
+                            if(!File.Exists(musicElement.Value)) throw new FileLoadException("Music file couldn't be loaded");
                         }));
         }
 

@@ -6,7 +6,7 @@ namespace TankGame.Src.Actors
 {
     internal abstract class TickableActor : Actor, ITickable
     {
-        public TickableActor(Vector2f position, Vector2f size) : base(position, size)
+        protected TickableActor(Vector2f position, Vector2f size) : base(position, size)
         {
             RegisterTickable();
         }

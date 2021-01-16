@@ -12,7 +12,7 @@ namespace TankGame.Src.Actors.Pawns.Enemies
         public string Type { get; }
         public string MoveSoundName { get; }
 
-        public Enemy(Vector2f position, Vector2f size, Texture texture, int health, uint scoreAdded, string type, string moveSoundName) : base(position, size, texture, health)
+        protected Enemy(Vector2f position, Vector2f size, Texture texture, int health, uint scoreAdded, string type, string moveSoundName) : base(position, size, texture, health)
         {
             ScoreAdded = scoreAdded;
             Type = type;
@@ -36,8 +36,8 @@ namespace TankGame.Src.Actors.Pawns.Enemies
             enemyElement.AppendChild(xElement);
             enemyElement.AppendChild(yElement);
             enemyElement.AppendChild(healthElement);
-            if (MovementController != null && MovementController is AIMovementController AIMC) enemyElement.AppendChild(AIMC.SerializeAIMovementControllerType(xmlDocument));
-            if (MovementController != null && MovementController is PatrolAIMovementController PAIMC) enemyElement.AppendChild(PAIMC.SerializePath(xmlDocument));
+            if (MovementController is AIMovementController AIMC) enemyElement.AppendChild(AIMC.SerializeAIMovementControllerType(xmlDocument));
+            if (MovementController is PatrolAIMovementController PAIMC) enemyElement.AppendChild(PAIMC.SerializePath(xmlDocument));
 
             return enemyElement;
         }

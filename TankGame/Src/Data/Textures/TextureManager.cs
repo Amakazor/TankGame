@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -58,7 +59,7 @@ namespace TankGame.Src.Data.Textures
             }
             catch (Exception)
             {
-                throw new Exception("File Textures.xml couldn't be loaded");
+                throw new FileNotFoundException("File Textures.xml couldn't be loaded");
             }
 
             foreach (FieldInfo fieldInfo in typeof(TextureType).GetFields(BindingFlags.Static | BindingFlags.Public))
@@ -76,7 +77,7 @@ namespace TankGame.Src.Data.Textures
                 }
                 catch (Exception)
                 {
-                    throw new Exception("Texture file couldn't be loaded");
+                    throw new FileLoadException("Texture file couldn't be loaded");
                 }
             }
         }

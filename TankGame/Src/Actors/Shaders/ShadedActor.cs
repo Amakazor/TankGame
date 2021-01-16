@@ -7,7 +7,7 @@ namespace TankGame.Src.Actors
     {
         public abstract Shader CurrentShader { get; }
 
-        public ShadedActor(Vector2f position, Vector2f size) : base(position, size)
+        protected ShadedActor(Vector2f position, Vector2f size) : base(position, size)
         {
         }
     }

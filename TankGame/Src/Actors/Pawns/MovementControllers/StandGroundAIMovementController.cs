@@ -23,7 +23,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 {
                     Vector2i currentPlayerPosition = GamestateManager.Instance.Player.Coords;
 
-                    if (LastPlayerPosition == null || LastPlayerPosition != currentPlayerPosition || !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
+                    if (LastPlayerPosition != currentPlayerPosition || !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
                     {
                         LastPlayerPosition = currentPlayerPosition;
                         TargetPosition = GetValidStandGroundPosition();

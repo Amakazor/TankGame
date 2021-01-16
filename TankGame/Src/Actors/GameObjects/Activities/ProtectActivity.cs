@@ -8,7 +8,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
 {
     internal class ProtectActivity : DestroyAllActivity
     {
-        public ProtectActivity(Vector2i coords, HashSet<Enemy> enemies, int? hp = null) : base(coords, enemies, hp != -1 ? hp : 5, "Protect the tower. Destroy all enemies", "protect", 2000, new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(6, true, false), "towerdestroyed"))
+        public ProtectActivity(Vector2i coords, HashSet<Enemy> enemies, int? hp = null) : base(coords, enemies, hp != -1 ? hp : 10, "Protect the tower. Destroy all enemies", "protect", 2000, new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(6, true, false), "towerdestroyed"))
         {
             if (hp != null && hp == 0) ActivityStatus = ActivityStatus.Failed;
         }

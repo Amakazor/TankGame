@@ -44,7 +44,7 @@ namespace TankGame.Src.Actors.GameObjects
             TraversibilityDataAfterDestruction = new TraversibilityData(1.25F, true);
 
             Type = type;
-            AfterDestructionTexture = gameObjectType.Item3 == null ? null : AfterDestructionTexture = TextureManager.Instance.GetTexture("gameobject", gameObjectType.Item3);
+            AfterDestructionTexture = gameObjectType.Item3 == null ? null : TextureManager.Instance.GetTexture("gameobject", gameObjectType.Item3);
 
             if (hp > -1) Health = hp;
 

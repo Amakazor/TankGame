@@ -43,7 +43,7 @@ namespace TankGame.Src
         private InputHandler InputHandler { get; }
         private CollisionHandler CollisionHandler { get; set; }
 
-        private HUD HUD { get; set; }
+        private Hud HUD { get; set; }
         private Menu Menu { get; set; }
 
         private HashSet<ITickable> Tickables { get; }
@@ -156,7 +156,7 @@ namespace TankGame.Src
 
             Menu.Hide();
 
-            HUD = new HUD();
+            HUD = new Hud();
 
             GamestateManager.Instance.Start(isNewGame);
         }

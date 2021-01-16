@@ -20,8 +20,6 @@ namespace TankGame.Src.Gui.RenderComponents
         private TextPosition HorizontalPosition { get; }
         private TextPosition VerticalPosition { get; }
 
-        private readonly Font Font;
-
         private Text TextElement { get; }
 
         public bool IsPointInside(Vector2f point) => false;
@@ -36,9 +34,7 @@ namespace TankGame.Src.Gui.RenderComponents
             HorizontalPosition = horizontalPosition;
             VerticalPosition = verticalPosition;
 
-            Font = new Font("Resources/Fonts/PressStart2P-Regular.ttf");
-
-            TextElement = new Text(text, Font, fontSize)
+            TextElement = new Text(text, new Font("Resources/Fonts/PressStart2P-Regular.ttf"), fontSize)
             {
                 FillColor = color,
             };

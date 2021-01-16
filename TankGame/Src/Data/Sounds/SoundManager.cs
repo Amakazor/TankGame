@@ -2,6 +2,7 @@
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -61,7 +62,7 @@ namespace TankGame.Src.Data.Sounds
             }
             catch (Exception)
             {
-                throw new Exception("File Sounds.xml couldn't be loaded");
+                throw new FileNotFoundException("File Sounds.xml couldn't be loaded");
             }
 
             foreach (FieldInfo fieldInfo in typeof(SoundType).GetFields(BindingFlags.Static | BindingFlags.Public))
@@ -79,7 +80,7 @@ namespace TankGame.Src.Data.Sounds
                 }
                 catch (Exception)
                 {
-                    throw new Exception("Sounds file couldn't be loaded");
+                    throw new FileLoadException("Sounds file couldn't be loaded");
                 }
             }
         }

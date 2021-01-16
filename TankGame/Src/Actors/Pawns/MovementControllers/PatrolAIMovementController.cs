@@ -1,9 +1,9 @@
 ﻿using SFML.System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using TankGame.Src.Data.Controls;
 using TankGame.Src.Extensions;
-using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
@@ -11,8 +11,6 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
     {
         protected List<Vector2i> PatrolRoute { get; }
         protected Stack<Vector2i> CurrentPatrolRoute { get; set; }
-        protected Vector2i TargetPosition { get; set; }
-        protected Stack<Node> Path { get; set; }
 
         public PatrolAIMovementController(double delay, Pawn owner, List<Vector2i> patrolRoute) : base(delay, owner, "patrol")
         {
@@ -25,33 +23,30 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
             if (CanDoAction() && Owner.CurrentRegion != null)
             {
                 if (CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine) NextAction = KeyActionType.Shoot;
-                else
-                {
-                    if (CurrentPatrolRoute is null || CurrentPatrolRoute.Count == 0)
-                    {
-                        CurrentPatrolRoute = new Stack<Vector2i>(PatrolRoute);
-                    }
+                else Patrol();
 
-                    if (TargetPosition.IsInvalid() || TargetPosition.Equals(Owner.Coords))
-                    {
-                        TargetPosition = CurrentPatrolRoute.Pop();
-                    }
-
-                    if (!TargetPosition.IsInvalid())
-                    {
-                        if (Path != null && Path.Count == 0) Path = null;
-
-                        Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), TargetPosition);
-
-                        NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position);
-                    }
-                    else NextAction = null;
-                }
             }
             else NextAction = null;
         }
 
-        internal XmlNode SerializePath(XmlDocument xmlDocument)
+        protected void Patrol()
+        {
+            if (CurrentPatrolRoute is null || !CurrentPatrolRoute.Any()) CurrentPatrolRoute = new Stack<Vector2i>(PatrolRoute);
+
+            if (TargetPosition.IsInvalid() || TargetPosition.Equals(Owner.Coords)) TargetPosition = CurrentPatrolRoute.Pop();
+
+            if (!TargetPosition.IsInvalid())
+            {
+                if (Path != null && !Path.Any()) Path = null;
+
+                Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(TargetPosition));
+
+                NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.CurrentRegion.Coords * Owner.CurrentRegion.FieldsInLine);
+            }
+            else NextAction = null;
+        }
+
+        public XmlNode SerializePath(XmlDocument xmlDocument)
         {
             XmlElement pathElement = xmlDocument.CreateElement("path");
 
@@ -61,8 +56,8 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 XmlElement xElement = xmlDocument.CreateElement("x");
                 XmlElement yElement = xmlDocument.CreateElement("y");
 
-                xElement.InnerText = point.X.ToString();
-                yElement.InnerText = point.Y.ToString();
+                xElement.InnerText = (point.X % 20).ToString();
+                yElement.InnerText = (point.Y % 20).ToString();
 
                 pointElement.AppendChild(xElement);
                 pointElement.AppendChild(yElement);

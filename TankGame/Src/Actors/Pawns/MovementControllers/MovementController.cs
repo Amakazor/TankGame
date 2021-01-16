@@ -6,6 +6,7 @@ using TankGame.Src.Actors.Projectiles;
 using TankGame.Src.Data.Controls;
 using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Data.Map;
+using TankGame.Src.Extensions;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
@@ -24,7 +25,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         public double RotationProgress => 1 - (Cooldown / RotationCooldown);
         public double MovementProgress => 1 - (Cooldown / MovementCooldown);
 
-        public MovementController(double delay, Pawn owner)
+        protected MovementController(double delay, Pawn owner)
         {
             Delay = delay;
             Owner = owner;
@@ -54,7 +55,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             Vector2i nextCoords = GetNextCoordsFromDirection(nextDirection, Owner.Coords);
             ClearAction();
-            if (!nextCoords.Equals(new Vector2i(-1, -1)))
+            if (nextCoords.IsValid())
             {
                 GameMap gameMap = GamestateManager.Instance.Map;
                 Field nextField = gameMap.GetFieldFromRegion(nextCoords);
@@ -71,13 +72,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                         MovementCooldown = averageTraversabilityMultiplier * Delay * GamestateManager.Instance.WeatherModifier;
                         SetCooldown(averageTraversabilityMultiplier);
 
-                        if (nextField.GameObject != null)
-                        {
-                            if (nextField.GameObject.DestructabilityData.DestroyOnEntry)
-                            {
-                                nextField.GameObject.OnDestroy();
-                            }
-                        }
+                        nextField.EnterField(Owner);
                     }
                 }
                 else SetRandomizedCooldown();
@@ -102,7 +97,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             SetCooldown();
             ClearAction();
-            new Projectile(Owner.Position, direction, Owner);
+            Projectile.CreateProjectile(Owner.Position, direction, Owner);
             return direction;
         }
 
@@ -146,11 +141,6 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
             GameMap gameMap = GamestateManager.Instance.Map;
 
-            if (IsMoving && gameMap.GetFieldFromRegion(Owner.Coords) != null)
-            {
-                gameMap.GetFieldFromRegion(Owner.Coords).PawnOnField = Owner;
-            }
-
             if (IsMoving && MovementProgress >= 0.8 && gameMap.GetFieldFromRegion(Owner.LastCoords)?.PawnOnField == Owner)
             {
                 gameMap.GetFieldFromRegion(Owner.LastCoords).PawnOnField = null;
@@ -158,16 +148,9 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         }
 
         public bool IsDirectionOposite(Direction lastDirection, Direction currentDirection) => (lastDirection == Direction.Up && currentDirection == Direction.Down) || (lastDirection == Direction.Down && currentDirection == Direction.Up) || (lastDirection == Direction.Left && currentDirection == Direction.Right) || (lastDirection == Direction.Right && currentDirection == Direction.Left);
-        
 
-        public void RegisterTickable()
-        {
-            
-        }
+        public void RegisterTickable() => throw new NotSupportedException("Owner of movement controller handles its ticking");
 
-        public void UnregisterTickable()
-        {
-            
-        }
+        public void UnregisterTickable() => throw new NotSupportedException("Owner of movement controller handles its ticking");
     }
 }

@@ -9,7 +9,7 @@ namespace TankGame.Src.Actors.Buttons
     {
         protected AlignedTextComponent ButtonText;
 
-        public TextButton(Vector2f position, Vector2f size, string text, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(position, size)
+        protected TextButton(Vector2f position, Vector2f size, string text, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(position, size)
         {
             ButtonText = new AlignedTextComponent(Position, Size, new Vector2f(0, 0), fontSize, horizontalPosition, verticalPosition, text, Color.White);
         }

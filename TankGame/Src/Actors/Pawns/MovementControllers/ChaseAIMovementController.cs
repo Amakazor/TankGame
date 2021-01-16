@@ -1,20 +1,17 @@
 ﻿using SFML.System;
 using System;
-using System.Collections.Generic;
 using TankGame.Src.Data.Controls;
 using TankGame.Src.Data.Gamestate;
 using TankGame.Src.Extensions;
-using TankGame.Src.Pathfinding;
 
 namespace TankGame.Src.Actors.Pawns.MovementControllers
 {
     internal class ChaseAIMovementController : AIMovementController
     {
         protected Vector2i LastPlayerPosition { get; set; }
-        protected Vector2i TargetPosition { get; set; }
-        protected Stack<Node> Path { get; set; }
         public ChaseAIMovementController(double delay, Pawn owner, string type = null) : base(delay, owner, type??"chase")
         {
+            TargetPosition = new Vector2i(-1, -1);
         }
 
         protected override void DecideOnNextAction()
@@ -48,14 +45,14 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 {
                     Vector2i currentPlayerPosition = GamestateManager.Instance.Player.Coords;
 
-                    if (LastPlayerPosition == null || LastPlayerPosition != currentPlayerPosition || !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
+                    if (LastPlayerPosition != currentPlayerPosition || !GamestateManager.Instance.Map.GetFieldFromRegion(TargetPosition).IsTraversible())
                     {
                         LastPlayerPosition = currentPlayerPosition;
                         TargetPosition = GetClosestValidShootingPositionToPlayer();
                         Path = null;
                     }
 
-                    if (!TargetPosition.IsInvalid())
+                    if (TargetPosition.IsValid())
                     {
                         if (Path != null && Path.Count == 0) Path = null;
 
@@ -72,15 +69,14 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         protected void ChaseActivity()
         {
-            if (!TargetPosition.Equals(new Vector2i(-1, -1)))
+            if (Owner.CurrentRegion != null)
             {
                 if (Path != null && Path.Count == 0) Path = null;
 
-                Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), GetClosestValidShootingPositionToActivity());
+                Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(GetClosestValidShootingPositionToActivity()));
 
-                NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position);
-            }
-            else NextAction = null;
+                NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.CurrentRegion.Coords * Owner.CurrentRegion.FieldsInLine);
+            }                
         }
     }
 }

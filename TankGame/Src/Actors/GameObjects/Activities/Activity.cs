@@ -20,15 +20,15 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         private string name;
         public string Name
         {
-            get
+            get => ActivityStatus switch
             {
-                return ActivityStatus == ActivityStatus.Started ? name : (ActivityStatus == ActivityStatus.Completed ? "Completed" : "Failed");
-            }
+                ActivityStatus.Started => name,
+                ActivityStatus.Completed => "Completed",
+                ActivityStatus.Failed => "Failed",
+                _ => "",
+            };
 
-            set
-            {
-                name = value;
-            }
+            set => name = value;
         }
 
         public string ProgressText => CalculateProgress();
@@ -38,7 +38,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         protected Texture AfterCompletionTexture { get; }
         protected DestructabilityData AfterCompletionDestructabilityData { get; }
 
-        public Activity(Vector2i coords, HashSet<Enemy> enemies, int hp, string name, string type, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType, int pointsAdded) : base(coords, gameObjectType, TextureManager.Instance.GetTexture(TextureType.GameObject, "tower"), "", hp)
+        protected Activity(Vector2i coords, HashSet<Enemy> enemies, int hp, string name, string type, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType, int pointsAdded) : base(coords, gameObjectType, TextureManager.Instance.GetTexture(TextureType.GameObject, "tower"), "", hp)
         {
             Name = name;
             Type = type;
@@ -104,12 +104,6 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         public void OnEnemyWanderOut()
         {
             if (ActivityStatus != ActivityStatus.Completed) AllEnemiesCount--;
-        }
-
-        public override void OnDestroy()
-        {
-            GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords).Activity = null;
-            base.OnDestroy();
         }
 
         internal abstract override XmlElement SerializeToXML(XmlDocument xmlDocument);

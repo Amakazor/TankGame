@@ -37,7 +37,7 @@ namespace TankGame.Src.Data.Map
             Vector2i playersRegionCoords = SearchForPlayerRegion();
 
             if (playersRegionCoords.IsValid()) LoadNineRegions(playersRegionCoords, false);
-            else throw new Exception("No players region");
+            else throw new InvalidOperationException("No players region");
 
             MessageBus.Instance.Register(MessageType.PawnMoved, OnPawnMoved);
         }
@@ -84,7 +84,7 @@ namespace TankGame.Src.Data.Map
         {
             Field field = GetFieldFromRegion(fieldCoords);
 
-            return field is null ? false : field.IsTraversible(excludePlayer, orObjectDestructible);
+            return field != null && field.IsTraversible(excludePlayer, orObjectDestructible);
         }
 
         private void LoadNineRegions(Vector2i coords, bool save = true)
@@ -102,17 +102,14 @@ namespace TankGame.Src.Data.Map
                 });
 
                 for (int columnModifier = -1; columnModifier <= 1; columnModifier++) for (int rowModifier = -1; rowModifier <= 1; rowModifier++)
-                    {
-                        Vector2i newCoords = new Vector2i(coords.X + columnModifier, coords.Y + rowModifier);
+                {
+                    Vector2i newCoords = new Vector2i(coords.X + columnModifier, coords.Y + rowModifier);
 
-                        if (GetRegionFromMapCoords(newCoords) is null)
-                        {
-                            if (newCoords.X >= 0 && newCoords.X <= MapSize && newCoords.Y >= 0 && newCoords.Y <= MapSize && RegionPathGenerator.GetRegionPath(newCoords) != null)
-                            {
-                                Regions.Add(new Region(newCoords, FieldsInLine, true));
-                            }
-                        }
+                    if (GetRegionFromMapCoords(newCoords) is null && newCoords.X >= 0 && newCoords.X <= MapSize && newCoords.Y >= 0 && newCoords.Y <= MapSize && RegionPathGenerator.GetRegionPath(newCoords) != null)
+                    {
+                        Regions.Add(new Region(newCoords, FieldsInLine, true));
                     }
+                }
             }
 
             if (save) GamestateManager.Instance.Save();

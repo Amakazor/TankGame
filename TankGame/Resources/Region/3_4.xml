@@ -2073,6 +2073,8 @@
   </fields>
   <activity>
     <type>destroy</type>
+    <x>9</x>
+    <y>10</y>
   <spawns>
     <enemy>
       <type>medium</type>

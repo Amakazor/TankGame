@@ -6,6 +6,7 @@ using System.Xml;
 using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Pawns;
 using TankGame.Src.Actors.Pawns.Enemies;
+using TankGame.Src.Actors.Pawns.Enemy;
 using TankGame.Src.Data.Map;
 
 namespace TankGame.Src.Actors.GameObjects.Activities
@@ -89,8 +90,8 @@ namespace TankGame.Src.Actors.GameObjects.Activities
                     XmlElement typeElement = xmlDocument.CreateElement("type");
                     XmlElement aimcElement = xmlDocument.CreateElement("aimc");
 
-                    xElement.InnerText = enemydata.Coords.X.ToString();
-                    yElement.InnerText = enemydata.Coords.Y.ToString();
+                    xElement.InnerText = (enemydata.Coords.X % 20).ToString();
+                    yElement.InnerText = (enemydata.Coords.Y % 20).ToString();
                     typeElement.InnerText = enemydata.Type;
                     aimcElement.InnerText = enemydata.AimcType;
 
@@ -99,7 +100,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
                     enemyElement.AppendChild(typeElement);
                     enemyElement.AppendChild(aimcElement);
 
-                    if (enemydata.PatrolRoute != null && enemydata.PatrolRoute.Count() != 0)
+                    if (enemydata.PatrolRoute != null && enemydata.PatrolRoute.Any())
                     {
                         XmlElement pathElement = xmlDocument.CreateElement("path");
 
@@ -109,8 +110,8 @@ namespace TankGame.Src.Actors.GameObjects.Activities
                             XmlElement xPointElement = xmlDocument.CreateElement("x");
                             XmlElement yPointElement = xmlDocument.CreateElement("y");
 
-                            xPointElement.InnerText = point.X.ToString();
-                            yPointElement.InnerText = point.Y.ToString();
+                            xPointElement.InnerText = (point.X % 20).ToString();
+                            yPointElement.InnerText = (point.Y % 20).ToString();
 
                             pointElement.AppendChild(xPointElement);
                             pointElement.AppendChild(yPointElement);

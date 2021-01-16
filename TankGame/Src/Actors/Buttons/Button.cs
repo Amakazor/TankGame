@@ -12,7 +12,7 @@ namespace TankGame.Src.Actors.Buttons
     {
         protected RectangleComponent BoundingBox { get; set; }
 
-        public Button(Vector2f position, Vector2f size) : base(position, size)
+        protected Button(Vector2f position, Vector2f size) : base(position, size)
         {
             BoundingBox = new RectangleComponent(Position, Size);
 

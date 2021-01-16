@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.Pawns.Enemies;
+using TankGame.Src.Actors.Pawns.Enemy;
 using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Data.Map;
 
@@ -30,7 +31,7 @@ namespace TankGame.Src.Actors.Pawns
 
         private static bool MoveSpawnIfNecessary(Enemy enemy, Region region)
         {
-            if (region.GetFieldAtMapCoords(enemy.Coords).PawnOnField != null)
+            if (region.GetFieldAtMapCoords(enemy.Coords)?.PawnOnField != null)
             {
                 Vector2i movementVector = MovementVectors.FirstOrDefault(vector
                     => region.GetFieldAtMapCoords(enemy.Coords + vector).IsTraversible()

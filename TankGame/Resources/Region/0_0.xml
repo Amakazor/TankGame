@@ -2499,11 +2499,5 @@
     </waves>
   </activity>
   <spawns>
-    <!--
-    <player>
-      <x>19</x>
-      <y>19</y>
-    </player>
-    -->
 	</spawns>
 </region>

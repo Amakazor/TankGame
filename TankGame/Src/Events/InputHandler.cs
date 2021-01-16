@@ -57,12 +57,12 @@ namespace TankGame.Src.Events
 
         private void OnRegisterClickable(object sender, EventArgs eventArgs)
         {
-            if (sender is IClickable) Clickables.Add((IClickable)sender);
+            if (sender is IClickable clickable) Clickables.Add(clickable);
         }
 
         private void OnUnregisterClickable(object sender, EventArgs eventArgs)
         {
-            if (sender is IClickable && Clickables.Contains((IClickable)sender)) Clickables.Remove((IClickable)sender);
+            if (sender is IClickable clickable) Clickables.Remove(clickable);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace TankGame.Src.Actors.Pawns
         public Region CurrentRegion => GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords);
         public bool StopsProjectile => true;
 
-        public Pawn(Vector2f position, Vector2f size, Texture texture, int health) : base(position, size)
+        protected Pawn(Vector2f position, Vector2f size, Texture texture, int health) : base(position, size)
         {
             Health = health;
             PawnSprite = new SpriteComponent(Position, Size, texture, new Color(255, 255, 255, 255));

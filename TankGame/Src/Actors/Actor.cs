@@ -17,7 +17,7 @@ namespace TankGame.Src.Actors
         public RenderView RenderableRenderView => RenderView;
         public bool Visible { get; set; }
 
-        public Actor(Vector2f position, Vector2f size)
+        protected Actor(Vector2f position, Vector2f size)
         {
             Position = position;
             Size = size;

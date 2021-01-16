@@ -1,5 +1,4 @@
 ﻿using SFML.System;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TankGame.Src.Extensions;
@@ -39,16 +38,13 @@ namespace TankGame.Src.Pathfinding
 
                 foreach (Node adjacentNode in adjacentNodes)
                 {
-                    if (!closedList.Contains(adjacentNode) && adjacentNode.Walkable)
+                    if (!closedList.Contains(adjacentNode) && adjacentNode.Walkable && !openList.Contains(adjacentNode))
                     {
-                        if (!openList.Contains(adjacentNode))
-                        {
-                            adjacentNode.Parent = currentNode;
-                            adjacentNode.DistanceToTarget = adjacentNode.Position.ManhattanDistance(end.Position);
-                            adjacentNode.Cost = adjacentNode.Weight + adjacentNode.Parent.Cost;
-                            openList.Add(adjacentNode);
-                            openList = openList.OrderBy(node => node.F).ToList();
-                        }
+                        adjacentNode.Parent = currentNode;
+                        adjacentNode.DistanceToTarget = adjacentNode.Position.ManhattanDistance(end.Position);
+                        adjacentNode.Cost = adjacentNode.Weight + adjacentNode.Parent.Cost;
+                        openList.Add(adjacentNode);
+                        openList = openList.OrderBy(node => node.F).ToList();
                     }
                 }
             }

@@ -33,7 +33,7 @@ namespace TankGame.Src.Actors.Projectiles
         public Vector2f CollisionPosition => Position + ((Size - CollistionSize) / 2);
         public Vector2f CollistionSize => (Size / 4);
 
-        public Projectile(Vector2f position, Direction direction, Pawn owner) : base(position, new Vector2f(64, 64))
+        private Projectile(Vector2f position, Direction direction, Pawn owner) : base(position, new Vector2f(64, 64))
         {
             StartingPosition = Position;
             Direction = direction;
@@ -82,6 +82,11 @@ namespace TankGame.Src.Actors.Projectiles
             Owner = null;
             MessageBus.Instance.PostEvent(MessageType.UnregisterProjectile, this, new EventArgs());
             base.Dispose();
+        }
+
+        public static Projectile CreateProjectile(Vector2f position, Direction direction, Pawn owner)
+        {
+            return new Projectile(position, direction, owner);
         }
     }
 }

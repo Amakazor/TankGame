@@ -1,5 +1,8 @@
-﻿internal enum AnimationType
+﻿namespace TankGame.Src.Actors.Weathers
 {
-    Shaded,
-    Animated
+    internal enum AnimationType
+    {
+        Shaded,
+        Animated
+    }
 }

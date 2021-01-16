@@ -1,8 +1,5 @@
 ﻿using SFML.System;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace TankGame.Src.Data.Map
 {

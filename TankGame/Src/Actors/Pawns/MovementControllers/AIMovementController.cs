@@ -24,7 +24,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         protected int PlayerShootingDistance => (int)Math.Floor(BasePlayerShootinhDistance * (1 / GamestateManager.Instance.WeatherModifier));
         protected int ActivityShootingDistance => (int)Math.Floor(BaseActivitityShootingDistance * (1 / GamestateManager.Instance.WeatherModifier));
 
-        public AIMovementController(double delay, Pawn owner, string aimcType) : base(delay, owner)
+        protected AIMovementController(double delay, Pawn owner, string aimcType) : base(delay, owner)
         {
             AimcType = aimcType;
             SetCooldown(0.5);
@@ -44,17 +44,14 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                 DecideOnNextAction();
             }
 
-            if (CanSeePlayerInUnobstructedLine && currentDirection != GetLineDirectionToPlayer(currentDirection))
+            if (CanDoAction() && (CanSeePlayerInUnobstructedLine || CanSeeActivityInUnobstructedLine))
             {
-                if (CanDoAction())
+                if (CanSeePlayerInUnobstructedLine && currentDirection != GetLineDirectionToPlayer(currentDirection))
                 {
                     NextAction = null;
                     return Rotate(currentDirection, GetLineDirectionToPlayer(currentDirection));
                 }
-            }
-            else if (!CanSeePlayerInUnobstructedLine && CanSeeActivityInUnobstructedLine && currentDirection != GetLineDirectionToActivity(currentDirection) && Owner.CurrentRegion.HasDestructibleActivity)
-            {
-                if (CanDoAction())
+                else if (CanSeeActivityInUnobstructedLine && currentDirection != GetLineDirectionToActivity(currentDirection) && Owner.CurrentRegion.HasDestructibleActivity)
                 {
                     NextAction = null;
                     return Rotate(currentDirection, GetLineDirectionToActivity(currentDirection));
@@ -66,17 +63,19 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         protected bool CanSeePlayerInUnobstructedLine => IsInLineWithPlayer(Owner.Coords) && IsLineUnobstructed(GamestateManager.Instance.Player.Coords.GetAllVectorsBeetween(Owner.Coords));
         protected bool CanSeeActivityInUnobstructedLine => IsInLineWithActivity(Owner.Coords) && IsLineUnobstructed(Owner.CurrentRegion.Activity.Coords.GetAllVectorsBeetween(Owner.Coords));
+        protected Vector2i TargetPosition { get; set; }
+        protected Stack<Node> Path { get; set; }
 
         protected bool IsInLineWithPlayer(Vector2i coords)
         {
             Player.Player player = GamestateManager.Instance.Player;
-            return player != null ? player.Coords.IsInLine(coords) && player.Coords.ManhattanDistance(coords) <= PlayerShootingDistance : false;
+            return player != null && player.Coords.IsInLine(coords) && player.Coords.ManhattanDistance(coords) <= PlayerShootingDistance;
         }
 
         protected bool IsInLineWithActivity(Vector2i coords)
         {
             Activity activity = GamestateManager.Instance.Map.GetRegionFromFieldCoords(coords)?.Activity;
-            return activity != null ? activity.Coords.IsInLine(coords) && activity.Coords.ManhattanDistance(coords) <= ActivityShootingDistance : false;
+            return activity != null && activity.Coords.IsInLine(coords) && activity.Coords.ManhattanDistance(coords) <= ActivityShootingDistance;
         }
 
         protected List<Vector2i> GetAllShootingPositions(Vector2i targetCoords, uint? shootingDistance = null)
