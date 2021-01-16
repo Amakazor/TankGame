@@ -21,7 +21,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
             Region = region;
             CurrentWave = currentWave;
             AllEnemiesCount = (uint)Enemies.Count;
-            if (AllEnemiesCount == 0 && (enemySpawns == null || EnemySpawns.Count == 0))
+            if (ActivityStatus != ActivityStatus.Failed && AllEnemiesCount == 0 && (enemySpawns == null || EnemySpawns.Count == 0))
             {
                 ActivityStatus = ActivityStatus.Completed;
                 ChangeToCompleted();

@@ -55,16 +55,19 @@ namespace TankGame.Src.Actors.GameObjects.Activities
 
         public virtual void ChangeStatus(ActivityStatus activityStatus)
         {
-            ActivityStatus = activityStatus;
-            if (activityStatus == ActivityStatus.Completed)
+            if (ActivityStatus != ActivityStatus.Failed && ActivityStatus != activityStatus)
             {
-                GamestateManager.Instance.CompleteActivity(PointsAdded, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
-                ChangeToCompleted();
+                ActivityStatus = activityStatus;
+                if (activityStatus == ActivityStatus.Completed)
+                {
+                    GamestateManager.Instance.CompleteActivity(PointsAdded, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
+                    ChangeToCompleted();
+                }
+
+                if (activityStatus == ActivityStatus.Failed) GamestateManager.Instance.FailActivity(PointsAdded / 4, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
+
+                if (GamestateManager.Instance.Map != null) GamestateManager.Instance.Save();
             }
-
-            if (activityStatus == ActivityStatus.Failed) GamestateManager.Instance.FailActivity(PointsAdded / 4, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
-
-            if (GamestateManager.Instance.Map != null) GamestateManager.Instance.Save();
         }
 
         public void ChangeToCompleted()

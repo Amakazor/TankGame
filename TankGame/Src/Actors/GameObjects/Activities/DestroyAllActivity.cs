@@ -12,7 +12,7 @@ namespace TankGame.Src.Actors.GameObjects.Activities
         public DestroyAllActivity(Vector2i coords, HashSet<Enemy> enemies, int? hp = null, string name = null, string type = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType = null) : base(coords, enemies, hp ?? 1, name ?? "Destroy all enemies", type ?? "destroy", gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(1, false, false), null), pointsAdded ?? 1000)
         {
             AllEnemiesCount = (uint)Enemies.Count;
-            if (AllEnemiesCount == 0)
+            if (ActivityStatus != ActivityStatus.Failed && AllEnemiesCount == 0)
             {
                 ActivityStatus = ActivityStatus.Completed;
                 ChangeToCompleted();
