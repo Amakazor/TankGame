@@ -118,6 +118,7 @@ namespace TankGame.Src.Data.Sounds
             if (CurrentMusic != null) CurrentMusic.Dispose();
             CurrentMusic = null;
             CurrentMusicLocation = null;
+            CurrentMusicType = null;
         }
     }
 }
