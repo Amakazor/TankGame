@@ -26,5 +26,11 @@ namespace TankGame.Src.Actors.Borders
         {
             return new HashSet<IRenderComponent> { BorderComponent };
         }
+
+        public override void Dispose()
+        {
+            BorderComponent = null;
+            base.Dispose();
+        }
     }
 }

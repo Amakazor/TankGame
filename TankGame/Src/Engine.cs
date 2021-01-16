@@ -117,21 +117,24 @@ namespace TankGame.Src
         private void Render()
         {
             Window.DispatchEvents();
-            Window.SetView(GameView);
             Window.Clear(Color.Black);
 
-            if (GamestateManager.Instance.Player != null) RecenterView(GamestateManager.Instance.Player.RealPosition);
+            if (GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
+            {
+                Window.SetView(GameView);
+                if (GamestateManager.Instance.Player != null) RecenterView(GamestateManager.Instance.Player.RealPosition);
 
-            Renderables.ToList()
+                Renderables.ToList()
                 .FindAll(renderable => renderable.RenderableRenderView == RenderView.Game && renderable.Visible)
                 .Draw(Window);
 
-            Window.SetView(HUDView);
+                Window.SetView(HUDView);
 
-            Renderables.ToList()
-               .FindAll(renderable => renderable.RenderableRenderView == RenderView.HUD && renderable.Visible)
-               .Draw(Window);
-
+                Renderables.ToList()
+                   .FindAll(renderable => renderable.RenderableRenderView == RenderView.HUD && renderable.Visible)
+                   .Draw(Window);
+            }
+            
             Window.SetView(MenuView);
 
             Renderables.ToList()

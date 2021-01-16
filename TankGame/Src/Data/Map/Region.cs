@@ -81,8 +81,8 @@ namespace TankGame.Src.Data.Map
                 Enemies.ToList().ForEach(enemy => enemy?.Dispose());
                 Enemies.Clear();
 
-                Player?.Dispose();
                 RegionBorder?.Dispose();
+                Player?.Dispose();
 
                 Player = null;
                 Activity = null;
