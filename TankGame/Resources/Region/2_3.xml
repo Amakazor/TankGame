@@ -2036,24 +2036,6 @@
     <waves>
       <wave>
         <enemy>
-          <type>light</type>
-          <aimc>chase</aimc>
-          <x>18</x>
-          <y>19</y>
-        </enemy>
-        <enemy>
-          <type>heavy</type>
-          <aimc>chase</aimc>
-          <x>11</x>
-          <y>4</y>
-        </enemy>
-        <enemy>
-          <type>medium</type>
-          <aimc>chase</aimc>
-          <x>16</x>
-          <y>17</y>
-        </enemy>
-        <enemy>
           <type>medium</type>
           <aimc>chase</aimc>
           <x>15</x>
@@ -2070,6 +2052,26 @@
           <aimc>chase</aimc>
           <x>19</x>
           <y>2</y>
+        </enemy>
+      </wave>
+      <wave>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>18</x>
+          <y>19</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>chase</aimc>
+          <x>11</x>
+          <y>4</y>
+        </enemy>
+        <enemy>
+          <type>medium</type>
+          <aimc>chase</aimc>
+          <x>16</x>
+          <y>17</y>
         </enemy>
       </wave>
     </waves>
