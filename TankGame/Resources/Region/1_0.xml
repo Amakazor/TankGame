@@ -2167,7 +2167,6 @@
 				  <y>16</y>
 			  </point>
 		  </path>
-		  
 	  </enemy>
 	  <enemy>
 		  <type>light</type>
@@ -2185,6 +2184,6 @@
 	<activity>
 		<type>destroy</type>
 		<x>17</x>
-		<y>11</y>
+		<y>10</y>
 	</activity>
 </region>

@@ -2174,6 +2174,6 @@
 	<activity>
 		<type>destroy</type>
 		<x>9</x>
-		<y>8</y>
+		<y>16</y>
 	</activity>
 </region>

@@ -2076,7 +2076,6 @@
         </enemy>
       </wave>
       <wave>
-        </enemy>
         <enemy>
           <type>heavy</type>
           <aimc>stand</aimc>
