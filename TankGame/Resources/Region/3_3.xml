@@ -2027,7 +2027,7 @@
     </field>
   </fields>
   <activity>
-    <type>waveprotect</type>
+    <type>wave</type>
     <x>19</x>
     <y>10</y>
     <waves>
@@ -2073,6 +2073,33 @@
           <aimc>stand</aimc>
           <x>3</x>
           <y>17</y>
+        </enemy>
+      </wave>
+      <wave>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>19</x>
+          <y>10</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>10</x>
+          <y>16</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>10</x>
+          <y>1</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>4</x>
+          <y>7</y>
         </enemy>
       </wave>
     </waves>

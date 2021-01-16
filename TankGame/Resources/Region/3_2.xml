@@ -2171,6 +2171,32 @@
           <y>0</y>
         </enemy>
       </wave>
+      <wave>
+        <enemy>
+          <type>medium</type>
+          <aimc>random</aimc>
+          <x>12</x>
+          <y>11</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>random</aimc>
+          <x>9</x>
+          <y>5</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>chase</aimc>
+          <x>14</x>
+          <y>2</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>chase</aimc>
+          <x>19</x>
+          <y>0</y>
+        </enemy>
+      </wave>
     </waves>
   </activity>
   <spawns>

@@ -2102,6 +2102,64 @@
           <y>3</y>
         </enemy>
       </wave>
+      <wave>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>4</x>
+          <y>3</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>5</x>
+          <y>7</y>
+        </enemy>
+        <enemy>
+          <type>medium</type>
+          <aimc>stand</aimc>
+          <x>1</x>
+          <y>7</y>
+        </enemy>
+        <enemy>
+          <type>heavy</type>
+          <aimc>stand</aimc>
+          <x>19</x>
+          <y>3</y>
+        </enemy>
+      </wave>
+      <wave>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>2</x>
+          <y>17</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>7</x>
+          <y>16</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>4</x>
+          <y>14</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>10</x>
+          <y>5</y>
+        </enemy>
+        <enemy>
+          <type>light</type>
+          <aimc>chase</aimc>
+          <x>3</x>
+          <y>10</y>
+        </enemy>
+      </wave>
     </waves>
   </activity>
   <spawns>

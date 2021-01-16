@@ -2003,44 +2003,40 @@
     </field>
   </fields>
   <activity>
-    <type>waveprotect</type>
+    <type>protect</type>
     <x>10</x>
     <y>10</y>
-    <waves>
-      <wave>
-        <enemy>
-          <type>heavy</type>
-          <aimc>stand</aimc>
-          <x>10</x>
-          <y>10</y>
-        </enemy>
-        <enemy>
-          <type>heavy</type>
-          <aimc>stand</aimc>
-          <x>4</x>
-          <y>7</y>
-        </enemy>
-        <enemy>
-          <type>heavy</type>
-          <aimc>stand</aimc>
-          <x>5</x>
-          <y>13</y>
-        </enemy>
-        <enemy>
-          <type>heavy</type>
-          <aimc>stand</aimc>
-          <x>1</x>
-          <y>13</y>
-        </enemy>
-        <enemy>
-          <type>heavy</type>
-          <aimc>stand</aimc>
-          <x>15</x>
-          <y>13</y>
-        </enemy>
-      </wave>
-    </waves>
   </activity>
   <spawns>
+    <enemy>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>10</x>
+      <y>10</y>
+    </enemy>
+    <enemy>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>4</x>
+      <y>7</y>
+    </enemy>
+    <enemy>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>5</x>
+      <y>13</y>
+    </enemy>
+    <enemy>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>1</x>
+      <y>13</y>
+    </enemy>
+    <enemy>
+      <type>heavy</type>
+      <aimc>stand</aimc>
+      <x>15</x>
+      <y>13</y>
+    </enemy>
   </spawns>
 </region>
