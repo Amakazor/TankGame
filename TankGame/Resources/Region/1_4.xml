@@ -386,7 +386,7 @@
     <field>
       <!--3x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--3x10-->
@@ -490,7 +490,7 @@
     <field>
       <!--4x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--4x10-->
@@ -590,7 +590,7 @@
     <field>
       <!--5x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--5x10-->
@@ -694,7 +694,7 @@
     <field>
       <!--6x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--6x10-->
@@ -794,7 +794,7 @@
     <field>
       <!--7x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--7x10-->
@@ -898,7 +898,7 @@
     <field>
       <!--8x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--8x10-->
@@ -998,7 +998,7 @@
     <field>
       <!--9x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--9x10-->
@@ -1102,7 +1102,7 @@
     <field>
       <!--10x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--10x10-->
@@ -1202,7 +1202,7 @@
     <field>
       <!--11x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--11x10-->
@@ -1306,7 +1306,7 @@
     <field>
       <!--12x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--12x10-->
@@ -1418,7 +1418,7 @@
     <field>
       <!--13x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--13x10-->
@@ -1534,7 +1534,7 @@
     <field>
       <!--14x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--14x10-->
@@ -1650,7 +1650,7 @@
     <field>
       <!--15x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--15x10-->
@@ -1753,7 +1753,7 @@
     <field>
       <!--16x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--16x10-->
@@ -1869,7 +1869,7 @@
     <field>
       <!--17x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--17x10-->
@@ -1974,7 +1974,7 @@
     <field>
       <!--18x9-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--18x10-->

@@ -783,7 +783,7 @@
     <field>
       <!--7x11-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-lb</texture>
     </field>
     <field>
       <!--7x12-->

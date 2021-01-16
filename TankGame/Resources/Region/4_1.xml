@@ -1841,7 +1841,7 @@
 		<field>
 			<!--17x7-->
 			<type>road</type>
-			<texture>road</texture>
+			<texture>road-trb</texture>
 		</field>
 		<field>
 			<!--12x8-->

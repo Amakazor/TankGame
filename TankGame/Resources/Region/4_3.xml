@@ -753,7 +753,7 @@
     <field>
       <!--7x8-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road-rt</texture>
     </field>
     <field>
       <!--7x9-->
@@ -953,7 +953,7 @@
     <field>
       <!--9x8-->
       <type>road</type>
-      <texture>road</texture>
+      <texture>road2</texture>
     </field>
     <field>
       <!--9x9-->

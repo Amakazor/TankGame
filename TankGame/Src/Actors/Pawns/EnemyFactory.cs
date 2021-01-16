@@ -66,6 +66,8 @@ namespace TankGame.Src.Actors.Pawns
 
         public static Enemy CreateEnemy(Vector2i coords, string enemyType, string AIMCType, List<Vector2i> patrolRoute, int health, Region region)
         {
+            return null;
+
             if (EnemyTypes.ContainsKey(enemyType) && AIMCTypes.ContainsKey(AIMCType))
             {
                 Enemy newEnemy = EnemyTypes[enemyType](new Vector2f(coords.X, coords.Y));
