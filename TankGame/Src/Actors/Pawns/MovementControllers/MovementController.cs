@@ -132,7 +132,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         public void ClearAction() => NextAction = null;
         protected void SetRandomizedCooldown() => SetCooldown(GamestateManager.Instance.Random.NextDouble() / 4);
-        protected void SetCooldown(double multiplier = 1) => Cooldown = Delay * multiplier * GamestateManager.Instance.WeatherModifier;
+        protected void SetCooldown(double multiplier = 1) => Cooldown = Cooldown > 0 ? Cooldown : Delay * multiplier * GamestateManager.Instance.WeatherModifier;
 
         public void Tick(float deltaTime)
         {

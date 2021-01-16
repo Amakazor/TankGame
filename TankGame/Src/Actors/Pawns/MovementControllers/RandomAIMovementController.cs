@@ -33,8 +33,9 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
                     if (Path != null && !Path.Any()) Path = null;
 
-                    while (CurrentPatrolRoute != null && CurrentPatrolRoute.Any() && (Path == null || TargetPosition.IsInvalid() || TargetPosition.Equals(Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords))))
+                    if (CurrentPatrolRoute != null && CurrentPatrolRoute.Any() && (Path == null || TargetPosition.IsInvalid() || TargetPosition.Equals(Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords))))
                     {
+                        SetCooldown(0.05);
                         TargetPosition = CurrentPatrolRoute.Pop();
                         Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), TargetPosition);
                     }

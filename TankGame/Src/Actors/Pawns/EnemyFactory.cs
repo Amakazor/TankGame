@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TankGame.Src.Actors.GameObjects;
 using TankGame.Src.Actors.Pawns.Enemies;
-using TankGame.Src.Actors.Pawns.Enemy;
 using TankGame.Src.Actors.Pawns.MovementControllers;
 using TankGame.Src.Data.Map;
 

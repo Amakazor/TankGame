@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using TankGame.Src.Actors.Data;
 using TankGame.Src.Actors.Pawns.Enemies;
-using TankGame.Src.Actors.Pawns.Enemy;
 using TankGame.Src.Data.Map;
 
 namespace TankGame.Src.Actors.GameObjects.Activities

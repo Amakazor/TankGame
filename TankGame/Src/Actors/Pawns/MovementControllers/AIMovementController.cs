@@ -51,7 +51,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
                     NextAction = null;
                     return Rotate(currentDirection, GetLineDirectionToPlayer(currentDirection));
                 }
-                else if (CanSeeActivityInUnobstructedLine && currentDirection != GetLineDirectionToActivity(currentDirection) && Owner.CurrentRegion.HasDestructibleActivity)
+                else if (!CanSeePlayerInUnobstructedLine && CanSeeActivityInUnobstructedLine && currentDirection != GetLineDirectionToActivity(currentDirection) && Owner.CurrentRegion.HasDestructibleActivity)
                 {
                     NextAction = null;
                     return Rotate(currentDirection, GetLineDirectionToActivity(currentDirection));

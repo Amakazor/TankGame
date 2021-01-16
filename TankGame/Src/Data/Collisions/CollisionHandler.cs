@@ -46,11 +46,11 @@ namespace TankGame.Src.Data.Collisions
                                 case Player _ when projectile.Owner is Enemy:
                                 case GameObject _:
                                     destructible.OnHit();
+                                    projectile.Dispose();
                                     break;
                             }
                         }
-
-                        if ((destructible.IsDestructible && destructible.IsAlive) || destructible.StopsProjectile) projectile.Dispose();
+                        else if (destructible.StopsProjectile) projectile.Dispose();
                     }
                 }
             }
