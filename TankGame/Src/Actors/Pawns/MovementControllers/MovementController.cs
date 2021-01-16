@@ -83,12 +83,17 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
 
         protected Vector2i GetNextCoordsFromDirection(Direction nextDirection, Vector2i currentCoords)
         {
-            return nextDirection switch
+            return currentCoords + GetDirectionVector(nextDirection);
+        }
+
+        private Vector2i GetDirectionVector(Direction direction)
+        {
+            return direction switch
             {
-                Direction.Down => currentCoords + new Vector2i(0, 1),
-                Direction.Up => currentCoords + new Vector2i(0, -1),
-                Direction.Left => currentCoords + new Vector2i(-1, 0),
-                Direction.Right => currentCoords + new Vector2i(1, 0),
+                Direction.Down => new Vector2i(0, 1),
+                Direction.Up => new Vector2i(0, -1),
+                Direction.Left => new Vector2i(-1, 0),
+                Direction.Right => new Vector2i(1, 0),
                 _ => new Vector2i(-1, -1),
             };
         }
@@ -97,7 +102,7 @@ namespace TankGame.Src.Actors.Pawns.MovementControllers
         {
             SetCooldown();
             ClearAction();
-            Projectile.CreateProjectile(Owner.Position, direction, Owner);
+            Projectile.CreateProjectile(Owner.Position + GetDirectionVector(direction).ToVector2f() * 32, direction, Owner);
             return direction;
         }
 

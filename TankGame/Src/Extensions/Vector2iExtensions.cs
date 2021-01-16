@@ -14,6 +14,7 @@ namespace TankGame.Src.Extensions
         public static bool IsInHorizontalLine(this Vector2i current, Vector2i other) => current.Y == other.Y;
         public static int ManhattanDistance(this Vector2i current, Vector2i other) => Math.Abs(current.X - other.X) + Math.Abs(current.Y - other.Y);
         public static Vector2i Modulo(this Vector2i current, int divisor) => new Vector2i(current.X % divisor, current.Y % divisor);
+        public static Vector2f ToVector2f(this Vector2i current) => new Vector2f(current.X, current.Y);
 
         public static List<Vector2i> GetAllVectorsBeetween(this Vector2i current, Vector2i other)
         {

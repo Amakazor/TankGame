@@ -17,7 +17,7 @@ namespace TankGame.Src.Actors.Projectiles
 {
     internal class Projectile : TickableActor
     {
-        private const float BaseFlightDistance = 64 * 7;
+        private const float BaseFlightDistance = 64 * 6.5F;
         private const float BaseSpeed = 200;
 
         private readonly float FlightDistance = BaseFlightDistance * (1 / (GamestateManager.Instance.WeatherModifier * GamestateManager.Instance.WeatherModifier));
