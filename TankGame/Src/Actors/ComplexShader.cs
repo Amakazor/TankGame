@@ -1,28 +1,20 @@
-﻿using SFML.Graphics;
-using System;
-using TankGame.Src.Events;
+﻿using System;
+using SFML.Graphics;
 
-namespace TankGame.Src.Actors.Shaders
-{
-    internal abstract class ComplexShader : ITickable, IDisposable
-    {
-        public Shader Shader { get; protected set; }
+namespace TankGame.Actors;
 
-        protected ComplexShader(Shader shader)
-        {
-            Shader = shader;
-            RegisterTickable();
-        }
-
-        public abstract void Tick(float deltaTime);
-
-        public void RegisterTickable() => MessageBus.Instance.PostEvent(MessageType.RegisterTickable, this, new EventArgs());
-
-        public void UnregisterTickable() => MessageBus.Instance.PostEvent(MessageType.UnregisterTickable, this, new EventArgs());
-
-        public void Dispose()
-        {
-            UnregisterTickable();
-        }
+public abstract class ComplexShader : ITickable, IDisposable {
+    protected ComplexShader(Shader shader) {
+        Shader = shader;
+        (this as ITickable).RegisterTickable();
     }
+
+    public Shader Shader { get; }
+
+    public void Dispose() {
+        GC.SuppressFinalize(this);
+        (this as ITickable).UnregisterTickable();
+    }
+
+    public abstract void Tick(float deltaTime);
 }

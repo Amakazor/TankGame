@@ -1,68 +1,46 @@
-﻿using SFML.Graphics;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using TankGame.Src.Actors;
-using TankGame.Src.Data.Controls;
+using TankGame.Actors;
+using TankGame.Core.Controls;
 
-namespace TankGame.Src.Events
-{
-    internal class InputHandler
-    {
-        private HashSet<IClickable> Clickables { get; }
-        private RenderWindow Window { get; }
+namespace TankGame.Events;
 
-        public InputHandler(RenderWindow window)
-        {
-            Clickables = new HashSet<IClickable>();
-            Window = window;
+public class InputHandler {
+    public InputHandler(RenderWindow window) {
+        Clickables = new();
+        Window = window;
 
-            RegisterEvents();
-        }
+        RegisterEvents();
+    }
 
-        public void OnKeyPress(object sender, KeyEventArgs eventArgs)
-        {
-            Tuple<string, string> keyActionType = KeyManager.Instance.GetAction(eventArgs.Code);
-            if (keyActionType != null) MessageBus.Instance.PostEvent(MessageType.KeyAction, sender, new KeyActionEventArgs(keyActionType));
-            MessageBus.Instance.PostEvent(MessageType.KeyPressed, sender, eventArgs);
-        }
+    private HashSet<IClickable> Clickables { get; }
+    private RenderWindow Window { get; }
 
-        public void OnTextInput(object sender, TextEventArgs textEventArgs)
-        {
-            MessageBus.Instance.PostEvent(MessageType.TextInput, sender, textEventArgs);
-        }
+    public void OnKeyPress(KeyEventArgs eventArgs) {
+        MessageBus.Action.Invoke(KeyManager.GetAction(eventArgs.Code));
+        MessageBus.KeyPressed.Invoke(eventArgs);
+    }
 
-        public void OnClick(object sender, MouseButtonEventArgs mouseButtonEventArgs)
-        {
-            Vector2f point = Window.MapPixelToCoords(new Vector2i(mouseButtonEventArgs.X, mouseButtonEventArgs.Y));
+    public void OnTextInput(TextEventArgs textEventArgs)
+        => MessageBus.TextInput.Invoke(textEventArgs);
 
-            Clickables.ToList()
-                .FindAll(clickable => clickable.Visible)
-                .ForEach(clickable
-                    => clickable.GetRenderComponents()
-                        .ToList()
-                        .FindAll(component => component != null && component.IsPointInside(point))
-                        .ForEach(_ => clickable.OnClick(mouseButtonEventArgs)));
-        }
+    public void OnClick(MouseButtonEventArgs mouseButtonEventArgs) {
+        Vector2f point = Window.MapPixelToCoords(new(mouseButtonEventArgs.X, mouseButtonEventArgs.Y));
 
-        private void RegisterEvents()
-        {
-            MessageBus messageBus = MessageBus.Instance;
+        Clickables.ToList()
+                  .FindAll(clickable => clickable.Visible)
+                  .ForEach(
+                       clickable => clickable.RenderComponents.ToList()
+                                             .FindAll(component => component != null && component.IsPointInside(point))
+                                             .ForEach(_ => clickable.OnClick(mouseButtonEventArgs))
+                   );
+    }
 
-            messageBus.Register(MessageType.RegisterClickable, OnRegisterClickable);
-            messageBus.Register(MessageType.UnregisterClickable, OnUnregisterClickable);
-        }
-
-        private void OnRegisterClickable(object sender, EventArgs eventArgs)
-        {
-            if (sender is IClickable clickable) Clickables.Add(clickable);
-        }
-
-        private void OnUnregisterClickable(object sender, EventArgs eventArgs)
-        {
-            if (sender is IClickable clickable) Clickables.Remove(clickable);
-        }
+    private void RegisterEvents() {
+        MessageBus.RegisterClickable += sender => Clickables.Add(sender);
+        MessageBus.UnregisterClickable += sender => Clickables.Remove(sender);
     }
 }

@@ -1,71 +1,54 @@
-﻿using SFML.System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
-using TankGame.Src.Data.Controls;
-using TankGame.Src.Extensions;
+using System.Text.Json.Serialization;
+using SFML.System;
+using TankGame.Extensions;
+using Action = TankGame.Core.Controls.Action;
 
-namespace TankGame.Src.Actors.Pawns.MovementControllers
-{
-    internal class PatrolAIMovementController : AIMovementController
-    {
-        protected List<Vector2i> PatrolRoute { get; }
-        protected Stack<Vector2i> CurrentPatrolRoute { get; set; }
+namespace TankGame.Actors.Pawns.MovementControllers;
 
-        public PatrolAIMovementController(double delay, Pawn owner, List<Vector2i> patrolRoute) : base(delay, owner, "patrol")
-        {
-            PatrolRoute = patrolRoute;
-            TargetPosition = new Vector2i(-1, -1);
-        }
+public class PatrolAIMovementController : AiMovementController {
+    public PatrolAIMovementController(double delay, Pawn owner, List<Vector2i> patrolRoute) : base(delay, owner, AiMovementControllerType.Patrol) {
+        PatrolRoute = patrolRoute;
+        TargetPosition = new(-1, -1);
+    }
 
-        protected override void DecideOnNextAction()
-        {
-            if (CanDoAction() && Owner.CurrentRegion != null)
-            {
-                if (CanSeePlayerInUnobstructedLine || (CanSeeActivityInUnobstructedLine && Owner.CurrentRegion != null && Owner.CurrentRegion.HasDestructibleActivity)) NextAction = KeyActionType.Shoot;
-                else Patrol();
+    [JsonConstructor] public PatrolAIMovementController(double delay, List<Vector2i> patrolRoute, Stack<Vector2i> currentPatrolRoute, string controllerType, Action nextAction, double rotationCooldown, double movementCooldown) : base(delay, AiMovementControllerType.Patrol) {
+        PatrolRoute = patrolRoute;
+        CurrentPatrolRoute = currentPatrolRoute;
+        AimcType = Enum.Parse<AiMovementControllerType>(controllerType);
+        NextAction = nextAction;
+        RotationCooldown = rotationCooldown;
+        MovementCooldown = movementCooldown;
+    }
 
-            }
-            else NextAction = null;
-        }
+    public List<Vector2i> PatrolRoute { get; set; }
+    public Stack<Vector2i> CurrentPatrolRoute { get; set; }
 
-        protected void Patrol()
-        {
-            if (CurrentPatrolRoute is null || !CurrentPatrolRoute.Any()) CurrentPatrolRoute = new Stack<Vector2i>(PatrolRoute);
+    protected override void DecideOnNextAction() {
+        if (CanDoAction() && Owner.CurrentRegion != null) {
+            if (CanSeePlayerInUnobstructedLine || (CanSeeActivityInUnobstructedLine && Owner.CurrentRegion != null && Owner.CurrentRegion.HasDestructibleActivity))
+                NextAction = Action.Fire;
+            else
+                Patrol();
+        } else { NextAction = Action.Nothing; }
+    }
 
-            if (TargetPosition.IsInvalid() || TargetPosition.Equals(Owner.Coords)) TargetPosition = CurrentPatrolRoute.Pop();
+    protected void Patrol() {
+        if (CurrentPatrolRoute is null || !CurrentPatrolRoute.Any()) CurrentPatrolRoute = new(PatrolRoute);
 
-            if (!TargetPosition.IsInvalid())
-            {
-                if (Path != null && !Path.Any()) Path = null;
+        if (TargetPosition.IsInvalid() || TargetPosition.Equals(Owner.Coords)) TargetPosition = CurrentPatrolRoute.Pop();
 
-                Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(TargetPosition));
+        if (!TargetPosition.IsInvalid()) {
+            if (Path != null && !Path.Any()) Path = null;
 
-                NextAction = Path == null ? null : GetActionFromNextCoords(Path.Pop().Position + Owner.CurrentRegion.Coords * Owner.CurrentRegion.FieldsInLine);
-            }
-            else NextAction = null;
-        }
+            Path ??= GeneratePath(Owner.CurrentRegion.GetNodesInRegion(), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(Owner.Coords), Owner.CurrentRegion.ConvertMapCoordsToRegionFieldCoords(TargetPosition));
 
-        public XmlNode SerializePath(XmlDocument xmlDocument)
-        {
-            XmlElement pathElement = xmlDocument.CreateElement("path");
-
-            foreach (Vector2i point in PatrolRoute)
-            {
-                XmlElement pointElement = xmlDocument.CreateElement("point");
-                XmlElement xElement = xmlDocument.CreateElement("x");
-                XmlElement yElement = xmlDocument.CreateElement("y");
-
-                xElement.InnerText = (point.X % 20).ToString();
-                yElement.InnerText = (point.Y % 20).ToString();
-
-                pointElement.AppendChild(xElement);
-                pointElement.AppendChild(yElement);
-
-                pathElement.AppendChild(pointElement);
-            }
-
-            return pathElement;
-        }
+            NextAction = Path == null ? Action.Nothing : GetActionFromNextCoords(
+                Path.Pop()
+                    .Position + Owner.CurrentRegion.Coords * Owner.CurrentRegion.FieldsInLine
+            );
+        } else { NextAction = Action.Nothing; }
     }
 }

@@ -1,22 +1,8 @@
-﻿using SFML.System;
-using System;
-using System.Collections.Generic;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Actors.Pawns.Enemies;
+﻿using System.Text.Json.Serialization;
+using SFML.System;
 
-namespace TankGame.Src.Actors.GameObjects.Activities
-{
-    internal class ProtectActivity : DestroyAllActivity
-    {
-        public ProtectActivity(Vector2i coords, HashSet<Enemy> enemies, int? hp = null) : base(coords, enemies, hp != -1 ? hp : 15, "Protect the tower. Destroy all enemies", "protect", 2000, new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(6, true, false), "towerdestroyed"))
-        {
-            if (hp != null && hp == 0) ActivityStatus = ActivityStatus.Failed;
-        }
+namespace TankGame.Actors.GameObjects.Activities;
 
-        public override void OnDestroy()
-        {
-            ChangeStatus(ActivityStatus.Failed);
-            base.OnDestroy();
-        }
-    }
+public class ProtectActivity : DestroyAllActivity {
+    [JsonConstructor] public ProtectActivity(Vector2i coords, string name, string type, int? health, int pointsAdded, ActivityStatus activityStatus, int? enemiesCount) : base(coords, name, type, health ?? 3, pointsAdded, activityStatus, enemiesCount) { }
 }

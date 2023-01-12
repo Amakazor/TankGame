@@ -1,97 +1,79 @@
-﻿using SFML.Graphics;
-using SFML.System;
+﻿using System;
 using System.Collections.Generic;
-using System.Xml;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Actors.GameObjects;
-using TankGame.Src.Actors.GameObjects.Activities;
-using TankGame.Src.Actors.Pawns;
-using TankGame.Src.Actors.Pawns.Player;
-using TankGame.Src.Data.Gamestate;
-using TankGame.Src.Data.Textures;
-using TankGame.Src.Gui.RenderComponents;
+using System.Text.Json.Serialization;
+using SFML.Graphics;
+using SFML.System;
+using TankGame.Actors.Data;
+using TankGame.Actors.GameObjects;
+using TankGame.Actors.GameObjects.Activities;
+using TankGame.Actors.Pawns;
+using TankGame.Actors.Pawns.Player;
+using TankGame.Core.Textures;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.Fields
-{
-    internal class Field : Actor
-    {
-        public Vector2i Coords { get; }
-        public TraversibilityData TraversabilityData { get; }
-        private Texture Texture { get; }
-        private SpriteComponent Surface { get; }
-        public Pawn PawnOnField { get; set; }
-        public GameObject GameObject { get; set; }
-        private string Type { get; }
-        public float TraversabilityMultiplier => TraversabilityData.SpeedModifier * ((GameObject != null && GameObject.IsTraversible) ? GameObject.TraversibilityData.SpeedModifier : 1);
+namespace TankGame.Actors.Fields;
 
-        public Field(Vector2i coords, TraversibilityData traversabilityData, bool rotatable, Texture texture, string type, GameObject gameObject) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
-        {
-            Coords = coords;
-            TraversabilityData = traversabilityData;
-            Texture = texture;
-            Type = type;
-            Surface = new SpriteComponent(Position, Size, texture, new Color(255, 255, 255, 255));
-            if (rotatable) Surface.SetDirection(GamestateManager.Instance.Random.Next(1, 5) * 90);
-            GameObject = gameObject;
-            if (gameObject != null) GameObject.Field = this;
+public class Field : Actor {
+    [JsonConstructor] public Field(Vector2i coords, string textureName, GameObject? gObject, string type) : base(new(coords.X * 64, coords.Y * 64), new(64, 64)) {
+        Coords = coords;
+        Type = type;
+        FieldType = FieldTypes.Types[type];
+        Texture = TextureManager.GetTexture(TextureType.Field, textureName);
+        Surface = new(Position, Size, Texture, new(255, 255, 255, 255));
 
-            RenderLayer = RenderLayer.Field;
-            RenderView = RenderView.Game;
-        }
+        GameObject = gObject;
+        if (GameObject != null) GameObject.Field = this;
 
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            return new HashSet<IRenderComponent> { Surface };
-        }
+        RenderLayer = RenderLayer.Field;
+        RenderView = RenderView.Game;
 
-        public bool IsTraversible(bool excludePlayer = false, bool orObjectDestructible = false)
-        {
-            return TraversabilityData.IsTraversible
-                   && (PawnOnField == null || (excludePlayer && PawnOnField is Player))
-                   && (GameObject == null || (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible));
-        }
+        RenderComponents = new() { Surface };
+    }
 
-        public bool IsShootable(bool excludePlayer = false, bool orObjectDestructible = false)
-        {
-            return (PawnOnField == null || (excludePlayer && PawnOnField is Player))
-                   && (GameObject == null || (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible));
-        }
+    public Vector2i Coords { get; }
 
-        internal XmlElement SerializeToXML(XmlDocument xmlDocument)
-        {
-            XmlElement fieldElement = xmlDocument.CreateElement("field");
-            XmlElement typeElement = xmlDocument.CreateElement("type");
-            XmlElement textureElement = xmlDocument.CreateElement("texture");
+    [JsonIgnore] public FieldType FieldType { get; }
 
-            typeElement.InnerText = Type;
-            textureElement.InnerText = TextureManager.Instance.GetNameFromTexture(TextureType.Field, Texture);
+    [JsonIgnore] private Texture Texture { get; }
+    public string TextureName => TextureManager.GetNameFromTexture(TextureType.Field, Texture);
+    [JsonIgnore] private SpriteComponent Surface { get; }
 
-            fieldElement.AppendChild(typeElement);
-            fieldElement.AppendChild(textureElement);
+    [JsonIgnore] public Pawn? PawnOnField { get; set; }
 
-            if (GameObject != null && !(GameObject is Activity)) fieldElement.AppendChild(GameObject.SerializeToXML(xmlDocument));
+    [JsonIgnore] public GameObject? GameObject { get; set; }
 
-            return fieldElement;
-        }
+    public GameObject? GObject => GameObject is not Activity ? GameObject : null;
 
-        public void EnterField(Pawn enteringPawn)
-        {
-            if (GameObject != null && GameObject.DestructabilityData.DestroyOnEntry) GameObject.OnDestroy();
+    public string Type { get; set; }
 
-            PawnOnField = enteringPawn;
-        }
+    [JsonIgnore] public float TraversabilityMultiplier => FieldType.TraversabilityData.SpeedModifier * (GameObject is { IsTraversible: true } ? GameObject.GameObjectType.TraversabilityData.SpeedModifier : 1);
 
-        public void OnGameObjectDestruction()
-        {
-            GameObject = null;
-        }
+    [JsonIgnore] public override HashSet<IRenderComponent> RenderComponents { get; }
 
-        public override void Dispose()
-        {
-            if (GameObject != null) GameObject.Dispose();
-            GameObject = null;
+    public bool IsTraversible(bool excludePlayer = false, bool orObjectDestructible = false)
+        => FieldType.TraversabilityData.IsTraversible && (PawnOnField == null || (excludePlayer && PawnOnField is Player)) && (GameObject == null || (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible));
 
-            base.Dispose();
-        }
+    public bool CanBeSpawnedOn()
+        => IsTraversible(false, true);
+
+    public bool IsShootable(bool excludePlayer = false, bool orObjectDestructible = false)
+        => (PawnOnField == null || (excludePlayer && PawnOnField is Player)) && (GameObject == null || (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible));
+
+    public void EnterField(Pawn enteringPawn) {
+        if (GameObject != null && GameObject.GameObjectType.DestructabilityData.DestroyOnEntry) GameObject.OnDestroy();
+
+        PawnOnField = enteringPawn;
+    }
+
+    public void OnGameObjectDestruction()
+        => GameObject = null;
+
+    public override void Dispose() {
+        GC.SuppressFinalize(this);
+
+        GameObject?.Dispose();
+        GameObject = null;
+
+        base.Dispose();
     }
 }

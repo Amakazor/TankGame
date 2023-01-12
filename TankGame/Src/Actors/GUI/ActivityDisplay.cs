@@ -1,69 +1,45 @@
-﻿using SFML.Graphics;
-using SFML.System;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Data.Gamestate;
-using TankGame.Src.Events;
-using TankGame.Src.Gui.RenderComponents;
+using SFML.Graphics;
+using SFML.System;
+using TankGame.Actors.Data;
+using TankGame.Core.Gamestate;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.GUI
-{
-    internal class ActivityDisplay : Actor, ITickable
-    {
-        private AlignedTextComponent ActivityName { get; set; }
-        private AlignedTextComponent ActivityText { get; set; }
+namespace TankGame.Actors.GUI;
 
-        public ActivityDisplay() : base(new Vector2f(10, 64 + 10), new Vector2f(490, 200 - (64 + 10)))
-        {
-            ActivityName = new AlignedTextComponent(Position, new Vector2f(Size.X, Size.Y / 3), new Vector2f(0, 0), 17, TextPosition.Start, TextPosition.Middle, "", Color.White);
-            ActivityText = new AlignedTextComponent(Position + new Vector2f(0, Size.Y / 3), new Vector2f(Size.X, Size.Y / 3), new Vector2f(0, 0), 15, TextPosition.Start, TextPosition.Middle, "", Color.White);
+public class ActivityDisplay : Actor, ITickable {
+    public ActivityDisplay() : base(new(10, 64 + 10), new(490, 200 - (64 + 10))) {
+        ActivityName = new(Position, new(Size.X, Size.Y                               / 3), new(0, 0), 17, TextPosition.Start, TextPosition.Middle, "", Color.White);
+        ActivityText = new(Position + new Vector2f(0, Size.Y / 3), new(Size.X, Size.Y / 3), new(0, 0), 15, TextPosition.Start, TextPosition.Middle, "", Color.White);
 
-            RenderView = RenderView.HUD;
-            RenderLayer = RenderLayer.HUDFront;
+        RenderView = RenderView.HUD;
+        RenderLayer = RenderLayer.HUDFront;
 
-            RegisterTickable();
+        (this as ITickable).RegisterTickable();
+    }
+
+    private AlignedTextComponent ActivityName { get; }
+    private AlignedTextComponent ActivityText { get; }
+    public override HashSet<IRenderComponent> RenderComponents => new() { ActivityName, ActivityText };
+
+    public void Tick(float deltaTime)
+        => UpdateActivityDisplay();
+
+    private void UpdateActivityDisplay() {
+        if (GamestateManager.Player?.CurrentRegion?.Activity?.ProgressText != null) {
+            ActivityName.SetText("Current objective: " + GamestateManager.Player.CurrentRegion.Activity.DisplayName);
+
+            ActivityText.SetText(GamestateManager.Player.CurrentRegion.Activity.ProgressText ?? "");
+        } else {
+            ActivityName.SetText("No current objective.");
+            ActivityText.SetText("");
         }
+    }
 
-        private void UpdateActivityDisplay()
-        {
-            if (GamestateManager.Instance?.Player?.CurrentRegion?.Activity?.ProgressText != null)
-            {
-                ActivityName.SetText("Current objective: " + GamestateManager.Instance.Player.CurrentRegion.Activity.Name);
-
-                ActivityText.SetText(GamestateManager.Instance.Player.CurrentRegion.Activity.ProgressText ?? "");
-            }
-            else
-            {
-                ActivityName.SetText("No current objective.");
-                ActivityText.SetText("");
-            }
-        }
-
-        public override void Dispose()
-        {
-            UnregisterTickable();
-            base.Dispose();
-        }
-
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            return new HashSet<IRenderComponent> { ActivityName, ActivityText };
-        }
-
-        public void Tick(float deltaTime)
-        {
-            UpdateActivityDisplay();
-        }
-
-        public void RegisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.RegisterTickable, this, new EventArgs());
-        }
-
-        public void UnregisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.UnregisterTickable, this, new EventArgs());
-        }
+    public override void Dispose() {
+        GC.SuppressFinalize(this);
+        (this as ITickable).UnregisterTickable();
+        base.Dispose();
     }
 }

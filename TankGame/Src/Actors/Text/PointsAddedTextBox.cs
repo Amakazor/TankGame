@@ -1,49 +1,39 @@
 ﻿using SFML.Graphics;
 using SFML.System;
-using System;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Events;
+using TankGame.Actors.Data;
+using TankGame.Events;
 
-namespace TankGame.Src.Actors.Text
-{
-    internal class PointsAddedTextBox : TextBox, ITickable
-    {
-        public double TimeToLive { get; private set; }
+namespace TankGame.Actors.Text;
 
-        public PointsAddedTextBox(Vector2f position, long points, uint combo) : base(position, new Vector2f(100, 20), points + (combo > 1 ? " X " + combo : ""), 16, Color.Red)
-        {
-            TimeToLive = 2;
-            RegisterTickable();
+public class PointsAddedTextBox : TextBox, ITickable {
+    public PointsAddedTextBox(Vector2f position, long points, int combo) : base(position, new(100, 20), points + (combo > 1 ? " X " + combo : ""), 16, Color.Red) {
+        TimeToLive = 2;
+        RegisterTickable();
 
-            RenderLayer = RenderLayer.TextBox;
-            RenderView = RenderView.Game;
-        }
+        RenderLayer = RenderLayer.TextBox;
+        RenderView = RenderView.Game;
+    }
 
-        public void Tick(float deltaTime)
-        {
-            TimeToLive -= deltaTime;
+    public double TimeToLive { get; private set; }
 
-            Position += (new Vector2f(0, -32) * deltaTime);
+    public void Tick(float deltaTime) {
+        TimeToLive -= deltaTime;
 
-            Text.SetPosition(Position);
+        Position += new Vector2f(0, -32) * deltaTime;
 
-            if (TimeToLive <= 0) Dispose();
-        }
+        Text.SetPosition(Position);
 
-        public void RegisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.RegisterTickable, this, new EventArgs());
-        }
+        if (TimeToLive <= 0) Dispose();
+    }
 
-        public void UnregisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.UnregisterTickable, this, new EventArgs());
-        }
+    public void RegisterTickable()
+        => MessageBus.RegisterTickable.Invoke(this);
 
-        public override void Dispose()
-        {
-            UnregisterTickable();
-            base.Dispose();
-        }
+    public void UnregisterTickable()
+        => MessageBus.UnregisterTickable.Invoke(this);
+
+    public override void Dispose() {
+        UnregisterTickable();
+        base.Dispose();
     }
 }

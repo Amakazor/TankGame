@@ -1,0 +1,26 @@
+﻿[
+  {
+    "Action": "MoveUp",
+    "Key": 73
+  },
+  {
+    "Action": "MoveDown",
+    "Key": 74
+  },
+  {
+    "Action": "MoveLeft",
+    "Key": 71
+  },
+  {
+    "Action": "MoveRight",
+    "Key": 72
+  },
+  {
+    "Action": "Fire",
+    "Key": 57
+  },
+  {
+    "Action": "Pause",
+    "Key": 36
+  }
+]

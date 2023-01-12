@@ -1,51 +1,39 @@
-﻿using SFML.Graphics;
+﻿using System.Text.Json.Serialization;
+using SFML.Graphics;
 using SFML.System;
-using System.Xml;
-using TankGame.Src.Actors.Pawns.MovementControllers;
-using TankGame.Src.Data.Sounds;
+using TankGame.Actors.Pawns.MovementControllers;
+using TankGame.Core.Sounds;
 
-namespace TankGame.Src.Actors.Pawns.Enemies
-{
-    abstract internal class Enemy : Pawn
-    {
-        public uint ScoreAdded { get; }
-        public string Type { get; }
-        public string MoveSoundName { get; }
+namespace TankGame.Actors.Pawns.Enemies;
 
-        protected Enemy(Vector2f position, Vector2f size, Texture texture, int health, uint scoreAdded, string type, string moveSoundName) : base(position, size, texture, health)
-        {
-            ScoreAdded = scoreAdded;
-            Type = type;
-            MoveSoundName = moveSoundName;
-        }
+public class Enemy : Pawn {
+    public Enemy(Vector2f position, Vector2f size, Texture texture, int health, int scoreAdded, EnemyType type) : base(position, size, texture, health) {
+        Health = health;
+        ScoreAdded = scoreAdded;
+        Type = type;
+    }
 
-        internal XmlNode SerializeToXML(XmlDocument xmlDocument)
-        {
-            XmlElement enemyElement = xmlDocument.CreateElement("enemy");
-            XmlElement typeElement = xmlDocument.CreateElement("type");
-            XmlElement xElement = xmlDocument.CreateElement("x");
-            XmlElement yElement = xmlDocument.CreateElement("y");
-            XmlElement healthElement = xmlDocument.CreateElement("health");
+    [JsonConstructor] public Enemy(Vector2i coords, Direction direction, int? health, MovementController movementController, EnemyType type, int scoreAdded) : base(new(coords.X * 64.0f, coords.Y * 64.0f), new(64.0f, 64.0f), EnemyFactory.GetTexture(type), health) {
+        ScoreAdded = scoreAdded;
+        Type = type;
+        Health = health;
+        Direction = direction;
+        AttachMovementController(movementController);
+        movementController.AttachOwner(this);
+    }
 
-            typeElement.InnerText = Type;
-            xElement.InnerText = (Coords.X % 20).ToString();
-            yElement.InnerText = (Coords.Y % 20).ToString();
-            healthElement.InnerText = Health.ToString();
+    public int ScoreAdded { get; }
+    public EnemyType Type { get; }
 
-            enemyElement.AppendChild(typeElement);
-            enemyElement.AppendChild(xElement);
-            enemyElement.AppendChild(yElement);
-            enemyElement.AppendChild(healthElement);
-            if (MovementController is AIMovementController AIMC) enemyElement.AppendChild(AIMC.SerializeAIMovementControllerType(xmlDocument));
-            if (MovementController is PatrolAIMovementController PAIMC) enemyElement.AppendChild(PAIMC.SerializePath(xmlDocument));
+    public int? Health {
+        get => CurrentHealth;
+        set => CurrentHealth = value ?? EnemyFactory.DefaultHealth[Type];
+    }
 
-            return enemyElement;
-        }
+    protected override void UpdatePosition(Vector2i lastCoords, Vector2i newCoords) {
+        if (lastCoords == newCoords) return;
 
-        protected override void UpdatePosition(Vector2i lastCoords, Vector2i newCoords)
-        {
-            SoundManager.Instance.PlaySound("move", MoveSoundName, Position / 64);
-            base.UpdatePosition(lastCoords, newCoords);
-        }
+        SoundManager.PlaySound("move", Type.ToString(), Position / 64);
+        base.UpdatePosition(lastCoords, newCoords);
     }
 }

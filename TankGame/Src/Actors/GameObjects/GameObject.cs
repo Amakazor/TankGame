@@ -1,126 +1,84 @@
-﻿using SFML.Graphics;
-using SFML.System;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Xml;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Actors.Fields;
-using TankGame.Src.Data.Gamestate;
-using TankGame.Src.Data.Map;
-using TankGame.Src.Data.Sounds;
-using TankGame.Src.Data.Textures;
-using TankGame.Src.Events;
-using TankGame.Src.Gui.RenderComponents;
+using System.Text.Json.Serialization;
+using SFML.System;
+using TankGame.Actors.Data;
+using TankGame.Actors.Fields;
+using TankGame.Core.Gamestate;
+using TankGame.Core.Map;
+using TankGame.Core.Sounds;
+using TankGame.Core.Textures;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.GameObjects
-{
-    internal class GameObject : Actor, IDestructible
-    {
-        public TraversibilityData TraversibilityData { get; protected set; }
-        public DestructabilityData DestructabilityData { get; protected set; }
-        private DestructabilityData DestructabilityDataAfterDestruction { get; }
-        private TraversibilityData TraversibilityDataAfterDestruction { get; }
-        protected SpriteComponent ObjectSprite { get; set; }
-        public Region Region { private get; set; }
-        private string Type { get; }
-        public int Health { get => DestructabilityData.Health; set => DestructabilityData = new DestructabilityData(value, DestructabilityData.IsDestructible, DestructabilityData.DestroyOnEntry); }
-        public bool IsTraversible => TraversibilityData.IsTraversible;
-        public bool IsDestructible => DestructabilityData.IsDestructible;
-        public bool IsDestructibleOrTraversible => IsDestructible || IsTraversible;
-        public bool IsAlive => Health > 0;
-        public Actor Actor => this;
-        public Field Field { get; set; }
-        public Vector2i Coords => new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
-        public virtual Region CurrentRegion => Region ??= GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords);
-        protected Texture AfterDestructionTexture { get; set; }
-        public bool StopsProjectile => DestructabilityData.StopsProjectile;
+namespace TankGame.Actors.GameObjects;
 
-        public GameObject(Vector2i coords, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType, Texture texture, string type, int hp) : base(new Vector2f(coords.X * 64, coords.Y * 64), new Vector2f(64, 64))
-        {
-            TraversibilityData = gameObjectType.Item1;
-            DestructabilityData = gameObjectType.Item2;
+public class GameObject : Actor, IDestructible, IRenderable {
+    [JsonConstructor] public GameObject(Vector2i coords, string type, int? health = null) : base(new(coords.X * 64, coords.Y * 64), new(64, 64)) {
+        Type = type;
+        GameObjectType = GameObjectTypes.Get(type);
+        if (health is not null) GameObjectType.DestructabilityData.Health = (int)health;
 
-            DestructabilityDataAfterDestruction = new DestructabilityData(0, false, false, false);
-            TraversibilityDataAfterDestruction = new TraversibilityData(1.25F, true);
+        (this as IDestructible).RegisterDestructible();
+        GenerateSprite();
+        SetRenderData();
+    }
 
-            Type = type;
-            AfterDestructionTexture = gameObjectType.Item3 == null ? null : TextureManager.Instance.GetTexture("gameobject", gameObjectType.Item3);
+    public GameObjectType GameObjectType { get; protected set; }
+    [JsonIgnore] private SpriteComponent ObjectSprite { get; set; }
+    [JsonIgnore] public Region? Region { get; set; }
+    public string Type { get; }
 
-            if (hp > -1) Health = hp;
+    public int? Health => GameObjectType.DestructabilityData.Health;
 
-            ObjectSprite = Health == 0
-                ? new SpriteComponent(Position, Size, AfterDestructionTexture, new Color(255, 255, 255, 255))
-                : new SpriteComponent(Position, Size, texture, new Color(255, 255, 255, 255));
+    [JsonIgnore] public bool IsTraversible => GameObjectType.TraversabilityData.IsTraversible;
+    [JsonIgnore] public bool IsDestructibleOrTraversible => IsDestructible || IsTraversible;
+    [JsonIgnore] public Field Field { get; set; }
+    [JsonPropertyOrder(-10)] public Vector2i Coords => new((int)(Position.X / 64), (int)(Position.Y / 64));
+    [JsonIgnore] public Region CurrentRegion => Region ??= GamestateManager.Map.GetRegionFromFieldCoords(Coords);
 
-            if (Health == 0)
-            {
-                TraversibilityData = TraversibilityDataAfterDestruction;
-                DestructabilityData = DestructabilityDataAfterDestruction;
-            }
+    [JsonIgnore] public override HashSet<IRenderComponent> RenderComponents => new() { ObjectSprite };
 
-            RegisterDestructible();
-
-            RenderLayer = RenderLayer.GameObject;
-            RenderView = RenderView.Game;
+    [JsonIgnore] public int CurrentHealth {
+        get => GameObjectType.DestructabilityData.Health;
+        set {
+            if (Coords.X == 29 && Coords.Y == 44) Console.WriteLine("");
+            GameObjectType.DestructabilityData.Health = value;
+            if (CurrentHealth == 0) OnDestroy();
         }
+    }
 
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            return new HashSet<IRenderComponent> { ObjectSprite };
+    [JsonIgnore] public bool IsDestructible => GameObjectType.DestructabilityData.IsDestructible;
+    [JsonIgnore] public bool IsAlive => CurrentHealth > 0;
+    [JsonIgnore] public Actor Actor => this;
+    [JsonIgnore] public bool StopsProjectile => GameObjectType.DestructabilityData.StopsProjectile;
+
+    public virtual void OnDestroy() {
+        if (GameObjectType.GameObjectTypeAfterDestruction is null) {
+            Field.OnGameObjectDestruction();
+            Dispose();
+        } else {
+            GameObjectType = GameObjectType.GameObjectTypeAfterDestruction;
+            GenerateSprite();
         }
+    }
 
-        public virtual void OnDestroy()
-        {
-            Health = 0;
-            if (AfterDestructionTexture == null)
-            {
-                Field.OnGameObjectDestruction();
-                Dispose();
-            }
-            else
-            {
-                ObjectSprite = new SpriteComponent(Position, Size, AfterDestructionTexture, new Color(255, 255, 255, 255));
-                TraversibilityData = TraversibilityDataAfterDestruction;
-                DestructabilityData = DestructabilityDataAfterDestruction;
-            }
-        }
+    public void OnHit() {
+        SoundManager.PlayRandomSound("destruction", Position / 64);
+        if (IsDestructible && IsAlive) CurrentHealth--;
+    }
 
-        public void OnHit()
-        {
-            SoundManager.Instance.PlayRandomSound("destruction", Position / 64);
-            if (IsDestructible && IsAlive) Health--;
-            if (Health <= 0) OnDestroy();
-        }
+    private void SetRenderData() {
+        RenderLayer = RenderLayer.GameObject;
+        RenderView = RenderView.Game;
+    }
 
-        internal virtual XmlElement SerializeToXML(XmlDocument xmlDocument)
-        {
-            XmlElement objectElement = xmlDocument.CreateElement("object");
-            XmlElement typeElement = xmlDocument.CreateElement("type");
-            XmlElement hpElement = xmlDocument.CreateElement("hp");
+    protected void GenerateSprite()
+        => ObjectSprite = new(Position, Size, TextureManager.GetTexture(TextureType.GameObject, GameObjectType.Texture), new(255, 255, 255, 255));
 
-            typeElement.InnerText = Type;
-            hpElement.InnerText = Health.ToString();
 
-            objectElement.AppendChild(typeElement);
-            objectElement.AppendChild(hpElement);
-
-            return objectElement;
-        }
-
-        public override void Dispose()
-        {
-            UnregisterDestructible();
-            base.Dispose();
-        }
-
-        public void RegisterDestructible()
-        {
-            MessageBus.Instance.PostEvent(MessageType.RegisterDestructible, this, new EventArgs());
-        }
-
-        public void UnregisterDestructible()
-        {
-            MessageBus.Instance.PostEvent(MessageType.UnregisterDestructible, this, new EventArgs());
-        }
+    public override void Dispose() {
+        GC.SuppressFinalize(this);
+        (this as IDestructible).UnregisterDestructible();
+        base.Dispose();
     }
 }

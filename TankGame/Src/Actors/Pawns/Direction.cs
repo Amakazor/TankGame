@@ -1,10 +1,8 @@
-﻿namespace TankGame.Src.Actors.Pawns
-{
-    internal enum Direction
-    {
-        Up,
-        Down,
-        Left,
-        Right
-    }
+﻿namespace TankGame.Actors.Pawns;
+
+public enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
 }

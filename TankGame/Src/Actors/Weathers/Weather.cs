@@ -1,80 +1,68 @@
-﻿using SFML.Graphics;
-using SFML.System;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Actors.Shaders;
-using TankGame.Src.Data.Sounds;
-using TankGame.Src.Events;
-using TankGame.Src.Gui.RenderComponents;
+using SFML.Graphics;
+using SFML.System;
+using TankGame.Actors.Data;
+using TankGame.Actors.Shaders;
+using TankGame.Core.Sounds;
+using TankGame.Events;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.Weathers
-{
-    internal class Weather : ShadedActor, ITickable
-    {
-        public override Shader CurrentShader => ComplexShader?.Shader;
-        private ComplexShader ComplexShader { get; }
-        protected SpriteComponent WeatherComponent { get; set; }
-        public float SpeedModifier { get; protected set; }
-        public float Intensity { get; }
-        public AnimationType AnimationType { get; }
-        public string Type { get; }
-        public Vector2f PositionOffset { get; set; }
+namespace TankGame.Actors.Weathers;
 
-        public Weather(Texture weatherTexture, float speedModifier, string musicType, float intensity, AnimationType animationType, string type) : base(animationType == AnimationType.Shaded ? new Vector2f(0, 0) : new Vector2f(-64, -64), new Vector2f(64, 64))
-        {
-            SpeedModifier = speedModifier;
-            Intensity = intensity;
-            AnimationType = animationType;
-            Type = type;
-            ComplexShader = AnimationType == AnimationType.Shaded ? new WeatherShader(Intensity) : null;
+public class Weather : Actor, ITickable, IRenderable {
+    public Weather(Texture weatherTexture, float speedModifier, string musicType, float intensity, AnimationType animationType, WeatherType type) : base(animationType == AnimationType.Shaded ? new(0, 0) : new Vector2f(-64, -64), new(64, 64)) {
+        SpeedModifier = speedModifier;
+        Intensity = intensity;
+        AnimationType = animationType;
+        Type = type;
+        ComplexShader = AnimationType == AnimationType.Shaded ? new WeatherShader(Intensity) : null;
 
-            weatherTexture.Repeated = true;
+        weatherTexture.Repeated = true;
 
-            PositionOffset = new Vector2f(0, 0);
+        PositionOffset = new(0, 0);
 
-            WeatherComponent = new SpriteComponent(Position, Size, weatherTexture, new Color(255, 255, 255, 255));
-            WeatherComponent.SetTextureRectSize(new Vector2i(5 * 20 * 64 + (animationType == AnimationType.Animated ? 2 * 64 : 0), 5 * 20 * 64 + (animationType == AnimationType.Animated ? 2 * 64 : 0)));
+        WeatherComponent = new(Position, Size, weatherTexture, new(255, 255, 255, 255));
+        WeatherComponent.SetTextureRectSize(new(5 * 20 * 64 + (animationType == AnimationType.Animated ? 2 * 64 : 0), 5 * 20 * 64 + (animationType == AnimationType.Animated ? 2 * 64 : 0)));
 
-            MusicManager.Instance.PlayRandomMusic(musicType);
+        MusicManager.PlayRandomMusic(musicType);
 
-            RenderLayer = RenderLayer.Weather;
-            RenderView = RenderView.Game;
+        RenderLayer = RenderLayer.Weather;
+        RenderView = RenderView.Game;
 
-            RegisterTickable();
+        RegisterTickable();
+    }
+
+    private ComplexShader? ComplexShader { get; }
+    protected SpriteComponent WeatherComponent { get; }
+    public float SpeedModifier { get; }
+    public float Intensity { get; }
+    public AnimationType AnimationType { get; }
+    public WeatherType Type { get; }
+    public Vector2f PositionOffset { get; set; }
+    public Shader? CurrentShader => ComplexShader?.Shader;
+
+    public override HashSet<IRenderComponent> RenderComponents => new() { WeatherComponent };
+
+    public void Tick(float deltaTime) {
+        if (AnimationType == AnimationType.Animated) {
+            if (PositionOffset.X > 64) PositionOffset -= new Vector2f(64, 64);
+            PositionOffset += new Vector2f(Intensity * deltaTime * 64, Intensity * deltaTime * 64);
+            WeatherComponent?.SetPosition(Position + PositionOffset);
         }
+    }
 
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            return new HashSet<IRenderComponent> { WeatherComponent };
-        }
+    public void RegisterTickable()
+        => MessageBus.RegisterTickable.Invoke(this);
 
-        public void Tick(float deltaTime)
-        {
-            if (AnimationType == AnimationType.Animated)
-            {
-                if (PositionOffset.X > 64) PositionOffset -= new Vector2f(64, 64);
-                PositionOffset += new Vector2f(Intensity * deltaTime * 64, Intensity * deltaTime * 64);
-                WeatherComponent?.SetPosition(Position + PositionOffset);
-            }
-        }
+    public void UnregisterTickable()
+        => MessageBus.UnregisterTickable.Invoke(this);
 
-        public void RegisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.RegisterTickable, this, new EventArgs());
-        }
+    public override void Dispose() {
+        GC.SuppressFinalize(this);
 
-        public void UnregisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.UnregisterTickable, this, new EventArgs());
-        }
-
-        public override void Dispose()
-        {
-            UnregisterTickable();
-            WeatherComponent = null;
-            if (ComplexShader != null) ComplexShader.Dispose();
-            base.Dispose();
-        }
+        UnregisterTickable();
+        ComplexShader?.Dispose();
+        base.Dispose();
     }
 }

@@ -1,22 +1,10 @@
-﻿using SFML.System;
-using System;
-using System.Collections.Generic;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Actors.Pawns.Enemies;
-using TankGame.Src.Data.Map;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using SFML.System;
+using TankGame.Actors.Pawns.Enemies;
 
-namespace TankGame.Src.Actors.GameObjects.Activities
-{
-    internal class WaveProtectActivity : WaveActivity
-    {
-        public WaveProtectActivity(Vector2i coords, HashSet<Enemy> enemies, Queue<List<EnemySpawnData>> enemySpawns, Region region, uint currentWave = 0, int? hp = null, string name = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType = null) : base(coords, enemies, enemySpawns, region, currentWave, hp != -1 ? hp : 15 * enemySpawns.Count, name ?? "Destroy all enemies", "waveprotect", pointsAdded ?? 5000, gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(3, true, false), "towerdestroyed"))
-        {
-        }
+namespace TankGame.Actors.GameObjects.Activities;
 
-        public override void OnDestroy()
-        {
-            ChangeStatus(ActivityStatus.Failed);
-            base.OnDestroy();
-        }
-    }
+public class WaveProtectActivity : WaveActivity {
+    [JsonConstructor] public WaveProtectActivity(Vector2i coords, string name, string type, int? health, int pointsAdded, Queue<List<EnemySpawnData>> enemySpawns, ActivityStatus activityStatus, int? enemiesCount, uint currentWave = 0) : base(coords, name, type, health ?? enemySpawns.Count, pointsAdded, enemySpawns, activityStatus, enemiesCount, currentWave) { }
 }

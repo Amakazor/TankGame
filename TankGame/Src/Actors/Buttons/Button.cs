@@ -1,48 +1,30 @@
-﻿using SFML.System;
-using SFML.Window;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Events;
-using TankGame.Src.Gui.RenderComponents;
+using SFML.System;
+using SFML.Window;
+using TankGame.Actors.Data;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.Buttons
-{
-    internal abstract class Button : Actor, IClickable
-    {
-        protected RectangleComponent BoundingBox { get; set; }
+namespace TankGame.Actors.Buttons;
 
-        protected Button(Vector2f position, Vector2f size) : base(position, size)
-        {
-            BoundingBox = new RectangleComponent(Position, Size);
+public abstract class Button : Actor, IClickable {
+    protected Button(Vector2f position, Vector2f size) : base(position, size) {
+        BoundingBox = new(Position, Size);
 
-            RegisterClickable();
+        (this as IClickable).RegisterClickable();
 
-            RenderLayer = RenderLayer.MenuFront;
-            RenderView = RenderView.Menu;
-        }
+        RenderLayer = RenderLayer.MenuFront;
+        RenderView = RenderView.Menu;
+    }
 
-        public abstract bool OnClick(MouseButtonEventArgs eventArgs);
+    protected RectangleComponent BoundingBox { get; init; }
+    public override HashSet<IRenderComponent> RenderComponents => new() { BoundingBox };
 
-        public void RegisterClickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.RegisterClickable, this, new EventArgs());
-        }
+    public abstract bool OnClick(MouseButtonEventArgs eventArgs);
 
-        public void UnregisterClickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.UnregisterClickable, this, new EventArgs());
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            UnregisterClickable();
-        }
-
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            return new HashSet<IRenderComponent> { BoundingBox };
-        }
+    public override void Dispose() {
+        base.Dispose();
+        GC.SuppressFinalize(this);
+        (this as IClickable).UnregisterClickable();
     }
 }

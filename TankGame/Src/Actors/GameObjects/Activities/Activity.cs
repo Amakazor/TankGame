@@ -1,114 +1,85 @@
-﻿using SFML.Graphics;
+﻿using System;
+using System.Text.Json.Serialization;
 using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Xml;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Actors.Pawns.Enemies;
-using TankGame.Src.Data.Gamestate;
-using TankGame.Src.Data.Textures;
-using TankGame.Src.Events;
-using TankGame.Src.Gui.RenderComponents;
+using TankGame.Core.Gamestate;
 
-namespace TankGame.Src.Actors.GameObjects.Activities
-{
-    internal abstract class Activity : GameObject, ITickable
-    {
-        protected uint AllEnemiesCount { get; set; }
-        protected string Type { get; }
+namespace TankGame.Actors.GameObjects.Activities;
 
-        private string name;
-        public string Name
-        {
-            get => ActivityStatus switch
-            {
-                ActivityStatus.Started => name,
-                ActivityStatus.Completed => "Completed",
-                ActivityStatus.Failed => "Failed",
-                _ => "",
-            };
+[JsonDerivedType(typeof(WaveActivity), "Wave")]
+[JsonDerivedType(typeof(WaveProtectActivity), "WaveProtect")]
+[JsonDerivedType(typeof(DestroyAllActivity), "Destroy")]
+[JsonDerivedType(typeof(ProtectActivity), "Protect")]
+public abstract class Activity : GameObject, ITickable {
+    [JsonConstructor] public Activity(Vector2i coords, string name, string type, int? health, int pointsAdded, ActivityStatus activityStatus, int? enemiesCount) : base(coords, type, health) {
+        EnemiesCount = enemiesCount;
+        Name = name;
+        PointsAdded = pointsAdded;
+        ActivityStatus = activityStatus;
+        if (GameObjectType.DestructabilityData.Health is 0) ActivityStatus = ActivityStatus.Failed;
+        (this as ITickable).RegisterTickable();
+    }
 
-            set => name = value;
+    public int? EnemiesCount {
+        get => AllEnemiesCount;
+        init => AllEnemiesCount = value ?? 0;
+    }
+
+    [JsonIgnore] public int AllEnemiesCount { get; set; }
+    public string Name { get; set; }
+
+    [JsonIgnore] public string DisplayName {
+        get => ActivityStatus switch {
+            ActivityStatus.Started   => Name,
+            ActivityStatus.Completed => "Completed",
+            ActivityStatus.Failed    => "Failed",
+            _                        => "",
+        };
+
+        private init => Name = value;
+    }
+
+    [JsonIgnore] public string ProgressText => CalculateProgress();
+    public int PointsAdded { get; protected set; }
+    public ActivityStatus ActivityStatus { get; protected set; }
+
+    public void Tick(float deltaTime)
+        => CalculateProgress();
+
+    public virtual void ChangeStatus(ActivityStatus activityStatus) {
+        if (ActivityStatus == ActivityStatus.Failed || ActivityStatus == activityStatus) return;
+
+        ActivityStatus = activityStatus;
+        switch (activityStatus) {
+            case ActivityStatus.Completed:
+                GamestateManager.CompleteActivity(PointsAdded, Position);
+                ChangeToCompleted();
+                break;
+            case ActivityStatus.Failed:
+                GamestateManager.FailActivity(PointsAdded / 4, Position);
+                break;
+            case ActivityStatus.Stopped: break;
+            case ActivityStatus.Started: break;
+            default:                     throw new ArgumentOutOfRangeException(nameof(activityStatus), activityStatus, null);
         }
 
-        public string ProgressText => CalculateProgress();
-        public int PointsAdded { get; protected set; }
-        public ActivityStatus ActivityStatus { get; protected set; }
-        protected HashSet<Enemy> Enemies { get; set; }
-        protected Texture AfterCompletionTexture { get; }
-        protected DestructabilityData AfterCompletionDestructabilityData { get; }
+        if (GamestateManager.Map != null) GamestateManager.Save();
+    }
 
-        protected Activity(Vector2i coords, HashSet<Enemy> enemies, int hp, string name, string type, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType, int pointsAdded) : base(coords, gameObjectType, TextureManager.Instance.GetTexture(TextureType.GameObject, "tower"), "", hp)
-        {
-            Name = name;
-            Type = type;
-            PointsAdded = pointsAdded;
-            Enemies = enemies;
+    protected void ChangeToCompleted() {
+        GameObjectType = GameObjectTypes.TowerCompleted;
+        GenerateSprite();
+    }
 
-            ActivityStatus = Health == 0 ? ActivityStatus.Failed : ActivityStatus.Stopped;
+    protected abstract string CalculateProgress();
 
-            AfterCompletionTexture = TextureManager.Instance.GetTexture("gameobject", "towercompleted");
-            AfterCompletionDestructabilityData = new DestructabilityData(1, false, false);
+    public override void Dispose() {
+        GC.SuppressFinalize(this);
+        (this as ITickable).UnregisterTickable();
+        base.Dispose();
+    }
 
-            RegisterTickable();
-        }
-
-        public virtual void ChangeStatus(ActivityStatus activityStatus)
-        {
-            if (ActivityStatus != ActivityStatus.Failed && ActivityStatus != activityStatus)
-            {
-                ActivityStatus = activityStatus;
-                if (activityStatus == ActivityStatus.Completed)
-                {
-                    GamestateManager.Instance.CompleteActivity(PointsAdded, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
-                    ChangeToCompleted();
-                }
-
-                if (activityStatus == ActivityStatus.Failed) GamestateManager.Instance.FailActivity(PointsAdded / 4, Position + new Vector2f((Size.X / 2) - 75, (Size.Y / 10) - 10));
-
-                if (GamestateManager.Instance.Map != null) GamestateManager.Instance.Save();
-            }
-        }
-
-        public void ChangeToCompleted()
-        {
-            ObjectSprite = new SpriteComponent(Position, Size, AfterCompletionTexture, new Color(255, 255, 255, 255));
-            DestructabilityData = AfterCompletionDestructabilityData;
-        }
-
-        public void Tick(float deltaTime)
-        {
-            CalculateProgress();
-        }
-
-        public void RegisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.RegisterTickable, this, new EventArgs());
-        }
-
-        public void UnregisterTickable()
-        {
-            MessageBus.Instance.PostEvent(MessageType.UnregisterTickable, this, new EventArgs());
-        }
-
-        protected abstract string CalculateProgress();
-
-        public override void Dispose()
-        {
-            UnregisterTickable();
-            base.Dispose();
-        }
-
-        public void OnEnemyWanderIn()
-        {
-            if (ActivityStatus != ActivityStatus.Completed) AllEnemiesCount++;
-        }
-
-        public void OnEnemyWanderOut()
-        {
-            if (ActivityStatus != ActivityStatus.Completed) AllEnemiesCount--;
-        }
-
-        internal abstract override XmlElement SerializeToXML(XmlDocument xmlDocument);
+    public override void OnDestroy() {
+        ChangeStatus(ActivityStatus.Failed);
+        base.OnDestroy();
     }
 }

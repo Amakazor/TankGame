@@ -1,52 +1,18 @@
-﻿using SFML.System;
-using System;
-using System.Collections.Generic;
-using System.Xml;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Actors.Pawns.Enemies;
+﻿using System.Text.Json.Serialization;
+using SFML.System;
 
-namespace TankGame.Src.Actors.GameObjects.Activities
-{
-    internal class DestroyAllActivity : Activity
-    {
-        public DestroyAllActivity(Vector2i coords, HashSet<Enemy> enemies, int? hp = null, string name = null, string type = null, int? pointsAdded = null, Tuple<TraversibilityData, DestructabilityData, string> gameObjectType = null) : base(coords, enemies, hp ?? 1, name ?? "Destroy all enemies", type ?? "destroy", gameObjectType ?? new Tuple<TraversibilityData, DestructabilityData, string>(new TraversibilityData(1, false), new DestructabilityData(1, false, false), null), pointsAdded ?? 1000)
-        {
-            AllEnemiesCount = (uint)Enemies.Count;
-            if (ActivityStatus != ActivityStatus.Failed && AllEnemiesCount == 0)
-            {
-                ActivityStatus = ActivityStatus.Completed;
-                ChangeToCompleted();
-            }
-        }
+namespace TankGame.Actors.GameObjects.Activities;
 
-        protected override string CalculateProgress()
-        {
-            if (Enemies.Count == 0 && ActivityStatus != ActivityStatus.Completed) ChangeStatus(ActivityStatus.Completed);
+public class DestroyAllActivity : Activity {
+    [JsonConstructor] public DestroyAllActivity(Vector2i coords, string name, string type, int? health, int pointsAdded, ActivityStatus activityStatus, int? enemiesCount) : base(coords, name, type, health, pointsAdded, activityStatus, enemiesCount) { }
 
-            if (ActivityStatus == ActivityStatus.Completed || ActivityStatus == ActivityStatus.Failed) return "";
+    protected override string CalculateProgress() {
+        if (AllEnemiesCount == 0 && CurrentRegion.Enemies.Count > 0) AllEnemiesCount = CurrentRegion.Enemies.Count;
 
-            return "Enemy " + (AllEnemiesCount - Enemies.Count) + " of " + AllEnemiesCount;
-        }
+        if (CurrentRegion.Enemies.Count == 0 && ActivityStatus != ActivityStatus.Completed) ChangeStatus(ActivityStatus.Completed);
 
-        internal override XmlElement SerializeToXML(XmlDocument xmlDocument)
-        {
-            XmlElement activityElement = xmlDocument.CreateElement("activity");
-            XmlElement typeElement = xmlDocument.CreateElement("type");
-            XmlElement xElement = xmlDocument.CreateElement("x");
-            XmlElement yElement = xmlDocument.CreateElement("y");
-            XmlElement healthElement = xmlDocument.CreateElement("health");
+        if (ActivityStatus == ActivityStatus.Completed || ActivityStatus == ActivityStatus.Failed) return "";
 
-            typeElement.InnerText = Type;
-            xElement.InnerText = (Coords.X % 20).ToString();
-            yElement.InnerText = (Coords.Y % 20).ToString();
-            healthElement.InnerText = Health.ToString();
-
-            activityElement.AppendChild(typeElement);
-            activityElement.AppendChild(xElement);
-            activityElement.AppendChild(yElement);
-            activityElement.AppendChild(healthElement);
-
-            return activityElement;
-        }
+        return "Enemy " + (AllEnemiesCount - CurrentRegion.Enemies.Count) + " of " + AllEnemiesCount;
     }
 }

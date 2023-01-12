@@ -1,14 +1,10 @@
 ﻿using System;
 
-namespace TankGame.Src.Events
-{
-    internal class StartGameEventArgs : EventArgs
-    {
-        public bool NewGame { get; }
+namespace TankGame.Events;
 
-        public StartGameEventArgs(bool newGame)
-        {
-            NewGame = newGame;
-        }
-    }
+public class StartGameEventArgs : EventArgs {
+    public StartGameEventArgs(bool newGame)
+        => NewGame = newGame;
+
+    public bool NewGame { get; }
 }

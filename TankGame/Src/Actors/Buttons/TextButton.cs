@@ -1,22 +1,19 @@
-﻿using SFML.Graphics;
+﻿using System.Collections.Generic;
+using SFML.Graphics;
 using SFML.System;
-using System.Collections.Generic;
-using TankGame.Src.Gui.RenderComponents;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.Buttons
-{
-    internal abstract class TextButton : Button
-    {
-        protected AlignedTextComponent ButtonText;
+namespace TankGame.Actors.Buttons;
 
-        protected TextButton(Vector2f position, Vector2f size, string text, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(position, size)
-        {
-            ButtonText = new AlignedTextComponent(Position, Size, new Vector2f(0, 0), fontSize, horizontalPosition, verticalPosition, text, Color.White);
-        }
+public abstract class TextButton : Button {
+    protected AlignedTextComponent ButtonText;
 
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            HashSet<IRenderComponent> renderComponents = base.GetRenderComponents();
+    protected TextButton(Vector2f position, Vector2f size, string text, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(position, size)
+        => ButtonText = new(Position, Size, new(0, 0), fontSize, horizontalPosition, verticalPosition, text, Color.White);
+
+    public override HashSet<IRenderComponent> RenderComponents {
+        get {
+            var renderComponents = base.RenderComponents;
             renderComponents.Add(ButtonText);
 
             return renderComponents;

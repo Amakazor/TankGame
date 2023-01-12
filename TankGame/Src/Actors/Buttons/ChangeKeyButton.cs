@@ -1,74 +1,76 @@
-﻿using SFML.System;
-using SFML.Window;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using TankGame.Src.Data.Controls;
-using TankGame.Src.Events;
-using TankGame.Src.Gui.RenderComponents;
+using SFML.System;
+using SFML.Window;
+using TankGame.Core.Controls;
+using TankGame.Events;
+using TankGame.Gui.RenderComponents;
+using Action = TankGame.Core.Controls.Action;
 
-namespace TankGame.Src.Actors.Buttons
-{
-    internal class ChangeKeyButton : TextButton
-    {
-        private bool Focused { get; set; }
-        private byte BlinkTimer { get; set; }
-        private Tuple<string, string> KeyActionType { get; }
+namespace TankGame.Actors.Buttons;
 
-        public ChangeKeyButton(Vector2f position, Vector2f size, Tuple<string, string> keyActionType, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(position, size, KeyManager.Instance.GetKey(keyActionType).ToString(), fontSize, horizontalPosition, verticalPosition)
-        {
-            Focused = false;
-            BlinkTimer = 0;
-            KeyActionType = keyActionType;
+public class ChangeKeyButton : TextButton {
+    public ChangeKeyButton(Vector2f position, Vector2f size, Action action, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(
+        position, size, KeyManager.GetKey(action)
+                                  .ToString(), fontSize, horizontalPosition, verticalPosition
+    ) {
+        Focused = false;
+        BlinkTimer = 0;
+        Action = action;
 
-            MessageBus.Instance.Register(MessageType.CancelInputs, OnCancelInputs);
-            MessageBus.Instance.Register(MessageType.KeyPressed, OnKeyPressed);
-            MessageBus.Instance.Register(MessageType.MenuRefreshKeys, OnMenuRefreshKeys);
+        MessageBus.CancelInputs += OnCancelInputs;
+        MessageBus.KeyPressed += OnKeyPressed;
+        MessageBus.MenuRefreshKeys += OnMenuRefreshKeys;
+    }
+
+    private bool Focused { get; set; }
+    private byte BlinkTimer { get; set; }
+    private Action Action { get; }
+
+    public override HashSet<IRenderComponent> RenderComponents {
+        get {
+            if (!Focused) return base.RenderComponents;
+
+            BlinkTimer++;
+            ButtonText.SetText(BlinkTimer % 64 > 32 ? "" : "Press new key");
+
+            return base.RenderComponents;
         }
+    }
 
-        private void OnMenuRefreshKeys(object sender, EventArgs eventArgs)
-        {
-            ButtonText.SetText(KeyManager.Instance.GetKey(KeyActionType).ToString());
-        }
+    private void OnMenuRefreshKeys()
+        => ButtonText.SetText(
+            KeyManager.GetKey(Action)
+                      .ToString()
+        );
 
-        private void OnKeyPressed(object sender, EventArgs eventArgs)
-        {
-            if (Focused && eventArgs is KeyEventArgs keyEventArgs)
-            {
-                KeyManager.Instance.ChangeAndSaveKey(KeyActionType, keyEventArgs.Code);
-                Focused = false;
+    private void OnKeyPressed(KeyEventArgs eventArgs) {
+        if (!Focused) return;
 
-                MessageBus.Instance.PostEvent(MessageType.MenuRefreshKeys, this, new EventArgs());
-            }
-        }
+        KeyManager.ChangeAndSaveKey(new(eventArgs.Code, Action));
+        Focused = false;
 
-        private void OnCancelInputs(object sender, EventArgs eventArgs)
-        {
-            Focused = false;
-            ButtonText.SetText(KeyManager.Instance.GetKey(KeyActionType).ToString());
-        }
+        MessageBus.MenuRefreshKeys.Invoke();
+    }
 
-        public override bool OnClick(MouseButtonEventArgs eventArgs)
-        {
-            MessageBus.Instance.PostEvent(MessageType.CancelInputs, this, new EventArgs());
-            return Focused = true;
-        }
+    private void OnCancelInputs() {
+        Focused = false;
+        ButtonText.SetText(
+            KeyManager.GetKey(Action)
+                      .ToString()
+        );
+    }
 
-        public override void Dispose()
-        {
-            MessageBus.Instance.Unregister(MessageType.CancelInputs, OnCancelInputs);
-            MessageBus.Instance.Unregister(MessageType.KeyPressed, OnKeyPressed);
-            MessageBus.Instance.Unregister(MessageType.MenuRefreshKeys, OnMenuRefreshKeys);
-        }
+    public override bool OnClick(MouseButtonEventArgs eventArgs) {
+        MessageBus.CancelInputs.Invoke();
+        return Focused = true;
+    }
 
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            if (Focused)
-            {
-                BlinkTimer++;
-                if (BlinkTimer % 64 > 32) ButtonText.SetText("");
-                else ButtonText.SetText("Press new key");
-            }
-            return base.GetRenderComponents();
-        }
+    public override void Dispose() {
+        GC.SuppressFinalize(this);
+
+        MessageBus.CancelInputs -= OnCancelInputs;
+        MessageBus.KeyPressed -= OnKeyPressed;
+        MessageBus.MenuRefreshKeys -= OnMenuRefreshKeys;
     }
 }

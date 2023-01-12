@@ -1,50 +1,39 @@
-﻿using SFML.Graphics;
-using SFML.System;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Data.Textures;
-using TankGame.Src.Events;
-using TankGame.Src.Gui.RenderComponents;
+using SFML.System;
+using TankGame.Actors.Data;
+using TankGame.Core.Textures;
+using TankGame.Events;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.GUI
-{
-    internal class HealthDisplay : Actor
-    {
-        private RectangleComponent Outline { get; }
-        private RectangleComponent Inside { get; }
-        private SpriteComponent Heart { get; }
+namespace TankGame.Actors.GUI;
 
-        private readonly HashSet<IRenderComponent> RenderComponents;
+public class HealthDisplay : Actor {
+    public HealthDisplay() : base(new((1000 - (64 * 11 + 16)) / 2, 10), new(64 * 11 + 16, 64)) {
+        MessageBus.PlayerHealthChanged += OnPlayerHealthChanged;
 
-        public HealthDisplay() : base(new Vector2f((1000 - (64 * 11 + 16)) / 2, 10), new Vector2f(64 * 11 + 16, 64))
-        {
-            MessageBus.Instance.Register(MessageType.PlayerHealthChanged, OnPlayerHealthChanged);
+        Heart = new(Position, new(64, 64), TextureManager.GetTexture(TextureType.Hp, "hp"), new(255, 255, 255, 255));
+        Outline = new(Position + new Vector2f(48, -16), new(64 * 10, 32), new(32, 0, 0, 255), new(64, 64, 64, 255), 2);
+        Inside = new(Position  + new Vector2f(48, -16), new(64 * 10, 32), new(192, 0, 0, 255));
 
-            Heart = new SpriteComponent(Position, new Vector2f(64, 64), TextureManager.Instance.GetTexture("hp", "hp"), new Color(255, 255, 255, 255));
-            Outline = new RectangleComponent(Position + new Vector2f(48, -16), new Vector2f(64 * 10, 32), new Color(32, 0, 0, 255), new Color(64, 64, 64, 255), 2);
-            Inside = new RectangleComponent(Position + new Vector2f(48, -16), new Vector2f(64 * 10, 32), new Color(192, 0, 0, 255));
+        RenderComponents = new() { Heart, Outline, Inside };
 
-            RenderComponents = new HashSet<IRenderComponent> { Heart, Outline, Inside };
-
-            RenderLayer = RenderLayer.HUDFront;
-            RenderView = RenderView.HUD;
-        }
-
-        public override void Dispose()
-        {
-            MessageBus.Instance.Unregister(MessageType.PlayerHealthChanged, OnPlayerHealthChanged);
-            base.Dispose();
-        }
-
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            return RenderComponents;
-        }
-
-        public void OnPlayerHealthChanged(object sender, EventArgs eventArgs)
-        {
-            if (eventArgs is PlayerHealthChangeEventArgs playerHealthChange) Inside.SetSize(new Vector2f(64 * playerHealthChange.CurrentHealth, 32));
-        }
+        RenderLayer = RenderLayer.HUDFront;
+        RenderView = RenderView.HUD;
     }
+
+    private RectangleComponent Outline { get; }
+    private RectangleComponent Inside { get; }
+    private SpriteComponent Heart { get; }
+
+    public override HashSet<IRenderComponent> RenderComponents { get; }
+
+    public override void Dispose() {
+        GC.SuppressFinalize(this);
+        MessageBus.PlayerHealthChanged -= OnPlayerHealthChanged;
+        base.Dispose();
+    }
+
+    public void OnPlayerHealthChanged(int currentHealth)
+        => Inside.SetSize(new(64 * currentHealth, 32));
 }

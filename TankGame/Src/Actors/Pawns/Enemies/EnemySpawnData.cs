@@ -1,21 +1,20 @@
-﻿using SFML.System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using SFML.System;
+using TankGame.Actors.Pawns.MovementControllers;
 
-namespace TankGame.Src.Actors.Pawns.Enemies
-{
-    internal struct EnemySpawnData
-    {
-        public Vector2i Coords { get; }
-        public string Type { get; }
-        public string AimcType { get; }
-        public List<Vector2i> PatrolRoute { get; }
+namespace TankGame.Actors.Pawns.Enemies;
 
-        public EnemySpawnData(Vector2i coords, string type, string aimcType, List<Vector2i> patrolRoute = null)
-        {
-            Coords = coords;
-            Type = type;
-            AimcType = aimcType;
-            PatrolRoute = patrolRoute;
-        }
+public struct EnemySpawnData {
+    public Vector2i Coords { get; set; }
+    public EnemyType Type { get; }
+    public AiMovementControllerType AimcType { get; }
+    public List<Vector2i>? PatrolRoute { get; }
+
+    [JsonConstructor] public EnemySpawnData(Vector2i coords, EnemyType type, AiMovementControllerType aimcType, List<Vector2i>? patrolRoute = null) {
+        Coords = coords;
+        Type = type;
+        AimcType = aimcType;
+        PatrolRoute = patrolRoute;
     }
 }

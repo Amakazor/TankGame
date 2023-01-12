@@ -1,0 +1,4216 @@
+{
+  "Coords": {
+    "X": "0",
+    "Y": "2"
+  },
+  "FieldsInLine": "20",
+  "Fields": [
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "0",
+          "Y": "46"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "0",
+          "Y": "48"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "0",
+          "Y": "50"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "0",
+          "Y": "54"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "0",
+          "Y": "58"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "0",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "1",
+          "Y": "43"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "1",
+          "Y": "46"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "1",
+          "Y": "47"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "1",
+          "Y": "52"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "1",
+          "Y": "53"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "1",
+          "Y": "58"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "1",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "2",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "3",
+          "Y": "42"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "3",
+          "Y": "45"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "3",
+          "Y": "47"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "3",
+          "Y": "53"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "3",
+          "Y": "57"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "3",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "4",
+          "Y": "44"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "4",
+          "Y": "46"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "4",
+          "Y": "51"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "4",
+          "Y": "54"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "4",
+          "Y": "57"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "4",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "5",
+          "Y": "40"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "5",
+          "Y": "41"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "5",
+          "Y": "42"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "5",
+          "Y": "43"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "5",
+          "Y": "44"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "5",
+          "Y": "45"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "5",
+          "Y": "51"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "5",
+          "Y": "53"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "5",
+          "Y": "57"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "5",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "40"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "41"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "42"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "43"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "44"
+      },
+      "TextureName": "road-rt",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "6",
+          "Y": "47"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "6",
+          "Y": "51"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "6",
+          "Y": "57"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "6",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "40"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "41"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "42"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "43"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "44"
+      },
+      "TextureName": "road-ltr",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "7",
+          "Y": "48"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "7",
+          "Y": "51"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "7",
+          "Y": "56"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "7",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "44"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "8",
+          "Y": "48"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "8",
+          "Y": "51"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "8",
+          "Y": "56"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "8",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "8",
+          "Y": "59"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "9",
+          "Y": "43"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "44"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "9",
+          "Y": "48"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "9",
+          "Y": "52"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "9",
+          "Y": "58"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "9",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "10",
+          "Y": "43"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "44"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "10",
+          "Y": "45"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "46"
+      },
+      "TextureName": "road-rb",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "47"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "48"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "49"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "50"
+      },
+      "TextureName": "road-rt",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "10",
+          "Y": "54"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "10",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "40"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "40"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "41"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "42"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "43"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "44"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "46"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "50"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "51"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "52"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "53"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "54"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "55"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "56"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "57"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "58"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "11",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "11",
+          "Y": "59"
+        },
+        "Type": "FenceColor"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "40"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "41"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "42"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "43"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "44"
+      },
+      "TextureName": "road-lb",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "45"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "46"
+      },
+      "TextureName": "road-ltr",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "12",
+          "Y": "48"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "50"
+      },
+      "TextureName": "road-lbr",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "51"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "52"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "53"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "54"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "55"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "56"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "57"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "58"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "12",
+        "Y": "59"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "40"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "41"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "42"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "43"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "46"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "48"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "50"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "13",
+          "Y": "52"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "13",
+          "Y": "54"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "13",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "40"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "41"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "42"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "43"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "46"
+      },
+      "TextureName": "road-lb",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "47"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "48"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "49"
+      },
+      "TextureName": "road",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "50"
+      },
+      "TextureName": "road-lt",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "14",
+          "Y": "56"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "14",
+          "Y": "58"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "14",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "40"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "41"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "42"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "43"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "48"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "15",
+          "Y": "51"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "15",
+          "Y": "54"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "15",
+          "Y": "58"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "15",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "40"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "41"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "42"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "43"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "16",
+          "Y": "46"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "48"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "16",
+          "Y": "50"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "16",
+          "Y": "53"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "16",
+          "Y": "58"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "16",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "40"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "41"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "42"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "43"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "17",
+          "Y": "44"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "48"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "17",
+          "Y": "55"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "17",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "17",
+          "Y": "59"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "40"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "41"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "42"
+      },
+      "TextureName": "water",
+      "gObject": null,
+      "Type": "water"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "43"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "18",
+          "Y": "46"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "48"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "18",
+          "Y": "49"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "18",
+          "Y": "53"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "18",
+          "Y": "58"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "18",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "40"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "41"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "42"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "43"
+      },
+      "TextureName": "sand",
+      "gObject": null,
+      "Type": "sand"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "44"
+      },
+      "TextureName": "grass",
+      "gObject": {
+        "Coords": {
+          "X": "19",
+          "Y": "44"
+        },
+        "Type": "TreeDeciduous"
+      },
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "45"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "46"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "47"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "48"
+      },
+      "TextureName": "road2",
+      "gObject": null,
+      "Type": "road"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "49"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "50"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "51"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "52"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "53"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "54"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "55"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "56"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "57"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "58"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    },
+    {
+      "Coords": {
+        "X": "19",
+        "Y": "59"
+      },
+      "TextureName": "grass",
+      "gObject": null,
+      "Type": "grass"
+    }
+  ],
+  "Enemies": [
+    {
+      "ScoreAdded": "100",
+      "Type": 0,
+      "Direction": 0,
+      "Health": "1",
+      "MovementController": {
+        "$type": "Chase",
+        "ControllerType": "Chase",
+        "Delay": "0.75",
+        "RotationCooldown": "0",
+        "MovementCooldown": "0"
+      },
+      "Coords": {
+        "X": "1",
+        "Y": "56"
+      }
+    },
+    {
+      "ScoreAdded": "200",
+      "Type": 1,
+      "Direction": 0,
+      "Health": "2",
+      "MovementController": {
+        "$type": "Random",
+        "PatrolRoute": null,
+        "CurrentPatrolRoute": null,
+        "ControllerType": "Random",
+        "Delay": "1.5",
+        "RotationCooldown": "0",
+        "MovementCooldown": "0"
+      },
+      "Coords": {
+        "X": "2",
+        "Y": "41"
+      }
+    },
+    {
+      "ScoreAdded": "100",
+      "Type": 0,
+      "Direction": 0,
+      "Health": "1",
+      "MovementController": {
+        "$type": "Stand",
+        "HomePosition": {
+          "X": "4",
+          "Y": "47"
+        },
+        "ControllerType": "Stand",
+        "Delay": "0.75",
+        "RotationCooldown": "0",
+        "MovementCooldown": "0"
+      },
+      "Coords": {
+        "X": "4",
+        "Y": "47"
+      }
+    },
+    {
+      "ScoreAdded": "300",
+      "Type": 2,
+      "Direction": 0,
+      "Health": "3",
+      "MovementController": {
+        "$type": "Chase",
+        "ControllerType": "Chase",
+        "Delay": "2.25",
+        "RotationCooldown": "0",
+        "MovementCooldown": "0"
+      },
+      "Coords": {
+        "X": "8",
+        "Y": "43"
+      }
+    },
+    {
+      "ScoreAdded": "200",
+      "Type": 1,
+      "Direction": 0,
+      "Health": "2",
+      "MovementController": {
+        "$type": "Chase",
+        "ControllerType": "Chase",
+        "Delay": "1.5",
+        "RotationCooldown": "0",
+        "MovementCooldown": "0"
+      },
+      "Coords": {
+        "X": "14",
+        "Y": "53"
+      }
+    },
+    {
+      "ScoreAdded": "300",
+      "Type": 2,
+      "Direction": 0,
+      "Health": "3",
+      "MovementController": {
+        "$type": "Random",
+        "PatrolRoute": null,
+        "CurrentPatrolRoute": null,
+        "ControllerType": "Random",
+        "Delay": "2.25",
+        "RotationCooldown": "0",
+        "MovementCooldown": "0"
+      },
+      "Coords": {
+        "X": "19",
+        "Y": "53"
+      }
+    },
+    {
+      "ScoreAdded": "100",
+      "Type": 0,
+      "Direction": 0,
+      "Health": "1",
+      "MovementController": {
+        "$type": "Stand",
+        "HomePosition": {
+          "X": "18",
+          "Y": "54"
+        },
+        "ControllerType": "Stand",
+        "Delay": "0.75",
+        "RotationCooldown": "0",
+        "MovementCooldown": "0"
+      },
+      "Coords": {
+        "X": "18",
+        "Y": "54"
+      }
+    }
+  ],
+  "Player": null,
+  "Activity": {
+    "$type": "Protect",
+    "Coords": {
+      "X": "15",
+      "Y": "55"
+    },
+    "Name": "Protect the tower. Destroy all enemies",
+    "PointsAdded": "2000",
+    "ActivityStatus": 0,
+    "Type": "ProtectActivity"
+  }
+}

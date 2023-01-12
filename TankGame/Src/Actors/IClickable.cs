@@ -1,11 +1,14 @@
 ﻿using SFML.Window;
+using TankGame.Events;
 
-namespace TankGame.Src.Actors
-{
-    internal interface IClickable : IRenderable
-    {
-        public bool OnClick(MouseButtonEventArgs eventArgs);
-        public void RegisterClickable();
-        public void UnregisterClickable();
-    }
+namespace TankGame.Actors;
+
+public interface IClickable : IRenderable {
+    public bool OnClick(MouseButtonEventArgs eventArgs);
+
+    public void RegisterClickable()
+        => MessageBus.RegisterClickable.Invoke(this);
+
+    public void UnregisterClickable()
+        => MessageBus.UnregisterClickable.Invoke(this);
 }

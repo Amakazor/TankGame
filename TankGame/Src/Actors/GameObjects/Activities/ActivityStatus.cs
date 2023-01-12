@@ -1,10 +1,8 @@
-﻿namespace TankGame.Src.Actors.GameObjects.Activities
-{
-    internal enum ActivityStatus
-    {
-        Stopped,
-        Started,
-        Completed,
-        Failed
-    }
+﻿namespace TankGame.Actors.GameObjects.Activities;
+
+public enum ActivityStatus {
+    Stopped,
+    Started,
+    Completed,
+    Failed,
 }

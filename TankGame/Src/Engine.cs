@@ -1,390 +1,272 @@
-﻿using SFML.Graphics;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using TankGame.Src.Actors;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Actors.Pawns.Player;
-using TankGame.Src.Data.Collisions;
-using TankGame.Src.Data.Controls;
-using TankGame.Src.Data.Gamestate;
-using TankGame.Src.Data.GUI;
-using TankGame.Src.Data.Sounds;
-using TankGame.Src.Data.Statistics;
-using TankGame.Src.Data.Textures;
-using TankGame.Src.Events;
-using TankGame.Src.Extensions;
+using TankGame.Actors;
+using TankGame.Actors.Data;
+using TankGame.Actors.Pawns;
+using TankGame.Actors.Pawns.Player;
+using TankGame.Core.Collisions;
+using TankGame.Core.Gamestate;
+using TankGame.Core.GUI;
+using TankGame.Core.Sounds;
+using TankGame.Core.Statistics;
+using TankGame.Core.Textures;
+using TankGame.Events;
+using Action = TankGame.Core.Controls.Action;
 
-namespace TankGame.Src
-{
-    internal class Engine
-    {
-        public string GameTitle { get; private set; }
-        private bool ShouldQuit { get; set; }
+namespace TankGame;
 
-        private uint WindowHeight { get; set; }
-        private uint WindowWidth { get; set; }
-        private RenderWindow Window { get; set; }
+public class Engine {
+    public Engine() {
+        Window = InitializeWindow();
+        Views = new();
+        InitializeView();
 
-        private uint GameViewWidth { get; set; }
-        private uint GameViewHeight { get; set; }
-        private View GameView { get; set; }
+        InputHandler = new(Window);
+        SetInputHandlers();
 
-        private uint HUDViewWidth { get; set; }
-        private uint HUDViewHeight { get; set; }
-        private View HUDView { get; set; }
+        RegisterEvents();
 
-        private uint MenuViewWidth { get; set; }
-        private uint MenuViewHeight { get; set; }
-        private View MenuView { get; set; }
+        Menu = new();
+        Hud = new();
+    }
 
-        private InputHandler InputHandler { get; }
-        private CollisionHandler CollisionHandler { get; set; }
+    private static string GameTitle => "Tank Game";
+    private bool ShouldQuit { get; set; }
 
-        private Hud HUD { get; set; }
-        private Menu Menu { get; set; }
+    private uint WindowHeight { get; set; }
+    private uint WindowWidth { get; set; }
+    private RenderWindow Window { get; set; }
 
-        private HashSet<ITickable> Tickables { get; }
-        private HashSet<IRenderable> Renderables { get; }
+    private Dictionary<RenderView, View?> Views { get; }
 
-        public Engine()
-        {
-            GameTitle = "Tank Game";
-            ShouldQuit = false;
-            Tickables = new HashSet<ITickable>();
-            Renderables = new HashSet<IRenderable>();
+    private InputHandler InputHandler { get; }
+    private CollisionHandler CollisionHandler { get; } = new();
 
-            InitializeManagers();
+    private Hud Hud { get; }
+    private Menu Menu { get; }
 
-            InitializeWindow();
-            InitializeView();
+    private HashSet<ITickable> Tickables { get; } = new();
+    private HashSet<IRenderable> Renderables { get; } = new();
 
-            InputHandler = new InputHandler(Window);
-            SetInputHandlers();
+    public void Loop() {
+        DateTime previousFrameTime = DateTime.Now;
 
-            RegisterEvents();
+        while (Window.IsOpen && !ShouldQuit) {
+            DateTime currentFrameTime = DateTime.Now;
+            float deltaTime = (currentFrameTime.Ticks - previousFrameTime.Ticks) / 10000000f;
 
-            Menu = new Menu();
+            Tick(deltaTime);
+            Render();
+
+            previousFrameTime = currentFrameTime;
         }
 
-        public void Loop()
-        {
-            DateTime time1 = DateTime.Now;
-            DateTime time2;
+        if (Window.IsOpen || GamestateManager.NotStarted) return;
+        GamestateManager.Save();
+        Clear();
+        Hud.Dispose();
+    }
 
-            while (Window.IsOpen && !ShouldQuit)
-            {
-                try
-                {
-                    time2 = DateTime.Now;
-                    float deltaTime = (time2.Ticks - time1.Ticks) / 10000000f;
+    private void StopGame() {
+        GamestateManager.DeleteSave();
 
-                    Tick(deltaTime);
-                    Render();
+        if (GamestateManager.Ending)
+            ScoreManager.Add(new(Menu.PlayerName, GamestateManager.Points));
+        else
+            GamestateManager.Save();
 
-                    time1 = time2;
-                }
-                catch (Exception e)
-                {
+        Clear();
+        Menu.ShowMenu();
+    }
 
-                    throw new InvalidOperationException("Application cannot be run, please reinstall application", e);
-                }
-            }
+    private void Clear() {
+        GamestateManager.Clear();
+        CollisionHandler.Clear();
+        MusicManager.StopMusic();
+    }
 
-            if (!Window.IsOpen && GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
-            {
-                GamestateManager.Instance.Save();
+    private void Tick(float deltaTime) {
+        if (!GamestateManager.Playing) return;
 
-                HUD.Dispose();
-                HUD = null;
+        foreach (ITickable tickable in Tickables.ToImmutableList()) tickable.Tick(deltaTime);
 
-                GamestateManager.Instance.Clear();
+        CollisionHandler.Tick();
+        GamestateManager.Tick(deltaTime);
+    }
 
-                CollisionHandler.Clear();
+    private void Render() {
+        Window.DispatchEvents();
+        Window.Clear(Color.Black);
 
-                MusicManager.Instance.StopMusic();
-            }
-        }
+        IEnumerable<(Shader? CurrentShader, Drawable Shape)>? components;
+        if (!GamestateManager.NotStarted) {
+            Window.SetView(Views[RenderView.Game]);
+            if (GamestateManager.Player != null) RecenterView(GamestateManager.Player.RealPosition);
 
-        private void Tick(float deltaTime)
-        {
-            if (GamestateManager.Instance.GamePhase == GamePhase.Playing)
-            {
-                foreach (ITickable tickable in Tickables.ToList())
-                {
-                    tickable.Tick(deltaTime);
-                }
+            components = Renderables.Where(renderable => renderable is { RenderableRenderView: RenderView.Game, Visible: true })
+                                    .OrderBy(renderable => renderable.RenderableRenderLayer)
+                                    .SelectMany(renderable => renderable.RenderComponents.Select(component => (renderable.CurrentShader, component.Shape)));
 
-                CollisionHandler.Tick();
-                GamestateManager.Instance.Tick(deltaTime);
-            }
-        }
+            foreach (var renderable in components) Window.Draw(renderable.Shape, new(renderable.CurrentShader));
 
-        private void Render()
-        {
-            Window.DispatchEvents();
-            Window.Clear(Color.Black);
+            Window.SetView(Views[RenderView.HUD]);
 
-            if (GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
-            {
-                Window.SetView(GameView);
-                if (GamestateManager.Instance.Player != null) RecenterView(GamestateManager.Instance.Player.RealPosition);
-
-                Renderables.ToList()
-                .FindAll(renderable => renderable.RenderableRenderView == RenderView.Game && renderable.Visible)
-                .Draw(Window);
-
-                Window.SetView(HUDView);
-
-                Renderables.ToList()
-                   .FindAll(renderable => renderable.RenderableRenderView == RenderView.HUD && renderable.Visible)
-                   .Draw(Window);
-            }
+            components = Renderables.Where(renderable => renderable is { RenderableRenderView: RenderView.HUD, Visible: true })
+                                    .OrderBy(renderable => renderable.RenderableRenderLayer)
+                                    .SelectMany(renderable => renderable.RenderComponents.Select(component => (renderable.CurrentShader, component.Shape)));
             
-            Window.SetView(MenuView);
-
-            Renderables.ToList()
-               .FindAll(renderable => renderable.RenderableRenderView == RenderView.Menu && renderable.Visible)
-               .Draw(Window);
-
-            Window.Display();
+            foreach (var renderable in components)
+                Window.Draw(renderable.Shape, new(renderable.CurrentShader));
         }
 
-        private void StartGame(bool isNewGame)
-        {
-            if (GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
-            {
-                if (isNewGame) StopGame();
-                else if (GamestateManager.Instance.GamePhase == GamePhase.Paused)
-                {
-                    Menu.Hide();
-                    GamestateManager.Instance.GamePhase = GamePhase.Playing;
-                    return;
-                }
-            }
+        Window.SetView(Views[RenderView.Menu]);
+        
+        components = Renderables.Where(renderable => renderable is { RenderableRenderView: RenderView.Menu, Visible: true })
+                                .OrderBy(renderable => renderable.RenderableRenderLayer)
+                                .SelectMany(renderable => renderable.RenderComponents.Select(component => (renderable.CurrentShader, component.Shape)));
 
-            Menu.Hide();
+        foreach (var renderable in components)
+            Window.Draw(renderable.Shape, new(renderable.CurrentShader));
 
-            HUD = new Hud();
+        Window.Display();
+    }
 
-            GamestateManager.Instance.Start(isNewGame);
+    private void StartGame(bool continueGame) {
+        if (GamestateManager.Paused && continueGame) {
+            Unpause();
+            return;
         }
 
-        private void StopGame()
-        {
-            if (GamestateManager.Instance.GamePhase == GamePhase.Ending)
-            {
-                ScoreManager.AddScore(Menu.PlayerName, GamestateManager.Instance.Points);
-                GamestateManager.Instance.DeleteSave();
-            }
-            else
-            {
-                GamestateManager.Instance.Save();
-            }
-
-            HUD.Dispose();
-            HUD = null;
-            GamestateManager.Instance.Clear();
-            CollisionHandler.Clear();
-
-            MusicManager.Instance.StopMusic();
-
-            Menu.ShowMenu();
-        }
-
-        private void InitializeManagers()
-        {
-            CollisionHandler = new CollisionHandler();
-            TextureManager.Initialize();
-            SoundManager.Initialize();
-            KeyManager.Initialize();
-            MusicManager.Initialize();
-        }
-
-        private void InitializeWindow()
-        {
-            WindowWidth = 800;
-            WindowHeight = WindowWidth * 16 / 10;
-
-            Window = new RenderWindow(new VideoMode(WindowHeight, WindowWidth), GameTitle, Styles.Default, new ContextSettings() { AntialiasingLevel = 2 });
-            Window.SetVerticalSyncEnabled(true);
-
-            Texture icon = TextureManager.Instance.GetTexture(TextureType.Pawn, "player1");
-            Window.SetIcon(icon.Size.X, icon.Size.Y, icon.CopyToImage().Pixels);
-
-            Window.Closed += (_, __) => Window.Close();
-        }
-
-        private void InitializeView()
-        {
-            GameViewWidth = 64 * (2 * 6 + 1);
-            GameViewHeight = GameViewWidth;
-
-            HUDViewWidth = 1000;
-            HUDViewHeight = HUDViewWidth / 5;
-
-            MenuViewWidth = 1000;
-            MenuViewHeight = MenuViewWidth;
-
-            GameView = new View(new Vector2f(GameViewWidth / 2, GameViewHeight / 2), new Vector2f(GameViewWidth, GameViewHeight));
-            HUDView = new View(new Vector2f(HUDViewWidth / 2 - 32, HUDViewHeight / 2 - 32), new Vector2f(HUDViewWidth, HUDViewHeight));
-            MenuView = new View(new Vector2f(MenuViewWidth / 2, MenuViewHeight / 2), new Vector2f(MenuViewWidth, MenuViewHeight));
-
-            RecalculateViewport(WindowWidth, WindowHeight);
-        }
-
-        private void SetInputHandlers()
-        {
-            if (Window != null && InputHandler != null)
-            {
-                Window.Resized += OnResize;
-
-                Window.KeyPressed += InputHandler.OnKeyPress;
-                Window.MouseButtonPressed += InputHandler.OnClick;
-                Window.TextEntered += InputHandler.OnTextInput;
-            }
-        }
-
-        private void OnResize(object sender, SizeEventArgs newSize)
-        {
-            WindowWidth = newSize.Height;
-            WindowHeight = newSize.Width;
-
-            RecalculateViewport(newSize.Height, newSize.Width);
-        }
-
-        private void RecalculateViewport(uint height, uint width)
-        {
-            float uiWidth = 1F;
-            float uiHeight = 0.2F;
-
-            float gameSize = 0.8F;
-
-            float aspectRatio = (float)height / width;
-
-            if (GameView != null)
-            {
-                GameView.Viewport = Window.Size.X > Window.Size.Y
-                    ? new FloatRect(new Vector2f((1 - gameSize) + ((gameSize - (gameSize * aspectRatio)) / 2), (1 - gameSize)), new Vector2f(gameSize * aspectRatio, gameSize))
-                    : new FloatRect(new Vector2f((1 - gameSize), (1 - gameSize) + ((gameSize - (gameSize * (1 / aspectRatio))) / 2)), new Vector2f(gameSize, gameSize * (1 / aspectRatio)));
-            }
-
-            if (HUDView != null)
-            {
-                HUDView.Viewport = Window.Size.X > Window.Size.Y
-                   ? new FloatRect(new Vector2f((1 - uiWidth * aspectRatio) / 2, 0), new Vector2f(uiWidth * aspectRatio, uiHeight))
-                   : new FloatRect(new Vector2f((1 - uiWidth) / 2, 0), new Vector2f(uiWidth, uiHeight * (1 / aspectRatio)));
-            }
-
-            if (MenuView != null)
-            {
-                MenuView.Viewport = Window.Size.X > Window.Size.Y
-                    ? new FloatRect(new Vector2f((1 - aspectRatio) / 2, 0), new Vector2f(aspectRatio, 1))
-                    : new FloatRect(new Vector2f(0, (1 - (1 / aspectRatio)) / 2), new Vector2f(1, 1 / aspectRatio));
-            }
-        }
-
-        private void RecenterView(Vector2f position)
-        {
-            if (GameView != null) GameView.Center = position;
-        }
-
-        private void RegisterEvents()
-        {
-            MessageBus messageBus = MessageBus.Instance;
-
-            messageBus.Register(MessageType.RegisterTickable, OnRegisterTickable);
-            messageBus.Register(MessageType.UnregisterTickable, OnUnregisterTickable);
-
-            messageBus.Register(MessageType.RegisterRenderable, OnRegisterRenderable);
-            messageBus.Register(MessageType.UnregisterRenderable, OnUnregisterRenderable);
-
-            messageBus.Register(MessageType.StartGame, OnStartGame);
-            messageBus.Register(MessageType.StopGame, OnStopGame);
-            messageBus.Register(MessageType.Quit, OnQuit);
-
-            messageBus.Register(MessageType.KeyAction, OnKeyAction);
-
-            messageBus.Register(MessageType.PlayerMoved, OnPlayerMoved);
-            messageBus.Register(MessageType.PawnDeath, OnPawnDeath);
-        }
-
-        private void OnQuit(object sender, EventArgs eventArgs)
-        {
-            if (GamestateManager.Instance.GamePhase != GamePhase.NotStarted)
-            {
-                StopGame();
-            }
-            else
-            {
-                ShouldQuit = true;
-            }
-        }
-
-        private void OnRegisterTickable(object sender, EventArgs eventArgs)
-        {
-            if (sender is ITickable tickable) Tickables.Add(tickable);
-        }
-
-        private void OnUnregisterTickable(object sender, EventArgs eventArgs)
-        {
-            if (sender is ITickable tickable) Tickables.Remove(tickable);
-        }
-
-        private void OnRegisterRenderable(object sender, EventArgs eventArgs)
-        {
-            if (sender is IRenderable renderable) Renderables.Add(renderable);
-        }
-
-        private void OnUnregisterRenderable(object sender, EventArgs eventArgs)
-        {
-            if (sender is IRenderable renderable) Renderables.Remove(renderable);
-        }
-
-        private void OnPlayerMoved(object sender, EventArgs eventArgs)
-        {
-            if (sender is Player senderPlayer)
-            {
-                RecenterView(senderPlayer.RealPosition);
-            }
-        }
-
-        private void OnPawnDeath(object sender, EventArgs eventArgs)
-        {
-            if (eventArgs is PawnEventArgs pawnEventArgs && pawnEventArgs.Pawn is Player)
-            {
-                GamestateManager.Instance.GamePhase = GamePhase.Ending;
-                Menu.ShowEndScreen();
-            }
-        }
-
-        private void OnStopGame(object arg1, EventArgs arg2)
-        {
+        if (!GamestateManager.NotStarted && !continueGame) {
             StopGame();
+            return;
         }
 
-        private void OnStartGame(object sender, EventArgs eventArgs)
-        {
-            if (eventArgs is StartGameEventArgs startGameEventArgs) StartGame(startGameEventArgs.NewGame);
-        }
+        Menu.Hide();
 
-        private void OnKeyAction(object sender, EventArgs eventArgs)
-        {
-            if (eventArgs is KeyActionEventArgs keyActionEventArgs && keyActionEventArgs.KeyActionType != null && keyActionEventArgs.KeyActionType.Equals(KeyActionType.Pause))
-            {
-                if (GamestateManager.Instance.GamePhase == GamePhase.Playing)
-                {
-                    GamestateManager.Instance.GamePhase = GamePhase.Paused;
-                    Menu.ShowMenu();
-                }
-                else if (GamestateManager.Instance.GamePhase == GamePhase.Paused)
-                {
-                    GamestateManager.Instance.GamePhase = GamePhase.Playing;
-                    Menu.Hide();
-                }
-            }
+        GamestateManager.Start(continueGame);
+    }
+
+    private void Pause() {
+        Menu.ShowMenu();
+        GamestateManager.Pause();
+    }
+
+    private void Unpause() {
+        Menu.Hide();
+        GamestateManager.Play();
+    }
+
+    private RenderWindow InitializeWindow() {
+        WindowWidth = 800;
+        WindowHeight = WindowWidth * 16 / 10;
+
+        RenderWindow window = new(new(WindowHeight, WindowWidth), GameTitle, Styles.Default, new() { AntialiasingLevel = 2 });
+        window.SetVerticalSyncEnabled(true);
+
+        Texture icon = TextureManager.GetTexture(TextureType.Pawn, "player1");
+        window.SetIcon(
+            icon.Size.X, icon.Size.Y, icon.CopyToImage()
+                                          .Pixels
+        );
+
+        window.Closed += (_, _) => window.Close();
+        return window;
+    }
+
+    private void InitializeView() {
+        const float gameViewWidth = 64 * (2 * 6 + 1);
+        const float gameViewHeight = gameViewWidth;
+
+        const float hudViewWidth = 1000;
+        const float hudViewHeight = hudViewWidth / 5;
+
+        const float menuViewWidth = 1000;
+        const float menuViewHeight = menuViewWidth; 
+        Views.Add(RenderView.Game, new(new(gameViewWidth / 2, gameViewHeight / 2), new(gameViewWidth, gameViewHeight)));
+        Views.Add(RenderView.HUD, new(new(hudViewWidth / 2 - 32, hudViewHeight / 2 - 32), new(hudViewWidth, hudViewHeight)));
+        Views.Add(RenderView.Menu, new(new(menuViewWidth / 2, menuViewHeight / 2), new(menuViewWidth, menuViewHeight)));
+
+        RecalculateViewport(WindowWidth, WindowHeight);
+    }
+
+    private void SetInputHandlers() {
+        Window.Resized += (_,            args) => OnResize(args);
+        Window.KeyPressed += (_,         args) => InputHandler.OnKeyPress(args);
+        Window.MouseButtonPressed += (_, args) => InputHandler.OnClick(args);
+        Window.TextEntered += (_,        args) => InputHandler.OnTextInput(args);
+    }
+
+    private void OnResize(SizeEventArgs newSize) {
+        WindowWidth = newSize.Height;
+        WindowHeight = newSize.Width;
+
+        RecalculateViewport(newSize.Height, newSize.Width);
+    }
+
+    private void RecalculateViewport(uint height, uint width) {
+        const float uiWidth = 1F;
+        const float uiHeight = 0.2F;
+
+        const float gameSize = 0.8F;
+
+        float aspectRatio = (float)height / width;
+
+        if (Views.TryGetValue(RenderView.Game, out View? gameView)) gameView!.Viewport = Window.Size.X > Window.Size.Y ? new(new(1 - gameSize + (gameSize - gameSize * aspectRatio) / 2, 1 - gameSize), new(gameSize * aspectRatio, gameSize)) : new FloatRect(new(1 - gameSize, 1 - gameSize + (gameSize - gameSize * (1 / aspectRatio)) / 2), new(gameSize, gameSize * (1 / aspectRatio)));
+
+        if (Views.TryGetValue(RenderView.Game, out View? hudView))  hudView!.Viewport  = Window.Size.X > Window.Size.Y ? new(new((1 - uiWidth * aspectRatio) / 2, 0), new(uiWidth * aspectRatio, uiHeight)) : new FloatRect(new((1 - uiWidth) / 2, 0), new(uiWidth, uiHeight * (1 / aspectRatio)));
+
+        if (Views.TryGetValue(RenderView.Game, out View? menuView)) menuView!.Viewport = Window.Size.X > Window.Size.Y ? new(new((1 - aspectRatio) / 2, 0), new(aspectRatio, 1)) : new FloatRect(new(0, (1 - 1 / aspectRatio) / 2), new(1, 1 / aspectRatio));
+    }
+
+    private void RecenterView(Vector2f position) {
+        if (Views.TryGetValue(RenderView.Game, out View? gameView)) gameView!.Center = position;
+    }
+
+    private void RegisterEvents() {
+        MessageBus.RegisterTickable += sender => Tickables.Add(sender);
+        MessageBus.UnregisterTickable += sender => Tickables.Remove(sender);
+
+        MessageBus.RegisterRenderable += sender => Renderables.Add(sender);
+        MessageBus.UnregisterRenderable += sender => Renderables.Remove(sender);
+
+        MessageBus.StartGame += StartGame;
+        MessageBus.StopGame += StopGame;
+        MessageBus.Quit += Quit;
+
+        MessageBus.Action += OnAction;
+
+        MessageBus.PlayerMoved += sender => RecenterView(sender.RealPosition);
+        MessageBus.PawnDeath += OnPawnDeath;
+    }
+
+    private void Quit() {
+        if (GamestateManager.GamePhase != GamePhase.NotStarted)
+            StopGame();
+        else
+            ShouldQuit = true;
+    }
+
+    private void OnPawnDeath(Pawn sender) {
+        if (sender is not Player) return;
+
+        GamestateManager.End();
+        Menu.ShowEndScreen();
+    }
+
+    private void OnAction(Action action) {
+        switch (action) {
+            case Action.Pause when GamestateManager.Playing:
+                Pause();
+                break;
+            case Action.Pause when GamestateManager.Paused:
+                Unpause();
+                break;
         }
     }
 }

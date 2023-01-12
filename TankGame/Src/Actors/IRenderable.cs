@@ -1,17 +1,23 @@
 ﻿using System.Collections.Generic;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Gui.RenderComponents;
+using SFML.Graphics;
+using TankGame.Actors.Data;
+using TankGame.Events;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors
-{
-    internal interface IRenderable
-    {
-        public bool Visible { get; set; }
-        public RenderLayer RenderableRenderLayer { get; }
-        public RenderView RenderableRenderView { get; }
+namespace TankGame.Actors;
 
-        HashSet<IRenderComponent> GetRenderComponents();
-        public void RegisterRenderable();
-        public void UnregisterRenderable();
-    }
+public interface IRenderable {
+    public bool Visible { get; set; }
+    public RenderLayer RenderableRenderLayer { get; }
+    public RenderView RenderableRenderView { get; }
+
+    HashSet<IRenderComponent> RenderComponents { get; }
+
+    public Shader? CurrentShader => null;
+
+    public void RegisterRenderable()
+        => MessageBus.RegisterRenderable.Invoke(this);
+
+    public void UnregisterRenderable()
+        => MessageBus.UnregisterRenderable.Invoke(this);
 }

@@ -1,52 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
+using SFML.Window;
+using TankGame.Actors;
+using TankGame.Actors.Pawns;
+using TankGame.Actors.Pawns.Player;
+using TankGame.Actors.Projectiles;
+using Action = TankGame.Core.Controls.Action;
 
-namespace TankGame.Src.Events
-{
-    internal class MessageBus
-    {
-        private static MessageBus instance;
-        private readonly Dictionary<MessageType, List<Action<object, EventArgs>>> Listeners = new Dictionary<MessageType, List<Action<object, EventArgs>>>();
-        private readonly List<Tuple<MessageType, Action<object, EventArgs>>> ToUnregister = new List<Tuple<MessageType, Action<object, EventArgs>>>();
+namespace TankGame.Events;
 
-        private MessageBus()
-        {
-        }
+public static class MessageBus {
+    public delegate void ActionDelegate(Action action);
 
-        public static MessageBus Instance { get { return instance ?? (instance = new MessageBus()); } }
+    public delegate void ContinueDelegate(bool continueGame);
 
-        public void Register(MessageType messageType, Action<object, EventArgs> listener)
-        {
-            if (!Listeners.ContainsKey(messageType))
-            {
-                Listeners[messageType] = new List<Action<object, EventArgs>> { listener };
-            }
-            else Listeners[messageType].Add(listener);
-        }
+    public delegate void EventArgsDelegate<in T>(T eventArgs) where T : EventArgs;
 
-        public void Unregister(MessageType messageType, Action<object, EventArgs> listener)
-        {
-            ToUnregister.Add(new Tuple<MessageType, Action<object, EventArgs>>(messageType, listener));
-        }
+    public delegate void HealthDelegate(int currentHealth);
 
-        private void FinalizeUnregistering()
-        {
-            foreach (Tuple<MessageType, Action<object, EventArgs>> dataToUnregister in ToUnregister)
-            {
-                if (Listeners.ContainsKey(dataToUnregister.Item1) && Listeners[dataToUnregister.Item1].Contains(dataToUnregister.Item2))
-                {
-                    Listeners[dataToUnregister.Item1].Remove(dataToUnregister.Item2);
-                }
-            }
+    public delegate void NotifyDelegate();
 
-            ToUnregister.Clear();
-        }
+    public delegate void SenderDelegate<in T>(T sender);
 
-        public void PostEvent(MessageType messageType, object sender, EventArgs eventArgs)
-        {
-            FinalizeUnregistering();
+    public static NotifyDelegate Quit { get; set; } = delegate { };
+    public static SenderDelegate<ITickable> RegisterTickable { get; set; } = delegate { };
+    public static SenderDelegate<ITickable> UnregisterTickable { get; set; } = delegate { };
 
-            if (Listeners.ContainsKey(messageType)) Listeners[messageType].ForEach(listener => listener.Invoke(sender, eventArgs));
-        }
-    }
+    public static SenderDelegate<IClickable> RegisterClickable { get; set; } = delegate { };
+    public static SenderDelegate<IClickable> UnregisterClickable { get; set; } = delegate { };
+
+    public static SenderDelegate<IRenderable> RegisterRenderable { get; set; } = delegate { };
+    public static SenderDelegate<IRenderable> UnregisterRenderable { get; set; } = delegate { };
+
+    public static SenderDelegate<IDestructible> RegisterDestructible { get; set; } = delegate { };
+    public static SenderDelegate<IDestructible> UnregisterDestructible { get; set; } = delegate { };
+
+    public static SenderDelegate<Projectile> RegisterProjectile { get; set; } = delegate { };
+    public static SenderDelegate<Projectile> UnregisterProjectile { get; set; } = delegate { };
+
+    public static EventArgsDelegate<PawnMovedEventArgs> PawnMoved { get; set; } = delegate { };
+    public static SenderDelegate<Pawn> PawnDeath { get; set; } = delegate { };
+    public static SenderDelegate<Player> PlayerMoved { get; set; } = delegate { };
+
+    public static ActionDelegate Action { get; set; } = delegate { };
+    public static EventArgsDelegate<KeyEventArgs> KeyPressed { get; set; } = delegate { };
+
+    public static HealthDelegate PlayerHealthChanged { get; set; } = delegate { };
+
+    public static ContinueDelegate StartGame { get; set; } = delegate { };
+    public static NotifyDelegate StopGame { get; set; } = delegate { };
+
+    public static NotifyDelegate CancelInputs { get; set; } = delegate { };
+    public static EventArgsDelegate<TextEventArgs> TextInput { get; set; } = delegate { };
+
+    public static NotifyDelegate MenuRefreshKeys { get; set; } = delegate { };
 }

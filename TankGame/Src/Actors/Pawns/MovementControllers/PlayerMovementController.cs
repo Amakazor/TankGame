@@ -1,24 +1,26 @@
-﻿using System;
-using TankGame.Src.Data.Controls;
-using TankGame.Src.Events;
+﻿using System.Text.Json.Serialization;
+using TankGame.Core.Controls;
+using TankGame.Events;
 
-namespace TankGame.Src.Actors.Pawns.MovementControllers
-{
-    internal class PlayerMovementController : MovementController
-    {
-        public PlayerMovementController(float delay, Pawn owner) : base(delay, owner)
-        {
-            MessageBus.Instance.Register(MessageType.KeyAction, SetNextAction);
-        }
+namespace TankGame.Actors.Pawns.MovementControllers;
 
-        public override bool CanDoAction()
-        {
-            return base.CanDoAction() && NextAction != null;
-        }
+public class PlayerMovementController : MovementController {
+    public PlayerMovementController(float delay, Pawn owner) : base(delay, owner)
+        => MessageBus.Action += SetNextAction;
 
-        private void SetNextAction(object sender, EventArgs eventArgs)
-        {
-            if (eventArgs is KeyActionEventArgs keyActionEventArgs && keyActionEventArgs.KeyActionType != null && !keyActionEventArgs.KeyActionType.Equals(KeyActionType.Pause)) NextAction = keyActionEventArgs.KeyActionType;
-        }
+    [JsonConstructor] public PlayerMovementController(double delay, Action nextAction, double rotationCooldown, double movementCooldown) : base(delay) {
+        MessageBus.Action += SetNextAction;
+
+        NextAction = nextAction;
+        RotationCooldown = rotationCooldown;
+        MovementCooldown = movementCooldown;
+    }
+
+    public override bool CanDoAction()
+        => base.CanDoAction() && NextAction != null;
+
+    private void SetNextAction(Action keyAction) {
+        if (keyAction == Action.Pause) return;
+        NextAction = keyAction;
     }
 }

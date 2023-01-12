@@ -1,16 +1,14 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace TankGame.Src.Gui.RenderComponents
-{
-    internal interface IRenderComponent
-    {
-        public Drawable Shape { get; }
+namespace TankGame.Gui.RenderComponents;
 
-        public bool IsPointInside(Vector2f point);
+public interface IRenderComponent {
+    public Drawable Shape { get; }
 
-        public void SetPosition(Vector2f position);
+    public bool IsPointInside(Vector2f point);
 
-        public void SetSize(Vector2f size);
-    }
+    public void SetPosition(Vector2f position);
+
+    public void SetSize(Vector2f size);
 }

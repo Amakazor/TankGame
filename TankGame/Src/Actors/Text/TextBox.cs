@@ -1,24 +1,18 @@
-﻿using SFML.Graphics;
+﻿using System.Collections.Generic;
+using SFML.Graphics;
 using SFML.System;
-using System.Collections.Generic;
-using TankGame.Src.Gui.RenderComponents;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.Text
-{
-    internal class TextBox : Actor
-    {
-        protected AlignedTextComponent Text;
+namespace TankGame.Actors.Text;
 
-        public TextBox(Vector2f position, Vector2f size, string text, uint fontSize, Color? textColor = null, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(position, size)
-        {
-            Text = new AlignedTextComponent(Position, Size, new Vector2f(0, 0), fontSize, horizontalPosition, verticalPosition, text, textColor ?? Color.White);
-        }
+public class TextBox : Actor {
+    protected AlignedTextComponent Text;
 
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            return new HashSet<IRenderComponent> { Text };
-        }
+    public TextBox(Vector2f position, Vector2f size, string text, uint fontSize, Color? textColor = null, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(position, size)
+        => Text = new(Position, Size, new(0, 0), fontSize, horizontalPosition, verticalPosition, text, textColor ?? Color.White);
 
-        public void SetText(string newText) => Text.SetText(newText);
-    }
+    public override HashSet<IRenderComponent> RenderComponents => new() { Text };
+
+    public void SetText(string newText)
+        => Text.SetText(newText);
 }

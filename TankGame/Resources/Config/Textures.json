@@ -1,0 +1,207 @@
+﻿[
+  {
+    "Type": "Projectile",
+    "Name": "pocisk1",
+    "Location": "Resources/Textures/Pociski/Pocisk_1_64x64.png"
+  },
+  {
+    "Type": "Projectile",
+    "Name": "pocisk2",
+    "Location": "Resources/Textures/Pociski/Pocisk_2_64x64.png"
+  },
+  {
+    "Type": "Hp",
+    "Name": "hp",
+    "Location": "Resources/Textures/HP/serce_hp_64x64.png"
+  },
+  {
+    "Type": "Pawn",
+    "Name": "player1",
+    "Location": "Resources/Textures/Player/gracz_1lvl.png"
+  },
+  {
+    "Type": "Pawn",
+    "Name": "player2",
+    "Location": "Resources/Textures/Player/gracz_2lvl.png"
+  },
+  {
+    "Type": "Pawn",
+    "Name": "player3",
+    "Location": "Resources/Textures/Player/gracz_3lvl.png"
+  },
+  {
+    "Type": "Pawn",
+    "Name": "enemy1",
+    "Location": "Resources/Textures/Enemy/enemy_1lvl.png"
+  },
+  {
+    "Type": "Pawn",
+    "Name": "enemy2",
+    "Location": "Resources/Textures/Enemy/enemy_2lvl.png"
+  },
+  {
+    "Type": "Pawn",
+    "Name": "enemy3",
+    "Location": "Resources/Textures/Enemy/enemy_3lvl.png"
+  },
+  {
+    "Type": "Weather",
+    "Name": "snow",
+    "Location": "Resources/Textures/Snow/Snow.png"
+  },
+  {
+    "Type": "Weather",
+    "Name": "rain",
+    "Location": "Resources/Textures/Rain/Rain.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "BigBuilding",
+    "Location": "Resources/Textures/Buildings/BigBuilding.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "Rubble",
+    "Location": "Resources/Textures/Buildings/rubble.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "FenceColor",
+    "Location": "Resources/Textures/Buildings/fence1.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "FenceBW",
+    "Location": "Resources/Textures/Buildings/fence2.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "House",
+    "Location": "Resources/Textures/Buildings/house.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "TreeDeciduous",
+    "Location": "Resources/Textures/Buildings/tree1.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "TreeConifer",
+    "Location": "Resources/Textures/Buildings/tree2.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "Stump",
+    "Location": "Resources/Textures/Buildings/stump.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "tower",
+    "Location": "Resources/Textures/Buildings/tower.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "towerdestroyed",
+    "Location": "Resources/Textures/Buildings/tower_destroyed.png"
+  },
+  {
+    "Type": "GameObject",
+    "Name": "towercompleted",
+    "Location": "Resources/Textures/Buildings/tower_completed.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "empty",
+    "Location": "Resources/Textures/Fields/empty.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "grass",
+    "Location": "Resources/Textures/Fields/grass1.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "grass2",
+    "Location": "Resources/Textures/Fields/grass2.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road",
+    "Location": "Resources/Textures/Fields/road1.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-junction",
+    "Location": "Resources/Textures/Fields/road-junction.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-lb",
+    "Location": "Resources/Textures/Fields/road-lb.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-rb",
+    "Location": "Resources/Textures/Fields/road-rb.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-lt",
+    "Location": "Resources/Textures/Fields/road-lt.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-rt",
+    "Location": "Resources/Textures/Fields/road-rt.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-lbr",
+    "Location": "Resources/Textures/Fields/road-lbr.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-ltr",
+    "Location": "Resources/Textures/Fields/road-ltr.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-tlb",
+    "Location": "Resources/Textures/Fields/road-tlb.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-trb",
+    "Location": "Resources/Textures/Fields/road-trb.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road2",
+    "Location": "Resources/Textures/Fields/road2.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "sand",
+    "Location": "Resources/Textures/Fields/sand1.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "sand2",
+    "Location": "Resources/Textures/Fields/sand2.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "water",
+    "Location": "Resources/Textures/Fields/water.png"
+  },
+  {
+    "Type": "Border",
+    "Name": "hedgehog",
+    "Location": "Resources/Textures/Border/hedgehog.png"
+  },
+  {
+    "Type": "Border",
+    "Name": "region",
+    "Location": "Resources/Textures/Border/region.png"
+  }
+]

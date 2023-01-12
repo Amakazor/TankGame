@@ -1,145 +1,128 @@
-﻿using SFML.Graphics;
-using SFML.System;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using TankGame.Src.Actors.Data;
-using TankGame.Src.Actors.Pawns.MovementControllers;
-using TankGame.Src.Data.Gamestate;
-using TankGame.Src.Data.Map;
-using TankGame.Src.Data.Sounds;
-using TankGame.Src.Events;
-using TankGame.Src.Gui.RenderComponents;
+using System.Text.Json.Serialization;
+using SFML.Graphics;
+using SFML.System;
+using TankGame.Actors.Data;
+using TankGame.Actors.Pawns.MovementControllers;
+using TankGame.Core.Gamestate;
+using TankGame.Core.Map;
+using TankGame.Core.Sounds;
+using TankGame.Events;
+using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Src.Actors.Pawns
-{
-    internal abstract class Pawn : TickableActor, IDestructible
-    {
-        public Direction LastDirection { get; set; }
-        public Direction Direction { get; set; }
-        public int Health { get; set; }
-        public MovementController MovementController { get; set; }
-        private SpriteComponent PawnSprite { get; }
-        public Vector2f LastPosition { get; set; }
-        public Vector2f RealPosition => CalculatePosition();
+namespace TankGame.Actors.Pawns;
 
-        public Vector2i Coords
-        {
-            get => new Vector2i((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
-            set => Position = new Vector2f(value.X * Size.X, value.Y * Size.Y);
+public abstract class Pawn : TickableActor, IDestructible {
+    protected Pawn(Vector2f position, Vector2f size, Texture texture) : base(position, size) {
+        PawnSprite = new(Position, Size, texture, new(255, 255, 255, 255));
+        PawnSprite.SetDirection(Direction.Up);
+        ((IDestructible)this).RegisterDestructible();
+
+        RenderLayer = RenderLayer.Pawn;
+        RenderView = RenderView.Game;
+    }
+
+    protected Pawn(Vector2f position, Vector2f size, Texture texture, int? health) : base(position, size) {
+        PawnSprite = new(Position, Size, texture, new(255, 255, 255, 255));
+        PawnSprite.SetDirection(Direction.Up);
+        ((IDestructible)this).RegisterDestructible();
+
+        RenderLayer = RenderLayer.Pawn;
+        RenderView = RenderView.Game;
+    }
+
+    [JsonIgnore] public Direction PreviousDirection { get; set; }
+    public Direction Direction { get; set; }
+    public MovementController? MovementController { get; private set; }
+    [JsonIgnore] private SpriteComponent PawnSprite { get; }
+    [JsonIgnore] public Vector2f PreviousPosition { get; set; }
+    [JsonIgnore] public Vector2f RealPosition => CalculatePosition();
+
+    public Vector2i Coords {
+        get => new((int)(Position.X / Size.X), (int)(Position.Y / Size.Y));
+        set => Position = new(value.X * Size.X, value.Y * Size.Y);
+    }
+
+    [JsonIgnore] public Vector2i LastCoords => new((int)(PreviousPosition.X / Size.X), (int)(PreviousPosition.Y / Size.Y));
+
+    [JsonIgnore] public Region? CurrentRegion => GamestateManager.Map.GetRegionFromFieldCoords(Coords);
+
+    public override HashSet<IRenderComponent> RenderComponents => new() { PawnSprite };
+    public int CurrentHealth { get; set; }
+
+    [JsonIgnore] public bool IsAlive => CurrentHealth > 0;
+    [JsonIgnore] public bool IsDestructible => true;
+    [JsonIgnore] public Actor Actor => this;
+    [JsonIgnore] public bool StopsProjectile => true;
+
+    public virtual void OnDestroy() {
+        MessageBus.PawnDeath.Invoke(this);
+        Dispose();
+    }
+
+    public virtual void OnHit() {
+        SoundManager.PlayRandomSound("destruction", Position / 64);
+        if (IsDestructible && IsAlive) CurrentHealth--;
+        if (CurrentHealth <= 0) OnDestroy();
+    }
+
+    public void AttachMovementController(MovementController controller) {
+        if (MovementController is not null) return;
+        MovementController = controller;
+    }
+
+    public override void Tick(float deltaTime) {
+        PawnSprite.SetDirection(CalculateRotationAngle());
+        PawnSprite.SetPosition(RealPosition);
+
+        if (MovementController is not null) {
+            if (MovementController.CanDoAction()) {
+                Vector2i lastCoords = Coords;
+                Direction = MovementController.DoAction(Direction);
+                Vector2i newCoords = Coords;
+                UpdatePosition(lastCoords, newCoords);
+            } else if (MovementController is PlayerMovementController) { MovementController.ClearAction(); }
+
+            MovementController.Tick(deltaTime);
         }
+    }
 
-        public Vector2i LastCoords => new Vector2i((int)(LastPosition.X / Size.X), (int)(LastPosition.Y / Size.Y));
-        public bool IsAlive => Health > 0;
-        public bool IsDestructible => true;
-        public Actor Actor => this;
-        public Region CurrentRegion => GamestateManager.Instance.Map.GetRegionFromFieldCoords(Coords);
-        public bool StopsProjectile => true;
+    protected virtual void UpdatePosition(Vector2i lastCoords, Vector2i newCoords) {
+        if (lastCoords == newCoords) return;
 
-        protected Pawn(Vector2f position, Vector2f size, Texture texture, int health) : base(position, size)
-        {
-            Health = health;
-            PawnSprite = new SpriteComponent(Position, Size, texture, new Color(255, 255, 255, 255));
-            PawnSprite.SetDirection(Direction.Up);
-            RegisterDestructible();
+        PawnSprite.SetPosition(RealPosition);
+        PawnSprite.SetDirection(CalculateRotationAngle());
+        MessageBus.PawnMoved.Invoke(new(lastCoords, newCoords, this));
+    }
 
-            RenderLayer = RenderLayer.Pawn;
-            RenderView = RenderView.Game;
-        }
+    protected double CalculateRotationAngle() {
+        if (MovementController is null || !MovementController.IsRotating) return GetRotationAngleFromDirection(Direction);
 
-        public override HashSet<IRenderComponent> GetRenderComponents()
-        {
-            return new HashSet<IRenderComponent> { PawnSprite };
-        }
+        double startRotationAngle = GetRotationAngleFromDirection(PreviousDirection);
+        double endRotationAngle = GetRotationAngleFromDirection(Direction);
 
-        public override void Tick(float deltaTime)
-        {
-            PawnSprite.SetDirection(CalculateRotationAngle());
-            PawnSprite.SetPosition(RealPosition);
+        if (Math.Abs(startRotationAngle + 360 - endRotationAngle)   < Math.Abs(startRotationAngle - endRotationAngle)) startRotationAngle += 360;
+        if (Math.Abs(endRotationAngle   + 360 - startRotationAngle) < Math.Abs(endRotationAngle   - startRotationAngle)) endRotationAngle += 360;
 
-            if (MovementController != null)
-            {
-                if (MovementController.CanDoAction())
-                {
-                    Vector2i lastCoords = Coords;
-                    Direction = MovementController.DoAction(Direction);
-                    Vector2i newCoords = Coords;
-                    UpdatePosition(lastCoords, newCoords);
-                }
-                else if (MovementController is PlayerMovementController) MovementController.ClearAction();
+        return startRotationAngle + (endRotationAngle - startRotationAngle) * MovementController.RotationProgress;
+    }
 
-                MovementController.Tick(deltaTime);
-            }
-        }
+    protected Vector2f CalculatePosition()
+        => MovementController is not null && MovementController.IsMoving ? PreviousPosition + (Position - PreviousPosition) * (float)MovementController.MovementProgress : Position;
 
-        protected virtual void UpdatePosition(Vector2i lastCoords, Vector2i newCoords)
-        {
-            PawnSprite.SetPosition(RealPosition);
-            PawnSprite.SetDirection(CalculateRotationAngle());
-            MessageBus.Instance.PostEvent(MessageType.PawnMoved, this, new PawnMovedEventArgs(lastCoords, newCoords));
-        }
+    protected static float GetRotationAngleFromDirection(Direction direction)
+        => direction switch {
+            Direction.Up    => 180,
+            Direction.Down  => 0,
+            Direction.Left  => 90,
+            Direction.Right => 270,
+            _               => 0,
+        };
 
-        protected double CalculateRotationAngle()
-        {
-            if (!MovementController.IsRotating) return GetRotationAngleFromDirection(Direction);
-            else
-            {
-                double startRotationAngle = GetRotationAngleFromDirection(LastDirection);
-                double endRotationAngle = GetRotationAngleFromDirection(Direction);
-
-                if (Math.Abs(startRotationAngle + 360 - endRotationAngle) < Math.Abs(startRotationAngle - endRotationAngle)) startRotationAngle += 360;
-                if (Math.Abs(endRotationAngle + 360 - startRotationAngle) < Math.Abs(endRotationAngle - startRotationAngle)) endRotationAngle += 360;
-
-                return startRotationAngle + (endRotationAngle - startRotationAngle) * MovementController.RotationProgress;
-            }
-        }
-
-        protected Vector2f CalculatePosition() => !MovementController.IsMoving ? Position : LastPosition + (Position - LastPosition) * (float)MovementController.MovementProgress;
-
-        protected float GetRotationAngleFromDirection(Direction direction)
-        {
-            return direction switch
-            {
-                Direction.Up => 180,
-                Direction.Down => 0,
-                Direction.Left => 90,
-                Direction.Right => 270,
-                _ => 0
-            };
-        }
-
-        public void OnDestroy(bool sendMessage)
-        {
-            if (sendMessage) OnDestroy();
-            else Dispose();
-        }
-
-        public virtual void OnDestroy()
-        {
-            MessageBus.Instance.PostEvent(MessageType.PawnDeath, this, new PawnEventArgs(this));
-            Dispose();
-        }
-
-        public override void Dispose()
-        {
-            UnregisterDestructible();
-            base.Dispose();
-        }
-
-        public virtual void OnHit()
-        {
-            SoundManager.Instance.PlayRandomSound("destruction", Position / 64);
-            if (IsDestructible && IsAlive) Health--;
-            if (Health <= 0) OnDestroy();
-        }
-
-        public void RegisterDestructible()
-        {
-            MessageBus.Instance.PostEvent(MessageType.RegisterDestructible, this, new EventArgs());
-        }
-
-        public void UnregisterDestructible()
-        {
-            MessageBus.Instance.PostEvent(MessageType.UnregisterDestructible, this, new EventArgs());
-        }
+    public override void Dispose() {
+        GC.SuppressFinalize(this);
+        ((IDestructible)this).UnregisterDestructible();
+        base.Dispose();
     }
 }
