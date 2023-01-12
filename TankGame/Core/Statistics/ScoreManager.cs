@@ -6,27 +6,24 @@ using System.Text.Json;
 namespace TankGame.Core.Statistics;
 
 public static class ScoreManager {
-    private const string ScoresPath = "Resources/Scores/Scores.json";
-
-    static ScoreManager()
-        => Scores = Load();
-
-    private static List<Score> Scores { get; }
+    private const string Path = "Resources/Scores/Scores.json";
+    
+    private static List<Score> Scores { get; } = Load();
 
     public static void Add(Score score) {
         Scores.Add(score);
         Save();
     }
 
-    public static IEnumerable<Score> GetChunk(int count, int offset)
-        => Scores.Skip(offset)
-                 .Take(count);
+    public static IEnumerable<Score> SkipTake(int skip, int take)
+        => Scores.Skip(skip)
+                 .Take(take);
 
     public static List<Score> Load()
-        => JsonSerializer.Deserialize<List<Score>>(File.ReadAllText(ScoresPath)) ?? new List<Score>();
+        => JsonSerializer.Deserialize<List<Score>>(File.ReadAllText(Path)) ?? new List<Score>();
 
     public static void Save()
-        => File.WriteAllText(ScoresPath, JsonSerializer.Serialize(Scores));
+        => File.WriteAllText(Path, JsonSerializer.Serialize(Scores));
 
     public static int GetScoresCount()
         => Scores.Count;

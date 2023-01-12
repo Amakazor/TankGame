@@ -31,10 +31,10 @@ public class GameMap : IDisposable {
 
     public GameMap() {
         Borders = new() {
-            new(new(-128, -128), new(64, 64), new(2, MapSize  * FieldsInLine + 4), TextureManager.GetTexture(TextureType.Border, "hedgehog")),
-            new(new(-128, -128), new(64, 64), new(MapSize * FieldsInLine + 4, 2), TextureManager.GetTexture(TextureType.Border, "hedgehog")),
-            new(new(MapSize       * FieldsInLine * 64, -128), new(64, 64), new(2, MapSize * FieldsInLine + 4), TextureManager.GetTexture(TextureType.Border, "hedgehog")),
-            new(new(-128, MapSize * FieldsInLine * 64), new(64, 64), new(MapSize * FieldsInLine + 4, 2), TextureManager.GetTexture(TextureType.Border, "hedgehog")),
+            new(new(-128, -128), new(64, 64), new(2, MapSize  * FieldsInLine + 4), TextureManager.Get(TextureType.Border, "hedgehog")),
+            new(new(-128, -128), new(64, 64), new(MapSize * FieldsInLine + 4, 2), TextureManager.Get(TextureType.Border, "hedgehog")),
+            new(new(MapSize       * FieldsInLine * 64, -128), new(64, 64), new(2, MapSize * FieldsInLine + 4), TextureManager.Get(TextureType.Border, "hedgehog")),
+            new(new(-128, MapSize * FieldsInLine * 64), new(64, 64), new(MapSize * FieldsInLine + 4, 2), TextureManager.Get(TextureType.Border, "hedgehog")),
         };
 
         Vector2i playersRegionCoords = SearchForPlayerRegion();

@@ -9,39 +9,30 @@ using TankGame.Core.Sounds;
 namespace TankGame.Core.Textures;
 
 public static class TextureManager {
-    static TextureManager()
-        => LoadTextures();
+    private const string Path = "Resources/Config/Textures.json";
+    private static Dictionary<TextureType, Dictionary<string, Texture>> TexturesDictionary { get; } = Load();
 
-    private static Dictionary<TextureType, Dictionary<string, Texture>> TexturesDictionary { get; set; }
-
-    public static Texture GetTexture(TextureType textureType, string name) {
-        if (TexturesDictionary.ContainsKey(textureType)) {
-            if (TexturesDictionary[textureType]
-               .ContainsKey(name))
-                return TexturesDictionary[textureType][name];
-            throw new ArgumentException("Couldn not find texture with this name", nameof(name));
+    public static Texture Get(TextureType textureType, string name) {
+        if (TexturesDictionary.TryGetValue(textureType, out var textures)) {
+            if (textures.TryGetValue(name, out Texture? texture)) return texture;
+            throw new ArgumentException($"Could not find texture {texture}", nameof(name));
         }
-
-        throw new ArgumentException("There are no textures of this type", nameof(textureType));
+        throw new ArgumentException($"There are no textures of type {textureType}", nameof(textureType));
     }
 
-    public static string GetNameFromTexture(TextureType textureType, Texture texture) {
-        if (TexturesDictionary.ContainsKey(textureType)) {
-            foreach (var StringTexturePair in TexturesDictionary[textureType])
-                if (StringTexturePair.Value == texture)
-                    return StringTexturePair.Key;
+    public static string GetName(TextureType textureType, Texture texture) {
+        if (TexturesDictionary.TryGetValue(textureType, out var textures))
+            return textures
+                  .FirstOrDefault(x => x.Value == texture).Key 
+                   ?? throw new ArgumentException($"Could not find texture {texture}", nameof(texture));
 
-            throw new ArgumentException("Could not find given texture", nameof(texture));
-        }
-
-        throw new ArgumentException("There are no textures of this type", nameof(textureType));
+        throw new ArgumentException($"There are no textures of type {textureType}", nameof(textureType));
     }
 
-    private static void LoadTextures() {
-        string json = File.ReadAllText("Resources/Config/Textures.json");
+    private static Dictionary<TextureType, Dictionary<string, Texture>> Load() {
+        string json = File.ReadAllText(Path);
         var textureDtos = JsonSerializer.Deserialize<List<ResourceDto<TextureType>>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-        TexturesDictionary = textureDtos.GroupBy(dto => dto.Type)
-                                        .ToDictionary(group => group.Key, group => group.ToDictionary(dto => dto.Name, dto => new Texture(dto.Location)));
+        return textureDtos!.GroupBy(dto => dto.Type).ToDictionary(group => group.Key, group => group.ToDictionary(dto => dto.Name, dto => new Texture(dto.Location)));
     }
 }

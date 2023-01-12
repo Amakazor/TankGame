@@ -31,7 +31,7 @@ public class Region : IDisposable {
 
         MessageBus.PawnDeath += OnPawnDeath;
 
-        RegionBorder = new(new(coords.X * 64 * fieldsInLine + 64 * (fieldsInLine / 2) - 32, coords.Y * 64 * fieldsInLine + 64 * (fieldsInLine / 2) - 32), new(64 * fieldsInLine, 64 * fieldsInLine), TextureManager.GetTexture(TextureType.Border, "region"));
+        RegionBorder = new(new(coords.X * 64 * fieldsInLine + 64 * (fieldsInLine / 2) - 32, coords.Y * 64 * fieldsInLine + 64 * (fieldsInLine / 2) - 32), new(64 * fieldsInLine, 64 * fieldsInLine), TextureManager.Get(TextureType.Border, "region"));
 
         AddPlayer(player);
         if (Player is null) return;

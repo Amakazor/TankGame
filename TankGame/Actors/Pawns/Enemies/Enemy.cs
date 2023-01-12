@@ -33,7 +33,7 @@ public class Enemy : Pawn {
     protected override void UpdatePosition(Vector2i lastCoords, Vector2i newCoords) {
         if (lastCoords == newCoords) return;
 
-        SoundManager.PlaySound("move", Type.ToString(), Position / 64);
+        SoundManager.Play(SoundType.Move, Type.ToString(), Position / 64);
         base.UpdatePosition(lastCoords, newCoords);
     }
 }

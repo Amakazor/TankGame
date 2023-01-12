@@ -1,6 +1,10 @@
-﻿namespace TankGame.Core.Sounds;
+﻿using System.Text.Json.Serialization;
 
-public static class MusicType {
-    public const string Rain = "rain";
-    public const string Snow = "snow";
+namespace TankGame.Core.Sounds;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum MusicType {
+    None,
+    Rain,
+    Snow,
 }

@@ -63,7 +63,7 @@ public class GameObject : Actor, IDestructible, IRenderable {
     }
 
     public void OnHit() {
-        SoundManager.PlayRandomSound("destruction", Position / 64);
+        SoundManager.PlayRandom(SoundType.Destruction, Position / 64);
         if (IsDestructible && IsAlive) CurrentHealth--;
     }
 
@@ -73,7 +73,7 @@ public class GameObject : Actor, IDestructible, IRenderable {
     }
 
     protected void GenerateSprite()
-        => ObjectSprite = new(Position, Size, TextureManager.GetTexture(TextureType.GameObject, GameObjectType.Texture), new(255, 255, 255, 255));
+        => ObjectSprite = new(Position, Size, TextureManager.Get(TextureType.GameObject, GameObjectType.Texture), new(255, 255, 255, 255));
 
 
     public override void Dispose() {

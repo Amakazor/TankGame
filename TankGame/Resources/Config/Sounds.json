@@ -1,26 +1,26 @@
 ﻿[
   {
-    "type": "shot",
+    "type": "Shot",
     "name": "shot",
     "location": "Resources/Sound/strzal.ogg"
   },
   {
-    "type": "destruction",
+    "type": "Destruction",
     "name": "destruction",
     "location": "Resources/Sound/zniszczenie.ogg"
   },
   {
-    "type": "move",
+    "type": "Move",
     "name": "Heavy",
     "location": "Resources/Sound/ciezki.ogg"
   },
   {
-    "type": "move",
+    "type": "Move",
     "name": "Medium",
     "location": "Resources/Sound/sredni.ogg"
   },
   {
-    "type": "move",
+    "type": "Move",
     "name": "Light",
     "location": "Resources/Sound/lekki.ogg"
   }

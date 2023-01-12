@@ -21,7 +21,7 @@ public static class EnemyFactory {
     private static readonly Dictionary<EnemyType, double> MovementDelays = new() { { EnemyType.Light, 0.75 }, { EnemyType.Medium, 1.50 }, { EnemyType.Heavy, 2.25 } };
 
     public static Texture GetTexture(EnemyType enemyType)
-        => TextureManager.GetTexture(TextureType.Pawn, Textures[enemyType]);
+        => TextureManager.Get(TextureType.Pawn, Textures[enemyType]);
 
     private static int GetHealth(EnemyType enemyType, int health)
         => health == -1 ? DefaultHealth[enemyType] : health;

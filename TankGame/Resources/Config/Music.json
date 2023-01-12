@@ -1,31 +1,31 @@
 ﻿[
   {
-    "Type": "rain",
+    "Type": "Rain",
     "Name": "rain1",
     "Location": "Resources/Music/rain1.ogg"
   },
   {
-    "Type": "rain",
+    "Type": "Rain",
     "Name": "rain2",
     "Location": "Resources/Music/rain2.ogg"
   },
   {
-    "Type": "rain",
+    "Type": "Rain",
     "Name": "rain3",
     "Location": "Resources/Music/rain3.ogg"
   },
   {
-    "Type": "snow",
+    "Type": "Snow",
     "Name": "snow1",
     "Location": "Resources/Music/snow1.ogg"
   },
   {
-    "Type": "snow",
+    "Type": "Snow",
     "Name": "snow2",
     "Location": "Resources/Music/snow2.ogg"
   },
   {
-    "Type": "snow",
+    "Type": "Snow",
     "Name": "snow3",
     "Location": "Resources/Music/snow3.ogg"
   }

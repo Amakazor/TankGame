@@ -87,7 +87,7 @@ public class Engine {
     private void Clear() {
         GamestateManager.Clear();
         CollisionHandler.Clear();
-        MusicManager.StopMusic();
+        MusicManager.Stop();
     }
 
     private void Tick(float deltaTime) {
@@ -153,7 +153,7 @@ public class Engine {
         RenderWindow window = new(new(WindowHeight, WindowWidth), GameTitle, Styles.Default, new() { AntialiasingLevel = 2 });
         window.SetVerticalSyncEnabled(true);
 
-        Texture icon = TextureManager.GetTexture(TextureType.Pawn, "player1");
+        Texture icon = TextureManager.Get(TextureType.Pawn, "player1");
         window.SetIcon(icon.Size.X, icon.Size.Y, icon.CopyToImage().Pixels);
 
         window.Closed += (_, _) => window.Close();

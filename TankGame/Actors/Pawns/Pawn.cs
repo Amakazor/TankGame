@@ -62,7 +62,7 @@ public abstract class Pawn : TickableActor, IDestructible {
     }
 
     public virtual void OnHit() {
-        SoundManager.PlayRandomSound("destruction", Position / 64);
+        SoundManager.PlayRandom(SoundType.Destruction, Position / 64);
         if (IsDestructible && IsAlive) CurrentHealth--;
         if (CurrentHealth <= 0) OnDestroy();
     }

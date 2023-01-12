@@ -12,7 +12,7 @@ public class HealthDisplay : Actor {
     public HealthDisplay() : base(new((1000 - (64 * 11 + 16)) / 2, 10), new(64 * 11 + 16, 64)) {
         MessageBus.PlayerHealthChanged += OnPlayerHealthChanged;
 
-        Heart = new(Position, new(64, 64), TextureManager.GetTexture(TextureType.Hp, "hp"), new(255, 255, 255, 255));
+        Heart = new(Position, new(64, 64), TextureManager.Get(TextureType.Hp, "hp"), new(255, 255, 255, 255));
         Outline = new(Position + new Vector2f(48, -16), new(64 * 10, 32), new(32, 0, 0, 255), new(64, 64, 64, 255), 2);
         Inside = new(Position  + new Vector2f(48, -16), new(64 * 10, 32), new(192, 0, 0, 255));
 

@@ -18,7 +18,7 @@ public class Field : Actor {
         Coords = coords;
         Type = type;
         FieldType = FieldTypes.Types[type];
-        Texture = TextureManager.GetTexture(TextureType.Field, textureName);
+        Texture = TextureManager.Get(TextureType.Field, textureName);
         Surface = new(Position, Size, Texture, new(255, 255, 255, 255));
 
         GameObject = gObject;
@@ -35,7 +35,7 @@ public class Field : Actor {
     [JsonIgnore] public FieldType FieldType { get; }
 
     [JsonIgnore] private Texture Texture { get; }
-    public string TextureName => TextureManager.GetNameFromTexture(TextureType.Field, Texture);
+    public string TextureName => TextureManager.GetName(TextureType.Field, Texture);
     [JsonIgnore] private SpriteComponent Surface { get; }
 
     [JsonIgnore] public Pawn? PawnOnField { get; set; }

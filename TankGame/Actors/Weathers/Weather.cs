@@ -11,7 +11,7 @@ using TankGame.Gui.RenderComponents;
 namespace TankGame.Actors.Weathers;
 
 public class Weather : Actor, ITickable, IRenderable {
-    public Weather(Texture weatherTexture, float speedModifier, string musicType, float intensity, AnimationType animationType, WeatherType type) : base(animationType == AnimationType.Shaded ? new(0, 0) : new Vector2f(-64, -64), new(64, 64)) {
+    public Weather(Texture weatherTexture, float speedModifier, MusicType musicType, float intensity, AnimationType animationType, WeatherType type) : base(animationType == AnimationType.Shaded ? new(0, 0) : new Vector2f(-64, -64), new(64, 64)) {
         SpeedModifier = speedModifier;
         Intensity = intensity;
         AnimationType = animationType;
@@ -25,7 +25,7 @@ public class Weather : Actor, ITickable, IRenderable {
         WeatherComponent = new(Position, Size, weatherTexture, new(255, 255, 255, 255));
         WeatherComponent.SetTextureRectSize(new(5 * 20 * 64 + (animationType == AnimationType.Animated ? 2 * 64 : 0), 5 * 20 * 64 + (animationType == AnimationType.Animated ? 2 * 64 : 0)));
 
-        MusicManager.PlayRandomMusic(musicType);
+        MusicManager.PlayRandom(musicType);
 
         RenderLayer = RenderLayer.Weather;
         RenderView = RenderView.Game;

@@ -11,64 +11,55 @@ using TankGame.Extensions;
 namespace TankGame.Core.Sounds;
 
 public static class SoundManager {
-    static SoundManager() {
-        LoadSound();
-        Sounds = new();
-    }
+    private const string Path = "Resources/Config/Sounds.json";
+    private static Dictionary<SoundType, Dictionary<string, SoundBuffer>> SoundsDictionary { get; } = Load();
+    private static List<Sound> Sounds { get; } = new();
 
-    private static Dictionary<string, Dictionary<string, SoundBuffer>> SoundsDictionary { get; set; }
-    private static List<Sound> Sounds { get; }
+    private static SoundBuffer Get(SoundType soundType, string name) {
+        if (!SoundsDictionary.TryGetValue(soundType, out var sounds))
+            throw new ArgumentException("There are no sounds of this type", nameof(soundType));
 
-    private static SoundBuffer GetSound(string soundType, string name) {
-        if (!SoundsDictionary.ContainsKey(soundType)) throw new ArgumentException("There are no sounds of this type", nameof(soundType));
-
-        if (!SoundsDictionary[soundType]
-               .TryGetValue(name, out SoundBuffer value))
+        if (!sounds.TryGetValue(name, out var value))
             throw new ArgumentException($"Could not find sound with name {name}", nameof(name));
 
         return value;
     }
 
-    private static SoundBuffer GetSound(string soundType) {
+    private static SoundBuffer Get(SoundType soundType) {
         if (!SoundsDictionary.TryGetValue(soundType, out var value)) throw new ArgumentException("There are no sounds of this type", nameof(soundType));
 
         var random = new Random();
-        return value.ElementAt(
-                         random.Next(
-                             0, SoundsDictionary[soundType]
-                                .Count
-                         )
-                     )
-                    .Value;
+        return value.ElementAt(random.Next(0, SoundsDictionary[soundType].Count)).Value;
     }
 
-    private static void LoadSound() {
-        var soundDtos = JsonSerializer.Deserialize<List<ResourceDto<string>>>(File.ReadAllText("Resources/Config/Sounds.json"), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+    private static Dictionary<SoundType, Dictionary<string, SoundBuffer>> Load() {
+        var soundDtos = JsonSerializer.Deserialize<List<ResourceDto<SoundType>>>(File.ReadAllText(Path), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-        SoundsDictionary = soundDtos.GroupBy(dto => dto.Type)
-                                    .ToDictionary(group => group.Key, group => group.ToDictionary(dto => dto.Name, dto => new SoundBuffer(dto.Location)));
+        if (soundDtos == null) return new();
+
+        return soundDtos.GroupBy(dto => dto.Type)
+                        .ToDictionary(group => group.Key, group => group.ToDictionary(dto => dto.Name, dto => new SoundBuffer(dto.Location)));
     }
 
-    private static void ClearSounds() {
-        foreach (Sound sound in Sounds.ToList()
-                                      .Where(sound => sound.Status == SoundStatus.Stopped)) {
+    private static void Clear() {
+        foreach (Sound sound in Sounds.ToList().Where(sound => sound.Status == SoundStatus.Stopped)) {
             Sounds.Remove(sound);
             sound.Dispose();
         }
     }
 
-    public static void PlaySound(string soundType, string name, Vector2f position)
-        => PlaySoundFromBuffer(soundType, GetSound(soundType, name), position);
+    public static void Play(SoundType soundType, string name, Vector2f position)
+        => PlayFromBuffer(soundType, Get(soundType, name), position);
 
-    public static void PlayRandomSound(string soundType, Vector2f position)
-        => PlaySoundFromBuffer(soundType, GetSound(soundType), position);
+    public static void PlayRandom(SoundType soundType, Vector2f position)
+        => PlayFromBuffer(soundType, Get(soundType), position);
 
-    private static void PlaySoundFromBuffer(string soundType, SoundBuffer soundbuffer, Vector2f position) {
-        ClearSounds();
+    private static void PlayFromBuffer(SoundType soundType, SoundBuffer soundbuffer, Vector2f position) {
+        Clear();
 
         float soundDistance = position.ManhattanDistance(GamestateManager.Player.Position / 64);
 
-        float volume = Math.Min(20 * 1 / (soundDistance == 0 ? 1 : soundDistance), 20) * (soundType == "move" ? 0.25F : 1);
+        float volume = Math.Min(20 * 1 / (soundDistance == 0 ? 1 : soundDistance), 20) * (soundType == SoundType.Move ? 0.25F : 1);
 
         if (!(volume > 0.25)) return;
 

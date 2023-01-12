@@ -49,14 +49,14 @@ public class WeatherController : ITickable, IDisposable {
     public void SetWeather(WeatherType type, float weatherTime) {
         Weather?.Dispose();
         Weather = null;
-        MusicManager.StopMusic();
+        MusicManager.Stop();
 
         CurrentWeatherTime = weatherTime;
         var intensity = (float)(GamestateManager.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
         Weather = type switch {
             WeatherType.Clear => null,
-            WeatherType.Rain  => new(TextureManager.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, type),
-            WeatherType.Snow  => new(TextureManager.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, type),
+            WeatherType.Rain  => new(TextureManager.Get(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, type),
+            WeatherType.Snow  => new(TextureManager.Get(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, type),
             _                 => null,
         };
     }
@@ -71,11 +71,11 @@ public class WeatherController : ITickable, IDisposable {
         var intensity = (float)(GamestateManager.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
         Weather = (WeatherType)GamestateManager.Random.Next(0, 3) switch {
             WeatherType.Clear => null,
-            WeatherType.Rain  => new(TextureManager.GetTexture(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, WeatherType.Rain),
-            WeatherType.Snow  => new(TextureManager.GetTexture(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, WeatherType.Snow),
+            WeatherType.Rain  => new(TextureManager.Get(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, WeatherType.Rain),
+            WeatherType.Snow  => new(TextureManager.Get(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, WeatherType.Snow),
             _                 => null,
         };
 
-        if (Weather == null) MusicManager.StopMusic();
+        if (Weather == null) MusicManager.Stop();
     }
 }

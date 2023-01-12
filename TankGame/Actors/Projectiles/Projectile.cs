@@ -29,13 +29,13 @@ public class Projectile : TickableActor {
         Owner = owner;
 
         ProjectileComponent = Owner switch {
-            Enemy _  => new(Position, Size, TextureManager.GetTexture(TextureType.Projectile, "pocisk1"), new(255, 255, 255, 255), Direction),
-            Player _ => new(Position, Size, TextureManager.GetTexture(TextureType.Projectile, "pocisk2"), new(255, 255, 255, 255), Direction),
+            Enemy _  => new(Position, Size, TextureManager.Get(TextureType.Projectile, "pocisk1"), new(255, 255, 255, 255), Direction),
+            Player _ => new(Position, Size, TextureManager.Get(TextureType.Projectile, "pocisk2"), new(255, 255, 255, 255), Direction),
             _        => throw new NotImplementedException(),
         };
 
         MessageBus.RegisterProjectile.Invoke(this);
-        SoundManager.PlayRandomSound("shot", Position / 64);
+        SoundManager.PlayRandom(SoundType.Shot, Position / 64);
 
         RenderLayer = RenderLayer.Projectile;
         RenderView = RenderView.Game;

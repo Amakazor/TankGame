@@ -143,7 +143,7 @@ public class Menu : IDisposable {
 
                 var i = 0;
 
-                foreach (Score score in ScoreManager.GetChunk(10, ScoresOffset))
+                foreach (Score score in ScoreManager.SkipTake(10, ScoresOffset))
                     Layers[MenuLayer.Scores]
                        .AddRange(new List<Actor> { new MenuTextBox(new(100, 210 + i * 50), new(300, 50), score.Name, 20), new MenuTextBox(new(400, 210 + i++ * 50), new(300, 50), score.Points.ToString(), 20) });
 

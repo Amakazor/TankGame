@@ -1,7 +1,10 @@
-﻿namespace TankGame.Core.Sounds;
+﻿using System.Text.Json.Serialization;
 
-public static class SoundType {
-    public const string Destruction = "destruction";
-    public const string Shot = "shot";
-    public const string Move = "move";
+namespace TankGame.Core.Sounds;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
+public enum  SoundType {
+    Destruction,
+    Shot,
+    Move,
 }
