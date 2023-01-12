@@ -103,37 +103,22 @@ public class Engine {
         Window.DispatchEvents();
         Window.Clear(Color.Black);
 
-        IEnumerable<(Shader? CurrentShader, Drawable Shape)>? components;
         if (!GamestateManager.NotStarted) {
-            Window.SetView(Views[RenderView.Game]);
             if (GamestateManager.Player != null) RecenterView(GamestateManager.Player.RealPosition);
-
-            components = Renderables.Where(renderable => renderable is { RenderableRenderView: RenderView.Game, Visible: true })
-                                    .OrderBy(renderable => renderable.RenderableRenderLayer)
-                                    .SelectMany(renderable => renderable.RenderComponents.Select(component => (renderable.CurrentShader, component.Shape)));
-
-            foreach (var renderable in components) Window.Draw(renderable.Shape, new(renderable.CurrentShader));
-
-            Window.SetView(Views[RenderView.HUD]);
-
-            components = Renderables.Where(renderable => renderable is { RenderableRenderView: RenderView.HUD, Visible: true })
-                                    .OrderBy(renderable => renderable.RenderableRenderLayer)
-                                    .SelectMany(renderable => renderable.RenderComponents.Select(component => (renderable.CurrentShader, component.Shape)));
-            
-            foreach (var renderable in components)
-                Window.Draw(renderable.Shape, new(renderable.CurrentShader));
-        }
-
-        Window.SetView(Views[RenderView.Menu]);
-        
-        components = Renderables.Where(renderable => renderable is { RenderableRenderView: RenderView.Menu, Visible: true })
-                                .OrderBy(renderable => renderable.RenderableRenderLayer)
-                                .SelectMany(renderable => renderable.RenderComponents.Select(component => (renderable.CurrentShader, component.Shape)));
-
-        foreach (var renderable in components)
-            Window.Draw(renderable.Shape, new(renderable.CurrentShader));
+            foreach (RenderView view in Views.Select(view => view.Key)) RenderInView(view);
+        } else RenderInView(RenderView.Menu);
 
         Window.Display();
+    }
+
+    private void RenderInView(RenderView usedView) {
+        Window.SetView(Views[usedView]);
+        var components = Renderables
+            .Where(renderable => renderable.Visible && renderable.RenderableRenderView == usedView)
+            .OrderBy(renderable => renderable.RenderableRenderLayer)
+            .SelectMany(renderable => renderable.RenderComponents.Select(component => (renderable.CurrentShader, component.Shape)));
+
+        foreach ((Shader? CurrentShader, Drawable Shape) renderable in components) Window.Draw(renderable.Shape, new(renderable.CurrentShader));
     }
 
     private void StartGame(bool continueGame) {
@@ -148,7 +133,6 @@ public class Engine {
         }
 
         Menu.Hide();
-
         GamestateManager.Start(continueGame);
     }
 
@@ -170,36 +154,33 @@ public class Engine {
         window.SetVerticalSyncEnabled(true);
 
         Texture icon = TextureManager.GetTexture(TextureType.Pawn, "player1");
-        window.SetIcon(
-            icon.Size.X, icon.Size.Y, icon.CopyToImage()
-                                          .Pixels
-        );
+        window.SetIcon(icon.Size.X, icon.Size.Y, icon.CopyToImage().Pixels);
 
         window.Closed += (_, _) => window.Close();
         return window;
     }
 
     private void InitializeView() {
-        const float gameViewWidth = 64 * (2 * 6 + 1);
-        const float gameViewHeight = gameViewWidth;
+        const int  visibleFields  = 13;
+        const float gameViewWidth = 64 * visibleFields;
 
-        const float hudViewWidth = 1000;
+        const float hudViewWidth  = 1000;
         const float hudViewHeight = hudViewWidth / 5;
 
         const float menuViewWidth = 1000;
-        const float menuViewHeight = menuViewWidth; 
-        Views.Add(RenderView.Game, new(new(gameViewWidth / 2, gameViewHeight / 2), new(gameViewWidth, gameViewHeight)));
-        Views.Add(RenderView.HUD, new(new(hudViewWidth / 2 - 32, hudViewHeight / 2 - 32), new(hudViewWidth, hudViewHeight)));
-        Views.Add(RenderView.Menu, new(new(menuViewWidth / 2, menuViewHeight / 2), new(menuViewWidth, menuViewHeight)));
+
+        Views.Add(RenderView.Game, new(new(gameViewWidth / 2, gameViewWidth / 2), new(gameViewWidth, gameViewWidth)));
+        Views.Add(RenderView.HUD,  new(new(hudViewWidth  / 2 - 32, hudViewHeight / 2 - 32), new(hudViewWidth, hudViewHeight)));
+        Views.Add(RenderView.Menu, new(new(menuViewWidth / 2, menuViewWidth / 2), new(menuViewWidth, menuViewWidth)));
 
         RecalculateViewport(WindowWidth, WindowHeight);
     }
 
     private void SetInputHandlers() {
-        Window.Resized += (_,            args) => OnResize(args);
-        Window.KeyPressed += (_,         args) => InputHandler.OnKeyPress(args);
+        Window.Resized += (_, args) => OnResize(args);
+        Window.KeyPressed += (_, args) => InputHandler.OnKeyPress(args);
         Window.MouseButtonPressed += (_, args) => InputHandler.OnClick(args);
-        Window.TextEntered += (_,        args) => InputHandler.OnTextInput(args);
+        Window.TextEntered += (_, args) => InputHandler.OnTextInput(args);
     }
 
     private void OnResize(SizeEventArgs newSize) {
@@ -219,9 +200,9 @@ public class Engine {
 
         if (Views.TryGetValue(RenderView.Game, out View? gameView)) gameView!.Viewport = Window.Size.X > Window.Size.Y ? new(new(1 - gameSize + (gameSize - gameSize * aspectRatio) / 2, 1 - gameSize), new(gameSize * aspectRatio, gameSize)) : new FloatRect(new(1 - gameSize, 1 - gameSize + (gameSize - gameSize * (1 / aspectRatio)) / 2), new(gameSize, gameSize * (1 / aspectRatio)));
 
-        if (Views.TryGetValue(RenderView.Game, out View? hudView))  hudView!.Viewport  = Window.Size.X > Window.Size.Y ? new(new((1 - uiWidth * aspectRatio) / 2, 0), new(uiWidth * aspectRatio, uiHeight)) : new FloatRect(new((1 - uiWidth) / 2, 0), new(uiWidth, uiHeight * (1 / aspectRatio)));
+        if (Views.TryGetValue(RenderView.HUD, out View? hudView))  hudView!.Viewport  = Window.Size.X > Window.Size.Y ? new(new((1 - uiWidth * aspectRatio) / 2, 0), new(uiWidth * aspectRatio, uiHeight)) : new FloatRect(new((1 - uiWidth) / 2, 0), new(uiWidth, uiHeight * (1 / aspectRatio)));
 
-        if (Views.TryGetValue(RenderView.Game, out View? menuView)) menuView!.Viewport = Window.Size.X > Window.Size.Y ? new(new((1 - aspectRatio) / 2, 0), new(aspectRatio, 1)) : new FloatRect(new(0, (1 - 1 / aspectRatio) / 2), new(1, 1 / aspectRatio));
+        if (Views.TryGetValue(RenderView.Menu, out View? menuView)) menuView!.Viewport = Window.Size.X > Window.Size.Y ? new(new((1 - aspectRatio) / 2, 0), new(aspectRatio, 1)) : new FloatRect(new(0, (1 - 1 / aspectRatio) / 2), new(1, 1 / aspectRatio));
     }
 
     private void RecenterView(Vector2f position) {
