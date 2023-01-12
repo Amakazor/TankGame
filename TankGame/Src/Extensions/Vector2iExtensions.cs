@@ -4,7 +4,7 @@ using SFML.System;
 
 namespace TankGame.Extensions;
 
-public static class Vector2iExtensions {
+public static class Vector2IExtensions {
     public static bool IsInvalid(this Vector2i current)
         => current.Equals(new(-1, -1));
 

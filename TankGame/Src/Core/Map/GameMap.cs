@@ -87,12 +87,11 @@ public class GameMap : IDisposable {
 
         UnloadRegionsOutsideOfPlayerVision(coords);
 
-        Regions.AddRange<Region>(
-            NextCoords(coords)
-               .Where(nextCoord => !IsRegionLoaded(nextCoord) && nextCoord is { X: >= 0 and <= MapSize, Y: >= 0 and <= MapSize })
-               .Select(nextCoord => RegionPathGenerator.GetRegionPath(nextCoord))
-               .Select(File.ReadAllText!)
-               .Select(data => JsonSerializer.Deserialize<Region>(data, SerializerOptions))!
+        Regions.UnionWith(NextCoords(coords)
+                         .Where(nextCoord => !IsRegionLoaded(nextCoord) && nextCoord is { X: >= 0 and <= MapSize, Y: >= 0 and <= MapSize })
+                         .Select(nextCoord => RegionPathGenerator.GetRegionPath(nextCoord))
+                         .Select(File.ReadAllText!)
+                         .Select(data => JsonSerializer.Deserialize<Region>(data, SerializerOptions))!
         );
 
         GamestateManager.Save();
