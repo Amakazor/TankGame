@@ -5,18 +5,17 @@ using SFML.Window;
 using TankGame.Core.Controls;
 using TankGame.Events;
 using TankGame.Gui.RenderComponents;
-using Action = TankGame.Core.Controls.Action;
 
 namespace TankGame.Actors.Buttons;
 
 public class ChangeKeyButton : TextButton {
-    public ChangeKeyButton(Vector2f position, Vector2f size, Action action, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(
-        position, size, KeyManager.GetKey(action)
+    public ChangeKeyButton(Vector2f position, Vector2f size, InputAction inputAction, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(
+        position, size, KeyManager.GetKey(inputAction)
                                   .ToString(), fontSize, horizontalPosition, verticalPosition
     ) {
         Focused = false;
         BlinkTimer = 0;
-        Action = action;
+        InputAction = inputAction;
 
         MessageBus.CancelInputs += OnCancelInputs;
         MessageBus.KeyPressed += OnKeyPressed;
@@ -25,7 +24,7 @@ public class ChangeKeyButton : TextButton {
 
     private bool Focused { get; set; }
     private byte BlinkTimer { get; set; }
-    private Action Action { get; }
+    private InputAction InputAction { get; }
 
     public override HashSet<IRenderComponent> RenderComponents {
         get {
@@ -40,14 +39,14 @@ public class ChangeKeyButton : TextButton {
 
     private void OnMenuRefreshKeys()
         => ButtonText.SetText(
-            KeyManager.GetKey(Action)
+            KeyManager.GetKey(InputAction)
                       .ToString()
         );
 
     private void OnKeyPressed(KeyEventArgs eventArgs) {
         if (!Focused) return;
 
-        KeyManager.ChangeAndSaveKey(new(eventArgs.Code, Action));
+        KeyManager.ChangeAndSaveKey(new(eventArgs.Code, InputAction));
         Focused = false;
 
         MessageBus.MenuRefreshKeys.Invoke();
@@ -56,7 +55,7 @@ public class ChangeKeyButton : TextButton {
     private void OnCancelInputs() {
         Focused = false;
         ButtonText.SetText(
-            KeyManager.GetKey(Action)
+            KeyManager.GetKey(InputAction)
                       .ToString()
         );
     }

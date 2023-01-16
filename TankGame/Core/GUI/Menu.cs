@@ -6,11 +6,11 @@ using TankGame.Actors;
 using TankGame.Actors.Background;
 using TankGame.Actors.Buttons;
 using TankGame.Actors.Text;
+using TankGame.Core.Controls;
 using TankGame.Core.Gamestate;
 using TankGame.Core.Statistics;
 using TankGame.Events;
 using TankGame.Gui.RenderComponents;
-using Action = TankGame.Core.Controls.Action;
 
 namespace TankGame.Core.GUI;
 
@@ -44,18 +44,18 @@ public class Menu : IDisposable {
                 }
             }, {
                 MenuLayer.Keys, new() {
-                    new MenuTextBox(new(100, 110), new(300, 80), Action.MoveUp.ToString(), 20, null, TextPosition.Start),
-                    new MenuTextBox(new(100, 210), new(300, 80), Action.MoveDown.ToString(), 20, null, TextPosition.Start),
-                    new MenuTextBox(new(100, 310), new(300, 80), Action.MoveLeft.ToString(), 20, null, TextPosition.Start),
-                    new MenuTextBox(new(100, 410), new(300, 80), Action.MoveRight.ToString(), 20, null, TextPosition.Start),
-                    new MenuTextBox(new(100, 510), new(300, 80), Action.Fire.ToString(), 20, null, TextPosition.Start),
-                    new MenuTextBox(new(100, 610), new(300, 80), Action.Pause.ToString(), 20, null, TextPosition.Start),
-                    new ChangeKeyButton(new(600, 110), new(300, 80), Action.MoveUp, 20, TextPosition.Start),
-                    new ChangeKeyButton(new(600, 210), new(300, 80), Action.MoveDown, 20, TextPosition.Start),
-                    new ChangeKeyButton(new(600, 310), new(300, 80), Action.MoveLeft, 20, TextPosition.Start),
-                    new ChangeKeyButton(new(600, 410), new(300, 80), Action.MoveRight, 20, TextPosition.Start),
-                    new ChangeKeyButton(new(600, 510), new(300, 80), Action.Fire, 20, TextPosition.Start),
-                    new ChangeKeyButton(new(600, 610), new(300, 80), Action.Pause, 20, TextPosition.Start),
+                    new MenuTextBox(new(100, 110), new(300, 80), InputAction.MoveForward.ToString(), 20, null, TextPosition.Start),
+                    new MenuTextBox(new(100, 210), new(300, 80), InputAction.MoveBackwards.ToString(), 20, null, TextPosition.Start),
+                    new MenuTextBox(new(100, 310), new(300, 80), InputAction.RotateLeft.ToString(), 20, null, TextPosition.Start),
+                    new MenuTextBox(new(100, 410), new(300, 80), InputAction.RotateRight.ToString(), 20, null, TextPosition.Start),
+                    new MenuTextBox(new(100, 510), new(300, 80), InputAction.Shoot.ToString(), 20, null, TextPosition.Start),
+                    new MenuTextBox(new(100, 610), new(300, 80), InputAction.Pause.ToString(), 20, null, TextPosition.Start),
+                    new ChangeKeyButton(new(600, 110), new(300, 80), InputAction.MoveForward, 20, TextPosition.Start),
+                    new ChangeKeyButton(new(600, 210), new(300, 80), InputAction.MoveBackwards, 20, TextPosition.Start),
+                    new ChangeKeyButton(new(600, 310), new(300, 80), InputAction.RotateLeft, 20, TextPosition.Start),
+                    new ChangeKeyButton(new(600, 410), new(300, 80), InputAction.RotateRight, 20, TextPosition.Start),
+                    new ChangeKeyButton(new(600, 510), new(300, 80), InputAction.Shoot, 20, TextPosition.Start),
+                    new ChangeKeyButton(new(600, 610), new(300, 80), InputAction.Pause, 20, TextPosition.Start),
                     BackButton,
                 }
             }, {

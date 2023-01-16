@@ -94,20 +94,10 @@ public class Region : IDisposable {
     private int ConvertRegionFieldCoordsToFieldIndex(Vector2i regionFieldCoords)
         => regionFieldCoords.X * FieldsInLine + regionFieldCoords.Y;
 
-    public List<List<Node>> GetNodesInRegion() {
-        var nodes = new List<List<Node>>();
-
-        for (var x = 0; x < FieldsInLine; x++) {
-            var column = new List<Node>();
-            for (var y = 0; y < FieldsInLine; y++) {
-                Field field = Fields[ConvertRegionFieldCoordsToFieldIndex(new(x, y))];
-                column.Add(new(new(x, y), field?.IsTraversible(true) ?? false, field?.TraversabilityMultiplier ?? 1.0f));
-            }
-
-            nodes.Add(column);
-        }
-
-        return nodes;
+    public ISet<Node> GetNodesInRegion() {
+        return Fields
+              .Select(field => new Node(field.Coords, field.IsTraversible(true), field.TraversabilityMultiplier))
+              .ToHashSet();
     }
 
     public void DeletePlayer() {

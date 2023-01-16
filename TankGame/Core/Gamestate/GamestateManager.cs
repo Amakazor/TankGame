@@ -71,7 +71,7 @@ public static class GamestateManager {
 
     private static void OnPawnDeath(Pawn sender) {
         if (sender is not Enemy enemy) return;
-        AddPoints(enemy.ScoreAdded, enemy.RealPosition + new Vector2f(enemy.Size.X / 2 - 75, enemy.Size.Y / 10 - 10));
+        //AddPoints(enemy.ScoreAdded, enemy.RealPosition + new Vector2f(enemy.Size.X / 2 - 75, enemy.Size.Y / 10 - 10));
     }
 
     public static void Pause()

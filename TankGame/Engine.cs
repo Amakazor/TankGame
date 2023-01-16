@@ -10,13 +10,13 @@ using TankGame.Actors.Data;
 using TankGame.Actors.Pawns;
 using TankGame.Actors.Pawns.Player;
 using TankGame.Core.Collisions;
+using TankGame.Core.Controls;
 using TankGame.Core.Gamestate;
 using TankGame.Core.GUI;
 using TankGame.Core.Sounds;
 using TankGame.Core.Statistics;
 using TankGame.Core.Textures;
 using TankGame.Events;
-using Action = TankGame.Core.Controls.Action;
 
 namespace TankGame;
 
@@ -104,7 +104,6 @@ public class Engine {
         Window.Clear(Color.Black);
 
         if (!GamestateManager.NotStarted) {
-            if (GamestateManager.Player != null) RecenterView(GamestateManager.Player.RealPosition);
             foreach (RenderView view in Views.Select(view => view.Key)) RenderInView(view);
         } else RenderInView(RenderView.Menu);
 
@@ -206,7 +205,10 @@ public class Engine {
     }
 
     private void RecenterView(Vector2f position) {
-        if (Views.TryGetValue(RenderView.Game, out View? gameView)) gameView!.Center = position;
+        if (Views.TryGetValue(RenderView.Game, out View? gameView)) {
+            gameView!.Center = position;
+            Window.SetView(gameView);
+        }
     }
 
     private void RegisterEvents() {
@@ -220,7 +222,7 @@ public class Engine {
         MessageBus.StopGame += StopGame;
         MessageBus.Quit += Quit;
 
-        MessageBus.Action += OnAction;
+        MessageBus.KeyAction += OnAction;
 
         MessageBus.PlayerMoved += sender => RecenterView(sender.RealPosition);
         MessageBus.PawnDeath += OnPawnDeath;
@@ -240,12 +242,12 @@ public class Engine {
         Menu.ShowEndScreen();
     }
 
-    private void OnAction(Action action) {
-        switch (action) {
-            case Action.Pause when GamestateManager.Playing:
+    private void OnAction(InputAction inputAction) {
+        switch (inputAction) {
+            case InputAction.Pause when GamestateManager.Playing:
                 Pause();
                 break;
-            case Action.Pause when GamestateManager.Paused:
+            case InputAction.Pause when GamestateManager.Paused:
                 Unpause();
                 break;
         }

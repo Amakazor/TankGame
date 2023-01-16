@@ -3,12 +3,12 @@
 namespace TankGame.Core.Controls;
 
 [JsonConverter(typeof(JsonStringEnumConverter))]
-public enum Action {
+public enum InputAction {
     Nothing,
-    MoveUp,
-    MoveDown,
-    MoveLeft,
-    MoveRight,
-    Fire,
+    MoveForward,
+    MoveBackwards,
+    RotateLeft,
+    RotateRight,
+    Shoot,
     Pause,
 }

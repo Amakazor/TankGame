@@ -4,12 +4,12 @@ using TankGame.Actors;
 using TankGame.Actors.Pawns;
 using TankGame.Actors.Pawns.Player;
 using TankGame.Actors.Projectiles;
-using Action = TankGame.Core.Controls.Action;
+using TankGame.Core.Controls;
 
 namespace TankGame.Events;
 
 public static class MessageBus {
-    public delegate void ActionDelegate(Action action);
+    public delegate void ActionDelegate(InputAction inputAction);
 
     public delegate void ContinueDelegate(bool continueGame);
 
@@ -41,7 +41,7 @@ public static class MessageBus {
     public static SenderDelegate<Pawn> PawnDeath { get; set; } = delegate { };
     public static SenderDelegate<Player> PlayerMoved { get; set; } = delegate { };
 
-    public static ActionDelegate Action { get; set; } = delegate { };
+    public static ActionDelegate KeyAction { get; set; } = delegate { };
     public static EventArgsDelegate<KeyEventArgs> KeyPressed { get; set; } = delegate { };
 
     public static HealthDelegate PlayerHealthChanged { get; set; } = delegate { };

@@ -56,13 +56,10 @@ public class Field : Actor {
     public bool CanBeSpawnedOn()
         => IsTraversible(false, true);
 
-    public bool IsShootable(bool excludePlayer = false, bool orObjectDestructible = false)
-        => (PawnOnField == null || (excludePlayer && PawnOnField is Player)) && (GameObject == null || (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible));
+    public bool CanBeShootThrough(bool byEnemy) => (PawnOnField == null || (byEnemy && PawnOnField is Player)) && (GameObject == null || GameObject.IsTraversible || GameObject.IsDestructible);
 
-    public void EnterField(Pawn enteringPawn) {
-        if (GameObject != null && GameObject.GameObjectType.DestructabilityData.DestroyOnEntry) GameObject.OnDestroy();
-
-        PawnOnField = enteringPawn;
+    public void DestroyObjectIfExists() {
+        if (GameObject is { GameObjectType.DestructabilityData.DestroyOnEntry: true }) GameObject.OnDestroy();
     }
 
     public void OnGameObjectDestruction()
@@ -75,5 +72,9 @@ public class Field : Actor {
         GameObject = null;
 
         base.Dispose();
+    }
+
+    public override string ToString() {
+        return $"Field: {Type} [{Coords.X}, {Coords.Y}]";
     }
 }

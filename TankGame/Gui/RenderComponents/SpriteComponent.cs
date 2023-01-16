@@ -11,7 +11,7 @@ public class SpriteComponent : IRenderComponent {
         Size = size;
 
         SetScaleFromSize(size);
-        SetDirection(direction);
+        SetRotation(direction);
 
         Sprite.Origin = size / 2;
     }
@@ -45,8 +45,8 @@ public class SpriteComponent : IRenderComponent {
     public void SetTextureRectSize(Vector2i size)
         => Sprite.TextureRect = new(new(0, 0), size);
 
-    public void SetDirection(Direction direction)
-        => SetDirection(
+    public void SetRotation(Direction direction)
+        => SetRotation(
             direction switch {
                 Direction.Up    => 180,
                 Direction.Down  => 0,
@@ -56,6 +56,6 @@ public class SpriteComponent : IRenderComponent {
             }
         );
 
-    public void SetDirection(double angle)
+    public void SetRotation(double angle)
         => Sprite.Rotation = (float)angle;
 }

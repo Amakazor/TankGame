@@ -7,7 +7,7 @@ public abstract class TickableActor : Actor, ITickable {
     protected TickableActor(Vector2f position, Vector2f size) : base(position, size)
         => (this as ITickable).RegisterTickable();
 
-    public abstract void Tick(float deltaTime);
+    public virtual void Tick(float deltaTime) { }
 
     public override void Dispose() {
         base.Dispose();

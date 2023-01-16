@@ -22,13 +22,13 @@ public static class KeyManager {
         KeyActions = LoadKeys();
     }
 
-    public static Keyboard.Key GetKey(Action action)
-        => KeyActions.FirstOrDefault(keyAction => keyAction.Action == action)
+    public static Keyboard.Key GetKey(InputAction inputAction)
+        => KeyActions.FirstOrDefault(keyAction => keyAction.InputAction == inputAction)
                     ?.Key ?? Keyboard.Key.Unknown;
 
-    public static Action GetAction(Keyboard.Key key)
+    public static InputAction GetAction(Keyboard.Key key)
         => KeyActions.FirstOrDefault(keyAction => keyAction.Key == key)
-                    ?.Action ?? Action.Nothing;
+                    ?.InputAction ?? InputAction.Nothing;
 
     private static HashSet<KeyAction> LoadKeys() {
         string json = File.ReadAllText("Resources/Config/Keys.json");

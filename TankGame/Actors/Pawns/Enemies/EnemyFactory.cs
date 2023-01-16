@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SFML.Graphics;
 using SFML.System;
-using TankGame.Actors.Pawns.MovementControllers;
+using TankGame.Actors.Brains.Goals;
 using TankGame.Core.Map;
 using TankGame.Core.Textures;
 
@@ -18,25 +17,13 @@ public static class EnemyFactory {
 
     public static readonly Dictionary<EnemyType, int> DefaultHealth = new() { { EnemyType.Light, 1 }, { EnemyType.Medium, 2 }, { EnemyType.Heavy, 3 } };
 
-    private static readonly Dictionary<EnemyType, double> MovementDelays = new() { { EnemyType.Light, 0.75 }, { EnemyType.Medium, 1.50 }, { EnemyType.Heavy, 2.25 } };
+    public static readonly Dictionary<EnemyType, double> MovementDelays = new() { { EnemyType.Light, 0.75 }, { EnemyType.Medium, 1.50 }, { EnemyType.Heavy, 2.25 } };
 
     public static Texture GetTexture(EnemyType enemyType)
         => TextureManager.Get(TextureType.Pawn, Textures[enemyType]);
 
     private static int GetHealth(EnemyType enemyType, int health)
         => health == -1 ? DefaultHealth[enemyType] : health;
-
-    private static void GenerateAndAttachMovementController(AiMovementControllerType type, Enemy enemy, List<Vector2i>? patrolRoute = null) {
-        MovementController controller = type switch {
-            AiMovementControllerType.Random => new RandomAiMovementController(MovementDelays[enemy.Type], enemy),
-            AiMovementControllerType.Chase  => new ChaseAIMovementController(MovementDelays[enemy.Type], enemy),
-            AiMovementControllerType.Stand  => new StandGroundAiMovementController(MovementDelays[enemy.Type], enemy),
-            AiMovementControllerType.Patrol => new PatrolAIMovementController(MovementDelays[enemy.Type], enemy, patrolRoute ?? new List<Vector2i>()),
-            _                               => throw new NotImplementedException(),
-        };
-
-        enemy.AttachMovementController(controller);
-    }
 
     private static bool NeedsToMoveSpawn(Vector2i coords, Region region)
         => region.GetFieldAtMapCoords(coords)
@@ -62,8 +49,7 @@ public static class EnemyFactory {
         Vector2f size = new(64.0f, 64.0f);
         int score = ((int)enemySpawnData.Type + 1) * 100;
         Enemy enemy = new(scaledCoords, size, GetTexture(enemySpawnData.Type), GetHealth(enemySpawnData.Type, health), score, enemySpawnData.Type);
-        GenerateAndAttachMovementController(enemySpawnData.AimcType, enemy, enemySpawnData.PatrolRoute);
-
+        
         region.GetFieldAtMapCoords(enemy.Coords)!.PawnOnField = enemy;
         return enemy;
     }

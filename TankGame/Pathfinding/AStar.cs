@@ -5,48 +5,42 @@ using TankGame.Extensions;
 
 namespace TankGame.Pathfinding;
 
-public class AStar {
-    private readonly List<List<Node>> Grid;
+public static class AStar {
 
-    public AStar(List<List<Node>> grid)
-        => Grid = grid;
+    public static Stack<Node> FindPath(ISet<Node> grid, Vector2i startCoords, Vector2i endCoords) {
+        var start = grid.FirstOrDefault(node => node.Coords == startCoords);
+        var end = grid.FirstOrDefault(node => node.Coords == endCoords);
+        if (start is null || end is null) return new();
 
-    private int GridRows => Grid[0]
-       .Count;
-
-    private int GridColumns => Grid.Count;
-
-    public Stack<Node> FindPath(Vector2i Start, Vector2i End) {
-        var start = new Node(Start);
-        var end = new Node(End);
-
-        Stack<Node> path = new();
         List<Node> openList = new();
-        List<Node> closedList = new();
-        List<Node> adjacentNodes;
-        Node currentNode = start;
+        HashSet<Node> closedList = new();
 
         openList.Add(start);
 
-        while (openList.Count != 0 && !closedList.Exists(x => x.Position == end.Position)) {
-            currentNode = openList[0];
+        while (openList.Count != 0) {
+            Node currentNode = openList.MinBy(node => node.HeuristicF)!;
+            
             openList.Remove(currentNode);
             closedList.Add(currentNode);
-            adjacentNodes = GetAdjacentNodes(currentNode);
+            if (currentNode == end) break;
 
-            foreach (Node adjacentNode in adjacentNodes)
-                if (!closedList.Contains(adjacentNode) && adjacentNode.Walkable && !openList.Contains(adjacentNode)) {
-                    adjacentNode.Parent = currentNode;
-                    adjacentNode.DistanceToTarget = adjacentNode.Position.ManhattanDistance(end.Position);
-                    adjacentNode.Cost = adjacentNode.Weight + adjacentNode.Parent.Cost;
-                    openList.Add(adjacentNode);
-                    openList = openList.OrderBy(node => node.F)
-                                       .ToList();
-                }
+            foreach (Node adjacentNode in GetAdjacentNodes(currentNode, grid).Where(node => !closedList.Contains(node) && node.Walkable && !openList.Contains(node))) {
+                adjacentNode.Parent = currentNode;
+                adjacentNode.DistanceToTarget = adjacentNode.Coords.ManhattanDistance(end.Coords);
+                adjacentNode.Cost = adjacentNode.Weight + adjacentNode.Parent.Cost;
+                openList.Add(adjacentNode);
+            }
         }
+        
+        var toReturn = closedList.Any(x => x == end) ? RetracePath(start, end) : new();
 
-        if (!closedList.Exists(x => x.Position == end.Position)) return null;
+        return toReturn;
+    }
 
+    public static Stack<Node> RetracePath(Node start, Node end) {
+        Stack<Node> path = new();
+        
+        Node? currentNode = end;
         do {
             path.Push(currentNode);
             currentNode = currentNode.Parent;
@@ -55,17 +49,21 @@ public class AStar {
         return path;
     }
 
-    private List<Node> GetAdjacentNodes(Node node) {
-        List<Node> adjacentNodes = new();
+    public static Vector2i FindNextStep(HashSet<Node> grid, Vector2i start, Vector2i end) {
+        var path = FindPath(grid, start, end);
+        return path.Count == 0 ? start : path.Pop().Coords;
+    }
+    
+    private static IEnumerable<Vector2i> GetAdjacentPositions(Vector2i position) {
+        yield return new(position.X - 1, position.Y);
+        yield return new(position.X + 1, position.Y);
+        yield return new(position.X, position.Y - 1);
+        yield return new(position.X, position.Y + 1);
+    }
 
-        int row = node.Position.Y;
-        int col = node.Position.X;
-
-        if (row + 1 < GridRows) adjacentNodes.Add(Grid[col][row + 1]);
-        if (row - 1 >= 0) adjacentNodes.Add(Grid[col][row       - 1]);
-        if (col - 1 >= 0) adjacentNodes.Add(Grid[col          - 1][row]);
-        if (col + 1 < GridColumns) adjacentNodes.Add(Grid[col + 1][row]);
-
-        return adjacentNodes;
+    private static IEnumerable<Node> GetAdjacentNodes(Node node, ISet<Node> grid) {
+        return GetAdjacentPositions(node.Coords)
+              .Select(position => grid.FirstOrDefault(x => x!.Coords == position, null))
+              .Where(x => x is not null) as IEnumerable<Node>;
     }
 }

@@ -1,26 +1,26 @@
 ﻿[
   {
-    "Action": "MoveUp",
+    "InputAction": "MoveForward",
     "Key": 73
   },
   {
-    "Action": "MoveDown",
+    "InputAction": "MoveBackwards",
     "Key": 74
   },
   {
-    "Action": "MoveLeft",
+    "InputAction": "RotateLeft",
     "Key": 71
   },
   {
-    "Action": "MoveRight",
+    "InputAction": "RotateRight",
     "Key": 72
   },
   {
-    "Action": "Fire",
+    "InputAction": "Shoot",
     "Key": 57
   },
   {
-    "Action": "Pause",
+    "InputAction": "Pause",
     "Key": 36
   }
 ]

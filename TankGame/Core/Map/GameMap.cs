@@ -143,21 +143,23 @@ public class GameMap : IDisposable {
         return new(-1, -1);
     }
 
-    public List<List<Node>> GetNodesInRadius(Vector2i center, int radius) {
-        var nodes = new List<List<Node>>();
+    private IEnumerable<Vector2i> GenerateCoordsInRadius(Vector2i center, int radius) {
+        List<Vector2i> coords = new();
 
-        for (int x = center.X - radius; x <= center.X + radius; x++) {
-            var column = new List<Node>();
-            for (int y = center.Y - radius; y <= center.Y + radius; y++) {
-                Field field = GetFieldFromRegion(new(x, y));
+        for (int x = center.X - radius; x <= center.X + radius; x++)
+        for (int y = center.Y - radius; y <= center.Y + radius; y++)
+            coords.Add(new(x, y));
 
-                column.Add(field != null ? new(new(x - center.X + radius, y - center.Y + radius), field.IsTraversible(true), field.TraversabilityMultiplier) : new Node(new(x - center.X + radius, y - center.Y + radius), false));
-            }
+        return coords;
+    }
 
-            nodes.Add(column);
-        }
-
-        return nodes;
+    public ISet<Node> GetNodesInRadius(Vector2i center, int radius) {
+        return GenerateCoordsInRadius(center, radius)
+              .Select(coords => (Coords: coords, Field: GetFieldFromRegion(coords)))
+              .Select(data => data.Field is not null 
+                          ? new Node(data.Coords, data.Field.IsTraversible(true), data.Field.TraversabilityMultiplier) 
+                          : new Node(data.Coords, false))
+              .ToHashSet();
     }
 
     private void OnPawnMoved(PawnMovedEventArgs eventArgs) {

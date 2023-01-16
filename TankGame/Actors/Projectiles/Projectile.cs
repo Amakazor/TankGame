@@ -19,13 +19,15 @@ public class Projectile : TickableActor {
     private const float BaseFlightDistance = 64 * 6.5F;
     private const float BaseSpeed = 200;
 
-    private readonly float FlightDistance = BaseFlightDistance * (1 / (GamestateManager.WeatherModifier * GamestateManager.WeatherModifier));
+    public static float FlightDistance => BaseFlightDistance * (1 / (GamestateManager.WeatherModifier * GamestateManager.WeatherModifier));
+    public static float SquareFlightDistance => FlightDistance * FlightDistance;
+    public static float FlightDistanceInTiles => FlightDistance / 64;
+    public static float SquareFlightDistanceInTiles => FlightDistanceInTiles * FlightDistanceInTiles;
+    private static  float FlightSpeed => BaseSpeed * (1 / (GamestateManager.WeatherModifier * GamestateManager.WeatherModifier));
 
-    private readonly float FlightSpeed = BaseSpeed * (1 / (GamestateManager.WeatherModifier * GamestateManager.WeatherModifier));
-
-    private Projectile(Vector2f position, Direction direction, Pawn owner) : base(position, new(64, 64)) {
+    private Projectile(Pawn owner) : base(owner.Position + owner.Direction.ToVector() * 32, new(64, 64)) {
         StartingPosition = Position;
-        Direction = direction;
+        Direction = owner.Direction;
         Owner = owner;
 
         ProjectileComponent = Owner switch {
@@ -49,8 +51,8 @@ public class Projectile : TickableActor {
 
     private float SpeedMultiplier => (float)(-(Math.Pow(Math.Cos(Math.PI * FlightProgressReversed), FlightProgressReversed > 0.5 ? 3 : 9) - 1) / 2 + 0.2);
 
-    private double FlightProgressReversed => 1    - StartingPosition.ManhattanDistance(Position) / FlightDistance;
-    public Vector2f CollisionPosition => Position + (Size - CollistionSize)                      / 2;
+    private double FlightProgressReversed => 1 - StartingPosition.ManhattanDistance(Position) / FlightDistance;
+    public Vector2f CollisionPosition => Position + (Size - CollistionSize) / 2;
     public Vector2f CollistionSize => Size / 4;
 
     public override HashSet<IRenderComponent> RenderComponents => new() { ProjectileComponent };
@@ -76,6 +78,6 @@ public class Projectile : TickableActor {
         base.Dispose();
     }
 
-    public static Projectile CreateProjectile(Vector2f position, Direction direction, Pawn owner)
-        => new(position, direction, owner);
+    public static Projectile Create(Pawn owner)
+        => new(owner);
 }

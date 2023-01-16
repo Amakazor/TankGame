@@ -20,7 +20,7 @@ public class InputHandler {
     private RenderWindow Window { get; }
 
     public void OnKeyPress(KeyEventArgs eventArgs) {
-        MessageBus.Action.Invoke(KeyManager.GetAction(eventArgs.Code));
+        MessageBus.KeyAction.Invoke(KeyManager.GetAction(eventArgs.Code));
         MessageBus.KeyPressed.Invoke(eventArgs);
     }
 

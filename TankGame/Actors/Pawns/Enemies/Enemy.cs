@@ -1,8 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using SFML.Graphics;
 using SFML.System;
-using TankGame.Actors.Pawns.MovementControllers;
-using TankGame.Core.Sounds;
+using TankGame.Actors.Brains.Goals;
 
 namespace TankGame.Actors.Pawns.Enemies;
 
@@ -11,15 +10,27 @@ public class Enemy : Pawn {
         Health = health;
         ScoreAdded = scoreAdded;
         Type = type;
+
+        if (Coords.X != 45 || Coords.Y != 50) {
+            OnDestroy();
+        }
+        
+        Brain.AddGoal(1, new ShootPlayerGoal(Brain));
+        Brain.AddGoal(2, new ChasePlayerGoal(Brain));
     }
 
-    [JsonConstructor] public Enemy(Vector2i coords, Direction direction, int? health, MovementController movementController, EnemyType type, int scoreAdded) : base(new(coords.X * 64.0f, coords.Y * 64.0f), new(64.0f, 64.0f), EnemyFactory.GetTexture(type), health) {
+    [JsonConstructor] public Enemy(Vector2i coords, Direction direction, int? health, EnemyType type, int scoreAdded) : base(new(coords.X * 64.0f, coords.Y * 64.0f), new(64.0f, 64.0f), EnemyFactory.GetTexture(type), health) {
         ScoreAdded = scoreAdded;
         Type = type;
         Health = health;
         Direction = direction;
-        AttachMovementController(movementController);
-        movementController.AttachOwner(this);
+        
+        if (Coords.X != 45 || Coords.Y != 50) {
+            OnDestroy();
+        } else {
+            Brain.AddGoal(1, new ShootPlayerGoal(Brain));
+            Brain.AddGoal(2, new ChasePlayerGoal(Brain));
+        }
     }
 
     public int ScoreAdded { get; }
@@ -28,12 +39,5 @@ public class Enemy : Pawn {
     public int? Health {
         get => CurrentHealth;
         set => CurrentHealth = value ?? EnemyFactory.DefaultHealth[Type];
-    }
-
-    protected override void UpdatePosition(Vector2i lastCoords, Vector2i newCoords) {
-        if (lastCoords == newCoords) return;
-
-        SoundManager.Play(SoundType.Move, Type.ToString(), Position / 64);
-        base.UpdatePosition(lastCoords, newCoords);
     }
 }
