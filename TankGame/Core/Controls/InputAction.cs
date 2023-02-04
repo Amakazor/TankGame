@@ -11,4 +11,5 @@ public enum InputAction {
     RotateRight,
     Shoot,
     Pause,
+    ToggleConsole,
 }

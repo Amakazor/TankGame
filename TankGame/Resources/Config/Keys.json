@@ -22,5 +22,9 @@
   {
     "InputAction": "Pause",
     "Key": 36
+  },
+  {
+    "InputAction": "ToggleConsole",
+    "Key": 54
   }
 ]

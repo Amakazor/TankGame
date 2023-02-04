@@ -1,4 +1,5 @@
 ﻿using System;
+using LanguageExt;
 using TankGame.Actors.Brains.Thoughts;
 
 namespace TankGame.Actors.Brains.Goals; 
@@ -11,6 +12,6 @@ public abstract class Goal {
     protected Guid Id { get; set; } = Guid.NewGuid();
     protected Brain Brain { get; private set; }
     
-    public virtual Thought? NextThought() 
+    public virtual Option<Thought> NextThought() 
         => null;
 }

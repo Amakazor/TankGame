@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using LanguageExt;
 using SFML.System;
 using TankGame.Actors.Pawns;
 using TankGame.Actors.Pawns.Enemies;
 using TankGame.Actors.Pawns.Player;
 using TankGame.Actors.Text;
+using TankGame.Core.Console;
 using TankGame.Core.Map;
 using TankGame.Core.Weathers;
 using TankGame.Events;
@@ -19,7 +20,7 @@ public static class GamestateManager {
     private const int MaxCombo = 10;
     private const string SavePath = "Resources/Save/Current.json";
     private const int PointsPerHealthUp = 5000;
-    private static HashSet<PointsAddedTextBox> _pointsTextBoxes;
+    private static System.Collections.Generic.HashSet<PointsAddedTextBox> _pointsTextBoxes;
     private static readonly Vector2f _pointsMovementVector = new(75, 10);
 
     static GamestateManager() {
@@ -35,6 +36,8 @@ public static class GamestateManager {
         _pointsTextBoxes = new();
 
         WeatherController = null;
+        
+        TestConsole = new();
     }
 
     public static GamePhase GamePhase { get; private set; }
@@ -46,8 +49,9 @@ public static class GamestateManager {
     private static float ComboDeltaTimeCumulated { get; set; }
     public static GameMap Map { get; private set; }
     public static WeatherController WeatherController { get; set; }
-    public static Player? Player { get; set; }
+    public static Option<Player> Player { get; set; }
     public static Random Random { get; }
+    public static TestConsole TestConsole { get; set; }
     public static float WeatherModifier => WeatherController.GetSpeedModifier();
     public static float WeatherTime => WeatherController.CurrentWeatherTime;
     public static bool Paused => GamePhase     == GamePhase.Paused;
@@ -88,7 +92,7 @@ public static class GamestateManager {
 
         File.WriteAllText(SavePath, JsonSerializer.Serialize(new GamestateDto(Points, PointsBeforeSubstraction, Combo, ComboDeltaTimeCumulated, CompletedActivities, WeatherController.WeatherType, WeatherController.CurrentWeatherTime)));
 
-        Map?.Save();
+        // Map?.Save();
     }
 
     private static void PrepareSaveFolders() {
@@ -139,26 +143,29 @@ public static class GamestateManager {
                  .ForEach(fileInfo => fileInfo.Delete());
     }
 
-    public static void AddPoints(long points, Vector2f? position = null, bool useCombo = true) {
-        position = position is not null ? position + _pointsMovementVector : Player.Position + new Vector2f(Player.Size.X / 2 - 50, Player.Size.Y / 4 - 10);
+    private static void AddPoints(long points, Vector2f? position = null, bool useCombo = true) {
+        Player.IfSome(
+            player => {
+                position = position is not null ? position + _pointsMovementVector : player.Position + new Vector2f(player.Size.X / 2 - 50, player.Size.Y / 4 - 10);
 
-        if (points < 0) PointsBeforeSubstraction = points;
+                if (points < 0) PointsBeforeSubstraction = points;
 
-        long pointsBeforeAddition = Points;
-        if (useCombo) {
-            ComboDeltaTimeCumulated = 0;
-            Points += points * Combo;
-            Combo = Math.Min(Combo + 1, MaxCombo);
-        } else { Points += points; }
+                long pointsBeforeAddition = Points;
+                if (useCombo) {
+                    ComboDeltaTimeCumulated = 0;
+                    Points += points * Combo;
+                    Combo = Math.Min(Combo + 1, MaxCombo);
+                } else { Points += points; }
 
-        if (pointsBeforeAddition / PointsPerHealthUp != Points / PointsPerHealthUp && Points > pointsBeforeAddition && Points > PointsBeforeSubstraction) Player.AddHealth(Convert.ToInt32(Points / PointsPerHealthUp - pointsBeforeAddition / PointsPerHealthUp));
+                if (pointsBeforeAddition / PointsPerHealthUp != Points / PointsPerHealthUp && Points > pointsBeforeAddition && Points > PointsBeforeSubstraction) player.AddHealth(Convert.ToInt32(Points / PointsPerHealthUp - pointsBeforeAddition / PointsPerHealthUp));
 
-        _pointsTextBoxes.Add(new((Vector2f)position, points, useCombo ? Combo - 1 : 1));
+                _pointsTextBoxes.Add(new((Vector2f)position, points, useCombo ? Combo - 1 : 1));
+            });
+        
     }
 
     public static void Tick(float deltaTime) {
-        foreach (PointsAddedTextBox pointsAddedTextBox in _pointsTextBoxes.ToList()
-                                                                          .Where(pointsAddedTextBox => pointsAddedTextBox.TimeToLive < 0))
+        foreach (PointsAddedTextBox pointsAddedTextBox in _pointsTextBoxes.ToList().Where(pointsAddedTextBox => pointsAddedTextBox.TimeToLive < 0))
             _pointsTextBoxes.Remove(pointsAddedTextBox);
 
         ComboDeltaTimeCumulated += deltaTime;

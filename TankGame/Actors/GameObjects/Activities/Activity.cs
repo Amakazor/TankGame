@@ -78,8 +78,8 @@ public abstract class Activity : GameObject, ITickable {
         base.Dispose();
     }
 
-    public override void OnDestroy() {
+    public override void Destroy() {
         ChangeStatus(ActivityStatus.Failed);
-        base.OnDestroy();
+        base.Destroy();
     }
 }

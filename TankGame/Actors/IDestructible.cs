@@ -9,8 +9,8 @@ public interface IDestructible {
     public bool StopsProjectile { get; }
     public Actor Actor { get; }
 
-    public void OnHit();
-    public void OnDestroy();
+    public void Hit();
+    public void Destroy();
 
     public void RegisterDestructible()
         => MessageBus.RegisterDestructible.Invoke(this);

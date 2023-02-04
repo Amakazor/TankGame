@@ -105,7 +105,10 @@ public class Engine {
 
         if (!GamestateManager.NotStarted) {
             foreach (RenderView view in Views.Select(view => view.Key)) RenderInView(view);
-        } else RenderInView(RenderView.Menu);
+        } else {
+            RenderInView(RenderView.Menu);
+            RenderInView(RenderView.Console);
+        }
 
         Window.Display();
     }
@@ -128,12 +131,12 @@ public class Engine {
 
         if (!GamestateManager.NotStarted && !continueGame) {
             StopGame();
-            return;
         }
 
         Menu.Hide();
         GamestateManager.Start(continueGame);
     }
+    
 
     private void Pause() {
         Menu.ShowMenu();
@@ -168,9 +171,10 @@ public class Engine {
 
         const float menuViewWidth = 1000;
 
-        Views.Add(RenderView.Game, new(new(gameViewWidth / 2, gameViewWidth / 2), new(gameViewWidth, gameViewWidth)));
-        Views.Add(RenderView.HUD,  new(new(hudViewWidth  / 2 - 32, hudViewHeight / 2 - 32), new(hudViewWidth, hudViewHeight)));
-        Views.Add(RenderView.Menu, new(new(menuViewWidth / 2, menuViewWidth / 2), new(menuViewWidth, menuViewWidth)));
+        Views.Add(RenderView.Game,    new(new(gameViewWidth / 2, gameViewWidth / 2), new(gameViewWidth, gameViewWidth)));
+        Views.Add(RenderView.HUD,     new(new(hudViewWidth  / 2 - 32, hudViewHeight / 2 - 32), new(hudViewWidth, hudViewHeight)));
+        Views.Add(RenderView.Menu,    new(new(menuViewWidth / 2, menuViewWidth / 2), new(menuViewWidth, menuViewWidth)));
+        Views.Add(RenderView.Console, new(new(menuViewWidth / 2, menuViewWidth / 2), new(menuViewWidth, menuViewWidth)));
 
         RecalculateViewport(WindowWidth, WindowHeight);
     }

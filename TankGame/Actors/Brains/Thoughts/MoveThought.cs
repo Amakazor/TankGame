@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using System;
+using SFML.System;
 using TankGame.Actors.Fields;
 using TankGame.Actors.Pawns.Player;
 using TankGame.Core.Gamestate;
@@ -11,6 +12,7 @@ namespace TankGame.Actors.Brains.Thoughts;
 public class MoveThought : Thought, IDto<MoveThought.Dto> {
     
     public new class Dto : Thought.Dto {
+
         public Vector2i BaseField { get; set; }
         public Vector2i TargetField { get; set; }
         public bool AlreadyAchievedSecondPoint { get; set; }
@@ -18,8 +20,10 @@ public class MoveThought : Thought, IDto<MoveThought.Dto> {
         public bool AlreadyAchievedEightPoint { get; set; }
         
         public void Deconstruct(out Field baseField, out Field targetField, out bool alreadyAchievedSecondPoint, out bool alreadyAchievedFifthPoint, out bool alreadyAchievedEightPoint) {
-            baseField = GamestateManager.Map.GetFieldFromRegion(BaseField)!;
-            targetField = GamestateManager.Map.GetFieldFromRegion(TargetField)!;
+            (baseField, targetField) = GamestateManager.Map.GetFieldFromRegion(BaseField)
+               .SelectMany(_ => GamestateManager.Map.GetFieldFromRegion(TargetField), (b, t) => (b, t))
+               .Match<Tuple<Field, Field>>( fields => Tuple(fields.b, fields.t), () => throw new("Base or target field is none"));
+            
             alreadyAchievedSecondPoint = AlreadyAchievedSecondPoint;
             alreadyAchievedFifthPoint = AlreadyAchievedFifthPoint;
             alreadyAchievedEightPoint = AlreadyAchievedEightPoint;
@@ -54,7 +58,7 @@ public class MoveThought : Thought, IDto<MoveThought.Dto> {
         
         if (!AlreadyAchievedSecondPoint && Completion > 0.2f) {
             AlreadyAchievedSecondPoint = true;
-            TargetField.DestroyObjectIfExists();
+            TargetField.DestroyObjectOnEntry();
         }
         
         if (!AlreadyAchievedFifthPoint && Completion >= 0.5f) {
@@ -70,10 +74,11 @@ public class MoveThought : Thought, IDto<MoveThought.Dto> {
         CheckForCompletion();
     }
 
-    public override void FinishThought() {}
-    
+    public override void FinishThought()
+        => MessageBus.PawnMoved(new(BaseField.Coords, TargetField.Coords, Brain.Owner));
+
     public Dto ToDto()
-        => new Dto {
+        => new() {
             TotalTime = TotalTime,
             TimeLeft = TimeLeft,
             BaseField = BaseField.Coords,

@@ -27,14 +27,14 @@ public class ActivityDisplay : Actor, ITickable {
         => UpdateActivityDisplay();
 
     private void UpdateActivityDisplay() {
-        if (GamestateManager.Player?.CurrentRegion?.Activity?.ProgressText != null) {
-            ActivityName.SetText("Current objective: " + GamestateManager.Player.CurrentRegion.Activity.DisplayName);
-
-            ActivityText.SetText(GamestateManager.Player.CurrentRegion.Activity.ProgressText ?? "");
-        } else {
-            ActivityName.SetText("No current objective.");
-            ActivityText.SetText("");
-        }
+        // if (GamestateManager.Player?.CurrentRegion?.Activity?.ProgressText != null) {
+        //     ActivityName.SetText("Current objective: " + GamestateManager.Player.CurrentRegion.Activity.DisplayName);
+        //
+        //     ActivityText.SetText(GamestateManager.Player.CurrentRegion.Activity.ProgressText ?? "");
+        // } else {
+        //     ActivityName.SetText("No current objective.");
+        //     ActivityText.SetText("");
+        // }
     }
 
     public override void Dispose() {

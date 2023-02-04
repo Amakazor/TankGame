@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using LanguageExt;
 using SFML.Graphics;
 using SFML.System;
 using TankGame.Actors.Brains.Goals;
+using TankGame.Core.Gamestate;
 using TankGame.Core.Map;
 using TankGame.Core.Textures;
 
@@ -37,20 +39,25 @@ public static class EnemyFactory {
         return (movementVector != default, movementVector + coords);
     }
 
-    public static Enemy CreateEnemy(EnemySpawnData enemySpawnData, int health, Region region) {
-        if (NeedsToMoveSpawn(enemySpawnData.Coords, region)) {
-            (bool canMoveCoords, Vector2i movedCoords) = GetSpawnMovementData(enemySpawnData.Coords, region);
+    public static Option<Enemy> CreateEnemy(EnemySpawnData enemySpawnData, int health = -1) {
+        return GamestateManager.Map.GetRegionFromFieldCoords(enemySpawnData.Coords).Match<Option<Enemy>>(
+            region => {
+                if (NeedsToMoveSpawn(enemySpawnData.Coords, region)) {
+                    (bool canMoveCoords, Vector2i movedCoords) = GetSpawnMovementData(enemySpawnData.Coords, region);
 
-            if (!canMoveCoords) return null;
-            enemySpawnData.Coords = movedCoords;
-        }
+                    if (!canMoveCoords) return None;
+                    enemySpawnData.Coords = movedCoords;
+                }
 
-        Vector2f scaledCoords = new(enemySpawnData.Coords.X * 64.0f, enemySpawnData.Coords.Y * 64.0f);
-        Vector2f size = new(64.0f, 64.0f);
-        int score = ((int)enemySpawnData.Type + 1) * 100;
-        Enemy enemy = new(scaledCoords, size, GetTexture(enemySpawnData.Type), GetHealth(enemySpawnData.Type, health), score, enemySpawnData.Type);
-        
-        region.GetFieldAtMapCoords(enemy.Coords)!.PawnOnField = enemy;
-        return enemy;
+                Vector2f scaledCoords = new(enemySpawnData.Coords.X * 64.0f, enemySpawnData.Coords.Y * 64.0f);
+                Vector2f size = new(64.0f, 64.0f);
+                int score = ((int)enemySpawnData.Type + 1) * 100;
+                Enemy enemy = new(scaledCoords, size, GetTexture(enemySpawnData.Type), GetHealth(enemySpawnData.Type, health), score, enemySpawnData.Type);
+
+                region.GetFieldAtMapCoords(enemy.Coords)!.PawnOnField = enemy;
+                region.Enemies.Add(enemy);
+                return enemy;
+            }, None
+        );
     }
 }

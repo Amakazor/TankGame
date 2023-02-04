@@ -44,7 +44,7 @@ public class CollisionHandler : IDisposable {
                         case Enemy _ when projectile.Owner is Player:
                         case Player _ when projectile.Owner is Enemy:
                         case GameObject _:
-                            destructible.OnHit();
+                            destructible.Hit();
                             projectile.Dispose();
                             break;
                     }

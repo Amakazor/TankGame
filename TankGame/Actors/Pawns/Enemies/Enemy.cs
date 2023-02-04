@@ -10,13 +10,6 @@ public class Enemy : Pawn {
         Health = health;
         ScoreAdded = scoreAdded;
         Type = type;
-
-        if (Coords.X != 45 || Coords.Y != 50) {
-            OnDestroy();
-        }
-        
-        Brain.AddGoal(1, new ShootPlayerGoal(Brain));
-        Brain.AddGoal(2, new ChasePlayerGoal(Brain));
     }
 
     [JsonConstructor] public Enemy(Vector2i coords, Direction direction, int? health, EnemyType type, int scoreAdded) : base(new(coords.X * 64.0f, coords.Y * 64.0f), new(64.0f, 64.0f), EnemyFactory.GetTexture(type), health) {
@@ -24,13 +17,6 @@ public class Enemy : Pawn {
         Type = type;
         Health = health;
         Direction = direction;
-        
-        if (Coords.X != 45 || Coords.Y != 50) {
-            OnDestroy();
-        } else {
-            Brain.AddGoal(1, new ShootPlayerGoal(Brain));
-            Brain.AddGoal(2, new ChasePlayerGoal(Brain));
-        }
     }
 
     public int ScoreAdded { get; }

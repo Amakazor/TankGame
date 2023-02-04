@@ -30,8 +30,8 @@ public class Player : Pawn {
         MessageBus.PlayerHealthChanged.Invoke(CurrentHealth);
     }
 
-    public override void OnHit() {
-        base.OnHit();
+    public override void Hit() {
+        base.Hit();
         MessageBus.PlayerHealthChanged.Invoke(CurrentHealth);
     }
 }

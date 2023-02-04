@@ -21,11 +21,12 @@ using TankGame.Pathfinding;
 namespace TankGame.Core.Map;
 
 public class Region : IDisposable {
-    [JsonConstructor] public Region(Vector2i coords, int fieldsInLine, List<Field> fields, HashSet<Enemy> enemies, Player? player, Activity activity) {
+    [JsonConstructor] public Region(Vector2i coords, int fieldsInLine, List<Field> fields, /*HashSet<Enemy> enemies,*/ Player? player, Activity activity) {
         Coords = coords;
         FieldsInLine = fieldsInLine;
         Fields = fields;
-        Enemies = enemies;
+        // Enemies = enemies;
+        Enemies = new();
         Activity = activity;
         Activity.Region = this;
 
@@ -37,7 +38,7 @@ public class Region : IDisposable {
         if (Player is null) return;
 
         MessageBus.PlayerHealthChanged.Invoke(Player.CurrentHealth);
-        if (Player.CurrentHealth == 0) Player.OnDestroy();
+        if (Player.CurrentHealth == 0) Player.Destroy();
 
         GetFieldAtMapCoords(Player.Coords)!.PawnOnField = Player;
     }
@@ -117,12 +118,8 @@ public class Region : IDisposable {
         Enemies.Remove(enemy);
         GameMap map = GamestateManager.Map;
 
-        if (map.GetFieldFromRegion(enemy.Coords)
-              ?.PawnOnField == enemy)
-            map.GetFieldFromRegion(enemy.Coords)!.PawnOnField = null;
-        if (map.GetFieldFromRegion(enemy.LastCoords)
-              ?.PawnOnField == enemy)
-            map.GetFieldFromRegion(enemy.LastCoords)!.PawnOnField = null;
+        map.GetFieldFromRegion(enemy.Coords)    .IfSome(field => field.PawnOnField.IfSome(pawn => { if (pawn == enemy) field.PawnOnField = null; }));
+        map.GetFieldFromRegion(enemy.LastCoords).IfSome(field => field.PawnOnField.IfSome(pawn => { if (pawn == enemy) field.PawnOnField = null; }));
     }
 
     public void AddEnemy(Enemy enemy)

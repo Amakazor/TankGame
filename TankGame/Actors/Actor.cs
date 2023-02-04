@@ -15,6 +15,9 @@ public abstract class Actor : IRenderable, IDisposable {
         (this as IRenderable).RegisterRenderable();
         Visible = true;
     }
+    
+    public static Actor ToActor<T>(T actor) where T : Actor
+        => actor;
 
     [JsonIgnore] public Vector2f Position { get; protected set; }
     [JsonIgnore] public Vector2f Size { get; }

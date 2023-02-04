@@ -10,8 +10,7 @@ namespace TankGame.Actors.Buttons;
 
 public class ChangeKeyButton : TextButton {
     public ChangeKeyButton(Vector2f position, Vector2f size, InputAction inputAction, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(
-        position, size, KeyManager.GetKey(inputAction)
-                                  .ToString(), fontSize, horizontalPosition, verticalPosition
+        position, size, KeyManager.GetKey(inputAction).ToString(), fontSize, horizontalPosition, verticalPosition
     ) {
         Focused = false;
         BlinkTimer = 0;

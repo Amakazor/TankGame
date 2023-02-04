@@ -1,19 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
+using LanguageExt;
 using SFML.Graphics;
 using SFML.System;
 using TankGame.Actors.Brains;
 using TankGame.Actors.Data;
+using TankGame.Actors.GameObjects;
 using TankGame.Core.Gamestate;
 using TankGame.Core.Map;
 using TankGame.Core.Sounds;
 using TankGame.Events;
+using TankGame.Extensions;
 using TankGame.Gui.RenderComponents;
 
 namespace TankGame.Actors.Pawns;
 
-public abstract class Pawn : TickableActor, IDestructible {
+public abstract class Pawn : TickableActor, IDestructible, ICoordinated {
     public class Dto {
         public Direction Direction { get; set; }
         public Vector2f RealPosition { get; set; }
@@ -47,9 +50,9 @@ public abstract class Pawn : TickableActor, IDestructible {
 
     public Vector2i LastCoords => new((int)(PreviousPosition.X / Size.X), (int)(PreviousPosition.Y / Size.Y));
 
-    public Region? CurrentRegion => GamestateManager.Map.GetRegionFromFieldCoords(Coords);
+    public Option<Region> CurrentRegion => GamestateManager.Map.GetRegionFromFieldCoords(Coords);
 
-    public override HashSet<IRenderComponent> RenderComponents => new() { PawnSprite };
+    public override System.Collections.Generic.HashSet<IRenderComponent> RenderComponents => new() { PawnSprite };
     public int CurrentHealth { get; set; }
 
     public bool IsAlive => CurrentHealth > 0;
@@ -57,15 +60,15 @@ public abstract class Pawn : TickableActor, IDestructible {
     public Actor Actor => this;
     public bool StopsProjectile => true;
 
-    public virtual void OnDestroy() {
+    public virtual void Destroy() {
         MessageBus.PawnDeath.Invoke(this);
         Dispose();
     }
 
-    public virtual void OnHit() {
+    public virtual void Hit() {
         SoundManager.PlayRandom(SoundType.Destruction, Position / 64);
         if (IsDestructible && IsAlive) CurrentHealth--;
-        if (CurrentHealth <= 0) OnDestroy();
+        if (CurrentHealth <= 0) Destroy();
     }
 
     public void SetRotation(float angle)
@@ -83,10 +86,10 @@ public abstract class Pawn : TickableActor, IDestructible {
         base.Dispose();
     }
     
-    public Direction GetDirectionFrom(Vector2i position) {
-        if (position.X > Coords.X) return Direction.Left;
-        if (position.X < Coords.X) return Direction.Right;
-        if (position.Y > Coords.Y) return Direction.Up;
+    public Direction GetDirectionFrom(Vector2i coords) {
+        if (coords.X > Coords.X) return Direction.Left;
+        if (coords.X < Coords.X) return Direction.Right;
+        if (coords.Y > Coords.Y) return Direction.Up;
         return Direction.Down;
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Numerics;
-using SFML.System;
+using LanguageExt;
 using TankGame.Actors.Brains.Thoughts;
-using TankGame.Actors.Fields;
 using TankGame.Actors.Pawns;
 using TankGame.Core.Controls;
 using TankGame.Core.Gamestate;
@@ -26,11 +25,7 @@ public class BePlayerGoal : Goal {
         NextAction = inputAction;
     }
 
-    public override Thought? NextThought() {
-        if (NextAction == InputAction.Shoot) {
-            Console.WriteLine("Shooting");
-        }
-        
+    public override Option<Thought> NextThought() {
         (var action, NextAction) = (NextAction, null);
         
         return action switch {
@@ -38,13 +33,10 @@ public class BePlayerGoal : Goal {
             InputAction.RotateLeft  => new RotateThought(Brain, 1.0f, -90),
             InputAction.RotateRight => new RotateThought(Brain, 1.0f,  90),
             InputAction.Shoot       => new ShootThought (Brain, 1.0f),
-            _                       => null,
+            _                       => None,
         };
     }
 
-    private Thought? MoveForward() {
-        Field? currentField = GamestateManager.Map.GetFieldFromRegion(Brain.Owner.Coords);
-        Field? targetField = GamestateManager.Map.GetFieldFromRegion(Brain.Owner.Coords + Brain.Owner.Direction.ToIVector());
-        return currentField == null || targetField == null || !targetField.IsTraversible() ? null : new MoveThought(Brain, 1.0f, currentField, targetField);
-    }
+    private Option<Thought> MoveForward()
+        => GamestateManager.Map.GetFieldFromRegion(Brain.Owner.Coords).SelectMany(_ => GamestateManager.Map.GetFieldFromRegion(Brain.Owner.Coords + Brain.Owner.Direction.ToIVector()), (currentField, targetField) => new MoveThought(Brain, 1.0f, currentField, targetField)).Map<Thought>(t => t);
 }

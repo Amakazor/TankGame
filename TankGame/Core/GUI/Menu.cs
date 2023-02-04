@@ -160,16 +160,16 @@ public class Menu : IDisposable {
         }
     }
 
-    private void OnStartGameClicked(MouseButtonEventArgs mouseButtonEventArgs)
+    private static void OnStartGameClicked(MouseButtonEventArgs mouseButtonEventArgs)
         => MessageBus.StartGame.Invoke(false);
 
-    private void OnContinueGameClicked(MouseButtonEventArgs mouseButtonEventArgs)
+    private static void OnContinueGameClicked(MouseButtonEventArgs mouseButtonEventArgs)
         => MessageBus.StartGame.Invoke(true);
 
-    private void OnQuitClicked(MouseButtonEventArgs mouseButtonEventArgs)
+    private static void OnQuitClicked(MouseButtonEventArgs mouseButtonEventArgs)
         => MessageBus.Quit.Invoke();
 
-    private void OnBackToMenuClicked(MouseButtonEventArgs mouseButtonEventArgs)
+    private static void OnBackToMenuClicked(MouseButtonEventArgs mouseButtonEventArgs)
         => MessageBus.StopGame.Invoke();
 
     private void OnBackClicked(MouseButtonEventArgs mouseButtonEventArgs)
@@ -181,9 +181,8 @@ public class Menu : IDisposable {
     private void OnScoresClicked(MouseButtonEventArgs mouseButtonEventArgs)
         => ShowLayer(MenuLayer.Scores);
 
-    private void OnQuitNoSaveButton(MouseButtonEventArgs obj) {
-        if (GamestateManager.Player != null) GamestateManager.Player.OnDestroy();
-    }
+    private static void OnQuitNoSaveButton(MouseButtonEventArgs obj)
+        => GamestateManager.Player.IfSome(player => player.Destroy());
 
     private void OnNextClicked(MouseButtonEventArgs obj) {
         ScoresOffset += 10;

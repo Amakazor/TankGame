@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using LanguageExt;
 using SFML.System;
 using TankGame.Actors.Borders;
 using TankGame.Actors.Fields;
@@ -47,8 +48,8 @@ public class GameMap : IDisposable {
         MessageBus.PawnMoved += OnPawnMoved;
     }
 
-    private HashSet<Region> Regions { get; } = new();
-    private HashSet<Border> Borders { get; }
+    public System.Collections.Generic.HashSet<Region> Regions { get; } = new();
+    private System.Collections.Generic.HashSet<Border> Borders { get; }
 
     public void Dispose() {
         GC.SuppressFinalize(this);
@@ -61,27 +62,21 @@ public class GameMap : IDisposable {
                .ForEach(border => border.Dispose());
     }
 
-    public void Save()
-        => Regions.ToList()
-                  .ForEach(region => region.Save());
+    // public void Save()
+    //     => Regions.ToList()
+    //               .ForEach(region => region.Save());
 
-    public Region? GetRegionFromFieldCoords(Vector2i fieldCoords)
+    public Option<Region> GetRegionFromFieldCoords(Vector2i fieldCoords)
         => Regions.FirstOrDefault(region => region.HasField(fieldCoords));
 
-    public Region? GetRegionFromMapCoords(Vector2i mapCoords)
+    public Option<Region> GetRegionFromMapCoords(Vector2i mapCoords)
         => Regions.FirstOrDefault(region => region.Coords.Equals(mapCoords));
 
-    public Field? GetFieldFromRegion(Vector2i fieldCoords)
+    public Option<Field> GetFieldFromRegion(Vector2i fieldCoords)
         => Regions.Where(region => region.HasField(fieldCoords))
                   .Select(region => region?.GetFieldAtMapCoords(fieldCoords))
                   .FirstOrDefault();
-
-    public bool IsFieldTraversible(Vector2i fieldCoords, bool excludePlayer = false, bool orObjectDestructible = false) {
-        Field? field = GetFieldFromRegion(fieldCoords);
-
-        return field != null && field.IsTraversible(excludePlayer, orObjectDestructible);
-    }
-
+    
     private void LoadRegionsAroundPlayer(Vector2i coords) {
         if (!coords.IsValid()) return;
 
@@ -98,7 +93,7 @@ public class GameMap : IDisposable {
     }
 
     private bool IsRegionLoaded(Vector2i coords)
-        => GetRegionFromMapCoords(coords) is not null;
+        => GetRegionFromMapCoords(coords).IsSome;
 
     private static IEnumerable<Vector2i> NextCoords(Vector2i coords) {
         List<Vector2i> nextCoords = new() {
@@ -121,7 +116,7 @@ public class GameMap : IDisposable {
                        region => {
                            if (region.Coords.X <= coords.X + 1 && region.Coords.X >= coords.X - 1 && region.Coords.Y <= coords.Y + 1 && region.Coords.Y >= coords.Y - 1) return;
 
-                           region.Save();
+                           // region.Save();
                            region.Dispose();
                            Regions.Remove(region);
                        }
@@ -143,7 +138,7 @@ public class GameMap : IDisposable {
         return new(-1, -1);
     }
 
-    private IEnumerable<Vector2i> GenerateCoordsInRadius(Vector2i center, int radius) {
+    private static IEnumerable<Vector2i> GenerateCoordsInRadius(Vector2i center, int radius) {
         List<Vector2i> coords = new();
 
         for (int x = center.X - radius; x <= center.X + radius; x++)
@@ -153,34 +148,31 @@ public class GameMap : IDisposable {
         return coords;
     }
 
-    public ISet<Node> GetNodesInRadius(Vector2i center, int radius) {
-        return GenerateCoordsInRadius(center, radius)
-              .Select(coords => (Coords: coords, Field: GetFieldFromRegion(coords)))
-              .Select(data => data.Field is not null 
-                          ? new Node(data.Coords, data.Field.IsTraversible(true), data.Field.TraversabilityMultiplier) 
-                          : new Node(data.Coords, false))
-              .ToHashSet();
-    }
+    public ISet<Node> GetNodesInRadius(Vector2i center, int radius)
+        => GenerateCoordsInRadius(center, radius)
+          .Map(coords => (Coords: coords, Field: GetFieldFromRegion(coords)))
+          .Map(data => data.Field.Match(f => new Node(data.Coords, f.IsTraversible(true), f.TraversabilityMultiplier), new Node(data.Coords, false)))
+          .ToHashSet();
 
     private void OnPawnMoved(PawnMovedEventArgs eventArgs) {
-        if (eventArgs.LastCoords.Equals(eventArgs.NewCoords)) return;
+        eventArgs.Regions.IfSome(
+            regs => {
+                (Region lastRegion, Region newRegion) = regs;
+                if (lastRegion == newRegion) return;
 
-        Region? lastRegion = GetRegionFromFieldCoords(eventArgs.LastCoords);
-        Region? newRegion = GetRegionFromFieldCoords(eventArgs.NewCoords);
-
-        if (lastRegion.Equals(newRegion)) return;
-
-        switch (eventArgs.Pawn) {
-            case Player player:
-                newRegion.AddPlayer(player);
-                lastRegion.DeletePlayer();
-                LoadRegionsAroundPlayer(newRegion.Coords);
-                break;
-            case Enemy enemy:
-                newRegion.AddEnemy(enemy);
-                lastRegion.DeleteEnemy(enemy);
-                break;
-        }
+                switch (eventArgs.Pawn) {
+                    case Player player:
+                        newRegion.AddPlayer(player);
+                        lastRegion.DeletePlayer();
+                        LoadRegionsAroundPlayer(newRegion.Coords);
+                        break;
+                    case Enemy enemy:
+                        newRegion.AddEnemy(enemy);
+                        lastRegion.DeleteEnemy(enemy);
+                        break;
+                }
+            }
+        );
     }
 
     public static bool IsOutOfBounds(Vector2f position)

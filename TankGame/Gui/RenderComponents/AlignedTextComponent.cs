@@ -1,6 +1,7 @@
 ﻿using System;
 using SFML.Graphics;
 using SFML.System;
+using TankGame.Core.Fonts;
 
 namespace TankGame.Gui.RenderComponents;
 
@@ -11,7 +12,9 @@ public enum TextPosition {
 }
 
 public class AlignedTextComponent : IRenderComponent {
-    public AlignedTextComponent(Vector2f containerPosition, Vector2f containerSize, Vector2f margins, uint fontSize, TextPosition horizontalPosition, TextPosition verticalPosition, string text, Color color) {
+    public AlignedTextComponent(Vector2f containerPosition, Vector2f containerSize, Vector2f margins, uint fontSize, TextPosition horizontalPosition, TextPosition verticalPosition, string text, Color color, FontFile? fontFile = null) {
+        fontFile ??= FontFile.PressStart2P;
+        
         ContainerPosition = containerPosition;
         ContainerSize = containerSize;
 
@@ -20,7 +23,7 @@ public class AlignedTextComponent : IRenderComponent {
         HorizontalPosition = horizontalPosition;
         VerticalPosition = verticalPosition;
 
-        TextElement = new(text, new("Resources/Fonts/PressStart2P-Regular.ttf"), fontSize) { FillColor = color };
+        TextElement = new(text, fontFile, fontSize) { FillColor = color };
 
         TextElement.Position = CalculatePosition();
     }

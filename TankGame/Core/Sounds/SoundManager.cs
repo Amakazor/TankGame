@@ -55,18 +55,22 @@ public static class SoundManager {
         => PlayFromBuffer(soundType, Get(soundType), position);
 
     private static void PlayFromBuffer(SoundType soundType, SoundBuffer soundbuffer, Vector2f position) {
-        Clear();
+        GamestateManager.Player.IfSome(
+            player => {
+                Clear();
 
-        float soundDistance = position.ManhattanDistance(GamestateManager.Player.Position / 64);
+                float soundDistance = position.ManhattanDistance(player.Coords);
 
-        float volume = Math.Min(20 * 1 / (soundDistance == 0 ? 1 : soundDistance), 20) * (soundType == SoundType.Move ? 0.25F : 1);
+                float volume = Math.Min(20 * 1 / (soundDistance == 0 ? 1 : soundDistance), 20) * (soundType == SoundType.Move ? 0.25F : 1);
 
-        if (!(volume > 0.25)) return;
+                if (!(volume > 0.25)) return;
 
-        var newSound = new Sound(soundbuffer);
-        newSound.Volume = volume;
-        newSound.Play();
+                var newSound = new Sound(soundbuffer);
+                newSound.Volume = volume;
+                newSound.Play();
 
-        Sounds.Add(newSound);
+                Sounds.Add(newSound);
+            }
+        );
     }
 }

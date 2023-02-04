@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using LanguageExt;
 using SFML.Graphics;
 using SFML.System;
 using TankGame.Actors.Data;
@@ -22,7 +22,7 @@ public class Field : Actor {
         Surface = new(Position, Size, Texture, new(255, 255, 255, 255));
 
         GameObject = gObject;
-        if (GameObject != null) GameObject.Field = this;
+        GameObject.IfSome(go => go.Field = this);
 
         RenderLayer = RenderLayer.Field;
         RenderView = RenderView.Game;
@@ -38,28 +38,30 @@ public class Field : Actor {
     public string TextureName => TextureManager.GetName(TextureType.Field, Texture);
     [JsonIgnore] private SpriteComponent Surface { get; }
 
-    [JsonIgnore] public Pawn? PawnOnField { get; set; }
+    [JsonIgnore] public Option<Pawn> PawnOnField { get; set; }
 
-    [JsonIgnore] public GameObject? GameObject { get; set; }
+    [JsonIgnore] public Option<GameObject> GameObject { get; set; }
 
-    public GameObject? GObject => GameObject is not Activity ? GameObject : null;
+    public Option<GameObject> GObject => GameObject.Match(go => go is not Activity ? Some(go) : None, () => None);
 
     public string Type { get; set; }
 
-    [JsonIgnore] public float TraversabilityMultiplier => FieldType.TraversabilityData.SpeedModifier * (GameObject is { IsTraversible: true } ? GameObject.GameObjectType.TraversabilityData.SpeedModifier : 1);
+    [JsonIgnore] public float TraversabilityMultiplier => 
+        FieldType.TraversabilityData.SpeedModifier 
+        * GameObject.Match(go => go.Traversible ? go.GameObjectType.TraversabilityData.SpeedModifier : 1, 1);
 
-    [JsonIgnore] public override HashSet<IRenderComponent> RenderComponents { get; }
+    [JsonIgnore] public override System.Collections.Generic.HashSet<IRenderComponent> RenderComponents { get; }
 
     public bool IsTraversible(bool excludePlayer = false, bool orObjectDestructible = false)
-        => FieldType.TraversabilityData.IsTraversible && (PawnOnField == null || (excludePlayer && PawnOnField is Player)) && (GameObject == null || (orObjectDestructible ? GameObject.IsDestructibleOrTraversible : GameObject.IsTraversible));
+        => FieldType.TraversabilityData.IsTraversible && (PawnOnField.IsSome || (excludePlayer && PawnOnField.Match(pawn => pawn is Player, false))) && GameObject.Match(go => go.Traversible || (orObjectDestructible && go.IsDestructible), true);
 
     public bool CanBeSpawnedOn()
         => IsTraversible(false, true);
 
-    public bool CanBeShootThrough(bool byEnemy) => (PawnOnField == null || (byEnemy && PawnOnField is Player)) && (GameObject == null || GameObject.IsTraversible || GameObject.IsDestructible);
+    public bool CanBeShootThrough(bool byEnemy) => PawnOnField.Match(pawn => byEnemy && pawn is Player, true) && GameObject.Match(go => go.Traversible || go.IsDestructible, true);
 
-    public void DestroyObjectIfExists() {
-        if (GameObject is { GameObjectType.DestructabilityData.DestroyOnEntry: true }) GameObject.OnDestroy();
+    public void DestroyObjectOnEntry(bool force = false) {
+        if (GameObject.Match(go => force || go.DestructibleOnEntry, false)) GameObject.IfSome(go => go.Destroy());
     }
 
     public void OnGameObjectDestruction()
@@ -67,10 +69,7 @@ public class Field : Actor {
 
     public override void Dispose() {
         GC.SuppressFinalize(this);
-
-        GameObject?.Dispose();
-        GameObject = null;
-
+        GameObject.IfSome(go => go.Dispose());
         base.Dispose();
     }
 

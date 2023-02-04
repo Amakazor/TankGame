@@ -13,4 +13,5 @@ public enum RenderLayer {
     HUDFront,
     MenuBack,
     MenuFront,
+    Console,
 }

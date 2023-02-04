@@ -1,4 +1,6 @@
-﻿namespace TankGame;
+﻿global using static LanguageExt.Prelude;
+
+namespace TankGame;
 
 internal abstract class Program {
     public static void Main(string[] args) {
