@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using LanguageExt;
 using SFML.Graphics;
@@ -7,12 +8,15 @@ using TankGame.Actors.Data;
 using TankGame.Actors.Fields.Roads;
 using TankGame.Actors.GameObjects;
 using TankGame.Actors.Pawns;
+using TankGame.Core.Gamestates;
 using TankGame.Core.Textures;
+using TankGame.Extensions;
 using TankGame.Gui.RenderComponents;
 
 namespace TankGame.Actors.Fields;
 
 public abstract class Field : Actor, ITraversible, ICoordinated {
+    private static readonly IEnumerable<Vector2i> MovementVectors = List<Vector2i>(new(1, 0), new(-1, 0), new(0, 1), new(0, -1), new(1, 1), new(-1, -1), new(1, -1), new(-1, 1));
     public static readonly Texture EmptyTexture = TextureManager.Get(TextureType.Field, "empty");
     public static readonly Random Random = new();
     
@@ -40,8 +44,6 @@ public abstract class Field : Actor, ITraversible, ICoordinated {
 
         RenderLayer = RenderLayer.Field;
         RenderView = RenderView.Game;
-
-        RenderComponents = new() { Surface };
     }
 
     public Field(Dto dto, Vector2i coords, Seq<Texture> textures) : this(dto, coords, GetTexture(dto.TextureVariantOption, textures)) { }
@@ -53,8 +55,6 @@ public abstract class Field : Actor, ITraversible, ICoordinated {
         
         RenderLayer = RenderLayer.Field;
         RenderView = RenderView.Game;
-
-        RenderComponents = new() { Surface };
     }
 
     public Vector2i Coords {
@@ -62,7 +62,7 @@ public abstract class Field : Actor, ITraversible, ICoordinated {
         set => throw new();
     }
     
-    private SpriteComponent Surface { get; }
+    protected SpriteComponent Surface { get; set; }
 
     public Option<Pawn> Pawn { get; set; }
 
@@ -74,7 +74,7 @@ public abstract class Field : Actor, ITraversible, ICoordinated {
         BaseSpeedModifier * GameObject.Map(go => go.Traversible ? go.SpeedModifier : 1).IfNone(1);
     public bool Traversible => BaseTraversible && GameObject.Map(go => go.Traversible).IfNone(true);
 
-    public override System.Collections.Generic.HashSet<IRenderComponent> RenderComponents { get; }
+    public override System.Collections.Generic.HashSet<IRenderComponent> RenderComponents => new() { Surface };
     
     public bool CanBeSpawnedOn()
         => Traversible;
@@ -100,4 +100,15 @@ public abstract class Field : Actor, ITraversible, ICoordinated {
     
     protected static Texture GetTexture(Option<int> variant, Seq<Texture> textures)
         => textures[variant.IfNone(Random.Next(textures.Count)) % textures.Count];
+
+    public virtual void PostProcess() {}
+
+    protected HashMap<DirectionFlag, Option<Field>> Neighbours()
+        => MovementVectors
+          .Map(vec => new KeyValuePair<DirectionFlag, Option<Field>>(vec.ToDirectionFlags(), Gamestate.Level.FieldAt(vec + Coords)))
+          .ToHashMap();
+
+    protected void CreateSurface(Texture texture) {
+        Surface = new(Position, Size, texture, new(255, 255, 255, 255));
+    }
 }

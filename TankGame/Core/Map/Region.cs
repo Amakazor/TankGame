@@ -163,4 +163,8 @@ public class Region : IDisposable {
             Activity = Activity.ToDto(),
         };
     }
+    
+    public void PostProcess() {
+        foreach ((_, Field field) in Fields) field.PostProcess();
+    }
 }

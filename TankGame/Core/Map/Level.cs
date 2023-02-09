@@ -37,9 +37,10 @@ public class Level : IDisposable {
             new(new(MapSize       * FieldsInLine * 64, -128), new(64, 64), new(2, MapSize * FieldsInLine + 4), TextureManager.Get(TextureType.Border, "hedgehog")),
             new(new(-128, MapSize * FieldsInLine * 64), new(64, 64), new(MapSize * FieldsInLine + 4, 2), TextureManager.Get(TextureType.Border, "hedgehog")),
         };
+    }
 
+    public void Load() {
         var playersRegionCoords = SearchForPlayerRegion();
-
         LoadRegionsAroundPlayer(playersRegionCoords.IfNone(() => throw new InvalidOperationException("No players region")));
 
         MessageBus.PawnMoved += OnPawnMoved;
@@ -90,8 +91,11 @@ public class Level : IDisposable {
                         .Somes() 
                         .Map(dto => new Region(dto));
 
-        foreach (Region region in newRegions) 
+        foreach (Region region in newRegions) {
             Regions.Add(region.Coords, region);
+            region.PostProcess();
+        }
+            
 
         Gamestates.Gamestate.Save();
     }

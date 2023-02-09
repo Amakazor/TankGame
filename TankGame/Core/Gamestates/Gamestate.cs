@@ -69,6 +69,7 @@ public static class Gamestate {
             Load();
 
         Level = new();
+        Level.Load();
 
         Save();
     }

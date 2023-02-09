@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SFML.System;
+using TankGame.Actors.Fields.Roads;
 using TankGame.Utility;
 
 namespace TankGame.Extensions;
@@ -38,4 +39,17 @@ public static class Vector2IExtensions {
     
     public static string ToString(this Vector2i current)
         => $"({current.X}; {current.Y})";
+    
+    public static DirectionFlag ToDirectionFlags(this Vector2i current)
+        => current switch {
+            {X: 0, Y: 1}   => DirectionFlag.Bottom,
+            {X: 0, Y: -1}  => DirectionFlag.Top,
+            {X: 1, Y: 0}   => DirectionFlag.Right,
+            {X: -1, Y: 0}  => DirectionFlag.Left,
+            {X: 1, Y: 1}   => DirectionFlag.BottomRight,
+            {X: 1, Y: -1}  => DirectionFlag.TopRight,
+            {X: -1, Y: 1}  => DirectionFlag.BottomLeft,
+            {X: -1, Y: -1} => DirectionFlag.TopLeft,
+            _              => DirectionFlag.None,
+        };
 }

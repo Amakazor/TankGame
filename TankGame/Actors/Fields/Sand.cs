@@ -14,6 +14,6 @@ public class Sand : Field {
     public Sand(Vector2i coords, Option<GameObject> gameObject) : base(coords, Textures[Random.Next(Textures.Count)], gameObject) { }
     public Sand(Dto dto, Vector2i coords) : base(dto, coords, Textures) { }
 
-    public override float BaseSpeedModifier => 1.75f;
+    public override float BaseSpeedModifier => 2.5f;
     public override bool BaseTraversible => true;
 }
