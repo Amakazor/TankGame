@@ -1,82 +1,88 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using LanguageExt;
+using SFML.Graphics;
 using SFML.System;
 using TankGame.Actors.Data;
-using TankGame.Actors.Fields;
+using TankGame.Actors.GameObjects.Buildings;
+using TankGame.Actors.GameObjects.Buildings.Activities;
+using TankGame.Actors.GameObjects.Buildings.Towers;
 using TankGame.Actors.Pawns;
-using TankGame.Core.Gamestate;
-using TankGame.Core.Map;
+using TankGame.Core.Gamestates;
 using TankGame.Core.Sounds;
-using TankGame.Core.Textures;
 using TankGame.Gui.RenderComponents;
 
 namespace TankGame.Actors.GameObjects;
 
-public class GameObject : Actor, IDestructible, IRenderable, ICoordinated {
-    [JsonConstructor] public GameObject(Vector2i coords, string type, int? health = null) : base(new(coords.X * 64, coords.Y * 64), new(64, 64)) {
-        Type = type;
-        GameObjectType = GameObjectTypes.Get(type);
-        if (health is not null) GameObjectType.DestructabilityData.Health = (int)health;
+public abstract class GameObject : Actor, IDestructible, IRenderable, ICoordinated, ITraversible {
+    
+    [JsonDerivedType(typeof(BigBuilding.Dto),         nameof(BigBuilding))]
+    [JsonDerivedType(typeof(ConiferousTree.Dto),      nameof(ConiferousTree))]
+    [JsonDerivedType(typeof(DeciduousTree.Dto),       nameof(DeciduousTree))]
+    [JsonDerivedType(typeof(FenceBw.Dto),             nameof(FenceBw))]
+    [JsonDerivedType(typeof(FenceColor.Dto),          nameof(FenceColor))]
+    [JsonDerivedType(typeof(House.Dto),               nameof(House))]
+    [JsonDerivedType(typeof(Rubble.Dto),              nameof(Rubble))]
+    [JsonDerivedType(typeof(Stump.Dto),               nameof(Stump))]
+    [JsonDerivedType(typeof(CompletedTower.Dto),      nameof(CompletedTower))]
+    [JsonDerivedType(typeof(DestroyedTower.Dto),      nameof(DestroyedTower))]
+    [JsonDerivedType(typeof(WaveActivity.Dto),        nameof(WaveActivity))]
+    [JsonDerivedType(typeof(WaveProtectActivity.Dto), nameof(WaveProtectActivity))]
+    [JsonDerivedType(typeof(DestroyAllActivity.Dto),  nameof(DestroyAllActivity))]
+    [JsonDerivedType(typeof(ProtectActivity.Dto),     nameof(ProtectActivity))]
+    public class Dto {
+        [JsonIgnore] public Option<int> HealthOption { get; set; }
 
-        (this as IDestructible).RegisterDestructible();
-        GenerateSprite();
-        SetRenderData();
+        public int? Health {
+            get => HealthOption.MatchUnsafe<int?>(i => i, () => null);
+            set => HealthOption = Optional(value);
+        }
     }
 
-    public GameObjectType GameObjectType { get; protected set; }
-    [JsonIgnore] private SpriteComponent ObjectSprite { get; set; }
-    [JsonIgnore] public Region Region { get; set; }
-    public string Type { get; }
+    protected int _health;
+    
+    public GameObject(Vector2i coords, Texture texture, int health = 1) : base((Vector2f)(coords * 64), new(64, 64)) {
+        Register();
+        _health = health;
+        ObjectSprite = new(Position, Size, texture, new(255, 255, 255, 255));
+    }
 
-    public int? Health => GameObjectType.DestructabilityData.Health;
+    public GameObject(Dto dto, Texture texture, Vector2i coords) : this(coords, texture)
+        => dto.HealthOption.IfSome(h => _health = h);
 
-    [JsonIgnore] public bool Traversible => GameObjectType.TraversabilityData.IsTraversible;
-    [JsonIgnore] public bool DestructibleOnEntry => GameObjectType.DestructabilityData.DestroyOnEntry;
-    [JsonIgnore] public Field Field { get; set; }
-    [JsonPropertyOrder(-10)] public Vector2i Coords {
+    private SpriteComponent ObjectSprite { get; }
+     
+     public Vector2i Coords {
         get => new((int)(Position.X / 64), (int)(Position.Y / 64));
         set => throw new();
-    }
+     }
     
-    [JsonIgnore] public override System.Collections.Generic.HashSet<IRenderComponent> RenderComponents => new() { ObjectSprite };
+     public override System.Collections.Generic.HashSet<IRenderComponent> RenderComponents => new() { ObjectSprite };
 
-    [JsonIgnore] public int CurrentHealth {
-        get => GameObjectType.DestructabilityData.Health;
-        set {
-            if (Coords.X == 29 && Coords.Y == 44) Console.WriteLine("");
-            GameObjectType.DestructabilityData.Health = value;
-            if (CurrentHealth == 0) Destroy();
-        }
-    }
+     public virtual int Health {
+         get => _health;
+         set { _health = value; if (value <= 0) Destroy(); }
+     }
 
-    [JsonIgnore] public bool IsDestructible => GameObjectType.DestructabilityData.IsDestructible;
-    [JsonIgnore] public bool IsAlive => CurrentHealth > 0;
-    [JsonIgnore] public Actor Actor => this;
-    [JsonIgnore] public bool StopsProjectile => GameObjectType.DestructabilityData.StopsProjectile;
+     public abstract DestructabilityType DestructabilityType { get; }
+     public abstract bool StopsProjectile { get; }
+     public Actor Actor => this;
 
     public virtual void Destroy() {
-        if (GameObjectType.GameObjectTypeAfterDestruction is null) {
-            Field.OnGameObjectDestruction();
-            Dispose();
-        } else {
-            GameObjectType = GameObjectType.GameObjectTypeAfterDestruction;
-            GenerateSprite();
-        }
+        Gamestate.Level.FieldAt(Coords).IfSome(field => field.GameObject = AfterDestruction);
+        Dispose();
     }
 
     public void Hit() {
         SoundManager.PlayRandom(SoundType.Destruction, Position / 64);
-        if (IsDestructible && IsAlive) CurrentHealth--;
+        if (DestructabilityType == DestructabilityType.Destructible && (this as IDestructible).IsAlive) Health--;
     }
 
-    private void SetRenderData() {
+    private void Register() {
+        (this as IDestructible).RegisterDestructible();
         RenderLayer = RenderLayer.GameObject;
         RenderView = RenderView.Game;
     }
-
-    protected void GenerateSprite()
-        => ObjectSprite = new(Position, Size, TextureManager.Get(TextureType.GameObject, GameObjectType.Texture), new(255, 255, 255, 255));
 
 
     public override void Dispose() {
@@ -91,4 +97,12 @@ public class GameObject : Actor, IDestructible, IRenderable, ICoordinated {
         if (coords.Y > Coords.Y) return Direction.Up;
         return Direction.Down;
     }
+
+    public abstract float SpeedModifier { get; }
+    public abstract bool Traversible { get; }
+    
+    protected abstract Option<GameObject> AfterDestruction { get; }
+
+    public virtual Dto ToDto()
+        => new() {HealthOption = Health};
 }

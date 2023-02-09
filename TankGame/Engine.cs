@@ -8,10 +8,10 @@ using SFML.Window;
 using TankGame.Actors;
 using TankGame.Actors.Data;
 using TankGame.Actors.Pawns;
-using TankGame.Actors.Pawns.Player;
+using TankGame.Actors.Pawns.Players;
 using TankGame.Core.Collisions;
 using TankGame.Core.Controls;
-using TankGame.Core.Gamestate;
+using TankGame.Core.Gamestates;
 using TankGame.Core.GUI;
 using TankGame.Core.Sounds;
 using TankGame.Core.Statistics;
@@ -66,44 +66,44 @@ public class Engine {
             previousFrameTime = currentFrameTime;
         }
 
-        if (Window.IsOpen || GamestateManager.NotStarted) return;
-        GamestateManager.Save();
+        if (Window.IsOpen || Gamestate.NotStarted) return;
+        Gamestate.Save();
         Clear();
         Hud.Dispose();
     }
 
     private void StopGame() {
-        GamestateManager.DeleteSave();
+        Gamestate.DeleteSave();
 
-        if (GamestateManager.Ending)
-            ScoreManager.Add(new(Menu.PlayerName, GamestateManager.Points));
+        if (Gamestate.Ending)
+            ScoreManager.Add(new(Menu.PlayerName, Gamestate.Points));
         else
-            GamestateManager.Save();
+            Gamestate.Save();
 
         Clear();
         Menu.ShowMenu();
     }
 
     private void Clear() {
-        GamestateManager.Clear();
+        Gamestate.Clear();
         CollisionHandler.Clear();
         MusicManager.Stop();
     }
 
     private void Tick(float deltaTime) {
-        if (!GamestateManager.Playing) return;
+        if (!Gamestate.Playing) return;
 
         foreach (ITickable tickable in Tickables.ToImmutableList()) tickable.Tick(deltaTime);
 
         CollisionHandler.Tick();
-        GamestateManager.Tick(deltaTime);
+        Gamestate.Tick(deltaTime);
     }
 
     private void Render() {
         Window.DispatchEvents();
         Window.Clear(Color.Black);
 
-        if (!GamestateManager.NotStarted) {
+        if (!Gamestate.NotStarted) {
             foreach (RenderView view in Views.Select(view => view.Key)) RenderInView(view);
         } else {
             RenderInView(RenderView.Menu);
@@ -124,28 +124,28 @@ public class Engine {
     }
 
     private void StartGame(bool continueGame) {
-        if (GamestateManager.Paused && continueGame) {
+        if (Gamestate.Paused && continueGame) {
             Unpause();
             return;
         }
 
-        if (!GamestateManager.NotStarted && !continueGame) {
+        if (!Gamestate.NotStarted && !continueGame) {
             StopGame();
         }
 
         Menu.Hide();
-        GamestateManager.Start(continueGame);
+        Gamestate.Start(continueGame);
     }
     
 
     private void Pause() {
         Menu.ShowMenu();
-        GamestateManager.Pause();
+        Gamestate.Pause();
     }
 
     private void Unpause() {
         Menu.Hide();
-        GamestateManager.Play();
+        Gamestate.Play();
     }
 
     private RenderWindow InitializeWindow() {
@@ -228,12 +228,12 @@ public class Engine {
 
         MessageBus.KeyAction += OnAction;
 
-        MessageBus.PlayerMoved += sender => RecenterView(sender.RealPosition);
+        MessageBus.PlayerMoved += sender => RecenterView(sender.Position);
         MessageBus.PawnDeath += OnPawnDeath;
     }
 
     private void Quit() {
-        if (GamestateManager.GamePhase != GamePhase.NotStarted)
+        if (Gamestate.GamePhase != GamePhase.NotStarted)
             StopGame();
         else
             ShouldQuit = true;
@@ -242,16 +242,16 @@ public class Engine {
     private void OnPawnDeath(Pawn sender) {
         if (sender is not Player) return;
 
-        GamestateManager.End();
+        Gamestate.End();
         Menu.ShowEndScreen();
     }
 
     private void OnAction(InputAction inputAction) {
         switch (inputAction) {
-            case InputAction.Pause when GamestateManager.Playing:
+            case InputAction.Pause when Gamestate.Playing:
                 Pause();
                 break;
-            case InputAction.Pause when GamestateManager.Paused:
+            case InputAction.Pause when Gamestate.Paused:
                 Unpause();
                 break;
         }

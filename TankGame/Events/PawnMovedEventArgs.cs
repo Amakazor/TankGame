@@ -2,7 +2,7 @@
 using LanguageExt;
 using SFML.System;
 using TankGame.Actors.Pawns;
-using TankGame.Core.Gamestate;
+using TankGame.Core.Gamestates;
 using TankGame.Core.Map;
 
 namespace TankGame.Events;
@@ -16,7 +16,7 @@ public class PawnMovedEventArgs : EventArgs {
 
     public Option<Tuple<Region, Region>> Regions => 
         !LastCoords.Equals(NewCoords) 
-            ? GamestateManager.Map.GetRegionFromFieldCoords(LastCoords).SelectMany(_ => GamestateManager.Map.GetRegionFromFieldCoords(NewCoords), Tuple) 
+            ? Gamestate.Level.GetRegionFromFieldCoords(LastCoords).SelectMany(_ => Gamestate.Level.GetRegionFromFieldCoords(NewCoords), Tuple) 
             : None;
 
     public Pawn Pawn { get; }

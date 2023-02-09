@@ -2,7 +2,7 @@
 using SFML.Window;
 using TankGame.Actors;
 using TankGame.Actors.Pawns;
-using TankGame.Actors.Pawns.Player;
+using TankGame.Actors.Pawns.Players;
 using TankGame.Actors.Projectiles;
 using TankGame.Core.Controls;
 

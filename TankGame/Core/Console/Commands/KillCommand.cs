@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using LanguageExt;
+﻿using LanguageExt;
 using TankGame.Actors;
 using TankGame.Core.Console.Utility;
-using TankGame.Events;
 
 namespace TankGame.Core.Console.Commands; 
 
@@ -21,6 +18,6 @@ public class KillCommand : ICommand {
         => args.Length < 2 || args.First() != Name ? None : new KillCommand(Selector.Select(args[1]));
 
     public void Execute() {
-        foreach (IDestructible destructible in SelectedData.GetAll<IDestructible>().Where(destructible => destructible.IsDestructible)) destructible.Destroy();
+        foreach (IDestructible destructible in SelectedData.GetAll<IDestructible>().Where(destructible => destructible.DestructabilityType != DestructabilityType.Indestructible)) destructible.Destroy();
     }
 }

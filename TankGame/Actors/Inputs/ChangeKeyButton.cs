@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using SFML.System;
 using SFML.Window;
+using TankGame.Actors.Buttons;
 using TankGame.Core.Controls;
 using TankGame.Events;
 using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Actors.Buttons;
+namespace TankGame.Actors.Inputs;
 
 public class ChangeKeyButton : TextButton {
     public ChangeKeyButton(Vector2f position, Vector2f size, InputAction inputAction, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(

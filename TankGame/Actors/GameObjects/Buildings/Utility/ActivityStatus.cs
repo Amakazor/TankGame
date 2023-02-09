@@ -1,4 +1,4 @@
-﻿namespace TankGame.Actors.GameObjects.Activities;
+﻿namespace TankGame.Actors.GameObjects.Buildings.Utility;
 
 public enum ActivityStatus {
     Stopped,

@@ -4,25 +4,39 @@ using LanguageExt;
 using SFML.Graphics;
 using SFML.System;
 using TankGame.Actors.Data;
+using TankGame.Actors.Fields.Roads;
 using TankGame.Actors.GameObjects;
-using TankGame.Actors.GameObjects.Activities;
 using TankGame.Actors.Pawns;
-using TankGame.Actors.Pawns.Player;
 using TankGame.Core.Textures;
 using TankGame.Gui.RenderComponents;
 
 namespace TankGame.Actors.Fields;
 
-public class Field : Actor {
-    [JsonConstructor] public Field(Vector2i coords, string textureName, GameObject? gObject, string type) : base(new(coords.X * 64, coords.Y * 64), new(64, 64)) {
-        Coords = coords;
-        Type = type;
-        FieldType = FieldTypes.Types[type];
-        Texture = TextureManager.Get(TextureType.Field, textureName);
-        Surface = new(Position, Size, Texture, new(255, 255, 255, 255));
+public abstract class Field : Actor, ITraversible, ICoordinated {
+    public static readonly Texture EmptyTexture = TextureManager.Get(TextureType.Field, "empty");
+    public static readonly Random Random = new();
+    
+    [JsonDerivedType(typeof(Grass.Dto),nameof(Grass))]
+    [JsonDerivedType(typeof(Sand.Dto), nameof(Sand))]
+    [JsonDerivedType(typeof(Road.Dto), nameof(Road))]
+    [JsonDerivedType(typeof(Water.Dto),nameof(Water))]
+    public class Dto {
+        public GameObject.Dto? GameObject { get; set; }
+        [JsonIgnore] public Option<GameObject.Dto> GameObjectOption {
+            get => GameObject;
+            set => GameObject = value.MatchUnsafe(val => val, () => null);
+        }
+        
+        public int? TextureVariant { get; set; }
+        [JsonIgnore] public Option<int> TextureVariantOption {
+            get => Optional(TextureVariant);
+            set => TextureVariant = value.MatchUnsafe<int?>(val => val, () => null);
+        }
+    }
+    public Field(Vector2i coords, Texture texture, Option<GameObject> gameObject) : base((Vector2f)(coords * 64), new(64, 64)) {
+        Surface = new(Position, Size, texture, new(255, 255, 255, 255));
 
-        GameObject = gObject;
-        GameObject.IfSome(go => go.Field = this);
+        GameObject = gameObject;
 
         RenderLayer = RenderLayer.Field;
         RenderView = RenderView.Game;
@@ -30,42 +44,46 @@ public class Field : Actor {
         RenderComponents = new() { Surface };
     }
 
-    public Vector2i Coords { get; }
+    public Field(Dto dto, Vector2i coords, Seq<Texture> textures) : this(dto, coords, GetTexture(dto.TextureVariantOption, textures)) { }
 
-    [JsonIgnore] public FieldType FieldType { get; }
+    public Field(Dto dto, Vector2i coords, Texture texture) : base((Vector2f)(coords * 64), new(64, 64)) {
+        Surface = new(Position, Size, texture, new(255, 255, 255, 255));
+        
+        GameObject = dto.GameObjectOption.Map(gameObjectDto =>  GameObjectFactory.Create(gameObjectDto, coords));
+        
+        RenderLayer = RenderLayer.Field;
+        RenderView = RenderView.Game;
 
-    [JsonIgnore] private Texture Texture { get; }
-    public string TextureName => TextureManager.GetName(TextureType.Field, Texture);
-    [JsonIgnore] private SpriteComponent Surface { get; }
-
-    [JsonIgnore] public Option<Pawn> PawnOnField { get; set; }
-
-    [JsonIgnore] public Option<GameObject> GameObject { get; set; }
-
-    public Option<GameObject> GObject => GameObject.Match(go => go is not Activity ? Some(go) : None, () => None);
-
-    public string Type { get; set; }
-
-    [JsonIgnore] public float TraversabilityMultiplier => 
-        FieldType.TraversabilityData.SpeedModifier 
-        * GameObject.Match(go => go.Traversible ? go.GameObjectType.TraversabilityData.SpeedModifier : 1, 1);
-
-    [JsonIgnore] public override System.Collections.Generic.HashSet<IRenderComponent> RenderComponents { get; }
-
-    public bool IsTraversible(bool excludePlayer = false, bool orObjectDestructible = false)
-        => FieldType.TraversabilityData.IsTraversible && (PawnOnField.IsSome || (excludePlayer && PawnOnField.Match(pawn => pawn is Player, false))) && GameObject.Match(go => go.Traversible || (orObjectDestructible && go.IsDestructible), true);
-
-    public bool CanBeSpawnedOn()
-        => IsTraversible(false, true);
-
-    public bool CanBeShootThrough(bool byEnemy) => PawnOnField.Match(pawn => byEnemy && pawn is Player, true) && GameObject.Match(go => go.Traversible || go.IsDestructible, true);
-
-    public void DestroyObjectOnEntry(bool force = false) {
-        if (GameObject.Match(go => force || go.DestructibleOnEntry, false)) GameObject.IfSome(go => go.Destroy());
+        RenderComponents = new() { Surface };
     }
 
-    public void OnGameObjectDestruction()
-        => GameObject = null;
+    public Vector2i Coords {
+        get => new((int)(Position.X / 64), (int)(Position.Y / 64));
+        set => throw new();
+    }
+    
+    private SpriteComponent Surface { get; }
+
+    public Option<Pawn> Pawn { get; set; }
+
+    public Option<GameObject> GameObject { get; set; }
+    
+    public abstract float BaseSpeedModifier { get; }
+    public abstract bool BaseTraversible { get; }
+    public float SpeedModifier => 
+        BaseSpeedModifier * GameObject.Map(go => go.Traversible ? go.SpeedModifier : 1).IfNone(1);
+    public bool Traversible => BaseTraversible && GameObject.Map(go => go.Traversible).IfNone(true);
+
+    public override System.Collections.Generic.HashSet<IRenderComponent> RenderComponents { get; }
+    
+    public bool CanBeSpawnedOn()
+        => Traversible;
+
+    public bool CanBeShootThrough() => Pawn.IsNone && GameObject.Match(go => go.Traversible || go.DestructabilityType != DestructabilityType.Indestructible, true);
+
+    public void DestroyObjectOnEntry(bool force = false) {
+        if (GameObject.Map(go => force   || go.DestructabilityType == DestructabilityType.DestroyOnEntry)) GameObject.IfSome(go => go.Destroy());
+    }
 
     public override void Dispose() {
         GC.SuppressFinalize(this);
@@ -74,6 +92,12 @@ public class Field : Actor {
     }
 
     public override string ToString() {
-        return $"Field: {Type} [{Coords.X}, {Coords.Y}]";
+        return $"Field: {GetType().Name} [{Coords.X}, {Coords.Y}]";
     }
+
+    public virtual Dto ToDto()
+        => new() { GameObjectOption = GameObject.Map(go => go.ToDto()) };
+    
+    protected static Texture GetTexture(Option<int> variant, Seq<Texture> textures)
+        => textures[variant.IfNone(Random.Next(textures.Count)) % textures.Count];
 }

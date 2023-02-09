@@ -5,9 +5,10 @@ using SFML.Window;
 using TankGame.Actors;
 using TankGame.Actors.Background;
 using TankGame.Actors.Buttons;
+using TankGame.Actors.Inputs;
 using TankGame.Actors.Text;
 using TankGame.Core.Controls;
-using TankGame.Core.Gamestate;
+using TankGame.Core.Gamestates;
 using TankGame.Core.Statistics;
 using TankGame.Events;
 using TankGame.Gui.RenderComponents;
@@ -127,7 +128,7 @@ public class Menu : IDisposable {
     private void Refresh(int phase, MenuLayer layer) {
         switch (phase) {
             case 1:
-                ScoreBox.SetText(GamestateManager.Points.ToString());
+                ScoreBox.SetText(Gamestates.Gamestate.Points.ToString());
                 break;
 
             case 2:
@@ -153,9 +154,9 @@ public class Menu : IDisposable {
                 break;
 
             case 3:
-                QuitNoSaveButton.Visible = layer == MenuLayer.Main   && GamestateManager.GamePhase != GamePhase.NotStarted && GamestateManager.GamePhase != GamePhase.Ending;
-                ScoresPrev.Visible = layer       == MenuLayer.Scores && ScoresOffset               > 0;
-                ScoresNext.Visible = layer       == MenuLayer.Scores && ScoresOffset + 10          < ScoreManager.GetScoresCount();
+                QuitNoSaveButton.Visible = layer == MenuLayer.Main   && Gamestates.Gamestate.GamePhase != GamePhase.NotStarted && Gamestates.Gamestate.GamePhase != GamePhase.Ending;
+                ScoresPrev.Visible = layer       == MenuLayer.Scores && ScoresOffset                   > 0;
+                ScoresNext.Visible = layer       == MenuLayer.Scores && ScoresOffset + 10              < ScoreManager.GetScoresCount();
                 break;
         }
     }
@@ -182,7 +183,7 @@ public class Menu : IDisposable {
         => ShowLayer(MenuLayer.Scores);
 
     private static void OnQuitNoSaveButton(MouseButtonEventArgs obj)
-        => GamestateManager.Player.IfSome(player => player.Destroy());
+        => Gamestates.Gamestate.Player.IfSome(player => player.Destroy());
 
     private void OnNextClicked(MouseButtonEventArgs obj) {
         ScoresOffset += 10;

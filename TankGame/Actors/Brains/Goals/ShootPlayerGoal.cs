@@ -1,19 +1,21 @@
-﻿using System.Linq;
-using LanguageExt;
+﻿using LanguageExt;
 using TankGame.Actors.Brains.Thoughts;
 using TankGame.Actors.Pawns;
-using TankGame.Actors.Pawns.Player;
 using TankGame.Actors.Projectiles;
-using TankGame.Core.Gamestate;
+using TankGame.Core.Gamestates;
 using TankGame.Extensions;
 
 namespace TankGame.Actors.Brains.Goals; 
 
 public class ShootPlayerGoal : Goal {
+    public new class Dto : Goal.Dto { }
+    
     public ShootPlayerGoal(Brain brain) : base(brain) { }
+    
+    public ShootPlayerGoal(Brain brain, Dto dto) : base(brain, dto) { }
 
     public override Option<Thought> NextThought() {
-        return GamestateManager.Player.Match<Option<Thought>>(
+        return Gamestate.Player.Match<Option<Thought>>(
             player => {
                 if (!IsCloseEnough(player)) return None;
                 if (!player.Coords.IsInLine(Brain.Owner.Coords)) return None;
@@ -24,7 +26,7 @@ public class ShootPlayerGoal : Goal {
             }, None);
     }
 
-    private bool IsCloseEnough(Pawn player) {
+    private bool IsCloseEnough(ICoordinated player) {
         float squareDistanceToTarget = player.Coords.SquareEuclideanDistance(Brain.Owner.Coords);
         if (squareDistanceToTarget    > Brain.Owner.SquareSightDistance) return false;
         return squareDistanceToTarget <= Projectile.SquareFlightDistanceInTiles;

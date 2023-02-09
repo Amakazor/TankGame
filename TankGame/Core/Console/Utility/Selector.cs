@@ -3,14 +3,13 @@ using LanguageExt;
 using SFML.System;
 using TankGame.Actors;
 using TankGame.Actors.Fields;
-using TankGame.Core.Gamestate;
 using TankGame.Extensions;
 
 namespace TankGame.Core.Console.Utility; 
 
 public static class Selector {
     public static SelectedData Select(string input) {
-        return GamestateManager.Player.Match<SelectedData>(
+        return Gamestates.Gamestate.Player.Match<SelectedData>(
             player => {
                 var data = toArray(input.Split(';'));
                                 
@@ -35,38 +34,39 @@ public static class Selector {
 
 
     private static SelectedData SelectPlayer()
-        => SelectedData.From(GamestateManager.Player);
+        => SelectedData.From(Gamestates.Gamestate.Player);
 
     private static SelectedData SelectAllEnemies()
-        => new(toSet<Actor>(GamestateManager.Map.Regions.SelectMany(region => region.Enemies)));
+        => new(toSet<Actor>(Gamestates.Gamestate.Level.Regions.Values.Bind(region => region.Enemies)));
 
     private static SelectedData SelectClosestEnemy(Vector2i coords)
-        => new(Optional<Actor>(GamestateManager.Map.Regions.SelectMany(region => region.Enemies).MinBy(e => e.Coords.EuclideanDistance(coords))));
+        => new(Optional<Actor>(Gamestates.Gamestate.Level.Regions.Values.Bind(region => region.Enemies).MinBy(e => e.Coords.EuclideanDistance(coords))));
     
     private static SelectedData SelectAllGameObjects()
         => new(toSet<Actor>(
-            GamestateManager
-               .Map.Regions
-               .SelectMany(region => region.Fields)
-               .Select(field => field.GameObject)
-               .Somes())
+            Gamestates.Gamestate
+                      .Level.Regions.Values
+                      .Bind(region => region.Fields.Values)
+                      .Map(field => field.GameObject)
+                      .Somes())
         );
 
     private static SelectedData SelectClosestGameObject(Vector2i coords)
-        => new(Optional<Actor>(GamestateManager
-            .Map.Regions
-            .SelectMany(region => region.Fields)
-            .Select(field => field.GameObject)
-            .Somes()
-            .MinBy(gameObject => gameObject.Coords.EuclideanDistance(coords)))
+        => new(Optional<Actor>(Gamestates.Gamestate
+                                         .Level.Regions
+                                         .Values
+                                         .Bind(region => region.Fields.Values)
+                                         .Map(field => field.GameObject)
+                                         .Somes()
+                                         .MinBy(gameObject => gameObject.Coords.EuclideanDistance(coords)))
         );
 
     private static SelectedData SelectAtCoords(Vector2i coords)
-        => GamestateManager
-          .Map
-          .GetFieldFromRegion(coords)
-          .Match(ExtractActorsFromField, () => new());
+        => Gamestates.Gamestate
+                     .Level
+                     .FieldAt(coords)
+                     .Match(ExtractActorsFromField, () => new());
 
     private static SelectedData ExtractActorsFromField(Field f)
-        => new(toSet(List(f, f.PawnOnField.Map(Actor.ToActor), f.GameObject.Map(Actor.ToActor)).Somes()));
+        => new(toSet(List(f, f.Pawn.Map(Actor.ToActor), f.GameObject.Map(Actor.ToActor)).Somes()));
 }

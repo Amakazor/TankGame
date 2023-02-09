@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using SFML.System;
-using TankGame.Core.Gamestate;
+using TankGame.Core.Gamestates;
 using TankGame.Extensions;
 
 namespace TankGame.Actors; 
@@ -10,6 +10,6 @@ public interface ICoordinated {
     
     public bool HasClearLineOfSightTo(ICoordinated other)
         => !Coords.GetAllVectorsBetween(other.Coords)
-                  .Select(coords => GamestateManager.Map.GetFieldFromRegion(coords))
-                  .Any(field => field.Match(f => f.CanBeShootThrough(true), false));
+                  .Select(coords => Gamestate.Level.FieldAt(coords))
+                  .Any(field => field.Match(f => f.CanBeShootThrough(), false));
 }

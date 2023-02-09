@@ -1,24 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using LanguageExt;
 using SFML.System;
 using TankGame.Actors.Brains.Thoughts;
-using TankGame.Actors.Fields;
 using TankGame.Actors.Pawns;
-using TankGame.Core.Gamestate;
+using TankGame.Core.Gamestates;
 using TankGame.Extensions;
 using TankGame.Pathfinding;
 
 namespace TankGame.Actors.Brains.Goals; 
 
 public class RandomWalkGoal : Goal {
+    public new class Dto : Goal.Dto {
+       
+        [JsonIgnore] public Option<Vector2i> CachedOwnerPosition { get; set; }
+        public Vector2i? OwnerPosition {
+            get => CachedOwnerPosition.MatchUnsafe<Vector2i?>(x => x, () => null);
+            set => CachedOwnerPosition = Optional(value);
+        }
+        
+        public Stack<Node> Path { get; set; }
+    }
+    
     private Random Random { get; }
     private Option<Vector2i> CachedOwnerPosition { get; set; }
     private Stack<Node> Path { get; set; } = new();
 
     public RandomWalkGoal(Brain brain) : base(brain) {
         Random = new();
+    }
+    
+    public RandomWalkGoal(Brain brain, Dto dto) : base(brain, dto) {
+        Random = new();
+        CachedOwnerPosition = dto.CachedOwnerPosition;
+        Path = dto.Path;
     }
 
     public override Option<Thought> NextThought() {
@@ -49,9 +66,9 @@ public class RandomWalkGoal : Goal {
             return new RotateThought(Brain, 1, newDirection);
         }
 
-        var moveThought = GamestateManager.Map.GetFieldFromRegion(Brain.Owner.Coords)
-          .SelectMany(_ => GamestateManager.Map.GetFieldFromRegion(Path.Peek().Coords), (baseField, targetField) => new { baseField, targetField })
-          .Where(fields => fields.targetField.IsTraversible())
+        var moveThought = Gamestate.Level.FieldAt(Brain.Owner.Coords)
+          .SelectMany(_ => Gamestate.Level.FieldAt(Path.Peek().Coords), (baseField, targetField) => new { baseField, targetField })
+          .Where(fields => fields.targetField.Traversible)
           .Select(fields => new MoveThought(Brain, 1, fields.baseField, fields.targetField));
 
         if (moveThought.IsNone) {
@@ -77,4 +94,6 @@ public class RandomWalkGoal : Goal {
         
         return true;
     }
+    public override Dto ToDto()
+        => new() { Id = Id, CachedOwnerPosition = CachedOwnerPosition, Path = Path, };
 }

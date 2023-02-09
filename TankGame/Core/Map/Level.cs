@@ -9,28 +9,28 @@ using SFML.System;
 using TankGame.Actors.Borders;
 using TankGame.Actors.Fields;
 using TankGame.Actors.Pawns.Enemies;
-using TankGame.Actors.Pawns.Player;
-using TankGame.Core.Gamestate;
+using TankGame.Actors.Pawns.Players;
 using TankGame.Core.Textures;
 using TankGame.Events;
 using TankGame.Extensions;
 using TankGame.Pathfinding;
+using TankGame.Serialization.Converters;
 
 namespace TankGame.Core.Map;
 
-public class GameMap : IDisposable {
-    private const int MapSize = 5;
-    private const int FieldsInLine = 20;
+public class Level : IDisposable {
+    private const int MapSize = 1;
+    public static readonly int FieldsInLine = 9;
 
     private static readonly JsonSerializerOptions SerializerOptions = new() {
         WriteIndented = true, 
-        IncludeFields = true, 
         NumberHandling = JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.AllowNamedFloatingPointLiterals, 
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, 
         PropertyNameCaseInsensitive = true,
+        Converters = { new Vector2IDictionaryConverter<Field.Dto>(), new Vector2IConverter(), new Vector2FConverter() },
     };
 
-    public GameMap() {
+    public Level() {
         Borders = new() {
             new(new(-128, -128), new(64, 64), new(2, MapSize  * FieldsInLine + 4), TextureManager.Get(TextureType.Border, "hedgehog")),
             new(new(-128, -128), new(64, 64), new(MapSize * FieldsInLine + 4, 2), TextureManager.Get(TextureType.Border, "hedgehog")),
@@ -38,17 +38,14 @@ public class GameMap : IDisposable {
             new(new(-128, MapSize * FieldsInLine * 64), new(64, 64), new(MapSize * FieldsInLine + 4, 2), TextureManager.Get(TextureType.Border, "hedgehog")),
         };
 
-        Vector2i playersRegionCoords = SearchForPlayerRegion();
+        var playersRegionCoords = SearchForPlayerRegion();
 
-        if (playersRegionCoords.IsValid())
-            LoadRegionsAroundPlayer(playersRegionCoords);
-        else
-            throw new InvalidOperationException("No players region");
+        LoadRegionsAroundPlayer(playersRegionCoords.IfNone(() => throw new InvalidOperationException("No players region")));
 
         MessageBus.PawnMoved += OnPawnMoved;
     }
 
-    public System.Collections.Generic.HashSet<Region> Regions { get; } = new();
+    public System.Collections.Generic.Dictionary<Vector2i, Region> Regions { get; } = new();
     private System.Collections.Generic.HashSet<Border> Borders { get; }
 
     public void Dispose() {
@@ -56,7 +53,7 @@ public class GameMap : IDisposable {
 
         MessageBus.PawnMoved -= OnPawnMoved;
         Regions.ToList()
-               .ForEach(region => region.Dispose());
+               .ForEach(region => region.Value.Dispose());
 
         Borders.ToList()
                .ForEach(border => border.Dispose());
@@ -67,67 +64,56 @@ public class GameMap : IDisposable {
     //               .ForEach(region => region.Save());
 
     public Option<Region> GetRegionFromFieldCoords(Vector2i fieldCoords)
-        => Regions.FirstOrDefault(region => region.HasField(fieldCoords));
+        => Regions.Values.FirstOrDefault(region => region.HasField(fieldCoords));
 
     public Option<Region> GetRegionFromMapCoords(Vector2i mapCoords)
-        => Regions.FirstOrDefault(region => region.Coords.Equals(mapCoords));
+        => Regions.FirstOrDefault(region => region.Value.Coords.Equals(mapCoords)).Value;
 
-    public Option<Field> GetFieldFromRegion(Vector2i fieldCoords)
-        => Regions.Where(region => region.HasField(fieldCoords))
-                  .Select(region => region?.GetFieldAtMapCoords(fieldCoords))
-                  .FirstOrDefault();
+    public Option<Field> FieldAt(Vector2i fieldCoords)
+        => Regions
+          .Values
+          .Map(region => region.FieldAt(fieldCoords))
+          .Somes()
+          .HeadOrNone();
     
     private void LoadRegionsAroundPlayer(Vector2i coords) {
         if (!coords.IsValid()) return;
 
         UnloadRegionsOutsideOfPlayerVision(coords);
 
-        Regions.UnionWith(NextCoords(coords)
-                         .Where(nextCoord => !IsRegionLoaded(nextCoord) && nextCoord is { X: >= 0 and <= MapSize, Y: >= 0 and <= MapSize })
-                         .Select(nextCoord => RegionPathGenerator.GetRegionPath(nextCoord))
-                         .Select(File.ReadAllText!)
-                         .Select(data => JsonSerializer.Deserialize<Region>(data, SerializerOptions))!
-        );
+        var newRegions = NextCoords(coords)
+                        .Filter(nextCoord => !IsRegionLoaded(nextCoord) && nextCoord is { X: >= 0 and < MapSize, Y: >= 0 and < MapSize })
+                        .Map(RegionPathGenerator.GetRegionPath)
+                        .Map(File.ReadAllText)
+                        .Map(data => JsonSerializer.Deserialize<Region.Dto>(data, SerializerOptions))
+                        .Map(Optional)
+                        .Somes() 
+                        .Map(dto => new Region(dto));
 
-        GamestateManager.Save();
+        foreach (Region region in newRegions) 
+            Regions.Add(region.Coords, region);
+
+        Gamestates.Gamestate.Save();
     }
 
     private bool IsRegionLoaded(Vector2i coords)
         => GetRegionFromMapCoords(coords).IsSome;
 
-    private static IEnumerable<Vector2i> NextCoords(Vector2i coords) {
-        List<Vector2i> nextCoords = new() {
-            coords + new Vector2i(-1, -1),
-            coords + new Vector2i(0, -1),
-            coords + new Vector2i(1, -1),
-            coords + new Vector2i(-1, 0),
-            coords + new Vector2i(0, 0),
-            coords + new Vector2i(1, 0),
-            coords + new Vector2i(-1, 1),
-            coords + new Vector2i(0, 1),
-            coords + new Vector2i(1, 1),
-        };
-        return nextCoords;
+    private static Seq<Vector2i> NextCoords(Vector2i coords)
+        => Seq(coords + new Vector2i(-1, -1), coords + new Vector2i(0, -1), coords + new Vector2i(1, -1), coords + new Vector2i(-1, 0), coords + new Vector2i(0, 0), coords + new Vector2i(1, 0), coords + new Vector2i(-1, 1), coords + new Vector2i(0, 1), coords + new Vector2i(1, 1));
+
+    private void UnloadRegionsOutsideOfPlayerVision(Vector2i coords) {
+        foreach (Region region in Regions.Values.Filter(region => !region.IsNextTo(coords))) {
+            Regions.Remove(region.Coords);
+            region.Dispose();
+        }
     }
 
-    private void UnloadRegionsOutsideOfPlayerVision(Vector2i coords)
-        => Regions.ToList()
-                  .ForEach(
-                       region => {
-                           if (region.Coords.X <= coords.X + 1 && region.Coords.X >= coords.X - 1 && region.Coords.Y <= coords.Y + 1 && region.Coords.Y >= coords.Y - 1) return;
-
-                           // region.Save();
-                           region.Dispose();
-                           Regions.Remove(region);
-                       }
-                   );
-
-    private static Vector2i SearchForPlayerRegion() {
+    private static Option<Vector2i> SearchForPlayerRegion() {
         for (var column = 0; column < MapSize; column++)
         for (var row = 0; row < MapSize; row++) {
             Vector2i regionCoords = new(column, row);
-            string? regionPath = RegionPathGenerator.GetRegionPath(regionCoords);
-            if (regionPath == null) continue;
+            string regionPath = RegionPathGenerator.GetRegionPath(regionCoords);
 
             string fileContents = File.ReadAllText(regionPath);
             if (!fileContents.Contains("\"Player\": ") || fileContents.Contains("\"Player\": null")) continue;
@@ -135,7 +121,7 @@ public class GameMap : IDisposable {
             return regionCoords;
         }
 
-        return new(-1, -1);
+        return None;
     }
 
     private static IEnumerable<Vector2i> GenerateCoordsInRadius(Vector2i center, int radius) {
@@ -150,8 +136,8 @@ public class GameMap : IDisposable {
 
     public ISet<Node> GetNodesInRadius(Vector2i center, int radius)
         => GenerateCoordsInRadius(center, radius)
-          .Map(coords => (Coords: coords, Field: GetFieldFromRegion(coords)))
-          .Map(data => data.Field.Match(f => new Node(data.Coords, f.IsTraversible(true), f.TraversabilityMultiplier), new Node(data.Coords, false)))
+          .Map(coords => (Coords: coords, Field: FieldAt(coords)))
+          .Map(data => data.Field.Match<Node>(f => new(data.Coords, f.Traversible, f.SpeedModifier), () => new(data.Coords, false)))
           .ToHashSet();
 
     private void OnPawnMoved(PawnMovedEventArgs eventArgs) {

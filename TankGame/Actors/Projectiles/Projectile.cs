@@ -4,8 +4,8 @@ using SFML.System;
 using TankGame.Actors.Data;
 using TankGame.Actors.Pawns;
 using TankGame.Actors.Pawns.Enemies;
-using TankGame.Actors.Pawns.Player;
-using TankGame.Core.Gamestate;
+using TankGame.Actors.Pawns.Players;
+using TankGame.Core.Gamestates;
 using TankGame.Core.Map;
 using TankGame.Core.Sounds;
 using TankGame.Core.Textures;
@@ -19,11 +19,11 @@ public class Projectile : TickableActor {
     private const float BaseFlightDistance = 64 * 6.5F;
     private const float BaseSpeed = 200;
 
-    public static float FlightDistance => BaseFlightDistance * (1 / (GamestateManager.WeatherModifier * GamestateManager.WeatherModifier));
+    public static float FlightDistance => BaseFlightDistance * (1 / (Gamestate.WeatherModifier * Gamestate.WeatherModifier));
     public static float SquareFlightDistance => FlightDistance * FlightDistance;
     public static float FlightDistanceInTiles => FlightDistance / 64;
     public static float SquareFlightDistanceInTiles => FlightDistanceInTiles * FlightDistanceInTiles;
-    private static  float FlightSpeed => BaseSpeed * (1 / (GamestateManager.WeatherModifier * GamestateManager.WeatherModifier));
+    private static  float FlightSpeed => BaseSpeed * (1 / (Gamestate.WeatherModifier * Gamestate.WeatherModifier));
 
     private Projectile(Pawn owner) : base(owner.Position + owner.Direction.ToVector() * 32, new(64, 64)) {
         StartingPosition = Position;
@@ -58,7 +58,7 @@ public class Projectile : TickableActor {
     public override HashSet<IRenderComponent> RenderComponents => new() { ProjectileComponent };
 
     public override void Tick(float deltaTime) {
-        if (!HasFlownToFar && !(GamestateManager.Map != null && GameMap.IsOutOfBounds(Position))) {
+        if (!HasFlownToFar && !(Gamestate.Level != null && Level.IsOutOfBounds(Position))) {
             Vector2f moveVector = Direction switch {
                 Direction.Up    => new(0, -FlightSpeed * deltaTime * SpeedMultiplier),
                 Direction.Down  => new(0, FlightSpeed  * deltaTime * SpeedMultiplier),

@@ -1,5 +1,5 @@
 ﻿using TankGame.Actors.Projectiles;
-using TankGame.Core.Sounds;
+using TankGame.Core;
 
 namespace TankGame.Actors.Brains.Thoughts; 
 
@@ -12,8 +12,8 @@ public class ShootThought : Thought, IDto<ShootThought.Dto> {
         => Projectile.Create(Brain.Owner);
     public override void FinishThought() {}
     
-    public Dto ToDto()
-        => new Dto() {
+    public override Dto ToDto()
+        => new() {
             TotalTime = TotalTime,
             TimeLeft = TimeLeft,
         };

@@ -2,7 +2,6 @@
 using TankGame.Actors;
 using TankGame.Actors.Shaders;
 using TankGame.Actors.Weathers;
-using TankGame.Core.Gamestate;
 using TankGame.Core.Sounds;
 using TankGame.Core.Textures;
 using TankGame.Events;
@@ -52,7 +51,7 @@ public class WeatherController : ITickable, IDisposable {
         MusicManager.Stop();
 
         CurrentWeatherTime = weatherTime;
-        var intensity = (float)(GamestateManager.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
+        var intensity = (float)(Gamestates.Gamestate.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
         Weather = type switch {
             WeatherType.Clear => null,
             WeatherType.Rain  => new(TextureManager.Get(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, type),
@@ -67,9 +66,9 @@ public class WeatherController : ITickable, IDisposable {
     private void GetNewWeather() {
         Weather?.Dispose();
         Weather = null;
-        CurrentWeatherTime = GamestateManager.Random.Next(WeatherMinimalTime, WeatherMaximalTime);
-        var intensity = (float)(GamestateManager.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
-        Weather = (WeatherType)GamestateManager.Random.Next(0, 3) switch {
+        CurrentWeatherTime = Gamestates.Gamestate.Random.Next(WeatherMinimalTime, WeatherMaximalTime);
+        var intensity = (float)(Gamestates.Gamestate.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
+        Weather = (WeatherType)Gamestates.Gamestate.Random.Next(0, 3) switch {
             WeatherType.Clear => null,
             WeatherType.Rain  => new(TextureManager.Get(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, WeatherType.Rain),
             WeatherType.Snow  => new(TextureManager.Get(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, WeatherType.Snow),

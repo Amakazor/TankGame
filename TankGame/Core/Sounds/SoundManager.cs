@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.Json;
 using SFML.Audio;
 using SFML.System;
-using TankGame.Core.Gamestate;
 using TankGame.Extensions;
 
 namespace TankGame.Core.Sounds;
@@ -55,7 +54,7 @@ public static class SoundManager {
         => PlayFromBuffer(soundType, Get(soundType), position);
 
     private static void PlayFromBuffer(SoundType soundType, SoundBuffer soundbuffer, Vector2f position) {
-        GamestateManager.Player.IfSome(
+        Gamestates.Gamestate.Player.IfSome(
             player => {
                 Clear();
 

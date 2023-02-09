@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SFML.Graphics;
 using SFML.System;
 using TankGame.Actors.Data;
-using TankGame.Core.Gamestate;
 using TankGame.Gui.RenderComponents;
 
 namespace TankGame.Actors.GUI;

@@ -1,61 +1,95 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using LanguageExt;
 using SFML.System;
+using TankGame.Actors;
 using TankGame.Actors.Borders;
 using TankGame.Actors.Fields;
-using TankGame.Actors.GameObjects.Activities;
+using TankGame.Actors.GameObjects.Buildings.Activities;
+using TankGame.Actors.GameObjects.Buildings.Utility;
 using TankGame.Actors.Pawns;
 using TankGame.Actors.Pawns.Enemies;
-using TankGame.Actors.Pawns.Player;
-using TankGame.Core.Gamestate;
+using TankGame.Actors.Pawns.Players;
 using TankGame.Core.Textures;
 using TankGame.Events;
-using TankGame.Extensions;
 using TankGame.Pathfinding;
 
 namespace TankGame.Core.Map;
 
 public class Region : IDisposable {
-    [JsonConstructor] public Region(Vector2i coords, int fieldsInLine, List<Field> fields, /*HashSet<Enemy> enemies,*/ Player? player, Activity activity) {
+    public class Dto {
+        public Vector2i Coords { get; set; }
+        public Dictionary<Vector2i, Field.Dto> Fields { get; set; }
+        public IEnumerable<Enemy.Dto> Enemies { get; set; }
+        public Activity.Dto Activity { get; set; }
+
+        public Player.Dto? Player { get; set; }
+        [JsonIgnore] public Option<Player.Dto> PlayerOption {
+            get => Player;
+            set => Player = value.MatchUnsafe(player => player, () => null);
+        }
+    }
+    public Region(Vector2i coords, Seq<Field> fields, System.Collections.Generic.HashSet<Enemy> enemies, Option<Player> player, Activity activity) {
         Coords = coords;
-        FieldsInLine = fieldsInLine;
-        Fields = fields;
-        // Enemies = enemies;
+        Fields = fields.ToDictionary(field => field.Coords, field => field);
+        Enemies = enemies;
         Enemies = new();
         Activity = activity;
-        Activity.Region = this;
 
         MessageBus.PawnDeath += OnPawnDeath;
 
-        RegionBorder = new(new(coords.X * 64 * fieldsInLine + 64 * (fieldsInLine / 2) - 32, coords.Y * 64 * fieldsInLine + 64 * (fieldsInLine / 2) - 32), new(64 * fieldsInLine, 64 * fieldsInLine), TextureManager.Get(TextureType.Border, "region"));
+        RegionBorder = GenerateBorder(coords);
 
-        AddPlayer(player);
-        if (Player is null) return;
+        player.IfSome(p => {
+            Gamestates.Gamestate.Player = p;
+            Player = p;
+            MessageBus.PlayerHealthChanged.Invoke(p.Health);
+            if (p.Health == 0) p.Destroy();
 
-        MessageBus.PlayerHealthChanged.Invoke(Player.CurrentHealth);
-        if (Player.CurrentHealth == 0) Player.Destroy();
+            FieldAt(p.Coords)
+               .IfSome(field => field.Pawn = p);
+        });
+    }
+    
+    public Region(Dto dto) {
+        Coords = dto.Coords;
+        Fields = dto.Fields.ToDictionary(field => field.Key, field => FieldFactory.Create(field.Value, field.Key));
+        Enemies = dto.Enemies.Map(enemy => EnemyFactory.CreateEnemy(enemy, this)).Somes().ToHashSet();
+        Activity = ActivityFactory.Create(dto.Activity, this);
+        Player = dto.PlayerOption.Map(player => new Player(player));
 
-        GetFieldAtMapCoords(Player.Coords)!.PawnOnField = Player;
+        MessageBus.PawnDeath += OnPawnDeath;
+
+        RegionBorder = GenerateBorder(dto.Coords);
+
+        Player.IfSome(p => {
+            Gamestates.Gamestate.Player = p;
+            MessageBus.PlayerHealthChanged.Invoke(p.Health);
+            if (p.Health == 0) p.Destroy();
+
+            FieldAt(p.Coords).IfSome(field => field.Pawn = p);
+        });
     }
 
+    private static RegionBorder GenerateBorder(Vector2i coords)
+        => new((Vector2f)((coords * 64) * ((Level.FieldsInLine + 64) * (Level.FieldsInLine / 2))), new Vector2f(1f, 1f) * 64 * Level.FieldsInLine, TextureManager.Get(TextureType.Border, "region"));
+
     public Vector2i Coords { get; set; }
-    public int FieldsInLine { get; }
-    public List<Field> Fields { get; set; }
-    public HashSet<Enemy> Enemies { get; }
-    public Player? Player { get; set; }
+    public Dictionary<Vector2i, Field> Fields { get; set; }
+    public System.Collections.Generic.HashSet<Enemy> Enemies { get; }
+    public Option<Player> Player { get; set; }
     [JsonIgnore] private RegionBorder RegionBorder { get; }
     public Activity Activity { get; set; }
 
-    [JsonIgnore] public bool HasDestructibleActivity => Activity is { IsDestructible: true, ActivityStatus: ActivityStatus.Started };
+    [JsonIgnore] public bool HasDestructibleActivity => Activity is { DestructabilityType: DestructabilityType.Destructible, ActivityStatus: ActivityStatus.Started };
 
     public void Dispose() {
         GC.SuppressFinalize(this);
-        Fields.ForEach(field => field.Dispose());
+        foreach ((_, Field field) in Fields) field.Dispose();
         Fields.Clear();
 
         Enemies.ToList()
@@ -63,7 +97,7 @@ public class Region : IDisposable {
         Enemies.Clear();
 
         Activity.Dispose();
-        Player?.Dispose();
+        Player.IfSome(player => player.Dispose());
 
         MessageBus.PawnDeath -= OnPawnDeath;
     }
@@ -78,26 +112,19 @@ public class Region : IDisposable {
     }
 
     private void OnPawnDeath(Pawn sender) {
-        if (sender is not Enemy enemy || GetFieldAtMapCoords(enemy.Coords) == null) return;
-
-        DeleteEnemy(enemy);
+        if (sender is Enemy enemy && HasField(enemy.Coords)) DeleteEnemy(enemy);
     }
-
-    public bool HasField(Vector2i mapFieldCoords)
-        => Coords.X * FieldsInLine <= mapFieldCoords.X && Coords.Y * FieldsInLine <= mapFieldCoords.Y && (Coords.X + 1) * FieldsInLine > mapFieldCoords.X && (Coords.Y + 1) * FieldsInLine > mapFieldCoords.Y;
-
-    public Field? GetFieldAtMapCoords(Vector2i mapFieldCoords)
-        => HasField(mapFieldCoords) ? Fields[ConvertRegionFieldCoordsToFieldIndex(ConvertMapCoordsToRegionFieldCoords(mapFieldCoords))] : null;
-
-    public Vector2i ConvertMapCoordsToRegionFieldCoords(Vector2i mapFieldCoords)
-        => mapFieldCoords.Modulo(FieldsInLine);
-
-    private int ConvertRegionFieldCoordsToFieldIndex(Vector2i regionFieldCoords)
-        => regionFieldCoords.X * FieldsInLine + regionFieldCoords.Y;
+    
+    public bool HasField(Vector2i coords)
+        => Fields.ContainsKey(coords);
+    
+    public Option<Field> FieldAt(Vector2i coords)
+        => Fields.TryGetValue(Key: coords);
 
     public ISet<Node> GetNodesInRegion() {
         return Fields
-              .Select(field => new Node(field.Coords, field.IsTraversible(true), field.TraversabilityMultiplier))
+              .Values
+              .Select(field => new Node(field.Coords, field.Traversible, field.SpeedModifier))
               .ToHashSet();
     }
 
@@ -106,22 +133,34 @@ public class Region : IDisposable {
         if (Activity.ActivityStatus == ActivityStatus.Started) Activity.ChangeStatus(ActivityStatus.Stopped);
     }
 
-    public void AddPlayer(Player? player) {
-        if (player is null) return;
-
-        GamestateManager.Player = player;
+    public void AddPlayer(Player player) {
         Player = player;
         if (Activity.ActivityStatus == ActivityStatus.Stopped) Activity.ChangeStatus(ActivityStatus.Started);
     }
 
     public void DeleteEnemy(Enemy enemy) {
         Enemies.Remove(enemy);
-        GameMap map = GamestateManager.Map;
+        Level map = Gamestates.Gamestate.Level;
 
-        map.GetFieldFromRegion(enemy.Coords)    .IfSome(field => field.PawnOnField.IfSome(pawn => { if (pawn == enemy) field.PawnOnField = null; }));
-        map.GetFieldFromRegion(enemy.LastCoords).IfSome(field => field.PawnOnField.IfSome(pawn => { if (pawn == enemy) field.PawnOnField = null; }));
+        map.FieldAt(enemy.Coords)    .IfSome(field => field.Pawn.IfSome(pawn => { if (pawn == enemy) field.Pawn = null; }));
+        map.FieldAt(enemy.LastCoords).IfSome(field => field.Pawn.IfSome(pawn => { if (pawn == enemy) field.Pawn = null; }));
     }
 
     public void AddEnemy(Enemy enemy)
         => Enemies.Add(enemy);
+    
+    public bool IsNextTo(Vector2i coords)
+        => Math.Abs(Coords.X - coords.X) <= 1 && Math.Abs(Coords.Y - coords.Y) <= 1;
+
+    public Dto ToDto() {
+        Dictionary<Vector2i, Field.Dto> fields = new(Fields.Map(pair => new KeyValuePair<Vector2i, Field.Dto>(pair.Key, pair.Value.ToDto())));
+        var enemies = Enemies.Map(enemy => enemy.ToDto());
+        return new() {
+            Coords = Coords,
+            Fields = fields,
+            Enemies = enemies,
+            PlayerOption = Player.Map(player => player.ToDto()),
+            Activity = Activity.ToDto(),
+        };
+    }
 }

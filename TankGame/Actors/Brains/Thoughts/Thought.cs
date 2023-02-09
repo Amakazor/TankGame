@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-using TankGame.Core;
-using TankGame.Core.Sounds;
 
 namespace TankGame.Actors.Brains.Thoughts; 
 
@@ -10,6 +8,9 @@ namespace TankGame.Actors.Brains.Thoughts;
 public abstract class Thought : ITickable, IDisposable {
 
     [JsonDerivedType(typeof(RotateThought.Dto), typeDiscriminator: nameof(RotateThought))]
+    [JsonDerivedType(typeof(MoveThought.Dto),   typeDiscriminator: nameof(MoveThought))]
+    [JsonDerivedType(typeof(IdleThought.Dto),   typeDiscriminator: nameof(IdleThought))]
+    [JsonDerivedType(typeof(ShootThought.Dto),  typeDiscriminator: nameof(ShootThought))]
     public class Dto {
         public float TotalTime { get; set; }
         public float TimeLeft { get; set; }
@@ -19,17 +20,18 @@ public abstract class Thought : ITickable, IDisposable {
             timeLeft = TimeLeft;
         }
     }
-    
+
+    public Thought(Brain brain, float totalTime) {
+        Brain = brain;
+        TotalTime = totalTime;
+        TimeLeft = TotalTime;
+        
+        (this as ITickable).RegisterTickable();
+    }
+
     public Thought(Brain brain, Dto dto) {
         Brain = brain;
         (TotalTime, TimeLeft) = dto;
-    }
-    
-    public Thought(Brain brain, float totalTime) {
-        Brain = brain;
-        // TotalTime = totalTime;
-        TotalTime = 0.2f;
-        TimeLeft = TotalTime;
         
         (this as ITickable).RegisterTickable();
     }
@@ -63,6 +65,12 @@ public abstract class Thought : ITickable, IDisposable {
     protected virtual void Dispose(bool disposing) {
         if (disposing) (this as ITickable).UnregisterTickable();
     }
+    
+    public virtual Dto ToDto()
+        => new(){
+            TimeLeft = TimeLeft,
+            TotalTime = TotalTime,
+        };
 
     public void Dispose() {
         Dispose(true);

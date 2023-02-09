@@ -1,7 +1,6 @@
 ﻿using System;
 using TankGame.Actors.Pawns;
 using TankGame.Core;
-using TankGame.Core.Sounds;
 using TankGame.Utility;
 
 namespace TankGame.Actors.Brains.Thoughts; 
@@ -64,7 +63,7 @@ public class RotateThought : Thought, IDto<RotateThought.Dto> {
         Brain.Owner.SetRotation(NextDirection.ToAngle());
     }
 
-    public Dto ToDto()
+    public override Dto ToDto()
         => new(){
             NextDirection = NextDirection,
             BaseAngle = BaseAngle,

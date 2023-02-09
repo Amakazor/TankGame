@@ -1,4 +1,4 @@
-﻿namespace TankGame.Core.Gamestate;
+﻿namespace TankGame.Core.Gamestates;
 
 public enum GamePhase {
     NotStarted,

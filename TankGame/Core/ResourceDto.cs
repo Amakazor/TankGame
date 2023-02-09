@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TankGame.Core.Sounds;
+namespace TankGame.Core;
 
 public class ResourceDto<T> {
     [JsonConstructor] public ResourceDto(T type, string name, string location) {

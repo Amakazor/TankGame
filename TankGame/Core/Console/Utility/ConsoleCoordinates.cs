@@ -1,5 +1,4 @@
 ﻿using LanguageExt;
-using static LanguageExt.Prelude;
 using SFML.System;
 
 namespace TankGame.Core.Console.Utility; 

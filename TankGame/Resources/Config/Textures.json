@@ -127,57 +127,82 @@
   {
     "Type": "Field",
     "Name": "road",
-    "Location": "Resources/Textures/Fields/road1.png"
+    "Location": "Resources/Textures/Fields/road.png"
   },
   {
     "Type": "Field",
-    "Name": "road-junction",
-    "Location": "Resources/Textures/Fields/road-junction.png"
+    "Name": "road-URDL",
+    "Location": "Resources/Textures/Fields/road-URDL.png"
   },
   {
     "Type": "Field",
-    "Name": "road-lb",
-    "Location": "Resources/Textures/Fields/road-lb.png"
+    "Name": "road-UD",
+    "Location": "Resources/Textures/Fields/road-UD.png"
   },
   {
     "Type": "Field",
-    "Name": "road-rb",
-    "Location": "Resources/Textures/Fields/road-rb.png"
+    "Name": "road-URL",
+    "Location": "Resources/Textures/Fields/road-TRL.png"
   },
   {
     "Type": "Field",
-    "Name": "road-lt",
-    "Location": "Resources/Textures/Fields/road-lt.png"
+    "Name": "road-URD",
+    "Location": "Resources/Textures/Fields/road-TRB.png"
   },
   {
     "Type": "Field",
-    "Name": "road-rt",
-    "Location": "Resources/Textures/Fields/road-rt.png"
+    "Name": "road-UR",
+    "Location": "Resources/Textures/Fields/road-TR.png"
   },
   {
     "Type": "Field",
-    "Name": "road-lbr",
-    "Location": "Resources/Textures/Fields/road-lbr.png"
+    "Name": "road-UL",
+    "Location": "Resources/Textures/Fields/road-TL.png"
   },
   {
     "Type": "Field",
-    "Name": "road-ltr",
-    "Location": "Resources/Textures/Fields/road-ltr.png"
+    "Name": "road-UDL",
+    "Location": "Resources/Textures/Fields/road-TBL.png"
   },
   {
     "Type": "Field",
-    "Name": "road-tlb",
-    "Location": "Resources/Textures/Fields/road-tlb.png"
+    "Name": "road-RL",
+    "Location": "Resources/Textures/Fields/road-RL.png"
   },
   {
     "Type": "Field",
-    "Name": "road-trb",
-    "Location": "Resources/Textures/Fields/road-trb.png"
+    "Name": "road-RDL",
+    "Location": "Resources/Textures/Fields/road-RBL.png"
   },
   {
     "Type": "Field",
-    "Name": "road2",
-    "Location": "Resources/Textures/Fields/road2.png"
+    "Name": "road-RD",
+    "Location": "Resources/Textures/Fields/road-RB.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-DL",
+    "Location": "Resources/Textures/Fields/road-BL.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-U",
+    "Location": "Resources/Textures/Fields/road-U.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-R",
+    "Location": "Resources/Textures/Fields/road-R.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-D",
+    "Location": "Resources/Textures/Fields/road-B.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "road-L",
+    "Location": "Resources/Textures/Fields/road-L.png"
   },
   {
     "Type": "Field",
@@ -193,6 +218,11 @@
     "Type": "Field",
     "Name": "water",
     "Location": "Resources/Textures/Fields/water.png"
+  },
+  {
+    "Type": "Field",
+    "Name": "water2",
+    "Location": "Resources/Textures/Fields/water2.png"
   },
   {
     "Type": "Border",

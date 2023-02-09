@@ -1,21 +1,22 @@
-﻿using System.Linq;
-using LanguageExt;
+﻿using LanguageExt;
 using TankGame.Actors.Brains.Thoughts;
-using TankGame.Actors.GameObjects;
 using TankGame.Actors.Pawns;
 using TankGame.Actors.Projectiles;
-using TankGame.Core.Gamestate;
 using TankGame.Extensions;
 
 namespace TankGame.Actors.Brains.Goals; 
 
 public class ShootTowerGoal : Goal {
+    public new class Dto : Goal.Dto { }
+    
     public ShootTowerGoal(Brain brain) : base(brain) { }
+    
+    public ShootTowerGoal(Brain brain, Dto dto) : base(brain, dto) { }
     
     public override Option<Thought> NextThought() {
         return Brain.Owner.CurrentRegion.Match<Option<Thought>>(
             region => {
-                IsCloseEnough(region.Activity);
+                if (!IsCloseEnough(region.Activity)) return None;
                 if (!region.Activity.Coords.IsInLine(Brain.Owner.Coords)) return None;
                 if (!(Brain.Owner as ICoordinated).HasClearLineOfSightTo(region.Activity)) return None;
                 Direction directionFrom = region.Activity.GetDirectionFrom(Brain.Owner.Coords);
@@ -25,7 +26,7 @@ public class ShootTowerGoal : Goal {
         
     }
     
-    private bool IsCloseEnough(GameObject gameObject) {
+    private bool IsCloseEnough(ICoordinated gameObject) {
         float squareDistanceToTarget = gameObject.Coords.SquareEuclideanDistance(Brain.Owner.Coords);
         if (squareDistanceToTarget    > Brain.Owner.SquareSightDistance) return false;
         return squareDistanceToTarget <= Projectile.SquareFlightDistanceInTiles;

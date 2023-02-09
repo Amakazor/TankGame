@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using SFML.System;
 using TankGame.Utility;
 
@@ -32,11 +31,11 @@ public static class Vector2IExtensions {
     public static Vector2i Modulo(this Vector2i current, int divisor)
         => new(current.X % divisor, current.Y % divisor);
 
-    public static Vector2f ToVector2f(this Vector2i current)
-        => new(current.X, current.Y);
-
     public static IEnumerable<Vector2i> GetAllVectorsBetween(this Vector2i current, Vector2i other) {
         int distance = current.EuclideanDistance(other);
         return Enumerable.Range(0, distance).Select(number => (Vector2i)MathHelper.Lerp(current, other, (float)number / distance));
     }
+    
+    public static string ToString(this Vector2i current)
+        => $"({current.X}; {current.Y})";
 }

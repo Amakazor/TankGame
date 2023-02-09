@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using SFML.System;
 using SFML.Window;
+using TankGame.Actors.Buttons;
 using TankGame.Events;
 using TankGame.Gui.RenderComponents;
 
-namespace TankGame.Actors.Buttons;
+namespace TankGame.Actors.Inputs;
 
 public class TextInput : Button {
     public TextInput(Vector2f position, Vector2f size, string placeholderText, uint fontSize, TextPosition horizontalPosition = TextPosition.Middle, TextPosition verticalPosition = TextPosition.Middle) : base(position, size) {

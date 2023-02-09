@@ -1,10 +1,14 @@
-﻿using System.Text.Json.Serialization;
-using SFML.System;
+﻿using SFML.System;
+using TankGame.Actors.GameObjects.Buildings.Utility;
+using TankGame.Core.Map;
 
-namespace TankGame.Actors.GameObjects.Activities;
+namespace TankGame.Actors.GameObjects.Buildings.Activities;
 
 public class DestroyAllActivity : Activity {
-    [JsonConstructor] public DestroyAllActivity(Vector2i coords, string name, string type, int? health, int pointsAdded, ActivityStatus activityStatus, int? enemiesCount) : base(coords, name, type, health, pointsAdded, activityStatus, enemiesCount) { }
+    public new class Dto : Activity.Dto { }
+    public DestroyAllActivity(Vector2i coords, string name, int health, int pointsAdded, ActivityStatus activityStatus, int enemiesCount) : base(coords, name, health, pointsAdded, activityStatus, enemiesCount) { }
+
+    public DestroyAllActivity(Dto dto, Region region) : base(dto, region) { }
 
     protected override string CalculateProgress() {
         // if (AllEnemiesCount == 0 && CurrentRegion.Enemies.Count > 0) AllEnemiesCount = CurrentRegion.Enemies.Count;
@@ -16,4 +20,6 @@ public class DestroyAllActivity : Activity {
         // return "Enemy " + (AllEnemiesCount - CurrentRegion.Enemies.Count) + " of " + AllEnemiesCount;
         return "";
     }
+
+    public override DestructabilityType DestructabilityType => DestructabilityType.Indestructible;
 }

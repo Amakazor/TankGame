@@ -1,6 +1,6 @@
 ﻿using TankGame.Actors.Weathers;
 
-namespace TankGame.Core.Gamestate;
+namespace TankGame.Core.Gamestates;
 
 internal class GamestateDto {
     public GamestateDto(long points, long pointsBeforeSubstraction, int combo, float comboDeltaTime, int completedActivities, WeatherType weatherType, float remainingWeatherTime) {

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 using TankGame.Actors.Data;
 using TankGame.Core.Fonts;
 using TankGame.Gui.RenderComponents;

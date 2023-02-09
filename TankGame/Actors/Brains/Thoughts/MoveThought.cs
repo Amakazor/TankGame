@@ -1,9 +1,9 @@
 ﻿using System;
 using SFML.System;
 using TankGame.Actors.Fields;
-using TankGame.Actors.Pawns.Player;
-using TankGame.Core.Gamestate;
-using TankGame.Core.Sounds;
+using TankGame.Actors.Pawns.Players;
+using TankGame.Core;
+using TankGame.Core.Gamestates;
 using TankGame.Events;
 using TankGame.Utility;
 
@@ -20,8 +20,8 @@ public class MoveThought : Thought, IDto<MoveThought.Dto> {
         public bool AlreadyAchievedEightPoint { get; set; }
         
         public void Deconstruct(out Field baseField, out Field targetField, out bool alreadyAchievedSecondPoint, out bool alreadyAchievedFifthPoint, out bool alreadyAchievedEightPoint) {
-            (baseField, targetField) = GamestateManager.Map.GetFieldFromRegion(BaseField)
-               .SelectMany(_ => GamestateManager.Map.GetFieldFromRegion(TargetField), (b, t) => (b, t))
+            (baseField, targetField) = Gamestate.Level.FieldAt(BaseField)
+               .SelectMany(_ => Gamestate.Level.FieldAt(TargetField), (b, t) => (b, t))
                .Match<Tuple<Field, Field>>( fields => Tuple(fields.b, fields.t), () => throw new("Base or target field is none"));
             
             alreadyAchievedSecondPoint = AlreadyAchievedSecondPoint;
@@ -47,7 +47,7 @@ public class MoveThought : Thought, IDto<MoveThought.Dto> {
     private bool AlreadyAchievedEightPoint { get; set; }
 
     public override void Initialize() {
-        TargetField.PawnOnField = Brain.Owner;
+        TargetField.Pawn = Brain.Owner;
     }
 
     public override void Tick(float deltaTime) {
@@ -59,6 +59,7 @@ public class MoveThought : Thought, IDto<MoveThought.Dto> {
         if (!AlreadyAchievedSecondPoint && Completion > 0.2f) {
             AlreadyAchievedSecondPoint = true;
             TargetField.DestroyObjectOnEntry();
+            // TargetField.Pawn = Brain.Owner;
         }
         
         if (!AlreadyAchievedFifthPoint && Completion >= 0.5f) {
@@ -68,16 +69,18 @@ public class MoveThought : Thought, IDto<MoveThought.Dto> {
 
         if (!AlreadyAchievedEightPoint && Completion >= 0.8f) {
             AlreadyAchievedEightPoint = true;
-            BaseField.PawnOnField = null;
+            BaseField.Pawn = null;
         }
         
         CheckForCompletion();
     }
 
-    public override void FinishThought()
-        => MessageBus.PawnMoved(new(BaseField.Coords, TargetField.Coords, Brain.Owner));
+    public override void FinishThought() {
+        MessageBus.PawnMoved(new(BaseField.Coords, TargetField.Coords, Brain.Owner));
+        Brain.Owner.Coords = TargetField.Coords;
+    }
 
-    public Dto ToDto()
+    public override Dto ToDto()
         => new() {
             TotalTime = TotalTime,
             TimeLeft = TimeLeft,

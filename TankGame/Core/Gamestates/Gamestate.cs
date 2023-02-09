@@ -6,16 +6,16 @@ using LanguageExt;
 using SFML.System;
 using TankGame.Actors.Pawns;
 using TankGame.Actors.Pawns.Enemies;
-using TankGame.Actors.Pawns.Player;
+using TankGame.Actors.Pawns.Players;
 using TankGame.Actors.Text;
 using TankGame.Core.Console;
 using TankGame.Core.Map;
 using TankGame.Core.Weathers;
 using TankGame.Events;
 
-namespace TankGame.Core.Gamestate;
+namespace TankGame.Core.Gamestates;
 
-public static class GamestateManager {
+public static class Gamestate {
     private const float ComboTime = 7.50f;
     private const int MaxCombo = 10;
     private const string SavePath = "Resources/Save/Current.json";
@@ -23,7 +23,7 @@ public static class GamestateManager {
     private static System.Collections.Generic.HashSet<PointsAddedTextBox> _pointsTextBoxes;
     private static readonly Vector2f _pointsMovementVector = new(75, 10);
 
-    static GamestateManager() {
+    static Gamestate() {
         MessageBus.PawnDeath += OnPawnDeath;
         GamePhase = GamePhase.NotStarted;
 
@@ -47,7 +47,7 @@ public static class GamestateManager {
     private static int Combo { get; set; }
     private static int CompletedActivities { get; set; }
     private static float ComboDeltaTimeCumulated { get; set; }
-    public static GameMap Map { get; private set; }
+    public static Level Level { get; private set; }
     public static WeatherController WeatherController { get; set; }
     public static Option<Player> Player { get; set; }
     public static Random Random { get; }
@@ -68,7 +68,7 @@ public static class GamestateManager {
         else
             Load();
 
-        Map = new();
+        Level = new();
 
         Save();
     }
@@ -113,12 +113,12 @@ public static class GamestateManager {
     }
 
     public static void Clear() {
-        Map.Dispose();
+        Level.Dispose();
         _pointsTextBoxes.ToList()
                         .ForEach(pointsTextBox => pointsTextBox.Dispose());
         WeatherController.Dispose();
 
-        Map = null;
+        Level = null;
         Player = null;
         WeatherController = null;
         _pointsTextBoxes = new();

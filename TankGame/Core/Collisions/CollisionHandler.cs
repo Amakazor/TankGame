@@ -6,7 +6,7 @@ using TankGame.Actors;
 using TankGame.Actors.GameObjects;
 using TankGame.Actors.Pawns;
 using TankGame.Actors.Pawns.Enemies;
-using TankGame.Actors.Pawns.Player;
+using TankGame.Actors.Pawns.Players;
 using TankGame.Actors.Projectiles;
 using TankGame.Events;
 
@@ -36,24 +36,22 @@ public class CollisionHandler : IDisposable {
     }
 
     public void Tick() {
-        foreach (Projectile projectile in Projectiles.ToList())
-        foreach (IDestructible destructible in Destructibles.ToList())
-            if (CheckCollision(projectile, destructible.Actor)) {
-                if (destructible.IsDestructible)
-                    switch (destructible.Actor) {
-                        case Enemy _ when projectile.Owner is Player:
-                        case Player _ when projectile.Owner is Enemy:
-                        case GameObject _:
-                            destructible.Hit();
-                            projectile.Dispose();
-                            break;
-                    }
-                else if (destructible.StopsProjectile) projectile.Dispose();
-            }
+        foreach (Projectile projectile in Projectiles.ToSeq())
+        foreach (IDestructible destructible in Destructibles.Filter(destructible => CheckCollision(projectile, destructible.Actor)).ToSeq())
+            if (destructible.DestructabilityType != DestructabilityType.Indestructible)
+                switch (destructible.Actor) {
+                    case Enemy _ when projectile.Owner is Player:
+                    case Player _ when projectile.Owner is Enemy:
+                    case GameObject _:
+                        destructible.Hit();
+                        projectile.Dispose();
+                        break;
+                }
+            else if (destructible.StopsProjectile) projectile.Dispose();
     }
 
     private static bool CheckCollision(Projectile projectile, Actor actor2)
-        => CollidesAabb(projectile.CollisionPosition, projectile.CollistionSize, actor2 is Pawn pawn ? pawn.RealPosition : actor2.Position, actor2.Size);
+        => CollidesAabb(projectile.CollisionPosition, projectile.CollistionSize, actor2 is Pawn pawn ? pawn.Position : actor2.Position, actor2.Size);
 
     private static bool CollidesAabb(Vector2f position1, Vector2f size1, Vector2f position2, Vector2f size2)
         => position1.X + size1.X >= position2.X && position2.X + size2.X >= position1.X && position1.Y + size1.Y >= position2.Y && position2.Y + size2.Y >= position1.Y;
@@ -71,8 +69,7 @@ public class CollisionHandler : IDisposable {
         => Projectiles.Remove(sender);
 
     public void Clear() {
-        Projectiles.ToList()
-                   .ForEach(projectile => projectile?.Dispose());
+        Projectiles.ToList().ForEach(projectile => projectile.Dispose());
 
         Destructibles.Clear();
         Projectiles.Clear();

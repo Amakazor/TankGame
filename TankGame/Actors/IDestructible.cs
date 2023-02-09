@@ -2,10 +2,16 @@
 
 namespace TankGame.Actors;
 
+public enum DestructabilityType {
+    Destructible,
+    Indestructible,
+    DestroyOnEntry,
+}
+
 public interface IDestructible {
-    public bool IsAlive { get; }
-    public int CurrentHealth { get; set; }
-    public bool IsDestructible { get; }
+    public bool IsAlive => Health > 0;
+    public int Health { get; set; } 
+    public DestructabilityType DestructabilityType { get; }
     public bool StopsProjectile { get; }
     public Actor Actor { get; }
 
