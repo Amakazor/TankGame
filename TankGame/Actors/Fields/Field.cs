@@ -81,9 +81,8 @@ public abstract class Field : Actor, ITraversible, ICoordinated {
 
     public bool CanBeShootThrough() => Pawn.IsNone && GameObject.Match(go => go.Traversible || go.DestructabilityType != DestructabilityType.Indestructible, true);
 
-    public void DestroyObjectOnEntry(bool force = false) {
-        if (GameObject.Map(go => force   || go.DestructabilityType == DestructabilityType.DestroyOnEntry)) GameObject.IfSome(go => go.Destroy());
-    }
+    public void DestroyObjectOnEntry(bool force = false)
+        => GameObject.Filter(go => force || go.DestructabilityType == DestructabilityType.DestroyOnEntry).IfSome(go => go.Destroy());
 
     public override void Dispose() {
         GC.SuppressFinalize(this);
