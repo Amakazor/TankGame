@@ -14,17 +14,11 @@ public class WeatherShader : ComplexShader {
         Shader.SetUniform("intensityY", intensity);
     }
 
-    public static bool CanUseShader => Shader.IsAvailable && TryShader();
+    public static bool CanUseShader => Shader.IsAvailable;
 
     public override void Tick(float deltaTime) {
         Time = Time + deltaTime > 320 ? Time - 320 + deltaTime : Time + deltaTime;
 
         Shader.SetUniform("time", Time);
-    }
-
-    public static bool TryShader() {
-        try { new Shader(null, null, "resources/shaders/fragment/scroll.glsl"); } catch (LoadingFailedException) { return false; }
-
-        return true;
     }
 }

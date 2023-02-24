@@ -3,7 +3,7 @@ using SFML.Window;
 
 namespace TankGame.Core.Controls;
 
-public class KeyAction : IEquatable<KeyAction> {
+public sealed class KeyAction : IEquatable<KeyAction> {
     public KeyAction(Keyboard.Key key, InputAction inputAction) {
         Key = key;
         InputAction = inputAction;

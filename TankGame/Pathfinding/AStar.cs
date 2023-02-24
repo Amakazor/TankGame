@@ -64,6 +64,7 @@ public static class AStar {
     private static IEnumerable<Node> GetAdjacentNodes(Node node, ISet<Node> grid) {
         return GetAdjacentPositions(node.Coords)
               .Select(position => grid.FirstOrDefault(x => x!.Coords == position, null))
-              .Where(x => x is not null) as IEnumerable<Node>;
+              .Where(x => x is not null)
+              .OfType<Node>();
     }
 }

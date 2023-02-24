@@ -76,10 +76,4 @@ public class Brain : IDisposable {
         Goals = new(Goals.Map(kvp => new KeyValuePair<int, Goal.Dto>(kvp.Key, kvp.Value.ToDto()))), 
         Delay = Delay,
     };
-    
-    private static KeyValuePair<int, Goal.Dto> OrderedGoalToDto(KeyValuePair<int, Goal> pair)
-        => new (pair.Key, pair.Value.ToDto());
-    
-    private static KeyValuePair<int, Goal> OrderedDtoToGoal(KeyValuePair<int, Goal.Dto> pair, Brain brain)
-        => new (pair.Key, GoalFactory.CreateGoal(pair.Value, brain));
 }

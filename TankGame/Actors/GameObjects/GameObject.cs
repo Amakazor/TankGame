@@ -41,13 +41,13 @@ public abstract class GameObject : Actor, IDestructible, IRenderable, ICoordinat
 
     protected int _health;
     
-    public GameObject(Vector2i coords, Texture texture, int health = 1) : base((Vector2f)(coords * 64), new(64, 64)) {
+    protected GameObject(Vector2i coords, Texture texture, int health = 1) : base((Vector2f)(coords * 64), new(64, 64)) {
         Register();
         _health = health;
         ObjectSprite = new(Position, Size, texture, new(255, 255, 255, 255));
     }
 
-    public GameObject(Dto dto, Texture texture, Vector2i coords) : this(coords, texture)
+    protected GameObject(Dto dto, Texture texture, Vector2i coords) : this(coords, texture)
         => dto.HealthOption.IfSome(h => _health = h);
 
     private SpriteComponent ObjectSprite { get; }

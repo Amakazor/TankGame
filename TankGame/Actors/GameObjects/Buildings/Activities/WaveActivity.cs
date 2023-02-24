@@ -35,30 +35,16 @@ public class WaveActivity : Activity {
     public uint CurrentWave { get; set; }
 
     protected override string CalculateProgress() {
-        // if (AllEnemiesCount == 0 && CurrentRegion.Enemies.Count > 0) AllEnemiesCount = CurrentRegion.Enemies.Count;
-        //
-        // if (CurrentRegion.Enemies.Count == 0 && ActivityStatus == ActivityStatus.Started) {
-        //     if (EnemySpawns.Count == 0)
-        //         ChangeStatus(ActivityStatus.Completed);
-        //     else
-        //         SpawnNextWave();
-        // }
-        //
-        // if (ActivityStatus is ActivityStatus.Completed or ActivityStatus.Failed) return "";
-        //
-        // return "Enemy " + (AllEnemiesCount - CurrentRegion.Enemies.Count) + " of " + AllEnemiesCount + "\n" + "Wave  " + CurrentWave + " of " + (CurrentWave + (EnemySpawns?.Count ?? 0));
-
         return "";
     }
 
     public override void ChangeStatus(ActivityStatus activityStatus) {
-        // base.ChangeStatus(activityStatus);
-        // if (ActivityStatus == ActivityStatus.Started && CurrentRegion.Enemies.Count == 0 && EnemySpawns != null && EnemySpawns.Count != 0) SpawnNextWave();
+       //TODO: Add logic for changing status
     }
 
     protected void SpawnNextWave() {
         CurrentWave++;
-        var _ = EnemySpawns.Dequeue().Select(EnemyFactory.CreateEnemy);
+        foreach (var enemy in EnemySpawns.Dequeue()) EnemyFactory.CreateEnemy(enemy);
         if (EnemiesCount == 0 && EnemySpawns.Count == 0 && ActivityStatus != ActivityStatus.Completed) ChangeStatus(ActivityStatus.Completed);
     }
 

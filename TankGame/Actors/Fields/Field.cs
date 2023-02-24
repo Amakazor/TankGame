@@ -37,7 +37,8 @@ public abstract class Field : Actor, ITraversible, ICoordinated {
             set => TextureVariant = value.MatchUnsafe<int?>(val => val, () => null);
         }
     }
-    public Field(Vector2i coords, Texture texture, Option<GameObject> gameObject) : base((Vector2f)(coords * 64), new(64, 64)) {
+
+    protected Field(Vector2i coords, Texture texture, Option<GameObject> gameObject) : base((Vector2f)(coords * 64), new(64, 64)) {
         Surface = new(Position, Size, texture, new(255, 255, 255, 255));
 
         GameObject = gameObject;
@@ -46,9 +47,9 @@ public abstract class Field : Actor, ITraversible, ICoordinated {
         RenderView = RenderView.Game;
     }
 
-    public Field(Dto dto, Vector2i coords, Seq<Texture> textures) : this(dto, coords, GetTexture(dto.TextureVariantOption, textures)) { }
+    protected Field(Dto dto, Vector2i coords, Seq<Texture> textures) : this(dto, coords, GetTexture(dto.TextureVariantOption, textures)) { }
 
-    public Field(Dto dto, Vector2i coords, Texture texture) : base((Vector2f)(coords * 64), new(64, 64)) {
+    protected Field(Dto dto, Vector2i coords, Texture texture) : base((Vector2f)(coords * 64), new(64, 64)) {
         Surface = new(Position, Size, texture, new(255, 255, 255, 255));
         
         GameObject = dto.GameObjectOption.Map(gameObjectDto =>  GameObjectFactory.Create(gameObjectDto, coords));
@@ -102,9 +103,9 @@ public abstract class Field : Actor, ITraversible, ICoordinated {
 
     public virtual void PostProcess() {}
 
-    protected HashMap<DirectionFlag, Option<Field>> Neighbours()
+    protected HashMap<Directions, Option<Field>> Neighbours()
         => MovementVectors
-          .Map(vec => new KeyValuePair<DirectionFlag, Option<Field>>(vec.ToDirectionFlags(), Gamestate.Level.FieldAt(vec + Coords)))
+          .Map(vec => new KeyValuePair<Directions, Option<Field>>(vec.ToDirectionFlags(), Gamestate.Level.FieldAt(vec + Coords)))
           .ToHashMap();
 
     protected void CreateSurface(Texture texture) {

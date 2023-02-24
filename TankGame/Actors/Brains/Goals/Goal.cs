@@ -32,7 +32,7 @@ public abstract class Goal {
     protected Brain Brain { get; private set; }
     
     public virtual Option<Thought> NextThought() 
-        => null;
+        => None;
     
     public virtual Dto ToDto() 
         => new() { Id = Id };

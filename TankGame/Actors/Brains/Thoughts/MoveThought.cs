@@ -59,7 +59,6 @@ public class MoveThought : Thought, IDto<MoveThought.Dto> {
         if (!AlreadyAchievedSecondPoint && Completion > 0.2f) {
             AlreadyAchievedSecondPoint = true;
             TargetField.DestroyObjectOnEntry();
-            // TargetField.Pawn = Brain.Owner;
         }
         
         if (!AlreadyAchievedFifthPoint && Completion >= 0.5f) {

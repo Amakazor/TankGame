@@ -3,7 +3,7 @@
 namespace TankGame.Actors.Fields.Roads; 
 
 [Flags]
-public enum DirectionFlag {
+public enum Directions {
     None = 0,
     Top = 1,
     Right = 2,

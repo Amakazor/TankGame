@@ -41,7 +41,9 @@ public static class SoundManager {
     }
 
     private static void Clear() {
-        foreach (Sound sound in Sounds.ToList().Where(sound => sound.Status == SoundStatus.Stopped)) {
+        var stoppedSounds = Sounds.Where(sound => sound.Status == SoundStatus.Stopped);
+        
+        foreach (Sound sound in stoppedSounds) {
             Sounds.Remove(sound);
             sound.Dispose();
         }
@@ -62,7 +64,7 @@ public static class SoundManager {
 
                 float volume = Math.Min(20 * 1 / (soundDistance == 0 ? 1 : soundDistance), 20) * (soundType == SoundType.Move ? 0.25F : 1);
 
-                if (!(volume > 0.25)) return;
+                if (volume <= 0.25) return;
 
                 var newSound = new Sound(soundbuffer);
                 newSound.Volume = volume;

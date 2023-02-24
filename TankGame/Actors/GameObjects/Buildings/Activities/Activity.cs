@@ -34,7 +34,7 @@ public abstract class Activity : GameObject, ITickable {
     }
     
     private static readonly Texture Tex = TextureManager.Get(TextureType.GameObject, "tower");
-    public Activity(Vector2i coords, string name, int health, int pointsAdded, ActivityStatus activityStatus, int enemiesCount) : base(coords, Tex, health) {
+    protected Activity(Vector2i coords, string name, int health, int pointsAdded, ActivityStatus activityStatus, int enemiesCount) : base(coords, Tex, health) {
         EnemiesCount = enemiesCount;
         Name = name;
         PointsAdded = pointsAdded;
@@ -43,7 +43,7 @@ public abstract class Activity : GameObject, ITickable {
         (this as ITickable).RegisterTickable();
     }
 
-    public Activity(Dto dto, Region region) : base(dto, Tex, dto.Coords) {
+    protected Activity(Dto dto, Region region) : base(dto, Tex, dto.Coords) {
         EnemiesCount = dto.EnemiesCount.IfNone(region.Enemies.Count);
         Name = dto.Name;
         PointsAdded = dto.PointsAdded;
@@ -83,8 +83,6 @@ public abstract class Activity : GameObject, ITickable {
             case ActivityStatus.Started: break;
             default:                     throw new ArgumentOutOfRangeException(nameof(activityStatus), activityStatus, null);
         }
-
-        // if (Gamestate.Level != null) Gamestate.Save();
     }
 
     protected void ChangeToCompleted() {

@@ -4,7 +4,7 @@ using TankGame.Actors.Pawns;
 
 namespace TankGame.Pathfinding;
 
-public class Node : IEquatable<Node> {
+public sealed class Node : IEquatable<Node> {
     public Node(Vector2i coords, bool walkable = true, float weight = 1) {
         Parent = null;
         Coords = coords;

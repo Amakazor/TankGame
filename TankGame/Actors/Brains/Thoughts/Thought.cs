@@ -21,7 +21,7 @@ public abstract class Thought : ITickable, IDisposable {
         }
     }
 
-    public Thought(Brain brain, float totalTime) {
+    protected Thought(Brain brain, float totalTime) {
         Brain = brain;
         TotalTime = totalTime;
         TimeLeft = TotalTime;
@@ -29,7 +29,7 @@ public abstract class Thought : ITickable, IDisposable {
         (this as ITickable).RegisterTickable();
     }
 
-    public Thought(Brain brain, Dto dto) {
+    protected Thought(Brain brain, Dto dto) {
         Brain = brain;
         (TotalTime, TimeLeft) = dto;
         
@@ -40,9 +40,9 @@ public abstract class Thought : ITickable, IDisposable {
     public float TotalTime { get; }
     public float TimeLeft { get; protected set; }
 
-    public float Completion => 1 - TimeLeft / TotalTime;
+    protected float Completion => 1 - TimeLeft / TotalTime;
 
-    public virtual void Tick(float deltaTime, bool checkForCompletion = true) {
+    protected void Tick(float deltaTime, bool checkForCompletion) {
         TimeLeft = Math.Max(0, TimeLeft - deltaTime);
         if (checkForCompletion) CheckForCompletion();
     }

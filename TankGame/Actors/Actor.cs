@@ -28,7 +28,7 @@ public abstract class Actor : IRenderable, IDisposable {
         GC.SuppressFinalize(this);
         (this as IRenderable).UnregisterRenderable();
     }
-
+    
     [JsonIgnore] public RenderLayer RenderableRenderLayer => RenderLayer;
     [JsonIgnore] public RenderView RenderableRenderView => RenderView;
     [JsonIgnore] public bool Visible { get; set; }

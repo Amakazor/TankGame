@@ -37,17 +37,17 @@ public class CollisionHandler : IDisposable {
 
     public void Tick() {
         foreach (Projectile projectile in Projectiles.ToSeq())
-        foreach (IDestructible destructible in Destructibles.Filter(destructible => CheckCollision(projectile, destructible.Actor)).ToSeq())
-            if (destructible.DestructabilityType != DestructabilityType.Indestructible)
-                switch (destructible.Actor) {
-                    case Enemy _ when projectile.Owner is Player:
-                    case Player _ when projectile.Owner is Enemy:
-                    case GameObject _:
-                        destructible.Hit();
-                        projectile.Dispose();
-                        break;
-                }
-            else if (destructible.StopsProjectile) projectile.Dispose();
+            foreach (IDestructible destructible in Destructibles.Filter(destructible => CheckCollision(projectile, destructible.Actor)).ToSeq())
+                if (destructible.DestructabilityType != DestructabilityType.Indestructible)
+                    switch (destructible.Actor) {
+                        case Enemy _ when projectile.Owner is Player:
+                        case Player _ when projectile.Owner is Enemy:
+                        case GameObject _:
+                            destructible.Hit();
+                            projectile.Dispose();
+                            break;
+                    }
+                else if (destructible.StopsProjectile) projectile.Dispose();
     }
 
     private static bool CheckCollision(Projectile projectile, Actor actor2)

@@ -2,6 +2,6 @@
 
 namespace TankGame.Core; 
 
-public interface IDto<TDto> where TDto : Thought.Dto {
+public interface IDto<out TDto> where TDto : Thought.Dto {
     public TDto ToDto();
 }

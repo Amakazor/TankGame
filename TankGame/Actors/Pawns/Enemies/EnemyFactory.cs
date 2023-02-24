@@ -21,7 +21,7 @@ public static class EnemyFactory {
                 EnemyType.Light  => new LightTank(coords),
                 EnemyType.Medium => new MediumTank(coords),
                 EnemyType.Heavy  => new HeavyTank(coords),
-                _                => throw new ArgumentOutOfRangeException(), 
+                _                => throw new ArgumentOutOfRangeException(nameof(enemySpawnData.Type), enemySpawnData.Type, "Invalid enemy type"), 
             });
 
     public static Option<Enemy> CreateEnemy(Enemy.Dto enemyDto, Region region)

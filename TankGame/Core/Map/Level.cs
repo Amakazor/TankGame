@@ -60,10 +60,6 @@ public class Level : IDisposable {
                .ForEach(border => border.Dispose());
     }
 
-    // public void Save()
-    //     => Regions.ToList()
-    //               .ForEach(region => region.Save());
-
     public Option<Region> GetRegionFromFieldCoords(Vector2i fieldCoords)
         => Regions.Values.FirstOrDefault(region => region.HasField(fieldCoords));
 
@@ -115,15 +111,15 @@ public class Level : IDisposable {
 
     private static Option<Vector2i> SearchForPlayerRegion() {
         for (var column = 0; column < MapSize; column++)
-        for (var row = 0; row < MapSize; row++) {
-            Vector2i regionCoords = new(column, row);
-            string regionPath = RegionPathGenerator.GetRegionPath(regionCoords);
+            for (var row = 0; row < MapSize; row++) {
+                Vector2i regionCoords = new(column, row);
+                string regionPath = RegionPathGenerator.GetRegionPath(regionCoords);
 
-            string fileContents = File.ReadAllText(regionPath);
-            if (!fileContents.Contains("\"Player\": ") || fileContents.Contains("\"Player\": null")) continue;
+                string fileContents = File.ReadAllText(regionPath);
+                if (!fileContents.Contains("\"Player\": ") || fileContents.Contains("\"Player\": null")) continue;
 
-            return regionCoords;
-        }
+                return regionCoords;
+            }
 
         return None;
     }
@@ -132,8 +128,8 @@ public class Level : IDisposable {
         List<Vector2i> coords = new();
 
         for (int x = center.X - radius; x <= center.X + radius; x++)
-        for (int y = center.Y - radius; y <= center.Y + radius; y++)
-            coords.Add(new(x, y));
+            for (int y = center.Y - radius; y <= center.Y + radius; y++)
+                    coords.Add(new(x, y));
 
         return coords;
     }

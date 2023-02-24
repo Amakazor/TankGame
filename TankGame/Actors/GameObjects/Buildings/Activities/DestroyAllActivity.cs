@@ -11,13 +11,6 @@ public class DestroyAllActivity : Activity {
     public DestroyAllActivity(Dto dto, Region region) : base(dto, region) { }
 
     protected override string CalculateProgress() {
-        // if (AllEnemiesCount == 0 && CurrentRegion.Enemies.Count > 0) AllEnemiesCount = CurrentRegion.Enemies.Count;
-        //
-        // if (CurrentRegion.Enemies.Count == 0 && ActivityStatus != ActivityStatus.Completed) ChangeStatus(ActivityStatus.Completed);
-        //
-        // if (ActivityStatus == ActivityStatus.Completed || ActivityStatus == ActivityStatus.Failed) return "";
-        //
-        // return "Enemy " + (AllEnemiesCount - CurrentRegion.Enemies.Count) + " of " + AllEnemiesCount;
         return "";
     }
 

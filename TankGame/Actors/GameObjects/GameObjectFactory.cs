@@ -20,6 +20,6 @@ public static class GameObjectFactory {
             CompletedTower.Dto dto => new CompletedTower(dto, coords),
             DestroyedTower.Dto dto => new DestroyedTower(dto, coords),
 
-            _ => throw new ArgumentOutOfRangeException()
+            _ => throw new ArgumentOutOfRangeException(nameof(gameObjectDto), gameObjectDto, "gameObjectDto is not a known subclass of GameObject.Dto"),
         };
 }

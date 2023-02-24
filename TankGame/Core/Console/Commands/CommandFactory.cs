@@ -5,7 +5,7 @@ namespace TankGame.Core.Console.Commands;
 public static class CommandFactory {
     public static Option<ICommand> CreateCommand(Seq<string> args) {
         
-        if (!args.Any()) return null;
+        if (!args.Any()) return None;
         string name = args.First();
         
         return name switch {
