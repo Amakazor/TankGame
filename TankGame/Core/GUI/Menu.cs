@@ -128,7 +128,7 @@ public class Menu : IDisposable {
     private void Refresh(int phase, MenuLayer layer) {
         switch (phase) {
             case 1:
-                ScoreBox.SetText(Gamestates.Gamestate.Points.ToString());
+                ScoreBox.SetText(Gamestate.Points.ToString());
                 break;
 
             case 2:

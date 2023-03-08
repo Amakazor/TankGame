@@ -9,17 +9,19 @@ using TankGame.Events;
 namespace TankGame.Core.Weathers;
 
 public class WeatherController : ITickable, IDisposable {
-    public const int WeatherMinimalTime = 30;
-    public const int WeatherMaximalTime = 61;
-    public const float WeatherMinimalIntensity = 0.5F;
-    public const float WeatherMaximalIntensity = 3F;
-    public readonly AnimationType AnimationType;
+    private static readonly Random Random = new();
+    
+    private const int WeatherMinimalTime = 30;
+    private const int WeatherMaximalTime = 61;
+    private const float WeatherMinimalIntensity = 0.5F;
+    private const float WeatherMaximalIntensity = 3F;
+    private readonly AnimationType _animationType;
 
     public WeatherController() {
         RegisterTickable();
         CurrentWeatherTime = 0;
 
-        AnimationType = WeatherShader.CanUseShader ? AnimationType.Shaded : AnimationType.Animated;
+        _animationType = WeatherShader.CanUseShader ? AnimationType.Shaded : AnimationType.Animated;
 
         GetNewWeather();
     }
@@ -51,11 +53,11 @@ public class WeatherController : ITickable, IDisposable {
         MusicManager.Stop();
 
         CurrentWeatherTime = weatherTime;
-        var intensity = (float)(Gamestates.Gamestate.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
+        var intensity = (float)(Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
         Weather = type switch {
             WeatherType.Clear => null,
-            WeatherType.Rain  => new(TextureManager.Get(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, type),
-            WeatherType.Snow  => new(TextureManager.Get(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, type),
+            WeatherType.Rain  => new(TextureManager.Get(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, _animationType, type),
+            WeatherType.Snow  => new(TextureManager.Get(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, _animationType, type),
             _                 => null,
         };
     }
@@ -66,12 +68,12 @@ public class WeatherController : ITickable, IDisposable {
     private void GetNewWeather() {
         Weather?.Dispose();
         Weather = null;
-        CurrentWeatherTime = Gamestates.Gamestate.Random.Next(WeatherMinimalTime, WeatherMaximalTime);
-        var intensity = (float)(Gamestates.Gamestate.Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
-        Weather = (WeatherType)Gamestates.Gamestate.Random.Next(0, 3) switch {
+        CurrentWeatherTime = Random.Next(WeatherMinimalTime, WeatherMaximalTime);
+        var intensity = (float)(Random.NextDouble() * (WeatherMaximalIntensity - WeatherMinimalIntensity) + WeatherMinimalIntensity);
+        Weather = (WeatherType)Random.Next(0, 3) switch {
             WeatherType.Clear => null,
-            WeatherType.Rain  => new(TextureManager.Get(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, AnimationType, WeatherType.Rain),
-            WeatherType.Snow  => new(TextureManager.Get(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, AnimationType, WeatherType.Snow),
+            WeatherType.Rain  => new(TextureManager.Get(TextureType.Weather, "rain"), 1.15F, MusicType.Rain, intensity, _animationType, WeatherType.Rain),
+            WeatherType.Snow  => new(TextureManager.Get(TextureType.Weather, "snow"), 1.3F, MusicType.Snow, intensity, _animationType, WeatherType.Snow),
             _                 => null,
         };
 
